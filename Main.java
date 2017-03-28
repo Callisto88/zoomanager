@@ -1,6 +1,10 @@
+import com.mysql.jdbc.MySQLConnection;
+import Model.*;
+
 public class Main {
 
     public static void main(String[] args) {
-	// write your code here
+
+         DBConnection entryPoint = new DBConnection();
     }
 }

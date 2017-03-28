@@ -1,18 +1,25 @@
+package Model;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import com.mysql.jdbc.Statement;
+
 /**
  * Created by D.Hamel on 25.03.17.
  */
 
-class DBConnection {
-    private static HashMap<String, int> correspondance;
+public class DBConnection {
+    private static HashMap<String, Integer> correspondance;
     private static Connection con;
     private static String url = "jdbc:mysql://nas.lozann.ch:3306/zoomanager";
     private static String  user = "zmusr";
     private static String  pass = "a78DKkw9QfQV**";
+
+    public DBConnection() {
+        init();
+    }
 
     /**
      * Permet une connexion à la base de données.
@@ -71,7 +78,7 @@ class DBConnection {
      * @param REQUETE qui est une chaine de caractère contenant la requete
      * @return ArrayList<Personne>
      */
-    private ArrayList<Personne> recupererPersonne (final String REQUETE, int[] valeur) {
+    private ArrayList<Personne> recupererPersonne (final String REQUETE) {
         PreparedStatement preparedStatement;
         ArrayList<Personne> data = new ArrayList<Personne>();
 

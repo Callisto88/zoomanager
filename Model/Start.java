@@ -1,3 +1,5 @@
+package Model;
+
 // import com.mysql.jdbc.Statement;
 import java.io.*;
 import java.io.BufferedWriter;
@@ -6,8 +8,6 @@ import java.io.FileWriter;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Scanner;
-
-package Model;
 
 public class Start {
     public static void main(String arg[]) {

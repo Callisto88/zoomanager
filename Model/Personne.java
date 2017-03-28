@@ -1,3 +1,5 @@
+package Model;
+
 /**
  * Created by D.Hamel on 25.03.17.
  */
@@ -15,6 +17,9 @@ public class Personne {
     private double salaire;
     private String dateDebut;
     private String typeContrat;
+
+
+
 
 
     /**
