@@ -272,7 +272,6 @@ public class DBInteraction {
                                                         "FROM Personne " +
                                                         "WHERE Personne.nom = ? ;";
 
-
     private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
                                                                 "FROM Personne " +
                                                                 "WHERE Personne.nom = ? " +
@@ -283,7 +282,6 @@ public class DBInteraction {
 
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
                                                     "FROM Personne;";
-
 
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
 

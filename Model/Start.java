@@ -9,6 +9,7 @@ public class Start {
 
         DBInteraction query = new DBInteraction();
 
+
         try {
             String[][] data = query.selAllPreNomPersonne();
             for (String[] s : data) {
@@ -23,6 +24,7 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
+        /*
         try {
             int nb = query.nombrePersonne();
             System.out.println(nb);
@@ -52,6 +54,7 @@ public class Start {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+        */
 
         System.out.println("\n_> Programme terminé ... \n");
     }
