@@ -153,7 +153,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Personne>
      */
-    private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws SQLException{
+    private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<Personne>();
         while (rs.next()) {
             data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
@@ -169,6 +169,18 @@ public class DBInteraction {
         return data;
     }
 
+
+    public int nombrePersonne () throws ExceptionDataBase, SQLException {
+        PreparedStatement preparedStatement;
+        int data = 0;
+        this.db.init();
+        preparedStatement = db.con.prepareStatement(NOMBRE_PERSONNE);
+        ResultSet rs = preparedStatement.executeQuery();
+        while (rs.next()) {
+            data =  rs.getInt("nbPersonne");
+        }
+        return data;
+    }
 
 
 
@@ -201,5 +213,8 @@ public class DBInteraction {
 
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom " +
                                                         "FROM Race;";
+
+    private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
+                                                    "FROM Personne;";
 
 }

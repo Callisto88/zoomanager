@@ -23,7 +23,14 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
-
+        try {
+            int nb = query.nombrePersonne();
+            System.out.println(nb);
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
 
     }
 }
