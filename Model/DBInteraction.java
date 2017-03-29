@@ -157,9 +157,9 @@ public class DBInteraction {
             data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
                     rs.getString("nom"), rs.getString("adresse"),
                     rs.getString("email"), rs.getString("telephone"),
-                    rs.getString("dateNaissance"), rs.getInt("responsable"),
+                    rs.getDate("dateNaissance"), rs.getInt("responsable"),
                     rs.getString("statut"), rs.getDouble("salaire"),
-                    rs.getString("dateDebut"), rs.getString("typeContrat")));
+                    rs.getDate("dateDebut"), rs.getString("typeContrat")));
         }
         // Fermeture de la DB obligatoire après le ResultSet !
         // Doit être ici !
@@ -201,6 +201,38 @@ public class DBInteraction {
         return res;
     }
 
+    public Personne selEmployeDetails (int noAVS) throws ExceptionDataBase, SQLException {
+
+        PreparedStatement stmt;
+        Personne p = new Personne();
+
+        this.db.init();
+        stmt = db.con.prepareStatement(SEL_EMPLOYE_DETAILS);
+        stmt.setInt(1, noAVS);
+        ResultSet rs = stmt.executeQuery();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun employé trouvé avec le noAVS " + noAVS);
+        } else {
+            // Previous check has forwarded the pointer, just put it back at the start
+            rs.beforeFirst();
+            while (rs.next()) {
+                p.setNoAVS(rs.getInt("noAVS"));
+                p.setPrenom(rs.getString("prenom"));
+                p.setNom(rs.getString("nom"));
+                p.setAdresse(rs.getString("adresse"));
+                p.setEmail(rs.getString("email"));
+                p.setTelephone(rs.getString("telephone"));
+                p.setDateNaissance(rs.getDate("dateNaissance"));
+                p.setResponsable(rs.getInt("responsable"));
+                p.setStatut(rs.getString("statut"));
+                p.setSalaire(Double.parseDouble(rs.getString("salaire")));
+                p.setDateDebut(rs.getDate("dateDebut"));
+                p.setTypeContrat(rs.getString("typeContrat"));
+            }
+        }
+        return p;
+    }
 
 
     /**
@@ -238,5 +270,7 @@ public class DBInteraction {
 
 
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
+
+    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
 
 }
