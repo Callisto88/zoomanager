@@ -1,6 +1,4 @@
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-
+package Model;
 import java.sql.SQLException;
 
 /**

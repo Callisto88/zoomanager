@@ -18,10 +18,6 @@ public class Personne {
     private String dateDebut;
     private String typeContrat;
 
-
-
-
-
     /**
      * Constructeur avec tous les paramètre
      *
@@ -45,7 +41,8 @@ public class Personne {
 
     /**
      * Constructeur avec unqiuement les noms prenoms
-     *
+     * @param prenom
+     * @param nom
      */
     public Personne(String prenom, String nom) {
         this.prenom = prenom;

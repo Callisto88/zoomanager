@@ -5,32 +5,70 @@ package Model;
  */
 public class Stock {
 
+    /**
+     * Membres privés
+     */
     private String nom;
     private double quantite;
-    private double quantitieMin;
+    private double quantiteMin;
     private String unite;
 
+    /**
+     * Constructeur par défaut
+     */
+    public Stock() {}
+
+    /**
+     * Constructeur avec tous les membres
+     * @param nom
+     * @param quantite
+     * @param quantiteMin
+     * @param unite
+     */
+    public Stock(String nom, double quantite, double quantiteMin, String unite) {
+        this.nom = nom;
+        this.quantite = quantite;
+        this.quantiteeMin = quantiteeMin;
+        this.unite = unite;
+    }
+
+    /**
+     * Getter nom
+     * @return String nom
+     */
     public String getNom() {
         return nom;
     }
 
+    /**
+     * Setter nom
+     * @param nom une String
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
+    /**
+     * Getter quantité en stock
+     * @return double
+     */
     public double getQuantite() {
         return quantite;
     }
 
+    /**
+     * Setter quantité en stock
+     * @param quantite double ( potentiellement en kilogramme )
+     */
     public void setQuantite(double quantite) {
         this.quantite = quantite;
     }
 
-    public double getQuantitieMin() {
+    public double getQuantiteMin() {
         return quantitieMin;
     }
 
-    public void setQuantitieMin(double quantitieMin) {
+    public void setQuantiteMin(double quantitieMin) {
         this.quantitieMin = quantitieMin;
     }
 
