@@ -42,6 +42,17 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
+
+        try {
+            Personne p = query.selEmployeDetails(11);
+            System.out.println("\n\nDétails de l'employé");
+            System.out.println(p.toString());
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("\n_> Programme terminé ... \n");
     }
 
