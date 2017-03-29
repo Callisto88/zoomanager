@@ -28,7 +28,7 @@ public class Stock {
     public Stock(String nom, double quantite, double quantiteMin, String unite) {
         this.nom = nom;
         this.quantite = quantite;
-        this.quantiteeMin = quantiteeMin;
+        this.quantiteMin = quantiteMin;
         this.unite = unite;
     }
 
@@ -65,11 +65,11 @@ public class Stock {
     }
 
     public double getQuantiteMin() {
-        return quantitieMin;
+        return quantiteMin;
     }
 
-    public void setQuantiteMin(double quantitieMin) {
-        this.quantitieMin = quantitieMin;
+    public void setQuantiteMin(double quantiteMin) {
+        this.quantiteMin = quantiteMin;
     }
 
     public String getUnite() {
