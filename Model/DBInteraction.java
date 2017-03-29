@@ -143,31 +143,11 @@ public class DBInteraction {
         return data;
     }
 
-
     /**
-     * Permet de créer une ArrayList de personne à partit de Resultset passé en paramètre
+     * Permet de connaitre le nombre d'employé dans la table Personne
      *
-     * @param rs            ResultSet ; Obtenu par requête SQL.
-     *
-     * @return ArrayList<Personne>
+     * @return int
      */
-    private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Personne> data = new ArrayList<>();
-        while (rs.next()) {
-            data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
-                    rs.getString("nom"), rs.getString("adresse"),
-                    rs.getString("email"), rs.getString("telephone"),
-                    rs.getDate("dateNaissance"), rs.getInt("responsable"),
-                    rs.getString("statut"), rs.getDouble("salaire"),
-                    rs.getDate("dateDebut"), rs.getString("typeContrat")));
-        }
-        // Fermeture de la DB obligatoire après le ResultSet !
-        // Doit être ici !
-        this.db.close();
-        return data;
-    }
-
-
     public int nombrePersonne () throws ExceptionDataBase, SQLException {
         PreparedStatement preparedStatement;
         int data = 0;
@@ -180,6 +160,13 @@ public class DBInteraction {
         return data;
     }
 
+    /**
+     * Permet de selectionner un évenement en fonction de son ID
+     *
+     * @param id         valeur en int
+     *
+     * @return String
+     */
     public String selTypeEvenement (int id) throws ExceptionDataBase, SQLException {
         PreparedStatement stmt;
         String res = null;
@@ -201,8 +188,14 @@ public class DBInteraction {
         return res;
     }
 
+    /**
+     * Permet de selectionner un évenement en fonction de son ID
+     *
+     * @param noAVS         valeur en int
+     *
+     * @return Personne
+     */
     public Personne selEmployeDetails (int noAVS) throws ExceptionDataBase, SQLException {
-
         PreparedStatement stmt;
         Personne p = new Personne();
 
@@ -232,6 +225,29 @@ public class DBInteraction {
             }
         }
         return p;
+    }
+
+    /**
+     * Permet de créer une ArrayList de personne à partit de Resultset passé en paramètre
+     *
+     * @param rs            ResultSet ; Obtenu par requête SQL.
+     *
+     * @return ArrayList<Personne>
+     */
+    private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Personne> data = new ArrayList<>();
+        while (rs.next()) {
+            data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
+                    rs.getString("nom"), rs.getString("adresse"),
+                    rs.getString("email"), rs.getString("telephone"),
+                    rs.getDate("dateNaissance"), rs.getInt("responsable"),
+                    rs.getString("statut"), rs.getDouble("salaire"),
+                    rs.getDate("dateDebut"), rs.getString("typeContrat")));
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+        this.db.close();
+        return data;
     }
 
 
