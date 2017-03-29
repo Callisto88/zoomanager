@@ -32,7 +32,6 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
-        int d;
         System.out.println("\n_> Programme terminé ... \n");
     }
 
