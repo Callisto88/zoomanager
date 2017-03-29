@@ -32,6 +32,16 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
+
+        try {
+            String typeEvenement = query.selTypeEvenement(2);
+            System.out.println(typeEvenement);
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
         System.out.println("\n_> Programme terminé ... \n");
     }
 
