@@ -44,7 +44,7 @@ public class DBInteraction {
      */
     private ArrayList<Personne> recupererPersonne (final String REQUETE) throws ExceptionDataBase, SQLException {
         PreparedStatement preparedStatement;
-        ArrayList<Personne> data = new ArrayList<Personne>();
+        ArrayList<Personne> data = new ArrayList<>();
         this.db.init();
         preparedStatement = db.con.prepareStatement(REQUETE);
         ResultSet rs = preparedStatement.executeQuery();
@@ -66,8 +66,6 @@ public class DBInteraction {
      * @param salaire           Nouveau salaire AVS de la personne
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
-     *
-     * @return boolean
      */
     public void insPersonne (int numAVS, String prenom, String nom, String adresse, String email,
                                    String telephone, String dateNaissance, int responsable, String statut,
@@ -134,7 +132,7 @@ public class DBInteraction {
 
     public ArrayList<String> selAllRaceAnimal  () throws ExceptionDataBase, SQLException {
         PreparedStatement preparedStatement;
-        ArrayList<String> data = new ArrayList<String>();
+        ArrayList<String> data = new ArrayList<>();
         this.db.init();
         preparedStatement = db.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
         ResultSet rs = preparedStatement.executeQuery();
@@ -154,7 +152,7 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Personne> data = new ArrayList<Personne>();
+        ArrayList<Personne> data = new ArrayList<>();
         while (rs.next()) {
             data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
                     rs.getString("nom"), rs.getString("adresse"),
@@ -180,6 +178,27 @@ public class DBInteraction {
             data =  rs.getInt("nbPersonne");
         }
         return data;
+    }
+
+    public String selTypeEvenement (int id) throws ExceptionDataBase, SQLException {
+        PreparedStatement stmt;
+        String res = null;
+
+        this.db.init();
+        stmt = db.con.prepareStatement(SEL_TYPE_EVENEMENT);
+        stmt.setInt(1, id);
+        ResultSet rs = stmt.executeQuery();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun type d'événement ne correspond à l'ID " + id);
+        } else {
+            // Previous check has forwarded the pointer, just put it back at the start
+            rs.beforeFirst();
+            while (rs.next()) {
+                res =  rs.getString("type");
+            }
+        }
+        return res;
     }
 
 
@@ -216,5 +235,8 @@ public class DBInteraction {
 
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
                                                     "FROM Personne;";
+
+
+    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
 
 }
