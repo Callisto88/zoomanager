@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Date;
+
 /**
  * Created by D.Hamel on 25.03.17.
  */
@@ -11,20 +13,26 @@ public class Personne {
     private String adresse;
     private String email;
     private String telephone;
-    private String dateNaissance;
+    private Date dateNaissance;
     private int responsable;
     private String statut;
     private double salaire;
-    private String dateDebut;
+    private Date dateDebut;
     private String typeContrat;
+
+    /**
+     * Constructeur par défaut
+     */
+    public Personne() {
+    }
 
     /**
      * Constructeur avec tous les paramètre
      *
      */
     public Personne(int noAVS, String prenom, String nom, String adresse, String email,
-                    String telephone, String dateNaissance, int responsable, String statut,
-                    double salaire, String dateDebut, String typeContrat) {
+                    String telephone, Date dateNaissance, int responsable, String statut,
+                    double salaire, Date dateDebut, String typeContrat) {
         this.noAVS = noAVS;
         this.prenom = prenom;
         this.nom = nom;
@@ -49,6 +57,9 @@ public class Personne {
         this.nom = nom;
     }
 
+    public String toString() {
+        return this.prenom + " " + this.nom + "\n" + this.adresse + "\n" + this.dateNaissance;
+    }
     public int getNoAVS() {
         return noAVS;
     }
@@ -97,11 +108,11 @@ public class Personne {
         this.telephone = telephone;
     }
 
-    public String getDateNaissance() {
+    public Date getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(String dateNaissance) {
+    public void setDateNaissance(Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -129,11 +140,11 @@ public class Personne {
         this.salaire = salaire;
     }
 
-    public String getDateDebut() {
+    public Date getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(String dateDebut) {
+    public void setDateDebut(Date dateDebut) {
         this.dateDebut = dateDebut;
     }
 
