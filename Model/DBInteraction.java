@@ -203,28 +203,9 @@ public class DBInteraction {
         stmt = db.con.prepareStatement(SEL_EMPLOYE_DETAILS);
         stmt.setInt(1, noAVS);
         ResultSet rs = stmt.executeQuery();
-
-        if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun employé trouvé avec le noAVS " + noAVS);
-        } else {
-            // Previous check has forwarded the pointer, just put it back at the start
-            rs.beforeFirst();
-            while (rs.next()) {
-                p.setNoAVS(rs.getInt("noAVS"));
-                p.setPrenom(rs.getString("prenom"));
-                p.setNom(rs.getString("nom"));
-                p.setAdresse(rs.getString("adresse"));
-                p.setEmail(rs.getString("email"));
-                p.setTelephone(rs.getString("telephone"));
-                p.setDateNaissance(rs.getDate("dateNaissance"));
-                p.setResponsable(rs.getInt("responsable"));
-                p.setStatut(rs.getString("statut"));
-                p.setSalaire(Double.parseDouble(rs.getString("salaire")));
-                p.setDateDebut(rs.getDate("dateDebut"));
-                p.setTypeContrat(rs.getString("typeContrat"));
-            }
-        }
-        return p;
+        ArrayList<Personne>  pers = creerTableauPersonne(rs);
+        this.db.close();
+        return pers.get(0);
     }
 
     /**
@@ -236,13 +217,42 @@ public class DBInteraction {
      */
     private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
-        while (rs.next()) {
-            data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
-                    rs.getString("nom"), rs.getString("adresse"),
-                    rs.getString("email"), rs.getString("telephone"),
-                    rs.getDate("dateNaissance"), rs.getInt("responsable"),
-                    rs.getString("statut"), rs.getDouble("salaire"),
-                    rs.getDate("dateDebut"), rs.getString("typeContrat")));
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
+                        rs.getString("nom"), rs.getString("adresse"),
+                        rs.getString("email"), rs.getString("telephone"),
+                        rs.getDate("dateNaissance"), rs.getInt("responsable"),
+                        rs.getString("statut"), rs.getDouble("salaire"),
+                        rs.getDate("dateDebut"), rs.getString("typeContrat")));
+            }
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+        this.db.close();
+        return data;
+    }
+
+    /**
+     * Permet de créer une ArrayList d'evenement à partit de Resultset passé en paramètre
+     *
+     * @param rs            ResultSet ; Obtenu par requête SQL.
+     *
+     * @return ArrayList<Evenement>
+     */
+    private ArrayList<Evenement> creerTableauEvenement (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Evenement> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Evenement(rs.getInt("id"), rs.getString("description"),
+                        rs.getString("date"), rs.getInt("type")));
+            }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
         // Doit être ici !

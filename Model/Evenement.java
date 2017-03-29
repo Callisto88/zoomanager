@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.Date;
+
 /**
  * Created by D.Hamel on 26.03.17.
  */
@@ -9,6 +11,13 @@ public class Evenement {
     private String description;
     private String date;
     private int type;
+
+    public Evenement(int id, String description, String date, int type) {
+        this.id = id;
+        this.description = description;
+        this.date = date;
+        this.type = type;
+    }
 
     public int getId() {
         return id;
