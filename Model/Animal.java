@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Date;
+
 /**
  * Created by D.Hamel on 25.03.17.
  */
@@ -12,11 +14,11 @@ public abstract class Animal {
     private int id;
     private String nom;
     private String sexe;
-    private String anneeNaissance;
+    private Date anneeNaissance;
     private int enclos; // REF (id)
     private String origine;
     private String race; // REF (nom)
-    private String dateDeces;
+    private Date dateDeces;
 
     /**
      * Constructeur par défaut
@@ -30,13 +32,10 @@ public abstract class Animal {
      */
     public Animal(int id) {
         this.id = id;
-
-
     }
 
     /**
      * Constructeur avec tous les membres
-     * @param id
      * @param nom
      * @param sexe
      * @param anneeNaissance
@@ -45,8 +44,7 @@ public abstract class Animal {
      * @param race
      * @param dateDeces
      */
-    public Animal(int id, String nom, String sexe, String anneeNaissance, int enclos, String origine, String race, String dateDeces) {
-        this.id = id;
+    public Animal(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces) {
         this.nom = nom;
         this.sexe = sexe;
         this.anneeNaissance = anneeNaissance;
@@ -89,11 +87,11 @@ public abstract class Animal {
         this.race = race;
     }
 
-    public String getDateDeces() {
+    public Date getDateDeces() {
         return dateDeces;
     }
 
-    public void setDateDeces(String dateDeces) {
+    public void setDateDeces(Date dateDeces) {
         this.dateDeces = dateDeces;
     }
 
@@ -105,11 +103,11 @@ public abstract class Animal {
         this.sexe = sexe;
     }
 
-    public String getAnneeNaissance() {
+    public Date getAnneeNaissance() {
         return anneeNaissance;
     }
 
-    public void setAnneeNaissance(String anneeNaissance) {
+    public void setAnneeNaissance(Date anneeNaissance) {
         this.anneeNaissance = anneeNaissance;
     }
 
