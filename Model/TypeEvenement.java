@@ -21,7 +21,13 @@ public class TypeEvenement {
         this.id = id;
 
         // Récupération du type d'événement depuis la base de données
-        DBInteraction db = new DBInteraction();
+        DBInteraction db = null;
+        try {
+            db = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
         try {
             this.type = db.selTypeEvenement(id);
         } catch (ExceptionDataBase exceptionDataBase) {
