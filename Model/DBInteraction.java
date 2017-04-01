@@ -1,8 +1,8 @@
 package Model;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import javax.swing.plaf.nimbus.State;
+import javax.xml.transform.Result;
+import java.sql.*;
 import java.util.ArrayList;
 
 /**
@@ -10,10 +10,42 @@ import java.util.ArrayList;
  */
 public class DBInteraction {
 
-    private DBConnection db;
+    /**
+     * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
+     */
 
-    public DBInteraction() {
+    // Recupère tous les paramètre d'une personne
+    // 12 Paramètres
+    private static final String SEL_ALL_PERSONNE = "SELECT * " +
+            "FROM Personne;";
+    // 12 Paramètres Dans l'ordre ci-dessous :
+    // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
+    // idResponsable / statut / salaire / dateDebut	TypeContrat /
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? ," +
+            " ? , ? , ? ); ";
+    // Recupère tous les paramètre des personnne répondant à la requête.
+    // 12 Paramètres
+    private static final String SEL_EMPLOYE_PAR_NOM = "SELECT * " +
+            "FROM Personne " +
+            "WHERE Personne.nom = ? ;";
+    private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
+            "FROM Personne " +
+            "WHERE Personne.nom = ? " +
+            " AND Personne.prenom = ? ;";
+    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom " +
+            "FROM Race;";
+    private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
+            "FROM Personne;";
+    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
+    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, anneeNaissance, enclos, origine, deces) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private DBConnection db;
+    private PreparedStatement stmt;
+
+    public DBInteraction() throws ExceptionDataBase {
         this.db = new DBConnection();
+        this.db.init();
+        this.stmt = null;
     }
 
     /**
@@ -43,18 +75,16 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     private ArrayList<Personne> recupererPersonne (final String REQUETE) throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
         ArrayList<Personne> data = new ArrayList<>();
-        this.db.init();
-        preparedStatement = db.con.prepareStatement(REQUETE);
-        ResultSet rs = preparedStatement.executeQuery();
+        this.stmt = db.con.prepareStatement(REQUETE);
+        ResultSet rs = this.stmt.executeQuery();
         return this.creerTableauPersonne(rs);
     }
 
     /**
      * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
      *
-     * @param numAVS            Nouveau numéro AVS de la personne
+     * @param noAVS             Nouveau numéro AVS de la personne
      * @param prenom            Nouveau prénom de la personne
      * @param nom               Nouveau nom AVS de la personne
      * @param adresse           Nouveau adresse AVS de la personne
@@ -67,26 +97,24 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insPersonne (int numAVS, String prenom, String nom, String adresse, String email,
-                                   String telephone, String dateNaissance, int responsable, String statut,
-                                   double salaire, String dateDebut, String typeContrat)
+    public void insPersonne(int noAVS, String prenom, String nom, String adresse, String email,
+                            String telephone, String dateNaissance, int responsable, String statut,
+                            double salaire, String dateDebut, String typeContrat)
                             throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
-        this.db.init();
-        preparedStatement = db.con.prepareStatement(INSERT_EMPLOYE);
-        preparedStatement.setInt(1, numAVS);
-        preparedStatement.setString(2, prenom);
-        preparedStatement.setString(3, nom);
-        preparedStatement.setString(4, adresse);
-        preparedStatement.setString(5, email);
-        preparedStatement.setString(6, telephone);
-        preparedStatement.setString(7, dateNaissance);
-        preparedStatement.setInt(8, responsable);
-        preparedStatement.setString(9, statut);
-        preparedStatement.setDouble(10, salaire);
-        preparedStatement.setString(11, dateDebut);
-        preparedStatement.setString(12, typeContrat);
-        preparedStatement.executeUpdate();
+        this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
+        this.stmt.setInt(1, noAVS);
+        this.stmt.setString(2, prenom);
+        this.stmt.setString(3, nom);
+        this.stmt.setString(4, adresse);
+        this.stmt.setString(5, email);
+        this.stmt.setString(6, telephone);
+        this.stmt.setString(7, dateNaissance);
+        this.stmt.setInt(8, responsable);
+        this.stmt.setString(9, statut);
+        this.stmt.setDouble(10, salaire);
+        this.stmt.setString(11, dateDebut);
+        this.stmt.setString(12, typeContrat);
+        this.stmt.executeUpdate();
     }
 
     /**
@@ -97,12 +125,10 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selEmployeeParNom (String nom) throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
-        this.db.init();
-        preparedStatement = db.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
-        preparedStatement.setString(1, nom);
+        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
+        this.stmt.setString(1, nom);
 
-        ResultSet rs = preparedStatement.executeQuery();
+        ResultSet rs = this.stmt.executeQuery();
         return this.creerTableauPersonne(rs);
     }
 
@@ -115,12 +141,10 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selEmployeeParPrenomNom (String nom, String prenom) throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
-        this.db.init();
-        preparedStatement = db.con.prepareStatement(SEL_EMPLOYE_PAR_PRENOM_NOM);
-        preparedStatement.setString(1, nom);
-        preparedStatement.setString(2, prenom);
-        ResultSet rs = preparedStatement.executeQuery();
+        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_PAR_PRENOM_NOM);
+        this.stmt.setString(1, nom);
+        this.stmt.setString(2, prenom);
+        ResultSet rs = this.stmt.executeQuery();
         return this.creerTableauPersonne(rs);
     }
 
@@ -131,15 +155,13 @@ public class DBInteraction {
      */
 
     public ArrayList<String> selAllRaceAnimal  () throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
         ArrayList<String> data = new ArrayList<>();
-        this.db.init();
-        preparedStatement = db.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
-        ResultSet rs = preparedStatement.executeQuery();
+        this.stmt = db.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
+        ResultSet rs = this.stmt.executeQuery();
         while (rs.next()) {
             data.add(rs.getString("nom"));
         }
-        this.db.close();
+
         return data;
     }
 
@@ -149,11 +171,10 @@ public class DBInteraction {
      * @return int
      */
     public int nombrePersonne () throws ExceptionDataBase, SQLException {
-        PreparedStatement preparedStatement;
         int data = 0;
         this.db.init();
-        preparedStatement = db.con.prepareStatement(NOMBRE_PERSONNE);
-        ResultSet rs = preparedStatement.executeQuery();
+        this.stmt = db.con.prepareStatement(NOMBRE_PERSONNE);
+        ResultSet rs = this.stmt.executeQuery();
         while (rs.next()) {
             data =  rs.getInt("nbPersonne");
         }
@@ -168,13 +189,10 @@ public class DBInteraction {
      * @return String
      */
     public String selTypeEvenement (int id) throws ExceptionDataBase, SQLException {
-        PreparedStatement stmt;
         String res = null;
-
-        this.db.init();
-        stmt = db.con.prepareStatement(SEL_TYPE_EVENEMENT);
-        stmt.setInt(1, id);
-        ResultSet rs = stmt.executeQuery();
+        this.stmt = db.con.prepareStatement(SEL_TYPE_EVENEMENT);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun type d'événement ne correspond à l'ID " + id);
@@ -196,15 +214,12 @@ public class DBInteraction {
      * @return Personne
      */
     public Personne selEmployeDetails (int noAVS) throws ExceptionDataBase, SQLException {
-        PreparedStatement stmt;
         Personne p = new Personne();
-
-        this.db.init();
-        stmt = db.con.prepareStatement(SEL_EMPLOYE_DETAILS);
-        stmt.setInt(1, noAVS);
-        ResultSet rs = stmt.executeQuery();
+        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_DETAILS);
+        this.stmt.setInt(1, noAVS);
+        ResultSet rs = this.stmt.executeQuery();
         ArrayList<Personne>  pers = creerTableauPersonne(rs);
-        this.db.close();
+
         return pers.get(0);
     }
 
@@ -232,7 +247,7 @@ public class DBInteraction {
         }
         // Fermeture de la DB obligatoire après le ResultSet !
         // Doit être ici !
-        this.db.close();
+
         return data;
     }
 
@@ -256,45 +271,51 @@ public class DBInteraction {
         }
         // Fermeture de la DB obligatoire après le ResultSet !
         // Doit être ici !
-        this.db.close();
+
         return data;
     }
 
+    private void insFelin(Felin f) throws SQLException {
+        try {
+            this.stmt.setInt(1, f.getId());
+            this.stmt.setFloat(2, f.getPoids());
+            this.stmt.execute();
+        } catch (SQLException sqlE) {
+            throw sqlE;     // Exception propagée à l'appelant
+        }
+    }
 
-    /**
-     * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
-     */
+    public void insAnimal(Animal a) throws SQLException {
 
-    // Recupère tous les paramètre d'une personne
-    // 12 Paramètres
-    private static final String SEL_ALL_PERSONNE = "SELECT * " +
-            "FROM Personne;";
+        this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
 
-    // 12 Paramètres Dans l'ordre ci-dessous :
-    // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
-    // idResponsable / statut / salaire / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? ," +
-            " ? , ? , ? ); ";
+        // Attribut communs à tous les animaux
+        this.stmt.setDate(2, new Date(a.getAnneeNaissance().getTime()));
+        this.stmt.setDate(3, new Date(a.getDateDeces().getTime()));
+        this.stmt.setInt(4, a.getEnclos());
+        this.stmt.setString(5, a.getNom());
+        this.stmt.setString(6, a.getOrigine());
+        this.stmt.setString(7, a.getSexe());
 
-    // Recupère tous les paramètre des personnne répondant à la requête.
-    // 12 Paramètres
-    private static final String SEL_EMPLOYE_PAR_NOM = "SELECT * " +
-                                                        "FROM Personne " +
-                                                        "WHERE Personne.nom = ? ;";
+        // En premier lieu, on enregistre l'animal dans la DB
+        try {
+            this.stmt.executeUpdate();
+            ResultSet rs = this.stmt.getGeneratedKeys();
+            if (rs.next()) {
+                int newAnimalID = rs.getInt(1);
+                a.setId(newAnimalID);
+            }
+        } catch (SQLException sqlE) {
+            throw sqlE;
+        }
 
-    private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
-                                                                "FROM Personne " +
-                                                                "WHERE Personne.nom = ? " +
-                                                                " AND Personne.prenom = ? ;";
-
-    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom " +
-                                                        "FROM Race;";
-
-    private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
-                                                    "FROM Personne;";
-
-    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
-
-    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
+        if (a instanceof Felin) {
+            try {
+                this.insFelin((Felin) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
+    }
 
 }
