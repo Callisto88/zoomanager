@@ -2,13 +2,20 @@ package Model;
 
 // import com.mysql.jdbc.Statement;
 
+import java.util.Date;
 import java.sql.SQLException;
+import java.util.Calendar;
 
 public class Start {
+
     public static void main(String arg[]) {
 
-        DBInteraction query = new DBInteraction();
-
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
 
         try {
             String[][] data = query.selAllPreNomPersonne();
@@ -23,6 +30,8 @@ public class Start {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+
+        query = null;
 
         /*
         try {
@@ -55,6 +64,26 @@ public class Start {
             System.out.println(e.getMessage());
         }
         */
+
+        DBInteraction req = null;
+        try {
+            req = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        Calendar cal = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2016);
+        cal.set(Calendar.MONTH, Calendar.JULY);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date dateNaissance = cal.getTime();
+
+        Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
+        try {
+            req.insAnimal(lyra);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("\n_> Programme terminé ... \n");
     }
