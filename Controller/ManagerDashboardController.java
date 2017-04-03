@@ -19,9 +19,10 @@ public class ManagerDashboardController {
 
     /**
      * Constructeur du controlleur
+     *
      * @param title permet de spécifier le titre de l'application pour la fenêtre du dashboard
      */
-    public ManagerDashboardController(String title){
+    public ManagerDashboardController(String title) {
         f = new JFrame(title + " - Dashboard");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ManagerDashboard md = new ManagerDashboard(this);
@@ -31,30 +32,29 @@ public class ManagerDashboardController {
 
     }
 
-    public void revalidateDash(){
-            System.out.println("active");
+    public void revalidateDash() {
+        System.out.println("active");
         f = new JFrame(" Dashboard");
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ManagerDashboard md = new ManagerDashboard(this);
         f.getContentPane().add(md, BorderLayout.CENTER);
         f.setSize(800, 500);
         f.setVisible(true);
-            //f.setVisible(true);
-            //f.enable();
-            //f.revalidate();
+        //f.setVisible(true);
+        //f.enable();
+        //f.revalidate();
     }
 
     /**
      * permet d'instancier la fenêtre des employée
      */
-    public void employeeView(){
-        if( persControl ==  null) {
+    public void employeeView() {
+        if (persControl == null) {
             persControl = new StaffController();
             //f.dispose();
             //f.setVisible(false);
             //f.disable();
-        }
-        else{
+        } else {
             persControl.revalidateView();
             //f.setVisible(false);
         }
