@@ -1,6 +1,4 @@
-package Model;
-
-// import com.mysql.jdbc.Statement;
+import Model.*;
 
 import java.util.Date;
 import java.sql.SQLException;
