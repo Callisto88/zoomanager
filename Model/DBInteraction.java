@@ -5,6 +5,8 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 
+import static java.sql.Types.NULL;
+
 /**
  * Created by D.Hamel on 28.03.17.
  */
@@ -38,7 +40,10 @@ public class DBInteraction {
             "FROM Personne;";
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
     private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, anneeNaissance, enclos, origine, deces) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, anneeNaissance, enclos, origine, deces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_FELIN = "INSERT INTO felin (id, poids) VALUES (?, ?);";
+
+
     private DBConnection db;
     private PreparedStatement stmt;
 
@@ -276,6 +281,10 @@ public class DBInteraction {
     }
 
     private void insFelin(Felin f) throws SQLException {
+
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_FELIN);
+
         try {
             this.stmt.setInt(1, f.getId());
             this.stmt.setFloat(2, f.getPoids());
@@ -289,17 +298,26 @@ public class DBInteraction {
 
         this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
 
+        java.sql.Date anneeNaissance = new java.sql.Date(a.getAnneeNaissance().getTime());
+        java.sql.Date dateDeces = anneeNaissance;
+
+        System.out.println(dateDeces);
+
         // Attribut communs à tous les animaux
-        this.stmt.setDate(2, new Date(a.getAnneeNaissance().getTime()));
-        this.stmt.setDate(3, new Date(a.getDateDeces().getTime()));
-        this.stmt.setInt(4, a.getEnclos());
-        this.stmt.setString(5, a.getNom());
+        this.stmt.setNull(1, Types.NULL);
+        this.stmt.setString(2, a.getNom());
+        this.stmt.setString(3, a.getSexe());
+        this.stmt.setDate(4, anneeNaissance);
+        this.stmt.setInt(5, a.getEnclos());
         this.stmt.setString(6, a.getOrigine());
-        this.stmt.setString(7, a.getSexe());
+        this.stmt.setDate(7, dateDeces);
 
         // En premier lieu, on enregistre l'animal dans la DB
         try {
-            this.stmt.executeUpdate();
+
+            System.out.println(this.stmt.toString());
+
+            this.stmt.execute();
             ResultSet rs = this.stmt.getGeneratedKeys();
             if (rs.next()) {
                 int newAnimalID = rs.getInt(1);
