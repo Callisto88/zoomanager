@@ -9,7 +9,7 @@ public class Intervenant {
     private String entreprise;
     private String prenom;
     private String nom;
-    private String adresse;
+    private int adresse;
     private String email;
     private String telephone;
 
@@ -45,11 +45,11 @@ public class Intervenant {
         this.nom = nom;
     }
 
-    public String getAdresse() {
+    public int getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(int adresse) {
         this.adresse = adresse;
     }
 

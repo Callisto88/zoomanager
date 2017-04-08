@@ -10,14 +10,13 @@ public class Personne {
     private int noAVS;
     private String prenom;
     private String nom;
-    private String adresse;
+    private int adresse;
     private String email;
     private String telephone;
-    private Date dateNaissance;
+    private java.sql.Date dateNaissance;
     private int responsable;
     private String statut;
-    private double salaire;
-    private Date dateDebut;
+    private java.sql.Date dateDebut;
     private String typeContrat;
 
     /**
@@ -30,9 +29,8 @@ public class Personne {
      * Constructeur avec tous les paramètre
      *
      */
-    public Personne(int noAVS, String prenom, String nom, String adresse, String email,
-                    String telephone, Date dateNaissance, int responsable, String statut,
-                    double salaire, Date dateDebut, String typeContrat) {
+    public Personne(int noAVS, String prenom, String nom, int adresse, String email,
+                    String telephone, java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut, String typeContrat) {
         this.noAVS = noAVS;
         this.prenom = prenom;
         this.nom = nom;
@@ -42,7 +40,6 @@ public class Personne {
         this.dateNaissance = dateNaissance;
         this.responsable = responsable;
         this.statut = statut;
-        this.salaire = salaire;
         this.dateDebut = dateDebut;
         this.typeContrat = typeContrat;
     }
@@ -84,11 +81,11 @@ public class Personne {
         this.nom = nom;
     }
 
-    public String getAdresse() {
+    public int getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(int adresse) {
         this.adresse = adresse;
     }
 
@@ -108,11 +105,11 @@ public class Personne {
         this.telephone = telephone;
     }
 
-    public Date getDateNaissance() {
+    public java.sql.Date getDateNaissance() {
         return dateNaissance;
     }
 
-    public void setDateNaissance(Date dateNaissance) {
+    public void setDateNaissance(java.sql.Date dateNaissance) {
         this.dateNaissance = dateNaissance;
     }
 
@@ -132,19 +129,11 @@ public class Personne {
         this.statut = statut;
     }
 
-    public double getSalaire() {
-        return salaire;
-    }
-
-    public void setSalaire(double salaire) {
-        this.salaire = salaire;
-    }
-
-    public Date getDateDebut() {
+    public java.sql.Date getDateDebut() {
         return dateDebut;
     }
 
-    public void setDateDebut(Date dateDebut) {
+    public void setDateDebut(java.sql.Date dateDebut) {
         this.dateDebut = dateDebut;
     }
 

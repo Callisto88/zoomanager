@@ -9,10 +9,10 @@ public class Evenement {
 
     private int id;
     private String description;
-    private String date;
+    private java.sql.Date date;
     private int type;
 
-    public Evenement(int id, String description, String date, int type) {
+    public Evenement(int id, String description, java.sql.Date date, int type) {
         this.id = id;
         this.description = description;
         this.date = date;
@@ -35,11 +35,11 @@ public class Evenement {
         this.description = description;
     }
 
-    public String getDate() {
+    public java.sql.Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(java.sql.Date date) {
         this.date = date;
     }
 

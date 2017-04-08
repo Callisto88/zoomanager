@@ -79,12 +79,14 @@ public class Start {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date dateNaissance = cal.getTime();
 
+        /*
         Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        */
 
         /*
          *  INSERTION D'UN REPTILE

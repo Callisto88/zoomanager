@@ -27,9 +27,9 @@ public class ManagerDashboardController {
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         ManagerDashboard md = new ManagerDashboard(this);
         f.getContentPane().add(md, BorderLayout.CENTER);
-        f.setSize(800, 500);
+        f.setSize(1366, 768);
+        f.setMinimumSize(new Dimension(1280, 720));
         f.setVisible(true);
-
     }
 
     public void revalidateDash() {

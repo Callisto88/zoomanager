@@ -1,11 +1,22 @@
 package Model;
 
+import java.sql.Date;
+
 /**
  * Created by D.Hamel on 26.03.17.
  */
 public class Commande {
     private int id;
-    private String date;
+    private java.sql.Date date;
+
+    public Commande(int id, Date date) {
+        this.id = id;
+        this.date = date;
+    }
+
+    public Commande(int id) {
+        this.id = id;
+    }
 
     public int getId() {
         return id;
@@ -15,11 +26,11 @@ public class Commande {
         this.id = id;
     }
 
-    public String getDate() {
+    public java.sql.Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(java.sql.Date date) {
         this.date = date;
     }
 }
