@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by D.Hamel on 25.03.17.
  */
 
-public abstract class Animal {
+public class Animal {
 
     /**
      * Membres privés
@@ -14,7 +14,7 @@ public abstract class Animal {
     private int id;
     private String nom;
     private String sexe;
-    private Date anneeNaissance;
+    private Date dateNaissance;
     private int enclos; // REF (id)
     private String origine;
     private String race; // REF (nom)
@@ -34,8 +34,19 @@ public abstract class Animal {
         this.id = id;
     }
 
+    public Animal(int id, String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces) {
+        this.id = id;
+        this.nom = nom;
+        this.sexe = sexe;
+        this.dateNaissance = anneeNaissance;
+        this.enclos = enclos;
+        this.origine = origine;
+        this.race = race;
+        this.dateDeces = dateDeces;
+    }
+
     /**
-     * Constructeur avec tous les membres
+     * Constructeur avec tous les membres sauf ID
      * @param nom
      * @param sexe
      * @param anneeNaissance
@@ -47,11 +58,26 @@ public abstract class Animal {
     public Animal(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces) {
         this.nom = nom;
         this.sexe = sexe;
-        this.anneeNaissance = anneeNaissance;
+        this.dateNaissance = anneeNaissance;
         this.enclos = enclos;
         this.origine = origine;
         this.race = race;
         this.dateDeces = dateDeces;
+    }
+
+    public Animal(int id, String nom, String sexe, Date anneeNaissance) {
+        this.id = id;
+        this.nom = nom;
+        this.sexe = sexe;
+        this.dateNaissance = anneeNaissance;
+    }
+
+    public Animal(int id, String nom, String sexe, Date anneeNaissance, String race) {
+        this.id = id;
+        this.nom = nom;
+        this.sexe = sexe;
+        this.dateNaissance = anneeNaissance;
+        this.race = race;
     }
 
     public int getId() {
@@ -104,11 +130,11 @@ public abstract class Animal {
     }
 
     public Date getAnneeNaissance() {
-        return anneeNaissance;
+        return dateNaissance;
     }
 
     public void setAnneeNaissance(Date anneeNaissance) {
-        this.anneeNaissance = anneeNaissance;
+        this.dateNaissance = anneeNaissance;
     }
 
     public int getEnclos() {
