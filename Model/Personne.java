@@ -10,7 +10,7 @@ public class Personne {
     private int noAVS;
     private String prenom;
     private String nom;
-    private String adresse;
+    private int adresse;
     private String email;
     private String telephone;
     private java.sql.Date dateNaissance;
@@ -29,7 +29,7 @@ public class Personne {
      * Constructeur avec tous les paramètre
      *
      */
-    public Personne(int noAVS, String prenom, String nom, String adresse, String email,
+    public Personne(int noAVS, String prenom, String nom, int adresse, String email,
                     String telephone, java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut, String typeContrat) {
         this.noAVS = noAVS;
         this.prenom = prenom;
@@ -81,11 +81,11 @@ public class Personne {
         this.nom = nom;
     }
 
-    public String getAdresse() {
+    public int getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(String adresse) {
+    public void setAdresse(int adresse) {
         this.adresse = adresse;
     }
 

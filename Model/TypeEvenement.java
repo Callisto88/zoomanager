@@ -10,38 +10,11 @@ public class TypeEvenement {
     /**
      * Membres privés
      */
-    private int id;
     private String type;
 
-    /**
-     * Constructeur à partir de l'identifiant, remplit automatiquement les attributs
-     * @param id un entier correspondant à l'ID du type d'événement
-     */
-    public TypeEvenement(int id) {
-        this.id = id;
 
-        // Récupération du type d'événement depuis la base de données
-        DBInteraction db = null;
-        try {
-            db = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
-
-        try {
-            this.type = db.selTypeEvenement(id);
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * @return un entier qui correspond à l'ID du type d'événement
-     */
-    public int getId() {
-        return id;
+    public TypeEvenement(String type) {
+        this.type = type;
     }
 
     /**

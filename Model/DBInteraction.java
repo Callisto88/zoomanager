@@ -45,6 +45,8 @@ public class DBInteraction {
     private static final String INSERT_FELIN = "INSERT INTO felin (id, poids) VALUES (?, ?);";
 
 
+
+    private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
     // Insertion d'un événement dans la DB
     private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (?, ?, ?, ?);";
     // Assigner un événement à un personne
@@ -205,7 +207,7 @@ public class DBInteraction {
         this.stmt.setInt(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
         this.stmt.setString(3, personne.getNom());
-        this.stmt.setString(4, personne.getAdresse());
+        this.stmt.setInt(4, personne.getAdresse());
         this.stmt.setString(5, personne.getEmail());
         this.stmt.setString(6, personne.getTelephone());
         this.stmt.setDate(7, personne.getDateNaissance());
@@ -246,7 +248,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
-                        rs.getString("nom"), rs.getString("adresse"),
+                        rs.getString("nom"), rs.getInt("adresse"),
                         rs.getString("email"), rs.getString("telephone"),
                         rs.getDate("dateNaissance"), rs.getInt("responsable"),
                         rs.getString("statut"), rs.getDate("dateDebut"),
@@ -373,23 +375,23 @@ public class DBInteraction {
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
-    // Partie pour la gestion EVENEMENT t dans la DB
+    // Partie pour la gestion EVENEMENT dans la DB
 
     /**
      * Permet de selectionner un évenement en fonction de son ID
      *
-     * @param id         valeur en int
+     * @param type         valeur en int
      *
      * @return String
      */
-    public String selTypeEvenement (int id) throws ExceptionDataBase, SQLException {
+    public String selTypeEvenement (String type) throws ExceptionDataBase, SQLException {
         String res = null;
         this.stmt = db.con.prepareStatement(SEL_TYPE_EVENEMENT);
-        this.stmt.setInt(1, id);
+        this.stmt.setString(1, type);
         ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond à l'ID " + id);
+            throw new ExceptionDataBase("Aucun type d'événement ne correspond à l'ID " + type);
         } else {
             // Previous check has forwarded the pointer, just put it back at the start
             rs.beforeFirst();
@@ -400,6 +402,18 @@ public class DBInteraction {
         return res;
     }
 
+    /**
+     * Permet d'insérer un type d'événement dans la DB à partir d'un objet TypeEvenement
+     *
+     * @param typeEvenement(TypeEvenement)
+     *
+     * @return void
+     */
+    public void insertTypeEvenement (TypeEvenement typeEvenement) throws SQLException {
+        this.stmt = this.db.con.prepareStatement(INSERT_TYPE_EVENEMET);
+
+        this.stmt.setString(1, typeEvenement.getType());
+    }
 
     /**
      * Permet d'insérer un événement dans la DB à partir d'un objet Evenement
@@ -649,6 +663,15 @@ public class DBInteraction {
 
         return data;
     }
+
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Partie pour la gestion STOCK  dans la DB
+
+
+
+
+
 }
 
 
