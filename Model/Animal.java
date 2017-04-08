@@ -3,9 +3,22 @@ package Model;
 import java.util.Date;
 
 /**
- * Created by D.Hamel on 25.03.17.
+ * Cette classes contient la conception de la table Personne de la base de données
+ *
+ * Elle contient uniquement les Setters, Getters et Constructeurs.
+ *
+ * enclos   références la classe "Enclos"
+ * race     références la classe "race"
+ *
+ * @author D.Hamel
+ * @author C.Balboni
+ *
+ * @version 1.0
+ *
+ * @date    28.03.2017 (Création)
+ * @date    28.03.2017 (Finalisation v1.0)
+ *
  */
-
 public class Animal {
 
     /**

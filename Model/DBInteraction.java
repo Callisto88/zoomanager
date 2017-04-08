@@ -5,12 +5,30 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.sql.Date;
 import java.util.*;
-
 import static java.sql.Types.NULL;
 
 /**
- * Created by D.Hamel on 28.03.17.
+ *
+ * Cette classes à pour but de créer une connexion avec la base de données
+ * L'attribut permettant de se connecter à la base de données est :     DBConnection db
+ *
+ * Elle contient également toute les requêtes disponibles afin de faire des actions sur la base de données
+ *
+ * La création d'un objet DBInteraction ne demande aucun paramètre
+ *
+ * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
+ *
+ *
+ * @author D.Hamel
+ * @author C.Balboni
+ *
+ * @version 1.0
+ *
+ * @date    28.03.2017 (Création)
+ * @date    05.05.2017 (Finalisation v1.0)
+ *
  */
+
 public class DBInteraction {
 
     /**

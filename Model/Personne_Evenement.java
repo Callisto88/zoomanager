@@ -1,7 +1,24 @@
 package Model;
 
 /**
- * Created by D.Hamel on 26.03.17.
+ *
+ * Cette classes contient la conception de la table Personne_Evenement de la base de données
+ *
+ * Contient l'id des Personne qui ont participé à un événement (décrit par son id également)
+ *
+ * Elle contient uniquement les Setters, Getters et Constructeurs.
+ *
+ * personne         références la classe "Personne"
+ * evenement        références la classe "Evenement"
+ *
+ * @author D.Hamel
+ * @author C.Balboni
+ *
+ * @version 1.0
+ *
+ * @date    28.03.2017 (Création)
+ * @date    28.03.2017 (Finalisation v1.0)
+ *
  */
 public class Personne_Evenement {
     private int id;

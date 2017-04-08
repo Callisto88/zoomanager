@@ -1,13 +1,30 @@
 package Model;
 
 /**
- * Created by D.Hamel on 26.03.17.
+ *
+ * Cette classes contient la conception de la table Infrastructure_Evenement de la base de données
+ *
+ * Contient l'id des infrastructure qui ont été utilisés pour un événement (décrit par son id également)
+ *
+ * Elle contient uniquement les Setters, Getters et Constructeurs.
+ *
+ * infrastrucutre   références la classe "Infrastructure"
+ * evenement        références la classe "Evenement"
+ *
+ * @author D.Hamel
+ * @author C.Balboni
+ *
+ * @version 1.0
+ *
+ * @date    28.03.2017 (Création)
+ * @date    28.03.2017 (Finalisation v1.0)
+ *
  */
 public class Infrastructure_Evenement {
 
     private int id;
-    private int infrastrucutre; // REF Infrastrucutre(id)
-    private int evenement; // REF Evenement(id)
+    private int infrastrucutre;
+    private int evenement;
 
 
     public int getId() {

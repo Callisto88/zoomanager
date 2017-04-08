@@ -7,9 +7,20 @@ import java.util.HashMap;
 import com.mysql.jdbc.Statement;
 
 /**
- * Created by D.Hamel on 25.03.17.
+ *
+ * Cette classes contient les informations (URL, user, pass) d'accès à la base de données
+ * Elle permet d'initier une connexion avec cette dernière
+ *
+ *
+ * @author D.Hamel
+ * @author C.Balboni
+ *
+ * @version 1.0
+ *
+ * @date    28.03.2017 (Création)
+ * @date    31.04.2017 (Finalisation v1.0)
+ *
  */
-
 public class DBConnection {
 
     protected static Connection con;
@@ -32,6 +43,11 @@ public class DBConnection {
         }
     }
 
+    /**
+     * Classe qui fait la connexion à la base de données
+     *
+     * @return boolean
+     */
     private boolean connect() {
         try {
             Class.forName("com.mysql.jdbc.Driver");
