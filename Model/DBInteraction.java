@@ -40,8 +40,9 @@ public class DBInteraction {
             "FROM Personne;";
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
     private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, anneeNaissance, enclos, origine, deces) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String INSERT_FELIN = "INSERT INTO felin (id, poids) VALUES (?, ?);";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_FELIN = "INSERT INTO Felin (id, poids) VALUES (?, ?);";
+    private static final String INSERT_REPTILE = "INSERT INTO Reptile (id, temperature) VALUES (?, ?);";
 
 
     private DBConnection db;
@@ -294,6 +295,19 @@ public class DBInteraction {
         }
     }
 
+    private void insReptile(Reptile r) throws SQLException {
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_REPTILE);
+
+        try {
+            this.stmt.setInt(1, r.getId());
+            this.stmt.setFloat(2, r.getTemperature());
+            this.stmt.execute();
+        } catch (SQLException sqlE) {
+            throw sqlE;     // Exception propagée à l'appelant
+        }
+    }
+
     public void insAnimal(Animal a) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
@@ -314,7 +328,6 @@ public class DBInteraction {
 
         // En premier lieu, on enregistre l'animal dans la DB
         try {
-
             System.out.println(this.stmt.toString());
 
             this.stmt.execute();
@@ -330,6 +343,13 @@ public class DBInteraction {
         if (a instanceof Felin) {
             try {
                 this.insFelin((Felin) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
+        if (a instanceof Reptile) {
+            try {
+                this.insReptile((Reptile) a);
             } catch (SQLException sqlE) {
                 throw sqlE;
             }

@@ -1,19 +1,39 @@
 package Model;
 
-/**
- * Created by D.Hamel on 25.03.17.
- */
-
+import java.util.Date;
 
 public class Reptile extends Animal {
 
-    private double temperature;
+    /*
+     *  MEMBRES PRIVES
+     */
+    private float temperature;
 
-    public double getTemperature() {
+    /*
+     *  CONSTRUCTEURS
+     */
+
+    // Par défaut
+    public Reptile() {
+    }
+
+    // Avec tous les attributs
+    public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, float temperature) {
+        super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        this.temperature = temperature;
+    }
+
+    /*
+     *  GETTERS
+     */
+    public float getTemperature() {
         return temperature;
     }
 
-    public void setTemperature(double temperature) {
+    /*
+     *  SETTERS
+     */
+    public void setTemperature(float temperature) {
         this.temperature = temperature;
     }
 }
