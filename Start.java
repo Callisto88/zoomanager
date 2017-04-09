@@ -63,10 +63,7 @@ public class Start {
         }
         */
 
-        /*
-         *  INSERTION D'UN FELIN
-         */
-        DBInteraction req = null;
+        /*DBInteraction req = null;
         try {
             req = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
@@ -79,27 +76,12 @@ public class Start {
         cal.set(Calendar.DAY_OF_MONTH, 1);
         Date dateNaissance = cal.getTime();
 
-        /*
         Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        */
-
-        /*
-         *  INSERTION D'UN REPTILE
-         */
-        Calendar cal2 = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2017);
-        cal.set(Calendar.MONTH, Calendar.NOVEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date dateNaissanceR = cal2.getTime();
-
-        Animal keshi = new Reptile("Keshi", "mâle", dateNaissanceR, 1, "Espagne", "Méditéranéen", null, 28.3f);
-
-
+        }*/
 
         System.out.println("\n_> Programme terminé ... \n");
     }
