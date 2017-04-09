@@ -41,11 +41,14 @@ public class StaffController {
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
     public void addView() {
+        addController = new AddStaffController();
+        /*
         if (addController == null) {
             addController = new AddStaffController();
         } else {
             addController.revalidateView();
         }
+        */
     }
 
     /**
@@ -53,5 +56,12 @@ public class StaffController {
      */
     public void assignTaskView() {
 
+    }
+
+    /**
+     * Méthode pour instancier la fenêtre de modification d'une personne
+     */
+    public void modifyView(){
+        modifyController = new ModifyStaffController();
     }
 }

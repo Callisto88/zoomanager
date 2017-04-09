@@ -7,12 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import View.*;
 
 /**
  * Created by Andre on 17.03.2017.
  * Fenêtre principale pour l'ajout de personnel
  */
-public class AddStaff extends JPanel {
+public class AddStaff extends GenericWindow {
     AddStaffInputError inputError = null;
     ErrorController error = null;
     private AddStaffController controller;
@@ -33,20 +34,30 @@ public class AddStaff extends JPanel {
      * @param apc controlleur de la fenêtre pour permettre de lui remonter les information utiles.
      */
     public AddStaff(AddStaffController apc) {
+        super("Ajout");
         controller = apc;
 
-        setLayout(new BorderLayout());
+        //setLayout(new BorderLayout());
         AddStaffLabel label = new AddStaffLabel();
-        this.add(label, BorderLayout.WEST);
+        jpMainPanel.add(label,0);
+        //this.add(label, BorderLayout.WEST);
 
         input = new AddStaffInput();
-        this.add(input, BorderLayout.CENTER);
+        jpMainPanel.add(input, 1);
+        //this.add(input, BorderLayout.CENTER);
 
         JButton add = new JButton("Ajouter");
-        this.add(add, BorderLayout.SOUTH);
+        jpMainPanel.add(add,2);
+        //this.add(add, BorderLayout.SOUTH);
 
         inputError = new AddStaffInputError();
-        this.add(inputError, BorderLayout.EAST);
+        jpMainPanel.add(inputError, 3);
+        //this.add(inputError, BorderLayout.EAST);
+        jpMainPanel.add(new JLabel("Test"));
+        jpMainPanel.revalidate();
+        jpMainPanel.setVisible(true);
+
+
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
         add.addActionListener(new ActionListener() {
