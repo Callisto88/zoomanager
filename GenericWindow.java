@@ -31,19 +31,20 @@ abstract class GenericWindow extends JPanel {
 
 
     protected JPanel jpMainPanel;
-    protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
+   // protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     Dimension dim;
 
-    static private int MIN_WIDTH = 1440;
-    static private int MIN_HEIGHT = 900;
+    static private int MIN_WIDTH = 1366;
+    static private int MIN_HEIGHT = 768;
 
     public GenericWindow(String windowTitle){
         this.windowTitle = windowTitle;
         jfFrame = new JFrame(getWindowTitle());
-        jfFrame.setLayout(new BorderLayout());
-        jpMainPanel = new JPanel(new GridBagLayout());
+        //jfFrame.setLayout(new BorderLayout());
+        jpMainPanel = new JPanel(new GridLayout());
+        jpMainPanel.setBackground(Color.RED);
         dim = Toolkit.getDefaultToolkit().getScreenSize();
-        jlErrorMessage.setForeground(Color.RED);
+        jlErrorMessage.setForeground(Color.BLUE);
 
         //gbcMainPanel.weighty = 1;
        //gbcMainPanel.anchor = PAGE_
@@ -74,7 +75,7 @@ abstract class GenericWindow extends JPanel {
     }
 
     protected void setButtonConfig(JButton jbButton){
-        jbButton.setMaximumSize(new Dimension(200, 30));
+        //jbButton.setMaximumSize(new Dimension(200, 30));
         jbButton.setPreferredSize(new Dimension(100, 30));
     }
 
@@ -99,7 +100,8 @@ abstract class GenericWindow extends JPanel {
     }
 
     public void configFrame(JFrame jfFrame, GenericWindow gw){
-        jfFrame.add(jpMainPanel,BorderLayout.NORTH);
+        //jfFrame.add(jpMainPanel,BorderLayout.CENTER);
+        jfFrame.add(jpMainPanel);
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
