@@ -1,4 +1,4 @@
-package View;
+package View.Stock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by MSilva1 on 07.04.2017.
  */
-public abstract class GenericWindow extends JPanel {
+abstract class GenericWindow extends JPanel {
     private String windowTitle;
     private JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
@@ -31,7 +31,7 @@ public abstract class GenericWindow extends JPanel {
 
 
     protected JPanel jpMainPanel;
-   // protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
+    protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     Dimension dim;
 
     static private int MIN_WIDTH = 1440;
@@ -40,9 +40,8 @@ public abstract class GenericWindow extends JPanel {
     public GenericWindow(String windowTitle){
         this.windowTitle = windowTitle;
         jfFrame = new JFrame(getWindowTitle());
-        //jfFrame.setLayout(new BorderLayout());
-        jpMainPanel = new JPanel(new GridLayout());
-        jpMainPanel.setBackground(Color.RED);
+        jfFrame.setLayout(new BorderLayout());
+        jpMainPanel = new JPanel(new GridBagLayout());
         dim = Toolkit.getDefaultToolkit().getScreenSize();
         jlErrorMessage.setForeground(Color.RED);
 
@@ -75,7 +74,7 @@ public abstract class GenericWindow extends JPanel {
     }
 
     protected void setButtonConfig(JButton jbButton){
-        //jbButton.setMaximumSize(new Dimension(200, 30));
+        jbButton.setMaximumSize(new Dimension(200, 30));
         jbButton.setPreferredSize(new Dimension(100, 30));
     }
 
@@ -100,8 +99,7 @@ public abstract class GenericWindow extends JPanel {
     }
 
     public void configFrame(JFrame jfFrame, GenericWindow gw){
-        //jfFrame.add(jpMainPanel,BorderLayout.CENTER);
-        jfFrame.add(jpMainPanel);
+        jfFrame.add(jpMainPanel,BorderLayout.NORTH);
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));

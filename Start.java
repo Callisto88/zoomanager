@@ -16,7 +16,7 @@ public class Start {
         }
 
         try {
-            String[][] data = query.selAllPreNomPersonne();
+            String[][] data = query.selAllFirstLastNameEmployee();
             for (String[] s : data) {
                 for (String s2 : s) {
                     System.out.print(s2 + " ");

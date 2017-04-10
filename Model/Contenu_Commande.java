@@ -24,7 +24,23 @@ public class Contenu_Commande {
 
     private int id;
     private String nom;
+    private double quantite;
     private int commande;
+
+    public Contenu_Commande(int id, String nom, double quantite, int commande) {
+        this.id = id;
+        this.nom = nom;
+        this.quantite = quantite;
+        this.commande = commande;
+    }
+
+    public double getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(double quantite) {
+        this.quantite = quantite;
+    }
 
     public int getId() {
         return id;

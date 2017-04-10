@@ -21,6 +21,7 @@ import java.util.Date;
  */
 public class Personne {
 
+    private int idPersonne;
     private int noAVS;
     private String prenom;
     private String nom;
@@ -43,8 +44,40 @@ public class Personne {
      * Constructeur avec tous les paramètre
      *
      */
-    public Personne(int noAVS, String prenom, String nom, int adresse, String email,
+    public Personne(int idPersonne, int noAVS, String prenom, String nom, int adresse, String email,
                     String telephone, java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut, String typeContrat) {
+        this.idPersonne = idPersonne;
+        this.noAVS = noAVS;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.email = email;
+        this.telephone = telephone;
+        this.dateNaissance = dateNaissance;
+        this.responsable = responsable;
+        this.statut = statut;
+        this.dateDebut = dateDebut;
+        this.typeContrat = typeContrat;
+    }
+
+    /**
+     * Constructeur avec unqiuement les noms prenoms
+     *
+     * @param noAVS
+     * @param prenom
+     * @param nom
+     * @param adresse
+     * @param email
+     * @param telephone
+     * @param dateNaissance
+     * @param responsable
+     * @param statut
+     * @param dateDebut
+     * @param typeContrat
+     */
+    public Personne(int noAVS, String prenom, String nom, int adresse, String email, String telephone,
+                    java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut,
+                    String typeContrat) {
         this.noAVS = noAVS;
         this.prenom = prenom;
         this.nom = nom;
@@ -66,6 +99,14 @@ public class Personne {
     public Personne(String prenom, String nom) {
         this.prenom = prenom;
         this.nom = nom;
+    }
+
+    public int getIdPersonne() {
+        return idPersonne;
+    }
+
+    public void setIdPersonne(int idPersonne) {
+        this.idPersonne = idPersonne;
     }
 
     public String toString() {
