@@ -46,8 +46,6 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.insets = new Insets(15,15,15,15);
         jpLeft.add(jpLeftTest,gbcLeft);
 
-        jpRight.add(jlLowStock, BorderLayout.NORTH);
-
         JLabel test = new JLabel("Essai");
         jpRight.add(test, BorderLayout.WEST);
 

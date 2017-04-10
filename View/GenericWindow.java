@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by MSilva1 on 07.04.2017.
  */
-abstract class GenericWindow extends JPanel {
+public abstract class GenericWindow extends JPanel {
     private String windowTitle;
     private JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
