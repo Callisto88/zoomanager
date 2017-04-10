@@ -99,13 +99,14 @@ public abstract class GenericWindow extends JPanel{
         jlLabel.setFont(fErrorMessageFont);
     }
 
+    // permet d'afficher la fenêtre général
     public void configFrame(JFrame jfFrame, GenericWindow gw){
         //jfFrame.add(jpMainPanel,BorderLayout.CENTER);
         jfFrame.add(jpMainPanel);
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-        jfFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jfFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         //jfFrame.getContentPane().add(gw);
         jfFrame.pack();
         jfFrame.setVisible(true);

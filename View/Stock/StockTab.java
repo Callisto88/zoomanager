@@ -124,8 +124,6 @@ public class StockTab extends GenericWindow {
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 20;
 
-
-
         /*
         JScrollBar jsbStock = new JScrollBar();
         JScrollPane jspStock = new JScrollPane();

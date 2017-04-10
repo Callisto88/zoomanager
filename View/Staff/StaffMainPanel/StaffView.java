@@ -22,7 +22,7 @@ import java.awt.event.ActionListener;
 //        this.controller = controller;
 //    }
 //}
-public class StaffView extends JPanel {
+public class StaffView extends GenericWindow {
     private StaffController controller = null;
 
     /**
@@ -31,8 +31,9 @@ public class StaffView extends JPanel {
      * @param persControl Controlleur de la fenêtre pour permettre de lui faire remonter les informations utiles.
      */
     public StaffView(StaffController persControl) {
-
+        super("Personnel");
         controller = persControl;
+
         this.setLayout(new BorderLayout());
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 10));

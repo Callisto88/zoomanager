@@ -48,7 +48,8 @@ public class AddStaffController {
      * Méthode permettant de réafficher la fenêtre
      */
     public void revalidateView() {
-        addPanel.setVisible(true);
+        //addPanel.setVisible(true);
+        add.setVisible(true);
     }
 
     /**

@@ -9,5 +9,6 @@ public class Control {
         String windowTitle = "Zoo Manager";
         ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
         StockTab tab = new StockTab();
+
     }
 }

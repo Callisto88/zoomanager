@@ -37,27 +37,46 @@ public class AddStaff extends GenericWindow {
         super("Ajout");
         controller = apc;
 
-        //setLayout(new BorderLayout());
+        /*JPanel jpButtonStock = new JPanel();
+        jpButtonStock.setBackground(Color.cyan);
+        jpLeft.add(jpButtonStock, gbcLeft);*/
+
+        /*JButton jbPrint = new JButton("Imprimer");
+        setButtonConfig(jbPrint);
+        JButton jbCreateListOrder = new JButton("Liste minimum requis");
+        setButtonConfig(jbCreateListOrder);
+        JButton jbAllOrderHistory = new JButton("Historique Commande");
+        setButtonConfig(jbAllOrderHistory);
+        JButton jbReset = new JButton("Effacer");
+        setButtonConfig(jbReset);
+        JButton jbLeave = new JButton("Quit");
+        setButtonConfig(jbLeave);
+        */
+
+        GridBagLayout gblStockBoutton = new GridBagLayout();
+        //jpButtonStock.setLayout(gblStockBoutton);
+        GridBagConstraints gbcStockBouton = new GridBagConstraints();
+
+        setLayout(new BorderLayout());
         AddStaffLabel label = new AddStaffLabel();
-        jpMainPanel.add(label,0);
+        jpMainPanel.add(label);
         //this.add(label, BorderLayout.WEST);
 
         input = new AddStaffInput();
-        jpMainPanel.add(input, 1);
+        jpMainPanel.add(input);
         //this.add(input, BorderLayout.CENTER);
 
-        JButton add = new JButton("Ajouter");
-        jpMainPanel.add(add,2);
-        //this.add(add, BorderLayout.SOUTH);
-
         inputError = new AddStaffInputError();
-        jpMainPanel.add(inputError, 3);
+        jpMainPanel.add(inputError);
         //this.add(inputError, BorderLayout.EAST);
-        jpMainPanel.add(new JLabel("Test"));
-        jpMainPanel.revalidate();
-        jpMainPanel.setVisible(true);
+        //jpMainPanel.add(new JLabel("Test"));
+        //jpMainPanel.revalidate();
+        //jpMainPanel.setVisible(true);
 
-
+        JButton add = new JButton("Ajouter");
+        setButtonConfig(add);
+        jpMainPanel.add(add);
+        //this.add(add, BorderLayout.SOUTH);
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
         add.addActionListener(new ActionListener() {
@@ -96,6 +115,7 @@ public class AddStaff extends GenericWindow {
                 }*/
             }
         });
+        configFrame(getJfFrame(), this);
     }
 
     public void setFirstNameError(String error) {
