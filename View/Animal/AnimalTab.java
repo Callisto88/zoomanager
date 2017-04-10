@@ -134,7 +134,15 @@ public class AnimalTab extends GenericWindow {
         jpTableAnimal.setBackground(Color.ORANGE);
         jpTableAnimal.setPreferredSize(new Dimension(800, 800));
         //jpTableStock.setMinimumSize(new Dimension(400,800));
-        JTable jtTable = new JTable(data, columnName);
+        JTable jtTable = new JTable(data, columnName){
+            /*détection automatique des types de données
+             *de toutes les colonnes
+             */
+            public Class getColumnClass(int column)
+            {
+                return getValueAt(0, column).getClass();
+            }
+        };
         Dimension d = jtTable.getPreferredScrollableViewportSize();
 
         d.width = jtTable.getPreferredSize().width;
