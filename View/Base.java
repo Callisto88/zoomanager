@@ -52,9 +52,6 @@ public class Base extends GenericWindow{
         gbcLeft.insets = new Insets(15, 15, 15, 15);
         jpLeft.add(jpLeftTest, gbcLeft);
 
-        JLabel test = new JLabel("test");
-        jpRight.add(test, BorderLayout.WEST);
-
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 1;
 
@@ -100,7 +97,7 @@ public class Base extends GenericWindow{
                 {"John", "Doe",
                         "Rowing", new Integer(3), new Boolean(true)},
         };
-
+/*
         JPanel jpTableStock = new JPanel();
         jpTableStock.setBackground(Color.ORANGE);
         jpTableStock.setPreferredSize(new Dimension(800, 800));
@@ -117,7 +114,7 @@ public class Base extends GenericWindow{
 
         jpTableStock.add(jspStock);
         jpLeft.add(jpTableStock, gbcLeft);
-
+*/
         configFrame(getJfFrame(), this);
     }
 }
