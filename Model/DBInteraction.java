@@ -1,13 +1,7 @@
 package Model;
 
-import sun.tools.java.Type;
-
-import javax.swing.plaf.nimbus.State;
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
-import static java.sql.Types.NULL;
 
 /**
  *
@@ -70,8 +64,10 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String INSERT_FELIN = "INSERT INTO Felin (id, poids) VALUES (?, ?);";
-    private static final String INSERT_REPTILE = "INSERT INTO Reptile (id, temperature) VALUES (?, ?);";
+    private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
+    private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
+    private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
+    private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
     // Récupérer uniquement ces 5 paramètre de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
@@ -109,9 +105,7 @@ public class DBInteraction {
             " FROM Contenu_Commande " +
             " WHERE commande = ?;";
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
-    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT id, date " +
-            " FROM Commande " +
-            " WHERE date BETWEEN ? AND ? ;";
+    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
     // Récupérer le contenu d'une commande en fonction de son ID
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT nom quantite " +
             " FROM Contenu_Commande " +
@@ -141,7 +135,7 @@ public class DBInteraction {
      * @return Personne
      */
     public void updatePersonne (Personne personne) throws SQLException {
-        this.stmt = db.con.prepareStatement(UPDATE_PERSONNE);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_PERSONNE);
 
         this.stmt.setString(1, personne.getPrenom());
         this.stmt.setString(2, personne.getNom());
@@ -419,6 +413,31 @@ public class DBInteraction {
         }
     }
 
+    private void insOiseau(Oiseau o) throws SQLException {
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_OISEAU);
+
+        try {
+            this.stmt.setInt(1, o.getId());
+            this.stmt.setDouble(2, o.getEnvergure());
+            this.stmt.setString(3, o.getBague());
+        } catch (SQLException sqlE) {
+            throw sqlE;
+        }
+    }
+
+    private void insPrimate(Primate o) throws SQLException {
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_PRIMATE);
+
+        try {
+            this.stmt.setInt(1, o.getId());
+            this.stmt.setDouble(2, o.getTemperature());
+        } catch (SQLException sqlE) {
+            throw sqlE;
+        }
+    }
+
     public void insAnimal(Animal a) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
@@ -443,7 +462,7 @@ public class DBInteraction {
 
             this.stmt.execute();
             ResultSet rs = this.stmt.getGeneratedKeys();
-            if (rs.next()) {
+            if (rs.next()) {    // On récupère l'ID de l'animal inséré
                 int newAnimalID = rs.getInt(1);
                 a.setId(newAnimalID);
             }
@@ -461,6 +480,20 @@ public class DBInteraction {
         if (a instanceof Reptile) {
             try {
                 this.insReptile((Reptile) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
+        if (a instanceof Oiseau) {
+            try {
+                this.insOiseau((Oiseau) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
+        if (a instanceof Primate) {
+            try {
+                this.insPrimate((Primate) a);
             } catch (SQLException sqlE) {
                 throw sqlE;
             }
