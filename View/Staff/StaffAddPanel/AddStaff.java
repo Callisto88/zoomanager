@@ -42,7 +42,7 @@ public class AddStaff extends JPanel {
         input = new AddStaffInput();
         this.add(input, BorderLayout.CENTER);
 
-        JButton add = new JButton("Ajouter");
+        JButton add = new JButton("Test");
         this.add(add, BorderLayout.SOUTH);
 
         inputError = new AddStaffInputError();
