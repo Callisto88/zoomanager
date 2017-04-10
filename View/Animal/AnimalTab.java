@@ -111,29 +111,23 @@ public class AnimalTab extends GenericWindow {
         String[] columnName = {"Nom", "Race", "Sexe", "Âge", "boutons modification, détails"};
 
         Object[][] data = {
-                {"Kathy", "Lapin", new Integer(1), new Integer(5), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") }
+                {"Kathy", "Lapin", 1, 5, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") }
         };
 
         JPanel jpTableAnimal = new JPanel();
