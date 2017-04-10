@@ -97,6 +97,23 @@ public class Base extends GenericWindow{
                 {"John", "Doe",
                         "Rowing", new Integer(3), new Boolean(true)},
         };
+
+        JTable jtTable = new JTable(data, columnName);
+
+        JScrollPane jspStock = new JScrollPane(jtTable);
+
+        Dimension d = jtTable.getPreferredScrollableViewportSize();
+/*
+        d.width = jtTable.getPreferredSize().width;
+
+        jtTable.setPreferredScrollableViewportSize(d);
+        JScrollPane jspStock = new JScrollPane(jtTable);
+        jspStock.setPreferredSize(new Dimension(700, 700));
+
+        JPanel jpTableStock = new JPanel();
+        jpTableStock.add(jspStock);
+        jpLeft.add(jpTableStock, gbcLeft);
+        */
 /*
         JPanel jpTableStock = new JPanel();
         jpTableStock.setBackground(Color.ORANGE);
