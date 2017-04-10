@@ -4,7 +4,7 @@ import java.util.Date;
 
 /**
  * Cette classe contient la conception de la table Primate de la base de données
- * <p>
+ *
  * Elle contient uniquement les Setters, Getters et Constructeurs.
  *
  * @author D.Hamel
