@@ -619,6 +619,34 @@ public class DBInteraction {
 
     }
 
+
+    /**
+     * Permet d'assigner plusieurs événements à une personne
+     *
+     * @param evenements(ArrayList<Evenement>)
+     * @param employe(Personne)
+     *
+     * @return void
+     */
+    public void assignEvenementEmploye (ArrayList<Evenement> evenements, Personne employe) throws SQLException {
+        if (evenements.size() > 0) {
+            int numAVS_employe = employe.getNoAVS();
+
+            for (int i = 0; i > evenements.size(); i++) {
+
+                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+
+                this.stmt.setNull(1, Types.NULL);
+                this.stmt.setInt(2, numAVS_employe);
+                this.stmt.setInt(3, evenements.get(i).getId());
+
+                this.stmt.executeUpdate();
+            }
+        }
+
+    }
+
+
     /**
      * Permet d'assigner un événement à plusieurs personnes
      *

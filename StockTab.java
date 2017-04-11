@@ -1,5 +1,3 @@
-import View.GenericWindow;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -56,7 +54,7 @@ public class StockTab extends GenericWindow {
         jpButtonStock.setLayout(gblStockBoutton);
         GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-        // gbcStockBouton.fill = GridBagConstraints.NORTH;
+       // gbcStockBouton.fill = GridBagConstraints.NORTH;
         //gbcStockBouton.anchor = GridBagConstraints.HORIZONTAL;
         gbcStockBouton.insets = new Insets(0,15,0,15);
         gbcStockBouton.gridx = 0;
