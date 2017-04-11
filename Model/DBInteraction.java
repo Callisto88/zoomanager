@@ -1,11 +1,7 @@
 package Model;
 
-import javax.swing.plaf.nimbus.State;
-import javax.xml.transform.Result;
 import java.sql.*;
-import java.sql.Date;
 import java.util.*;
-import static java.sql.Types.NULL;
 
 /**
  *
@@ -34,37 +30,57 @@ public class DBInteraction {
     /**
      * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
      */
-
-    // Recupère tous les paramètre d'une personne
-    // 12 Paramètres
-    private static final String SEL_ALL_PERSONNE = "SELECT * " +
-            "FROM Personne;";
-    // 12 Paramètres Dans l'ordre ci-dessous :
-    // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
-    // idResponsable / statut / salaire / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (?, ? , ? , ? , ? , ? , ? , ? , ? ," +
-            " ? , ? , ? ); ";
+    // -----------------------------------------------------------------------------------------------------------------
+    // PERSONNE :
+    private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
+    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
+    private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
+            "FROM Personne " +
+            "WHERE Personne.nom = ? " +
+            " AND Personne.prenom = ? ;";
     // Recupère tous les paramètre des personnne répondant à la requête.
     // 12 Paramètres
     private static final String SEL_EMPLOYE_PAR_NOM = "SELECT * " +
             "FROM Personne " +
             "WHERE Personne.nom = ? ;";
-    private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
-            "FROM Personne " +
-            "WHERE Personne.nom = ? " +
-            " AND Personne.prenom = ? ;";
-    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom " +
-            "FROM Race;";
-    private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne " +
+    // 12 Paramètres Dans l'ordre ci-dessous :
+    // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
+    // idResponsable / statut / salaire / dateDebut	TypeContrat /
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (null, ?, ? , ? , ? , ? , ? , ? , ? , ? ," +
+            " ? , ? , ? ); ";
+    // Recupère tous les paramètre d'une personne
+    // 12 Paramètres
+    private static final String SEL_ALL_PERSONNE = "SELECT * " +
             "FROM Personne;";
-    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
-    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
+    // Permet de modifier les informations relatives à une Personne
+    private static final String UPDATE_PERSONNE = "UPDATE Personne " +
+            "SET prenom = ?, " +
+            "nom = ?, " +
+            "adresse = ?, " +
+            "email = ?, " +
+            "telephone = ?, " +
+            "responsable = ? " +
+            "WHERE idPersonne = ?;";
+    // -----------------------------------------------------------------------------------------------------------------
+    // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
-    private static final String INSERT_FELIN = "INSERT INTO Felin (id, poids) VALUES (?, ?);";
-    private static final String INSERT_REPTILE = "INSERT INTO Reptile (id, temperature) VALUES (?, ?);";
-
-
-
+    private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
+    private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
+    private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
+    private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
+    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
+    // Récupérer uniquement ces 5 paramètre de l'animal
+    private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
+            "FROM Animal;";
+    // Récupérer tous les paramètre d'un animal
+    private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
+    // -----------------------------------------------------------------------------------------------------------------
+    // EVENEMENT :
+    // Liste de tous les événements qui n'ont pas de personne attribué
+    private static final String SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE = "SELECT * " +
+            "FROM Evenement " +
+            "WHERE (id) NOT IN " +
+            "(SELECT evenement FROM Personne_Evenement);";
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
     // Insertion d'un événement dans la DB
     private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (?, ?, ?, ?);";
@@ -76,17 +92,32 @@ public class DBInteraction {
     private static final String ASSIGNER_EVENEMENT_INTERVENANT = "SELECT * FROM Intervenant_Evenement VALUES (?, ?, ?);";
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
-
-    // Récupérer uniquement ces 5 paramètre de l'animal
-    private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
-            "FROM Animal;";
-
-    // Récupérer tous les paramètre d'un animal
-    private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
+    // Selectionner le type d'un événement en fonction de son ID
+    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
+    // -----------------------------------------------------------------------------------------------------------------
+    // STOCK :
+    // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
+    private static final String SEL_ALL_STOCK = "SELECT * FROM Stock;";
+    // Récupérer toutes les commandes qui ont été faites (Date et ID)
+    private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
+    // Récupérer le contenu d'une commande :
+    private static final String SEL_ALL_CONTENU_COMMAND_PAR_ID = "SELECT nom, quantite " +
+            " FROM Contenu_Commande " +
+            " WHERE commande = ?;";
+    // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
+    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
+    // Récupérer le contenu d'une commande en fonction de son ID
+    private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT nom quantite " +
+            " FROM Contenu_Commande " +
+            " WHERE commande = ? ;";
+    // -----------------------------------------------------------------------------------------------------------------
+    // PARAMETRE DE LA CLASSE :
 
     private DBConnection db;
     private PreparedStatement stmt;
 
+    // -----------------------------------------------------------------------------------------------------------------
+    // CONSTRUCTEUR :
     public DBInteraction() throws ExceptionDataBase {
         this.db = new DBConnection();
         this.db.init();
@@ -96,6 +127,26 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des PERSONNE dans la DB
+
+    /**
+     * Permet de modifier les informations d'un employé
+     * Seuls 6 paramètres sont modifiables : prénom / nom / adresse / email / telephone / responsable
+     *
+     * @return Personne
+     */
+    public void updatePersonne (Personne personne) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_PERSONNE);
+
+        this.stmt.setString(1, personne.getPrenom());
+        this.stmt.setString(2, personne.getNom());
+        this.stmt.setInt(3, personne.getAdresse());
+        this.stmt.setString(4, personne.getEmail());
+        this.stmt.setString(5, personne.getTelephone());
+        this.stmt.setInt(6, personne.getResponsable());
+        this.stmt.setInt(7, personne.getIdPersonne());
+
+        this.stmt.executeUpdate();
+    }
 
     /**
      * Permet de selectionner un évenement en fonction de son ID
@@ -119,7 +170,7 @@ public class DBInteraction {
      *
      * @return String[][] / Prénom en première position
      */
-    public String[][] selAllPreNomPersonne() throws ExceptionDataBase, SQLException {
+    public String[][] selAllFirstLastNameEmployee() throws ExceptionDataBase, SQLException {
         ArrayList<Personne> personne = this.recupererPersonne(SEL_ALL_PERSONNE);
         int nbPersonne = personne.size();
         int nbParametre = 2; // nom + prenom
@@ -197,7 +248,7 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insPersonne(int noAVS, String prenom, String nom, String adresse, String email,
+    public void insertPersonne(int noAVS, String prenom, String nom, String adresse, String email,
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
                             double salaire, java.sql.Date dateDebut, String typeContrat)
             throws ExceptionDataBase, SQLException {
@@ -221,7 +272,7 @@ public class DBInteraction {
      *
      * @param personne(Personne)
      */
-    public void insPersonne(Personne personne) throws ExceptionDataBase, SQLException {
+    public void insertPersonne(Personne personne) throws ExceptionDataBase, SQLException {
         this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setInt(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
@@ -266,12 +317,12 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Personne(rs.getInt("noAVS"), rs.getString("prenom"),
-                        rs.getString("nom"), rs.getInt("adresse"),
-                        rs.getString("email"), rs.getString("telephone"),
-                        rs.getDate("dateNaissance"), rs.getInt("responsable"),
-                        rs.getString("statut"), rs.getDate("dateDebut"),
-                        rs.getString("typeContrat")));
+                data.add(new Personne(rs.getInt("idPersonne") , rs.getInt("noAVS"),
+                        rs.getString("prenom"), rs.getString("nom"),
+                        rs.getInt("adresse"), rs.getString("email"),
+                        rs.getString("telephone"), rs.getDate("dateNaissance"),
+                        rs.getInt("responsable"), rs.getString("statut"),
+                        rs.getDate("dateDebut"), rs.getString("typeContrat")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -362,6 +413,31 @@ public class DBInteraction {
         }
     }
 
+    private void insOiseau(Oiseau o) throws SQLException {
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_OISEAU);
+
+        try {
+            this.stmt.setInt(1, o.getId());
+            this.stmt.setDouble(2, o.getEnvergure());
+            this.stmt.setString(3, o.getBague());
+        } catch (SQLException sqlE) {
+            throw sqlE;
+        }
+    }
+
+    private void insPrimate(Primate o) throws SQLException {
+        this.stmt = null;
+        this.stmt = this.db.con.prepareStatement(INSERT_PRIMATE);
+
+        try {
+            this.stmt.setInt(1, o.getId());
+            this.stmt.setDouble(2, o.getTemperature());
+        } catch (SQLException sqlE) {
+            throw sqlE;
+        }
+    }
+
     public void insAnimal(Animal a) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
@@ -386,7 +462,7 @@ public class DBInteraction {
 
             this.stmt.execute();
             ResultSet rs = this.stmt.getGeneratedKeys();
-            if (rs.next()) {
+            if (rs.next()) {    // On récupère l'ID de l'animal inséré
                 int newAnimalID = rs.getInt(1);
                 a.setId(newAnimalID);
             }
@@ -408,12 +484,38 @@ public class DBInteraction {
                 throw sqlE;
             }
         }
+        if (a instanceof Oiseau) {
+            try {
+                this.insOiseau((Oiseau) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
+        if (a instanceof Primate) {
+            try {
+                this.insPrimate((Primate) a);
+            } catch (SQLException sqlE) {
+                throw sqlE;
+            }
+        }
     }
 
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
+
+    /**
+     * Permet de récupérer tous les événements qui n'ont aucune personne assignée à ce dernier
+     *
+     * @return ArrayList<Evenement>
+     */
+    public ArrayList<Evenement> getAllUnassignedTaskEmployee() throws ExceptionDataBase, SQLException {
+        this.stmt = db.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauEvenement(rs);
+    }
 
     /**
      * Permet de selectionner un évenement en fonction de son ID
@@ -706,12 +808,138 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion STOCK  dans la DB
 
+    /**
+     * Permet de récupérer l'entierté du stock avec tous ses paramètres
+     *
+     * @return ArrayList<Stock>
+     */
+    public ArrayList<Stock> selAllStock () throws SQLException, ExceptionDataBase {
+        ArrayList<Stock> data = new ArrayList<Stock>();
+        this.stmt = db.con.prepareStatement(SEL_ALL_STOCK);
+
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabStock(rs);
+    }
 
 
+    /**
+     * Permet de récupérer l'entierté des Commandes avec tous ses paramètres
+     *
+     * @return ArrayList<Commande>
+     */
+    public ArrayList<Commande> selAllCommande () throws SQLException, ExceptionDataBase {
+        ArrayList<Commande> data = new ArrayList<Commande>();
+        this.stmt = db.con.prepareStatement(SEL_ALL_COMMANDE);
 
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabCommande(rs);
+    }
+
+    /**
+     * Permet de récupérer les commandes qui ont été faites entre deux dates passées en paramètre
+     *
+     * @param   dateDebut(java.sql.Date)
+     * @param   dateFin(java.sql.Date)
+     *
+     * @return ArrayList<Commande>
+     */
+    public ArrayList<Commande> selAllCommandeParDate (java.sql.Date dateDebut, java.sql.Date dateFin)
+            throws SQLException, ExceptionDataBase {
+        ArrayList<Commande> data = new ArrayList<Commande>();
+        this.stmt = db.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
+
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabCommande(rs);
+    }
+
+    /**
+     * Permet de récupérer le contenu d'une commande en fonction de son id passé en paramètre
+     *
+     * @param   id_commande(int)
+     *
+     * @return ArrayList<Commande>
+     */
+    public ArrayList<Contenu_Commande> selAllContenuCommandeParID (int id_commande) throws SQLException, ExceptionDataBase {
+        ArrayList<Contenu_Commande> data = new ArrayList<Contenu_Commande>();
+        this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
+
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabContenuCommande(rs);
+    }
+
+    /**
+     * Permet de créer une ArrayList de Stock à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Stock>
+     */
+    private ArrayList<Stock> createTabStock (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Stock> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Le stock est vide.");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Stock(rs.getString("nom"), rs.getDouble("quantite"),
+                        rs.getDouble("quantiteMin"), rs.getString("unite")));
+            }
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+
+        return data;
+    }
+
+    /**
+     * Permet de créer une ArrayList de Commande à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Commande>
+     */
+    private ArrayList<Commande> createTabCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Commande> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Le stock est vide.");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Commande(rs.getInt("id"), rs.getDate("date")));
+            }
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+
+        return data;
+    }
+
+    /**
+     * Permet de créer une ArrayList de Contenu_Commande à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Contenu_Commande>
+     */
+    private ArrayList<Contenu_Commande> createTabContenuCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Contenu_Commande> data = new ArrayList<Contenu_Commande>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun produit n'est contenu dans la commande avec cet ID");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Contenu_Commande(rs.getInt("id"), rs.getString("nom"),
+                        rs.getDouble("quantite"), rs.getInt("commande")));
+            }
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+
+        return data;
+    }
 
 }
-
-
-
-

@@ -1,6 +1,7 @@
 package View.Staff.StaffMainPanel;
 
 import Controller.Staff.StaffController;
+import Model.Personne;
 import View.GenericWindow;
 
 import javax.management.Query;
@@ -97,7 +98,11 @@ public class StaffView extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("modification personnel");
-                controller.modifyView();
+                Personne personne = new Personne();
+                personne.setNom("paul");
+                personne.setPrenom("marcel");
+                personne.setNoAVS(1234567890);
+                controller.modifyView(personne);
             }
         });
 

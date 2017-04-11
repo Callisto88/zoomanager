@@ -1,6 +1,7 @@
 package Controller.Staff;
 
 import Controller.ManagerDashboardController;
+import Model.Personne;
 import View.Staff.StaffMainPanel.StaffView;
 
 import javax.swing.*;
@@ -61,7 +62,7 @@ public class StaffController {
     /**
      * Méthode pour instancier la fenêtre de modification d'une personne
      */
-    public void modifyView(){
-        modifyController = new ModifyStaffController();
+    public void modifyView(Personne personne){
+        modifyController = new ModifyStaffController(personne);
     }
 }

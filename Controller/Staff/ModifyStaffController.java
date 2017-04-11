@@ -1,5 +1,6 @@
 package Controller.Staff;
 
+import Model.Personne;
 import View.Staff.StaffModifyPanel.StaffModifyPanel;
 
 /**
@@ -11,8 +12,8 @@ public class ModifyStaffController {
     /**
      * Constructeur du controlleur
      */
-    public ModifyStaffController() {
-        StaffModifyPanel smp = new StaffModifyPanel();
+    public ModifyStaffController(Personne personne) {
+        StaffModifyPanel smp = new StaffModifyPanel(personne);
     }
 
     /**

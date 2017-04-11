@@ -16,7 +16,7 @@ public class Start {
         }
 
         try {
-            String[][] data = query.selAllPreNomPersonne();
+            String[][] data = query.selAllFirstLastNameEmployee();
             for (String[] s : data) {
                 for (String s2 : s) {
                     System.out.print(s2 + " ");
@@ -63,7 +63,10 @@ public class Start {
         }
         */
 
-        /*DBInteraction req = null;
+        /*
+         *  INSERTION D'UN FELIN
+         */
+        DBInteraction req = null;
         try {
             req = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
@@ -81,7 +84,37 @@ public class Start {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
+
+        /*
+         *  INSERTION D'UN REPTILE
+         */
+        Calendar cal2 = Calendar.getInstance();
+        cal.set(Calendar.YEAR, 2017);
+        cal.set(Calendar.MONTH, Calendar.NOVEMBER);
+        cal.set(Calendar.DAY_OF_MONTH, 1);
+        Date dateNaissanceR = cal2.getTime();
+
+        Animal keshi = new Reptile("Keshi", "mâle", dateNaissanceR, 1, "Espagne", "Méditéranéen", null, 28.3f);
+
+        try {
+            req.insAnimal(keshi);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        /*
+         *  INSERTION D'UN OISEAU
+         */
+        Animal ernest = new Oiseau(12.50, "7612345092");
+        Oiseau serena = new Oiseau(5.60, "1983273990");
+
+        try {
+            req.insAnimal(serena);
+            req.insAnimal(ernest);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("\n_> Programme terminé ... \n");
     }

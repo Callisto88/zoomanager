@@ -1,5 +1,6 @@
 package View.Animal;
 
+import View.*;
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -44,8 +45,6 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.gridy = 0;
         gbcLeft.insets = new Insets(15,15,15,15);
         jpLeft.add(jpLeftTest,gbcLeft);
-
-        jpRight.add(jlLowStock, BorderLayout.NORTH);
 
         JLabel test = new JLabel("Essai");
         jpRight.add(test, BorderLayout.WEST);
@@ -111,36 +110,38 @@ public class AnimalTab extends GenericWindow {
         String[] columnName = {"Nom", "Race", "Sexe", "Âge", "boutons modification, détails"};
 
         Object[][] data = {
-                {"Kathy", "Lapin", new Integer(1), new Integer(5), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") },
-                {"John", "Doe", new Integer(0), new Integer(3), new ImageIcon("loupe.jpg") }
+                {"Kathy", "Lapin", 1, 5, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
+                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") }
         };
 
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setBackground(Color.ORANGE);
         jpTableAnimal.setPreferredSize(new Dimension(800, 800));
         //jpTableStock.setMinimumSize(new Dimension(400,800));
-        JTable jtTable = new JTable(data, columnName);
+        JTable jtTable = new JTable(data, columnName){
+            /*détection automatique des types de données
+             *de toutes les colonnes
+             */
+            public Class getColumnClass(int column)
+            {
+                return getValueAt(0, column).getClass();
+            }
+        };
         Dimension d = jtTable.getPreferredScrollableViewportSize();
 
         d.width = jtTable.getPreferredSize().width;
