@@ -1,6 +1,8 @@
 package View.Staff.StaffMainPanel;
 
 import Controller.Staff.StaffController;
+import Model.Personne;
+import View.GenericWindow;
 
 import javax.management.Query;
 import javax.swing.*;
@@ -12,7 +14,16 @@ import java.awt.event.ActionListener;
  * Created by Andre on 10.03.2017.
  * Fenêtre principale pour les employée
  */
-public class StaffView extends JPanel {
+
+//public class StaffView extends GenericWindow{
+//    StaffController controller = null;
+//
+//    public StaffView(StaffController controller){
+//        super("Staff");
+//        this.controller = controller;
+//    }
+//}
+public class StaffView extends GenericWindow {
     private StaffController controller = null;
 
     /**
@@ -21,8 +32,9 @@ public class StaffView extends JPanel {
      * @param persControl Controlleur de la fenêtre pour permettre de lui faire remonter les informations utiles.
      */
     public StaffView(StaffController persControl) {
-
+        super("Personnel");
         controller = persControl;
+
         this.setLayout(new BorderLayout());
 
         JPanel top = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 10));
@@ -86,6 +98,11 @@ public class StaffView extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("modification personnel");
+                Personne personne = new Personne();
+                personne.setNom("paul");
+                personne.setPrenom("marcel");
+                personne.setNoAVS(1234567890);
+                controller.modifyView(personne);
             }
         });
 

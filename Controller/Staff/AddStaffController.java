@@ -35,19 +35,15 @@ public class AddStaffController {
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
      */
     public AddStaffController() {
-        addPanel = new JFrame("Ajout de Staff");
-        addPanel.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         add = new AddStaff(this);
-        addPanel.getContentPane().add(add, BorderLayout.CENTER);
-        addPanel.setSize(500, 500);
-        addPanel.setVisible(true);
+        add.setVisible(true);
     }
 
     /**
      * Méthode permettant de réafficher la fenêtre
      */
     public void revalidateView() {
-        addPanel.setVisible(true);
+        add.setVisible(true);
     }
 
     /**

@@ -7,12 +7,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import View.*;
 
 /**
  * Created by Andre on 17.03.2017.
  * Fenêtre principale pour l'ajout de personnel
  */
-public class AddStaff extends JPanel {
+public class AddStaff extends GenericWindow {
     AddStaffInputError inputError = null;
     ErrorController error = null;
     private AddStaffController controller;
@@ -33,20 +34,30 @@ public class AddStaff extends JPanel {
      * @param apc controlleur de la fenêtre pour permettre de lui remonter les information utiles.
      */
     public AddStaff(AddStaffController apc) {
+        super("Ajout");
         controller = apc;
+
+        /*JPanel jpButtonStock = new JPanel();
+        jpButtonStock.setBackground(Color.cyan);
+        jpLeft.add(jpButtonStock, gbcLeft);*/
+
+        GridBagLayout gblStockBoutton = new GridBagLayout();
+        //jpButtonStock.setLayout(gblStockBoutton);
+        GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
         setLayout(new BorderLayout());
         AddStaffLabel label = new AddStaffLabel();
-        this.add(label, BorderLayout.WEST);
+        jpMainPanel.add(label);
 
         input = new AddStaffInput();
-        this.add(input, BorderLayout.CENTER);
-
-        JButton add = new JButton("Test");
-        this.add(add, BorderLayout.SOUTH);
+        jpMainPanel.add(input);
 
         inputError = new AddStaffInputError();
-        this.add(inputError, BorderLayout.EAST);
+        jpMainPanel.add(inputError);
+
+        JButton add = new JButton("Ajouter");
+        setButtonConfig(add);
+        jpMainPanel.add(add);
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
         add.addActionListener(new ActionListener() {
@@ -85,6 +96,7 @@ public class AddStaff extends JPanel {
                 }*/
             }
         });
+        configFrame(getJfFrame(), this);
     }
 
     public void setFirstNameError(String error) {
