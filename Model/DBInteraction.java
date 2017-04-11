@@ -68,6 +68,7 @@ public class DBInteraction {
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
+    private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
     // Récupérer uniquement ces 5 paramètre de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
@@ -385,6 +386,18 @@ public class DBInteraction {
          }
          return data;
      }
+
+    public void delAnimal(int id) throws ExceptionDataBase, SQLException {
+
+        Animal a = new Animal(id);
+        if (a == null)
+            throw new ExceptionDataBase("L'animal n'existe pas dans la DB");
+
+        this.stmt = null;
+        this.stmt = db.con.prepareStatement(DELETE_ANIMAL);
+        this.stmt.setInt(1, id);
+        this.stmt.execute();
+    }
 
     private void insFelin(Felin f) throws SQLException {
 

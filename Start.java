@@ -1,8 +1,7 @@
 import Model.*;
+import Model.Tools.Date;
 
-import java.util.Date;
 import java.sql.SQLException;
-import java.util.Calendar;
 
 public class Start {
 
@@ -73,28 +72,18 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        Calendar cal = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2016);
-        cal.set(Calendar.MONTH, Calendar.JULY);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date dateNaissance = cal.getTime();
-
+        Date dateNaissance = new Date(2017, 8, 4);
         Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         /*
          *  INSERTION D'UN REPTILE
          */
-        Calendar cal2 = Calendar.getInstance();
-        cal.set(Calendar.YEAR, 2017);
-        cal.set(Calendar.MONTH, Calendar.NOVEMBER);
-        cal.set(Calendar.DAY_OF_MONTH, 1);
-        Date dateNaissanceR = cal2.getTime();
-
+        Date dateNaissanceR = new Date(2016, 8, 1);
         Animal keshi = new Reptile("Keshi", "mâle", dateNaissanceR, 1, "Espagne", "Méditéranéen", null, 28.3f);
 
         try {
@@ -106,7 +95,7 @@ public class Start {
         /*
          *  INSERTION D'UN OISEAU
          */
-        Animal ernest = new Oiseau(12.50, "7612345092");
+        /*Animal ernest = new Oiseau(12.50, "7612345092");
         Oiseau serena = new Oiseau(5.60, "1983273990");
 
         try {
@@ -114,7 +103,7 @@ public class Start {
             req.insAnimal(ernest);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
         System.out.println("\n_> Programme terminé ... \n");
     }

@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.Date;
+import Model.Tools.Date;
 
 /**
  *
