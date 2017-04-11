@@ -1,4 +1,4 @@
-package View;
+package View.Stock;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,7 +6,7 @@ import java.awt.*;
 /**
  * Created by MSilva1 on 07.04.2017.
  */
-public abstract class GenericWindow extends JPanel{
+abstract class GenericWindow extends JPanel {
     private String windowTitle;
     private JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
@@ -31,11 +31,11 @@ public abstract class GenericWindow extends JPanel{
 
 
     protected JPanel jpMainPanel;
-    // protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
+   // protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     Dimension dim;
 
-    static private int MIN_WIDTH = 1440;
-    static private int MIN_HEIGHT = 900;
+    static private int MIN_WIDTH = 1366;
+    static private int MIN_HEIGHT = 768;
 
     public GenericWindow(String windowTitle){
         this.windowTitle = windowTitle;
@@ -44,10 +44,10 @@ public abstract class GenericWindow extends JPanel{
         jpMainPanel = new JPanel(new GridLayout());
         jpMainPanel.setBackground(Color.RED);
         dim = Toolkit.getDefaultToolkit().getScreenSize();
-        jlErrorMessage.setForeground(Color.RED);
+        jlErrorMessage.setForeground(Color.BLUE);
 
         //gbcMainPanel.weighty = 1;
-        //gbcMainPanel.anchor = PAGE_
+       //gbcMainPanel.anchor = PAGE_
     }
 
     public String getWindowTitle(){
@@ -99,14 +99,13 @@ public abstract class GenericWindow extends JPanel{
         jlLabel.setFont(fErrorMessageFont);
     }
 
-    // permet d'afficher la fenêtre général
     public void configFrame(JFrame jfFrame, GenericWindow gw){
         //jfFrame.add(jpMainPanel,BorderLayout.CENTER);
         jfFrame.add(jpMainPanel);
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-        jfFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        jfFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //jfFrame.getContentPane().add(gw);
         jfFrame.pack();
         jfFrame.setVisible(true);
@@ -115,4 +114,3 @@ public abstract class GenericWindow extends JPanel{
     }
 
 }
-

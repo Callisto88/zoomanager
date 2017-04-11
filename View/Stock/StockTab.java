@@ -1,7 +1,5 @@
 package View.Stock;
 
-import View.GenericWindow;
-
 import javax.swing.*;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
@@ -123,6 +121,8 @@ public class StockTab extends GenericWindow {
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 20;
+
+
 
         /*
         JScrollBar jsbStock = new JScrollBar();
