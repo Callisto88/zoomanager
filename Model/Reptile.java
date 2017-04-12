@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  *
@@ -33,7 +33,7 @@ public class Reptile extends Animal {
     }
 
     // Avec tous les attributs
-    public Reptile(String nom, String sexe, Model.Tools.Date anneeNaissance, int enclos, String origine, String race, Model.Tools.Date dateDeces, float temperature) {
+    public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, float temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }

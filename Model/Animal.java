@@ -1,6 +1,6 @@
 package Model;
 
-import Model.Tools.Date;
+import java.sql.Date;
 
 /**
  * Cette classes contient la conception de la table Personne de la base de données

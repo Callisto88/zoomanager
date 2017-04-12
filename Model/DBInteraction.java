@@ -1,5 +1,7 @@
 package Model;
 
+import java.sql.Date;
+
 import java.sql.*;
 import java.util.*;
 
@@ -455,19 +457,14 @@ public class DBInteraction {
 
         this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
 
-        java.sql.Date anneeNaissance = new java.sql.Date(a.getAnneeNaissance().getTime());
-        java.sql.Date dateDeces = anneeNaissance;
-
-        System.out.println(dateDeces);
-
         // Attribut communs à tous les animaux
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, a.getNom());
         this.stmt.setString(3, a.getSexe());
-        this.stmt.setDate(4, anneeNaissance);
+        this.stmt.setDate(4, a.getAnneeNaissance());
         this.stmt.setInt(5, a.getEnclos());
         this.stmt.setString(6, a.getOrigine());
-        this.stmt.setDate(7, dateDeces);
+        this.stmt.setDate(7, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
         try {

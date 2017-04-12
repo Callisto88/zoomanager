@@ -1,6 +1,6 @@
 import Model.*;
-import Model.Tools.Date;
 
+import java.sql.Date;
 import java.sql.SQLException;
 
 public class Start {
@@ -78,7 +78,7 @@ public class Start {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
         /*
          *  INSERTION D'UN REPTILE
@@ -95,15 +95,15 @@ public class Start {
         /*
          *  INSERTION D'UN OISEAU
          */
-        /*Animal ernest = new Oiseau(12.50, "7612345092");
-        Oiseau serena = new Oiseau(5.60, "1983273990");
+        Oiseau serena = new Oiseau("Keita", "femelle", dateNaissance, 4, "USA", "Aigrette", null, 6.30, "AIS9282711");
 
         try {
+            System.out.println("Insertion d'un " + serena.getClass().getSimpleName());
+            System.out.println(serena.toString());
             req.insAnimal(serena);
-            req.insAnimal(ernest);
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
         System.out.println("\n_> Programme terminé ... \n");
     }

@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Cette classe contient la conception de la table Primate de la base de données

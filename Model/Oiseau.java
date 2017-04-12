@@ -1,6 +1,6 @@
 package Model;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Cette classe contient la conception de la table Oiseau de la base de données
@@ -31,17 +31,6 @@ public class Oiseau extends Animal {
      * Constructeur par défaut
      */
     public Oiseau() {
-    }
-
-    /**
-     * Constructeur à partir de l'envergue et du no de bague de l'oiseau
-     *
-     * @param envergure
-     * @param bague
-     */
-    public Oiseau(double envergure, String bague) {
-        this.envergure = envergure;
-        this.bague = bague;
     }
 
     /**
