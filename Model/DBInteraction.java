@@ -68,6 +68,7 @@ public class DBInteraction {
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
+    private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
     // Récupérer uniquement ces 5 paramètre de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
@@ -386,6 +387,18 @@ public class DBInteraction {
          return data;
      }
 
+    public void delAnimal(int id) throws ExceptionDataBase, SQLException {
+
+        Animal a = new Animal(id);
+        if (a == null)
+            throw new ExceptionDataBase("L'animal n'existe pas dans la DB");
+
+        this.stmt = null;
+        this.stmt = db.con.prepareStatement(DELETE_ANIMAL);
+        this.stmt.setInt(1, id);
+        this.stmt.execute();
+    }
+
     private void insFelin(Felin f) throws SQLException {
 
         this.stmt = null;
@@ -618,6 +631,34 @@ public class DBInteraction {
         this.stmt.executeUpdate();
 
     }
+
+
+    /**
+     * Permet d'assigner plusieurs événements à une personne
+     *
+     * @param evenements(ArrayList<Evenement>)
+     * @param employe(Personne)
+     *
+     * @return void
+     */
+    public void assignEvenementEmploye (ArrayList<Evenement> evenements, Personne employe) throws SQLException {
+        if (evenements.size() > 0) {
+            int numAVS_employe = employe.getNoAVS();
+
+            for (int i = 0; i > evenements.size(); i++) {
+
+                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+
+                this.stmt.setNull(1, Types.NULL);
+                this.stmt.setInt(2, numAVS_employe);
+                this.stmt.setInt(3, evenements.get(i).getId());
+
+                this.stmt.executeUpdate();
+            }
+        }
+
+    }
+
 
     /**
      * Permet d'assigner un événement à plusieurs personnes
