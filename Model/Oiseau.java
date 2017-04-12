@@ -44,7 +44,8 @@ public class Oiseau extends Animal {
      * @param race
      * @param dateDeces
      */
-    public Oiseau(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, double envergure, String bague) {
+    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine, String race,
+                  java.sql.Date dateDeces, double envergure, String bague) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.envergure = envergure;
         this.bague = bague;

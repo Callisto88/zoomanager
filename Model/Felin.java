@@ -21,7 +21,8 @@ public class Felin extends Animal {
 
     private float poids;
 
-    public Felin(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, float poids) {
+    public Felin(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine,
+                 String race, java.sql.Date dateDeces, float poids) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.poids = poids;
     }

@@ -64,7 +64,8 @@ public class Primate extends Animal {
      * @param dateDeces
      * @param temperature
      */
-    public Primate(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, java.sql.Date dateDeces, double temperature) {
+    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine,
+                   String race, java.sql.Date dateDeces, double temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }

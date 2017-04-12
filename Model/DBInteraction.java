@@ -251,12 +251,12 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insertPersonne(int noAVS, String prenom, String nom, String adresse, String email,
+    public void insertPersonne(String noAVS, String prenom, String nom, String adresse, String email,
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
                             double salaire, java.sql.Date dateDebut, String typeContrat)
             throws ExceptionDataBase, SQLException {
         this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
-        this.stmt.setInt(1, noAVS);
+        this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
         this.stmt.setString(3, nom);
         this.stmt.setString(4, adresse);
@@ -277,7 +277,7 @@ public class DBInteraction {
      */
     public void insertPersonne(Personne personne) throws ExceptionDataBase, SQLException {
         this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
-        this.stmt.setInt(1, personne.getNoAVS());
+        this.stmt.setString(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
         this.stmt.setString(3, personne.getNom());
         this.stmt.setInt(4, personne.getAdresse());
@@ -320,7 +320,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Personne(rs.getInt("idPersonne") , rs.getInt("noAVS"),
+                data.add(new Personne(rs.getInt("idPersonne") , rs.getString("noAVS"),
                         rs.getString("prenom"), rs.getString("nom"),
                         rs.getInt("adresse"), rs.getString("email"),
                         rs.getString("telephone"), rs.getDate("dateNaissance"),
@@ -616,7 +616,7 @@ public class DBInteraction {
      * @return void
      */
     public void assignEvenementEmploye (Evenement evenement, Personne employe) throws SQLException {
-        int numAVS_employe = employe.getNoAVS();
+        int numAVS_employe = employe.getIdPersonne();
         int id_evenement = evenement.getId();
 
         this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
@@ -640,7 +640,7 @@ public class DBInteraction {
      */
     public void assignEvenementEmploye (ArrayList<Evenement> evenements, Personne employe) throws SQLException {
         if (evenements.size() > 0) {
-            int numAVS_employe = employe.getNoAVS();
+            int numAVS_employe = employe.getIdPersonne();
 
             for (int i = 0; i > evenements.size(); i++) {
 
@@ -673,7 +673,7 @@ public class DBInteraction {
                 this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
                 this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, tabEmploye.get(i).getNoAVS());
+                this.stmt.setInt(2, tabEmploye.get(i).getIdPersonne());
                 this.stmt.setInt(3, id_evenement);
 
                 this.stmt.executeUpdate();
