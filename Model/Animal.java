@@ -27,11 +27,11 @@ public class Animal {
     private int id;
     private String nom;
     private String sexe;
-    private Date dateNaissance;
+    private java.sql.Date dateNaissance;
     private int enclos; // REF (id)
     private String origine;
     private String race; // REF (nom)
-    private Date dateDeces;
+    private java.sql.Date dateDeces;
 
     /**
      * Constructeur par défaut
@@ -47,7 +47,8 @@ public class Animal {
         this.id = id;
     }
 
-    public Animal(int id, String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces) {
+    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
+                  String origine, String race, java.sql.Date dateDeces) {
         this.id = id;
         this.nom = nom;
         this.sexe = sexe;
@@ -68,7 +69,8 @@ public class Animal {
      * @param race
      * @param dateDeces
      */
-    public Animal(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces) {
+    public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
+                  int enclos, String origine, String race, java.sql.Date dateDeces) {
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
@@ -78,14 +80,14 @@ public class Animal {
         this.dateDeces = dateDeces;
     }
 
-    public Animal(int id, String nom, String sexe, Date anneeNaissance) {
+    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance) {
         this.id = id;
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
     }
 
-    public Animal(int id, String nom, String sexe, Date anneeNaissance, String race) {
+    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, String race) {
         this.id = id;
         this.nom = nom;
         this.sexe = sexe;
@@ -126,11 +128,11 @@ public class Animal {
         this.race = race;
     }
 
-    public Date getDateDeces() {
+    public java.sql.Date getDateDeces() {
         return dateDeces;
     }
 
-    public void setDateDeces(Date dateDeces) {
+    public void setDateDeces(java.sql.Date dateDeces) {
         this.dateDeces = dateDeces;
     }
 
@@ -142,11 +144,11 @@ public class Animal {
         this.sexe = sexe;
     }
 
-    public Date getAnneeNaissance() {
+    public java.sql.Date getAnneeNaissance() {
         return dateNaissance;
     }
 
-    public void setAnneeNaissance(Date anneeNaissance) {
+    public void setAnneeNaissance(java.sql.Date anneeNaissance) {
         this.dateNaissance = anneeNaissance;
     }
 

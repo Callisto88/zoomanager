@@ -33,7 +33,8 @@ public class Reptile extends Animal {
     }
 
     // Avec tous les attributs
-    public Reptile(String nom, String sexe, Model.Tools.Date anneeNaissance, int enclos, String origine, String race, Model.Tools.Date dateDeces, float temperature) {
+    public Reptile(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine,
+                   String race, java.sql.Date dateDeces, float temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }

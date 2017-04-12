@@ -22,7 +22,7 @@ import java.util.Date;
 public class Personne {
 
     private int idPersonne;
-    private int noAVS;
+    private String noAVS;
     private String prenom;
     private String nom;
     private int adresse;
@@ -44,8 +44,9 @@ public class Personne {
      * Constructeur avec tous les paramètre
      *
      */
-    public Personne(int idPersonne, int noAVS, String prenom, String nom, int adresse, String email,
-                    String telephone, java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut, String typeContrat) {
+    public Personne(int idPersonne, String noAVS, String prenom, String nom, int adresse, String email,
+                    String telephone, java.sql.Date dateNaissance, int responsable, String statut,
+                    java.sql.Date dateDebut, String typeContrat) {
         this.idPersonne = idPersonne;
         this.noAVS = noAVS;
         this.prenom = prenom;
@@ -75,7 +76,7 @@ public class Personne {
      * @param dateDebut
      * @param typeContrat
      */
-    public Personne(int noAVS, String prenom, String nom, int adresse, String email, String telephone,
+    public Personne(String noAVS, String prenom, String nom, int adresse, String email, String telephone,
                     java.sql.Date dateNaissance, int responsable, String statut, java.sql.Date dateDebut,
                     String typeContrat) {
         this.noAVS = noAVS;
@@ -112,11 +113,11 @@ public class Personne {
     public String toString() {
         return this.prenom + " " + this.nom + "\n" + this.adresse + "\n" + this.dateNaissance;
     }
-    public int getNoAVS() {
+    public String getNoAVS() {
         return noAVS;
     }
 
-    public void setNoAVS(int noAVS) {
+    public void setNoAVS(String noAVS) {
         this.noAVS = noAVS;
     }
 
