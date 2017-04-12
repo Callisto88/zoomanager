@@ -101,7 +101,7 @@ public class StaffView extends GenericWindow {
                 Personne personne = new Personne();
                 personne.setNom("paul");
                 personne.setPrenom("marcel");
-                personne.setNoAVS(1234567890);
+                personne.setNoAVS("123.4567.8902.12");
                 controller.modifyView(personne);
             }
         });

@@ -159,4 +159,18 @@ public class Animal {
     public void setEnclos(int enclos) {
         this.enclos = enclos;
     }
+
+    public String toString() {
+
+        System.out.println("-----------------------------");
+        System.out.printf("%-10s : %s\n", "Nom", this.nom);
+        System.out.printf("%-10s : %s\n", "Sexe", this.sexe);
+        System.out.printf("%-10s : %s\n", "Naissance", this.dateNaissance);
+        System.out.printf("%-10s : %s\n", "Enclos", this.enclos);
+        System.out.printf("%-10s : %s\n", "Origine", this.origine);
+        System.out.printf("%-10s : %s\n", "Race", this.race);
+        System.out.printf("%-10s : %s\n", "Décès", this.dateDeces);
+        System.out.println("-----------------------------\n");
+        return null;
+    }
 }

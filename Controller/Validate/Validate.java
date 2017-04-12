@@ -1,6 +1,6 @@
 package Controller.Validate;
 
-import Model.Tools.Date;
+import java.sql.Date;
 
 /**
  * Cette classes contient les fonctions necessaires aux verifications de saisie des utilisateurs

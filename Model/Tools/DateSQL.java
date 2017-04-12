@@ -10,20 +10,12 @@ import java.util.Calendar;
  */
 public class DateSQL {
 
-    private int jour;
-    private int mois;
-    private int annee;
-
-    public java.sql.Date DateSQL(int annee, int mois, int jour) {
-
-        this.jour = jour;
-        this.mois = mois;
-        this.annee = annee;
+    static public java.sql.Date convertDateSQL(int annee, int mois, int jour) {
 
         Calendar cal2 = Calendar.getInstance();
-        cal2.set(Calendar.YEAR, this.annee);
-        cal2.set(Calendar.MONTH, this.mois);
-        cal2.set(Calendar.DAY_OF_MONTH, this.jour);
+        cal2.set(Calendar.YEAR, annee);
+        cal2.set(Calendar.MONTH, mois);
+        cal2.set(Calendar.DAY_OF_MONTH, jour);
 
         java.util.Date d1 = cal2.getTime();
         java.sql.Date d = new java.sql.Date(d1.getTime());

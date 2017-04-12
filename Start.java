@@ -1,4 +1,5 @@
 import Model.*;
+import Model.Tools.DateSQL;
 
 import java.sql.Date;
 import java.sql.SQLException;
@@ -72,7 +73,7 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        Date dateNaissance = new Date(2017, 8, 4);
+        Date dateNaissance = DateSQL.convertDateSQL(2017, 8, 04);
         Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);
@@ -83,7 +84,7 @@ public class Start {
         /*
          *  INSERTION D'UN REPTILE
          */
-        Date dateNaissanceR = new Date(2016, 8, 1);
+        Date dateNaissanceR = DateSQL.convertDateSQL(2016, 8, 1);
         Animal keshi = new Reptile("Keshi", "mâle", dateNaissanceR, 1, "Espagne", "Méditéranéen", null, 28.3f);
 
         try {
