@@ -27,11 +27,11 @@ public class Animal {
     private int id;
     private String nom;
     private String sexe;
-    private java.sql.Date dateNaissance;
+    private Date dateNaissance;
     private int enclos; // REF (id)
     private String origine;
     private String race; // REF (nom)
-    private java.sql.Date dateDeces;
+    private Date dateDeces;
 
     /**
      * Constructeur par défaut
