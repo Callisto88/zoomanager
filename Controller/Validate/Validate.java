@@ -98,6 +98,39 @@ public class Validate {
     }
 
     /**
+     * Permet de verifier que la chaine de caractere est composee uniquement de lettres
+     * ou des caracteres "'" / "-" / " "
+     *
+     * Format d'un numero AVS :     xxx.xxxx.xxxx.xx    x = chiffre
+     *
+     * @param s(String)
+     *
+     * @return boolean
+     */
+    private static final int indexAVS1 = 3;
+    private static final int indexAVS2 = 8;
+    private static final int indexAVS3 = 13;
+    public static boolean isAVS(String s) {
+        if(Validate.isNotEmpty(s) || s.length() != 16) {
+
+            // Check que toutes les caracteres sont soit des chiffres soit des .
+            for (char caractere : s.toCharArray()) {
+                if ((!Character.isDigit(caractere)) && caractere != '.') {
+                    return false;
+                }
+            }
+
+            // Check que tous les points sont aux bons endroits et qu'il y en a le bon nombre
+            if (Validate.countDot(s) == 3 && s.charAt(indexAVS1) == '.'
+                    && s.charAt(indexAVS2) == '.' && s.charAt(indexAVS3) == '.') {
+                return true;
+
+            }
+        }
+        return false;
+    }
+
+    /**
      * Permet de verifier que la chaine de caractere respecte la syntaxe des e-mail
      *
      * @param s(String)
@@ -114,7 +147,7 @@ public class Validate {
 
                 // check si l'adresses est sous forme "xxxxxx.@yyyy.zz" = False
                 // ainsi que sous la forme ".xxx@yy.zz"
-                if (local.charAt((local.length())) == '.' || local.charAt(0) == '.')
+                if (local.charAt((local.length()-1)) == '.' || local.charAt(0) == '.')
                     return false;
 
                 // check si l'adresses ne contient pas deux points de suites "xxx..xxx@yy.zz" = False
@@ -139,6 +172,41 @@ public class Validate {
         return false;
     }
 
+    /**
+     * Permet de verifier que la chaine de caracteres passee en parametre est un numéro de telegit phone
+     *
+     * @param s(String)
+     *
+     * @return boolean
+     */
+    public static boolean isPhoneNumber(String s) {
+        if(Validate.isNotEmpty(s)) {
+            if (s.length() > 13 || s.charAt(0) != '0' || s.charAt(1) != '0')
+                return false;
+
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Permet de verifier que la date passee en parametre respecte la syntaxe
+     *
+     * @param year(int)
+     * @param month(int)
+     * @param day(int)
+     *
+     * @return boolean
+     */
+    public static boolean isDate(int year, int month, int day) {
+        if (year > 0 && year < 3000 && month > 0 && month < 13) {
+            if (day < 0 && day > Validate.numberOfDay(month, year)) {
+
+            }
+
+        }
+        return true;
+    }
 
     /**
      * Permet de verifier que la date passee en parametre respecte la syntaxe
@@ -153,6 +221,42 @@ public class Validate {
 
         return true;
     }
+
+    /**
+     * Permet de connaitre le nombre de jour dans un mois
+     *
+     * @param year(int)
+     * @param month(int)
+     *
+     * @return boolean
+     */
+    private static int numberOfDay(int year, int month){
+        int nbDay;
+        switch (month){
+            case 1:
+            case 3:
+            case 5:
+            case 7:
+            case 8:
+            case 10:
+            case 12:
+                nbDay = 31;
+                break;
+            case 2:
+                if(Validate.isBisextille(year)){
+                    nbDay = 29;
+                }else{
+                    nbDay = 28;
+                }
+                break;
+            default :
+                nbDay = 30;
+                break;
+        }
+        return nbDay;
+    }
+
+
 
     /**
      * Permet de compter combien de @ contient une chaine de caractere
@@ -173,6 +277,26 @@ public class Validate {
         return 0;
     }
 
+    /**
+     * Permet de compter combien de . contient une chaine de caractere
+     *
+     * @param s(String)
+     *
+     * @return int(nombre de fois que le . est present)
+     */
+    private static int countDot(String s) {
+        if(Validate.isNotEmpty(s)) {
+            int ref = 0;
+            for (int i = 0; i < s.length(); i++) {
+                if (s.charAt(i) == '.')
+                    ref++;
+            }
+            return ref;
+        }
+        return 0;
+    }
+
+
 
     /**
      * Permet de savoir si une annee est bisextille
@@ -188,4 +312,6 @@ public class Validate {
             return false;
         }
     }
+
+
 }

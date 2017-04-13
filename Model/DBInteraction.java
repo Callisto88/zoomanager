@@ -175,19 +175,10 @@ public class DBInteraction {
      *
      * @return String[][] / Prénom en première position
      */
-    public String[][] selAllFirstLastNameEmployee() throws ExceptionDataBase, SQLException {
+    public ArrayList<Personne> selAllFirstLastNameEmployee() throws ExceptionDataBase, SQLException {
         ArrayList<Personne> personne = this.recupererPersonne(SEL_ALL_PERSONNE);
-        int nbPersonne = personne.size();
-        int nbParametre = 2; // nom + prenom
-        String tableau [][];
-
-        tableau = new String[nbPersonne][nbParametre];
-
-        for (int i = 0; i < nbPersonne; i++) {
-            tableau[i][0] = personne.get(i).getNom();
-            tableau[i][1] = personne.get(i).getPrenom();
-        }
-        return tableau;
+        ResultSet rs = this.stmt.executeQuery();
+        return creerTableauPersonne(rs);
     }
 
     /**
