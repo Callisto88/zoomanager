@@ -19,10 +19,9 @@ public class Test {
         String avs4 = "11.erere.1111.11";
         String avs5 = "111.1111.1111.@";
 
-        String email1 = "dylan.hamel@outlook.com";
-        String email2 = "dylan@hamel@outlook.com";
+        String email1 = "dylan.hamel@outlook.com.uk";
+        String email2 = "dylan@hamel@outlook..com";
         String email3 = "dylan@hamel@outlook.com.fr";
-
         String email4 = "toto@hdweiuhdew";
 
 
@@ -36,6 +35,7 @@ public class Test {
 
 
         System.out.println(Validate.isEmail(email4));
+        System.out.println(email1 + " " + Validate.isEmail(email1));
 
         System.out.println(avs1 + "    " + Validate.isAVS(avs1));
         System.out.println(avs2 + "    " + Validate.isAVS(avs2));
