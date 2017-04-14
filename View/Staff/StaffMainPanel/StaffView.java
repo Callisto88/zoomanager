@@ -411,5 +411,6 @@ public class StaffView extends GenericWindow {
         jpContract.add(Box.createHorizontalStrut(50));
         jpContract.add(jlContractInfo);
         jpRight.add(jpContract);
+        
     }
 }
