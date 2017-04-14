@@ -1,6 +1,7 @@
 package View.Staff.StaffAddPanel;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import java.awt.*;
 
 /**
@@ -15,6 +16,7 @@ public class AddStaffLabel extends JPanel {
     public AddStaffLabel() {
         setLayout(new GridLayout(12, 1, 10, 10));
         //this.setAlignmentX(Component.LEFT_ALIGNMENT);
+        setMinimumSize(new Dimension(200, 500));
 
         // Sous ensemble de gauche contenant les label pour les employées
 
@@ -75,18 +77,19 @@ public class AddStaffLabel extends JPanel {
         //this.add(detailPhone);
         this.add(phoneLabel);
 
-        // Salaire
-        JPanel detailSalaire = new JPanel();
-        JLabel salaireLabel = new JLabel("Salaire annuel : ");
-        detailSalaire.add(salaireLabel);
-        this.add(salaireLabel);
+        // Responsable
+        JPanel detailResponsable = new JPanel();
+        JLabel responsableLabel = new JLabel("Responsable : ");
+        detailResponsable.add(responsableLabel);
+        this.add(responsableLabel);
 
-        // Statut
+        // Statut  aide, employee, interne, externe, responsable
         JLabel statutLabel = new JLabel("Statut : ");
         this.add(statutLabel);
 
-        // Type
+        // Type de contrat   mandat, cdi, cdd, stage
         JLabel typeLabel = new JLabel("Type de contrat : ");
         this.add(typeLabel);
+        this.setBackground(Color.BLUE);
     }
 }

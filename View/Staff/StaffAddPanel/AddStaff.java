@@ -28,6 +28,29 @@ public class AddStaff extends GenericWindow {
     private String phone;
     private String salary;
 
+    private JTextField lastNameInput;
+    private JTextField firstNameInput;
+    private JTextField avsInput;
+    private JTextField emailInput;
+    private JTextField addressInput;
+    private JTextField cityInput;
+    private JTextField npaInput;
+    private JTextField phoneInput;
+    private JTextField salaryInput;
+    private JTextField statutInput;
+    private JTextField typeInput;
+
+    private JLabel lastNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel firstNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel birthdayError = new JLabel("*", JLabel.CENTER);
+    private JLabel avsError = new JLabel("*", JLabel.CENTER);
+    private JLabel emailError = new JLabel("*", JLabel.CENTER);
+    private JLabel addressError = new JLabel("*", JLabel.CENTER);
+    private JLabel cityError = new JLabel("*", JLabel.CENTER);
+    private JLabel npaError = new JLabel("*", JLabel.CENTER);
+    private JLabel phoneError = new JLabel("*", JLabel.CENTER);
+    private JLabel salaryError = new JLabel("*", JLabel.CENTER);
+
     /**
      * Constructeur de la fenêtre principale d'ajout de personnel.
      *
@@ -36,7 +59,7 @@ public class AddStaff extends GenericWindow {
     public AddStaff(AddStaffController apc) {
         super("Ajout");
         controller = apc;
-
+        //jpMainPanel.setLayout(new GridLayout(3,0));
         /*JPanel jpButtonStock = new JPanel();
         jpButtonStock.setBackground(Color.cyan);
         jpLeft.add(jpButtonStock, gbcLeft);*/
@@ -45,9 +68,48 @@ public class AddStaff extends GenericWindow {
         //jpButtonStock.setLayout(gblStockBoutton);
         GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-        setLayout(new BorderLayout());
+        //jpMainPanel.setLayout(new GridLayout(12,1));
         AddStaffLabel label = new AddStaffLabel();
         jpMainPanel.add(label);
+
+/*
+        // Ajout des champs utiles pour le nom
+        JPanel lastNamePanel = new JPanel();
+        JLabel firstNameLabel = new JLabel("Nom : ");
+        lastNamePanel.add(firstNameLabel, JPanel.LEFT_ALIGNMENT);
+        lastNameInput = new JTextField("last", 7);
+        lastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        lastNamePanel.add(lastNameInput, JPanel.CENTER_ALIGNMENT);
+        lastNameError.setFont(new Font("Serif", Font.BOLD, 32));
+        lastNameError.setForeground(Color.RED);
+        lastNameError.setHorizontalAlignment(JLabel.CENTER);
+        lastNamePanel.add(lastNameError, JPanel.RIGHT_ALIGNMENT);
+        jpMainPanel.add(lastNamePanel);
+
+        // Ajout des champs utiles pour le prénom
+        JPanel firstNamePanel = new JPanel();
+        JLabel lastNameLabel = new JLabel("Prénom : ");
+        firstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
+        firstNameInput = new JTextField("first", 7);
+        firstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        firstNamePanel.add(firstNameInput, JPanel.CENTER_ALIGNMENT);
+        firstNameError.setFont(new Font("Serif", Font.BOLD, 32));
+        firstNameError.setForeground(Color.RED);
+        firstNameError.setHorizontalAlignment(JLabel.CENTER);
+        firstNamePanel.add(firstNameError,JPanel.RIGHT_ALIGNMENT);
+        jpMainPanel.add(firstNamePanel);
+
+        // Ajout des champs utiles pour la date de naissance
+        JPanel birthdayPanel = new JPanel();
+        JLabel birthdayLabel = new JLabel("Date de Naissance : ");
+        birthdayPanel.add(birthdayLabel);
+        JTextField birthdayInput = new JTextField("birthday", 7);
+        birthdayPanel.add(birthdayInput);
+        birthdayError.setFont(new Font("Serif", Font.BOLD, 32));
+        birthdayError.setForeground(Color.RED);
+        birthdayError.setHorizontalAlignment(JLabel.CENTER);
+        jpMainPanel.add(birthdayPanel);
+*/
 
         input = new AddStaffInput();
         jpMainPanel.add(input);
@@ -74,7 +136,6 @@ public class AddStaff extends GenericWindow {
                 city = input.getInputCity();
                 npa = input.getInputNPA();
                 phone = input.getInputPhone();
-                salary = input.getInputSalary();
                 controller.checkFirstNameInput(firstName);
                 controller.checkLastNameInput(lastName);
                 controller.checkAVSInput(avs);
@@ -83,17 +144,6 @@ public class AddStaff extends GenericWindow {
                 controller.checkCityInput(city);
                 controller.checkNPAInput(npa);
                 controller.checkPhoneInput(phone);
-                controller.checkSalaryInput(salary);
-                /*if(controller.getErrorPanel()){
-                    if(error == null) {
-                        error = new ErrorController(controller.getError());
-                        controller.clearError();
-                    }
-                    else{
-                        error = new ErrorController(controller.getError());
-                        controller.clearError();
-                    }
-                }*/
             }
         });
         configFrame(getJfFrame(), this);
@@ -135,7 +185,4 @@ public class AddStaff extends GenericWindow {
         inputError.setPhoneError(error);
     }
 
-    public void setSalaryError(String error) {
-        inputError.setSalaryError(error);
-    }
 }
