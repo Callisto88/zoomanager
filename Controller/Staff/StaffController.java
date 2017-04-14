@@ -23,12 +23,7 @@ public class StaffController {
      * Constructeur du controlleur de la fenêtre du personnel
      */
     public StaffController() {
-        mainPanel = new JFrame("Staff");
-        mainPanel.setDefaultCloseOperation(mainPanel.HIDE_ON_CLOSE);
         StaffView personnel = new StaffView(this);
-        mainPanel.getContentPane().add(personnel, BorderLayout.CENTER);
-        mainPanel.setSize(800, 500);
-        mainPanel.setVisible(true);
     }
 
     /**

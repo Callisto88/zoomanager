@@ -49,14 +49,7 @@ public class ManagerDashboardController {
      * permet d'instancier la fenêtre des employée
      */
     public void employeeView() {
-        if (persControl == null) {
-            persControl = new StaffController();
-            //f.dispose();
-            //f.setVisible(false);
-            //f.disable();
-        } else {
-            persControl.revalidateView();
-            //f.setVisible(false);
-        }
+        persControl = new StaffController();
+
     }
 }

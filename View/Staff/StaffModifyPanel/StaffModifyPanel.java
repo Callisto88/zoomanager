@@ -15,6 +15,7 @@ public class StaffModifyPanel extends GenericWindow{
     private Personne personne = null;
     private JComboBox boxChoiceLabel = null;
 
+
     public StaffModifyPanel(Personne personne){
         super("Modificaion");
         jpMainPanel.setLayout(new GridLayout(8,1));
@@ -90,7 +91,7 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel lastNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Nom : ");
         lastNamePanel.add(lastNameLabel);
-        lastNamePanel.add(new JTextField(personne.getNom()));
+        lastNamePanel.add(new JTextField(personne.getNom(), 20));
         jpMainPanel.add(lastNamePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Nom");
@@ -100,7 +101,7 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel firstNamePanel = new JPanel();
         JLabel firstNameLabel = new JLabel("Prénom : ");
         firstNamePanel.add(firstNameLabel);
-        firstNamePanel.add(new JTextField(personne.getPrenom()));
+        firstNamePanel.add(new JTextField(personne.getPrenom(), 20));
         jpMainPanel.add(firstNamePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Prénom");
@@ -110,7 +111,7 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel emailPanel = new JPanel();
         JLabel emailLabel = new JLabel("Adresse E-Mail : ");
         emailPanel.add(emailLabel);
-        emailPanel.add(new JTextField(personne.getEmail()));
+        emailPanel.add(new JTextField(personne.getEmail(),20));
         jpMainPanel.add(emailPanel);
         jpMainPanel.revalidate();
         System.out.println("modif E-Mail");
@@ -120,7 +121,7 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel addressPanel = new JPanel();
         JLabel addressLabel = new JLabel("Adresse : ");
         addressPanel.add(addressLabel);
-        addressPanel.add(new JTextField(personne.getAdresse()));
+        addressPanel.add(new JTextField(/*personne.getAdresse()*/"adresse",20));
         jpMainPanel.add(addressPanel);
         jpMainPanel.revalidate();
         System.out.println("modif Adresse");
@@ -130,7 +131,7 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel telephonePanel = new JPanel();
         JLabel telephoneLabel = new JLabel("Téléphone : ");
         telephonePanel.add(telephoneLabel);
-        telephonePanel.add(new JTextField(personne.getTelephone()));
+        telephonePanel.add(new JTextField(personne.getTelephone(), 20));
         jpMainPanel.add(telephonePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Téléphone");
@@ -140,9 +141,10 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel npaPanel = new JPanel();
         JLabel npaLabel = new JLabel("Responsable : ");
         npaPanel.add(npaLabel);
-        npaPanel.add(new JTextField(personne.getResponsable()));
+        npaPanel.add(new JTextField(/*personne.getResponsable()*/"Responsable", 20));
         jpMainPanel.add(npaPanel);
         jpMainPanel.revalidate();
         System.out.println("modif Responsable");
     }
+
 }

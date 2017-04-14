@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Vector;
+
 /**
  *
  * Cette classe contient la conception de la table Personne de la base de données
@@ -197,5 +199,21 @@ public class Personne {
 
     public void setTypeContrat(String typeContrat) {
         this.typeContrat = typeContrat;
+    }
+
+    public Vector<Object> toVector(){
+        Vector<Object> vObjet = new Vector<>();
+        vObjet.add(nom);
+        vObjet.add(prenom);
+        vObjet.add(noAVS);
+        //vObjet.add(adresse);
+        //vObjet.add(email);
+        //vObjet.add(telephone);
+        vObjet.add(dateNaissance);
+        //vObjet.add(responsable);
+        //vObjet.add(statut);
+        //vObjet.add(dateDebut);
+        //vObjet.add(typeContrat);
+        return vObjet;
     }
 }

@@ -3,8 +3,6 @@ package Controller.Staff;
 import View.Staff.StaffAddPanel.AddStaff;
 
 import javax.swing.*;
-import java.awt.*;
-import java.util.ArrayList;
 
 /**
  * Created by Andre on 17.03.2017.
@@ -36,7 +34,7 @@ public class AddStaffController {
      */
     public AddStaffController() {
         add = new AddStaff(this);
-        add.setVisible(true);
+        add.disableError();
     }
 
     /**
@@ -54,7 +52,7 @@ public class AddStaffController {
     public void checkLastNameInput(String lastName) {
         lastName = lastName.toLowerCase();
         if (!theStringIsOKForFirstAndLastName(lastName)) {
-            add.setLastNameError("label Nom non conforme ");
+            add.setJlLastNameError("label Nom non conforme ");
             addError("1 - label Nom non conforme ", lastName);
             errorPanel = true;
         }
@@ -68,7 +66,7 @@ public class AddStaffController {
     public void checkFirstNameInput(String firstName) {
         firstName = firstName.toLowerCase();
         if (!theStringIsOKForFirstAndLastName(firstName)) {
-            add.setFirstNameError("label Prénom non conforme");
+            add.setJlFirstNameError("label Prénom non conforme");
             addError("2 - label Prénom non conforme ", firstName);
             errorPanel = true;
         }
@@ -114,7 +112,7 @@ public class AddStaffController {
         email = email.toLowerCase();
         if (!errorParsing && !emailOK(email)) {
             addError("5 - label email non conforme", email);
-            add.setEmailError("label email non conforme");
+            add.setJlEmailError("label email non conforme");
             errorPanel = true;
         }
     }
@@ -138,7 +136,7 @@ public class AddStaffController {
         city.toLowerCase();
         if (!cityOK(city)) {
             addError("7 - Label ville non conforme, des caractères sont inappropié", city);
-            add.setCityError("Label ville non conforme, des caractères sont inappropié");
+            add.setJlCityError("Label ville non conforme, des caractères sont inappropié");
             errorPanel = true;
         }
     }
@@ -176,35 +174,13 @@ public class AddStaffController {
             Integer.parseInt(phone);
         } catch (NumberFormatException e) {
             addError("9 parse - Label téléphone non conforme, il faut entrer uniquement des chiffres", phone);
-            add.setPhoneError("Label téléphone non conforme, il faut entrer uniquement des chiffres");
+            add.setJlPhoneError("Label téléphone non conforme, il faut entrer uniquement des chiffres");
             errorPanel = true;
             errorParsing = true;
         }
         if (!errorParsing && !numberOK(phone, PHONESIZE)) {
             addError("9 - Label téléphone non conforme, le numéro de téléphone ne comporte pas " + PHONESIZE + " chiffres", phone);
-            add.setPhoneError("Label téléphone non conforme, le numéro de téléphone ne comporte pas " + PHONESIZE + " chiffres");
-            errorPanel = true;
-        }
-    }
-
-    /**
-     * Méthode permettant de contrôler la saisie du salaire
-     *
-     * @param salary String contenant le salaire à contrôler
-     */
-    public void checkSalaryInput(String salary) {
-        errorParsing = false;
-        try {
-            Integer.parseInt(salary);
-        } catch (NumberFormatException e) {
-            addError("10 parse - Label salaire non conforme, il faut entrer uniquement des chiffres", salary);
-            add.setSalaryError("Label salaire non conforme, il faut entrer uniquement des chiffres");
-            errorPanel = true;
-            errorParsing = true;
-        }
-        if (!errorParsing && !rangeNumberOK(salary, SALARYMINSIZE, SALARYMAXSIZE)) {
-            addError("10 - Label salaire non conforme, il ne comporte pas entre " + SALARYMINSIZE + " et " + SALARYMAXSIZE + " chiffres", salary);
-            add.setSalaryError("Label salaire non conforme, il faut entrer uniquement des chiffres");
+            add.setJlPhoneError("Label téléphone non conforme, le numéro de téléphone ne comporte pas " + PHONESIZE + " chiffres");
             errorPanel = true;
         }
     }

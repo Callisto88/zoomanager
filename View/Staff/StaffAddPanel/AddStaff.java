@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import View.*;
 
 /**
@@ -26,30 +27,35 @@ public class AddStaff extends GenericWindow {
     private String city;
     private String npa;
     private String phone;
-    private String salary;
+    private String supervisor;
+    private String status;
+    private String contract;
 
-    private JTextField lastNameInput;
-    private JTextField firstNameInput;
-    private JTextField avsInput;
-    private JTextField emailInput;
-    private JTextField addressInput;
-    private JTextField cityInput;
-    private JTextField npaInput;
-    private JTextField phoneInput;
-    private JTextField salaryInput;
-    private JTextField statutInput;
-    private JTextField typeInput;
+    private JTextField jtfLastNameInput;
+    private JTextField jtfFirstNameInput;
+    private JTextField jtfBirthdayInput;
+    private JTextField jtfAVSInput;
+    private JTextField jtfEmail;
+    private JTextField jtfAddress;
+    private JTextField jtfCity;
+    private JTextField jtfNPA;
+    private JTextField jtfPhone;
+    private JTextField jtfSupervisor;
+    private JTextField jtfStatus;
+    private JTextField jtfContract;
 
-    private JLabel lastNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel firstNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel birthdayError = new JLabel("*", JLabel.CENTER);
-    private JLabel avsError = new JLabel("*", JLabel.CENTER);
-    private JLabel emailError = new JLabel("*", JLabel.CENTER);
-    private JLabel addressError = new JLabel("*", JLabel.CENTER);
-    private JLabel cityError = new JLabel("*", JLabel.CENTER);
-    private JLabel npaError = new JLabel("*", JLabel.CENTER);
-    private JLabel phoneError = new JLabel("*", JLabel.CENTER);
-    private JLabel salaryError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlFirstNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlBirthdayError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlAVSError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlEmailError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlAddressError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlCityError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlNPAError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlPhoneError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlSupervisorError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlStatusError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlContractError = new JLabel("*", JLabel.CENTER);
 
     /**
      * Constructeur de la fenêtre principale d'ajout de personnel.
@@ -59,63 +65,154 @@ public class AddStaff extends GenericWindow {
     public AddStaff(AddStaffController apc) {
         super("Ajout");
         controller = apc;
-        //jpMainPanel.setLayout(new GridLayout(3,0));
-        /*JPanel jpButtonStock = new JPanel();
-        jpButtonStock.setBackground(Color.cyan);
-        jpLeft.add(jpButtonStock, gbcLeft);*/
+        jpMainPanel.setLayout(new GridLayout(13,1));
 
-        GridBagLayout gblStockBoutton = new GridBagLayout();
-        //jpButtonStock.setLayout(gblStockBoutton);
-        GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-        //jpMainPanel.setLayout(new GridLayout(12,1));
-        AddStaffLabel label = new AddStaffLabel();
-        jpMainPanel.add(label);
-
-/*
         // Ajout des champs utiles pour le nom
-        JPanel lastNamePanel = new JPanel();
-        JLabel firstNameLabel = new JLabel("Nom : ");
-        lastNamePanel.add(firstNameLabel, JPanel.LEFT_ALIGNMENT);
-        lastNameInput = new JTextField("last", 7);
-        lastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        lastNamePanel.add(lastNameInput, JPanel.CENTER_ALIGNMENT);
-        lastNameError.setFont(new Font("Serif", Font.BOLD, 32));
-        lastNameError.setForeground(Color.RED);
-        lastNameError.setHorizontalAlignment(JLabel.CENTER);
-        lastNamePanel.add(lastNameError, JPanel.RIGHT_ALIGNMENT);
-        jpMainPanel.add(lastNamePanel);
+        JPanel jpLastNamePanel = new JPanel();
+        JLabel jlLastNameLabel = new JLabel("Nom : ");
+        jpLastNamePanel.add(jlLastNameLabel, JPanel.LEFT_ALIGNMENT);
+        jtfLastNameInput = new JTextField("last", 7);
+        jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jpLastNamePanel.add(jtfLastNameInput, JPanel.CENTER_ALIGNMENT);
+        jlLastNameError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlLastNameError.setForeground(Color.RED);
+        jlLastNameError.setHorizontalAlignment(JLabel.CENTER);
+        jpLastNamePanel.add(jlLastNameError, JPanel.RIGHT_ALIGNMENT);
+        jpMainPanel.add(jpLastNamePanel);
 
         // Ajout des champs utiles pour le prénom
-        JPanel firstNamePanel = new JPanel();
+        JPanel jpFirstNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Prénom : ");
-        firstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
-        firstNameInput = new JTextField("first", 7);
-        firstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        firstNamePanel.add(firstNameInput, JPanel.CENTER_ALIGNMENT);
-        firstNameError.setFont(new Font("Serif", Font.BOLD, 32));
-        firstNameError.setForeground(Color.RED);
-        firstNameError.setHorizontalAlignment(JLabel.CENTER);
-        firstNamePanel.add(firstNameError,JPanel.RIGHT_ALIGNMENT);
-        jpMainPanel.add(firstNamePanel);
+        jpFirstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
+        jtfFirstNameInput = new JTextField("first", 7);
+        jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jpFirstNamePanel.add(jtfFirstNameInput, JPanel.CENTER_ALIGNMENT);
+        jlFirstNameError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlFirstNameError.setForeground(Color.RED);
+        jlFirstNameError.setHorizontalAlignment(JLabel.CENTER);
+        jpFirstNamePanel.add(jlFirstNameError,JPanel.RIGHT_ALIGNMENT);
+        jpMainPanel.add(jpFirstNamePanel);
 
         // Ajout des champs utiles pour la date de naissance
-        JPanel birthdayPanel = new JPanel();
-        JLabel birthdayLabel = new JLabel("Date de Naissance : ");
-        birthdayPanel.add(birthdayLabel);
-        JTextField birthdayInput = new JTextField("birthday", 7);
-        birthdayPanel.add(birthdayInput);
-        birthdayError.setFont(new Font("Serif", Font.BOLD, 32));
-        birthdayError.setForeground(Color.RED);
-        birthdayError.setHorizontalAlignment(JLabel.CENTER);
-        jpMainPanel.add(birthdayPanel);
-*/
+        JPanel jpBirthdayPanel = new JPanel();
+        JLabel jlBirthdayLabel = new JLabel("Date de Naissance : ");
+        jpBirthdayPanel.add(jlBirthdayLabel);
+        jtfBirthdayInput = new JTextField("birthday", 7);
+        jpBirthdayPanel.add(jtfBirthdayInput);
+        jlBirthdayError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlBirthdayError.setForeground(Color.RED);
+        jlBirthdayError.setHorizontalAlignment(JLabel.CENTER);
+        jpBirthdayPanel.add(jlBirthdayError);
+        jpMainPanel.add(jpBirthdayPanel);
 
-        input = new AddStaffInput();
-        jpMainPanel.add(input);
+        // Ajout des champs utiles pour le numéro AVS
+        JPanel jpAVS = new JPanel();
+        JLabel jlAVS = new JLabel("Numéro AVS : ");
+        jpAVS.add(jlAVS);
+        jtfAVSInput = new JTextField("avs", 7);
+        jpAVS.add(jtfAVSInput);
+        jlAVSError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlAVSError.setForeground(Color.RED);
+        jlAVSError.setHorizontalAlignment(JLabel.CENTER);
+        jpAVS.add(jlAVSError);
+        jpMainPanel.add(jpAVS);
 
-        inputError = new AddStaffInputError();
-        jpMainPanel.add(inputError);
+        // Ajout des champs utiles pour l'adresse
+        JPanel jpAddress = new JPanel();
+        JLabel jlAddress = new JLabel("Adresse : ");
+        jpAddress.add(jlAddress);
+        jtfAddress = new JTextField("adresse", 7);
+        jpAddress.add(jtfAddress);
+        jlAddressError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlAddressError.setForeground(Color.RED);
+        jlAddressError.setHorizontalAlignment(JLabel.CENTER);
+        jpAddress.add(jlAddressError);
+        jpMainPanel.add(jpAddress);
+
+        // Ajout des champs utiles pour la ville
+        JPanel jpCity = new JPanel();
+        JLabel jlCity = new JLabel("Ville : ");
+        jpCity.add(jlCity);
+        jtfCity = new JTextField("ville", 7);
+        jpCity.add(jtfCity);
+        jlCityError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlCityError.setForeground(Color.RED);
+        jlCityError.setHorizontalAlignment(JLabel.CENTER);
+        jpCity.add(jlCityError);
+        jpMainPanel.add(jpCity);
+
+        // Ajout des champs utiles pour le NPA
+        JPanel jpNPA = new JPanel();
+        JLabel jlNPA = new JLabel("NPA : ");
+        jpNPA.add(jlNPA);
+        jtfNPA = new JTextField("npa", 7);
+        jpNPA.add(jtfNPA);
+        jlNPAError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlNPAError.setForeground(Color.RED);
+        jlNPAError.setHorizontalAlignment(JLabel.CENTER);
+        jpNPA.add(jlNPAError);
+        jpMainPanel.add(jpNPA);
+
+        // Ajout des champs utiles pour l'e-mail
+        JPanel jpEmail = new JPanel();
+        JLabel jlEmail = new JLabel("E-mail : ");
+        jpEmail.add(jlEmail);
+        jtfEmail = new JTextField("e-mail", 7);
+        jpEmail.add(jtfEmail);
+        jlEmailError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlEmailError.setForeground(Color.RED);
+        jlEmailError.setHorizontalAlignment(JLabel.CENTER);
+        jpEmail.add(jlEmailError);
+        jpMainPanel.add(jpEmail);
+
+        // Ajout des champs utiles pour le télephone
+        JPanel jpPhone = new JPanel();
+        JLabel jlPhone = new JLabel("Téléphone : ");
+        jpPhone.add(jlPhone);
+        jtfPhone = new JTextField("téléphone", 7);
+        jpPhone.add(jtfPhone);
+        jlPhoneError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlPhoneError.setForeground(Color.RED);
+        jlPhoneError.setHorizontalAlignment(JLabel.CENTER);
+        jpPhone.add(jlPhoneError);
+        jpMainPanel.add(jpPhone);
+
+        // Ajout des champs utiles pour le responsable
+        JPanel jpSupervisor = new JPanel();
+        JLabel jlSupervisor = new JLabel("Responsable : ");
+        jpSupervisor.add(jlSupervisor);
+        jtfSupervisor = new JTextField("responsable", 7);
+        jpSupervisor.add(jtfSupervisor);
+        jlSupervisorError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlSupervisorError.setForeground(Color.RED);
+        jlSupervisorError.setHorizontalAlignment(JLabel.CENTER);
+        jpSupervisor.add(jlSupervisorError);
+        jpMainPanel.add(jpSupervisor);
+
+        // Ajout des champs utiles pour le statut
+        JPanel jpStatus = new JPanel();
+        JLabel jlStatus = new JLabel("Status : ");
+        jpStatus.add(jlStatus);
+        jtfStatus = new JTextField("statut", 7);
+        jpStatus.add(jtfStatus);
+        jlStatusError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlStatusError.setForeground(Color.RED);
+        jlStatusError.setHorizontalAlignment(JLabel.CENTER);
+        jpStatus.add(jlStatusError);
+        jpMainPanel.add(jpStatus);
+
+        // Ajout des champs utiles pour le contrat
+        JPanel jpContract = new JPanel();
+        JLabel jlContract = new JLabel("Contrat : ");
+        jpContract.add(jlContract);
+        jtfContract = new JTextField("contrat", 7);
+        jpContract.add(jtfContract);
+        jlContractError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlContractError.setForeground(Color.RED);
+        jlContractError.setHorizontalAlignment(JLabel.CENTER);
+        jpContract.add(jlContractError);
+        jpMainPanel.add(jpContract);
 
         JButton add = new JButton("Ajouter");
         setButtonConfig(add);
@@ -125,17 +222,20 @@ public class AddStaff extends GenericWindow {
         add.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                inputError.disableError();
+                disableError();
                 controller.resetError();
                 System.out.println("ajout");
-                lastName = input.getInputLastName();
-                firstName = input.getInputFirstName();
-                avs = input.getInputAVS();
-                email = input.getEMailInput();
-                address = input.getInputAddress();
-                city = input.getInputCity();
-                npa = input.getInputNPA();
-                phone = input.getInputPhone();
+                lastName = jtfLastNameInput.getText();
+                firstName = jtfLastNameInput.getText();
+                avs = jtfAVSInput.getText();
+                email = jtfEmail.getText();
+                address = jtfAddress.getText();
+                city = jtfCity.getText();
+                npa = jtfNPA.getText();
+                phone = jtfPhone.getText();
+                supervisor = jtfSupervisor.getText();
+                status = jtfStatus.getText();
+                contract = jtfContract.getText();
                 controller.checkFirstNameInput(firstName);
                 controller.checkLastNameInput(lastName);
                 controller.checkAVSInput(avs);
@@ -149,40 +249,63 @@ public class AddStaff extends GenericWindow {
         configFrame(getJfFrame(), this);
     }
 
-    public void setFirstNameError(String error) {
-        inputError.setFirstNameError(error);
+    public void disableError() {
+        jlLastNameError.setVisible(false);
+        jlFirstNameError.setVisible(false);
+        jlBirthdayError.setVisible(false);
+        jlAVSError.setVisible(false);
+        jlAddressError.setVisible(false);
+        jlCityError.setVisible(false);
+        jlNPAError.setVisible(false);
+        jlEmailError.setVisible(false);
+        jlPhoneError.setVisible(false);
+        jlStatusError.setVisible(false);
+        jlSupervisorError.setVisible(false);
+        jlContractError.setVisible(false);
     }
 
-    public void setLastNameError(String error) {
-        inputError.setLastNameError(error);
+    public void setJlFirstNameError(String error) {
+        jlFirstNameError.setToolTipText(error);
+        jlFirstNameError.setVisible(true);
     }
 
-    public void setBirthdayError(String error) {
-        inputError.setBirthdayError(error);
+    public void setJlLastNameError(String error) {
+        jlLastNameError.setToolTipText(error);
+        jlLastNameError.setVisible(true);
+    }
+
+    public void setJlBirthdayError(String error) {
+        jlBirthdayError.setToolTipText(error);
+        jlBirthdayError.setVisible(true);
     }
 
     public void setAVSError(String error) {
-        inputError.setAVSError(error);
+        jlAVSError.setToolTipText(error);
+        jlAVSError.setVisible(true);
     }
 
-    public void setEmailError(String error) {
-        inputError.setEMailError(error);
+    public void setJlEmailError(String error) {
+        jlEmailError.setToolTipText(error);
+        jlEmailError.setVisible(true);
     }
 
-    public void setAddressError(String error) {
-        inputError.setAddressError(error);
+    public void setJlAddressError(String error) {
+        jlAddressError.setToolTipText(error);
+        jlAddressError.setVisible(true);
     }
 
-    public void setCityError(String error) {
-        inputError.setCityError(error);
+    public void setJlCityError(String error) {
+        jlCityError.setToolTipText(error);
+        jlCityError.setVisible(true);
     }
 
     public void setNPAError(String error) {
-        inputError.setNPAError(error);
+        jlNPAError.setToolTipText(error);
+        jlNPAError.setVisible(true);
     }
 
-    public void setPhoneError(String error) {
-        inputError.setPhoneError(error);
+    public void setJlPhoneError(String error) {
+        jlPhoneError.setToolTipText(error);
+        jlPhoneError.setVisible(true);
     }
-
 }
