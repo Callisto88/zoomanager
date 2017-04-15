@@ -45,7 +45,7 @@ public class StaffModifyPanel extends GenericWindow{
         jpMainPanel.add(modifyLabel);
 
         /**
-         * Permet d'ajouter un champ en plus lors de la séléction
+         * Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
          */
         newLabel.addActionListener(new ActionListener() {
             @Override
@@ -87,6 +87,9 @@ public class StaffModifyPanel extends GenericWindow{
         this.setMinimumSize(new Dimension(200,400));
     }
 
+    /**
+     * Méthode pour ajouter le nom de famille au panneaux de modification
+     */
     private void addLastName(){
         JPanel lastNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Nom : ");
@@ -97,6 +100,9 @@ public class StaffModifyPanel extends GenericWindow{
         System.out.println("modif Nom");
     }
 
+    /**
+     * Méthode pour ajouter le prénom au panneaux de modification
+     */
     private void addFirstName(){
         JPanel firstNamePanel = new JPanel();
         JLabel firstNameLabel = new JLabel("Prénom : ");
@@ -107,6 +113,9 @@ public class StaffModifyPanel extends GenericWindow{
         System.out.println("modif Prénom");
     }
 
+    /**
+     * Méthode pour ajouter l'e-mail au panneaux de modification
+     */
     private void addEMail(){
         JPanel emailPanel = new JPanel();
         JLabel emailLabel = new JLabel("Adresse E-Mail : ");
@@ -117,6 +126,9 @@ public class StaffModifyPanel extends GenericWindow{
         System.out.println("modif E-Mail");
     }
 
+    /**
+     * Méthode pour ajouter l'adresse au panneaux de modification
+     */
     private void addAddress(){
         JPanel addressPanel = new JPanel();
         JLabel addressLabel = new JLabel("Adresse : ");
@@ -127,6 +139,9 @@ public class StaffModifyPanel extends GenericWindow{
         System.out.println("modif Adresse");
     }
 
+    /**
+     * Méthode pour ajouter le téléphone au panneaux de modification
+     */
     private void addPhone(){
         JPanel telephonePanel = new JPanel();
         JLabel telephoneLabel = new JLabel("Téléphone : ");
@@ -137,6 +152,9 @@ public class StaffModifyPanel extends GenericWindow{
         System.out.println("modif Téléphone");
     }
 
+    /**
+     * Méthode pour ajouter le superviseur au panneaux de modification
+     */
     private void addSupervisor(){
         JPanel npaPanel = new JPanel();
         JLabel npaLabel = new JLabel("Responsable : ");

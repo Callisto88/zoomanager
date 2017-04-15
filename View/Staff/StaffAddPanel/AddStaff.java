@@ -15,10 +15,10 @@ import View.*;
  * Fenêtre principale pour l'ajout de personnel
  */
 public class AddStaff extends GenericWindow {
-    AddStaffInputError inputError = null;
-    ErrorController error = null;
+    // Controlleur de la fenêtre pour faire remonté les informations
     private AddStaffController controller;
-    private AddStaffInput input = null;
+
+    // String pour enregistrer la saisie.
     private String lastName;
     private String firstName;
     private String avs;
@@ -31,6 +31,7 @@ public class AddStaff extends GenericWindow {
     private String status;
     private String contract;
 
+    // Champs de saisie
     private JTextField jtfLastNameInput;
     private JTextField jtfFirstNameInput;
     private JTextField jtfBirthdayInput;
@@ -44,6 +45,7 @@ public class AddStaff extends GenericWindow {
     private JTextField jtfStatus;
     private JTextField jtfContract;
 
+    // Label d'erreur pour les différents champs
     private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
     private JLabel jlFirstNameError = new JLabel("*", JLabel.CENTER);
     private JLabel jlBirthdayError = new JLabel("*", JLabel.CENTER);
@@ -249,6 +251,9 @@ public class AddStaff extends GenericWindow {
         configFrame(getJfFrame(), this);
     }
 
+    /**
+     * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
+     */
     public void disableError() {
         jlLastNameError.setVisible(false);
         jlFirstNameError.setVisible(false);
@@ -264,46 +269,91 @@ public class AddStaff extends GenericWindow {
         jlContractError.setVisible(false);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlFirstNameError(String error) {
         jlFirstNameError.setToolTipText(error);
         jlFirstNameError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlLastNameError(String error) {
         jlLastNameError.setToolTipText(error);
         jlLastNameError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlBirthdayError(String error) {
         jlBirthdayError.setToolTipText(error);
         jlBirthdayError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setAVSError(String error) {
         jlAVSError.setToolTipText(error);
         jlAVSError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlEmailError(String error) {
         jlEmailError.setToolTipText(error);
         jlEmailError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlAddressError(String error) {
         jlAddressError.setToolTipText(error);
         jlAddressError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlCityError(String error) {
         jlCityError.setToolTipText(error);
         jlCityError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setNPAError(String error) {
         jlNPAError.setToolTipText(error);
         jlNPAError.setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
+     * en plus de mettre en information sur l'astérix le problème
+     * @param error permet de spécifier ce qui à déclenché l'erreur
+     */
     public void setJlPhoneError(String error) {
         jlPhoneError.setToolTipText(error);
         jlPhoneError.setVisible(true);

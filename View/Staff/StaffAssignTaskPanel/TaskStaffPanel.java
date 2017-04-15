@@ -21,6 +21,8 @@ public class TaskStaffPanel extends GenericWindow{
         JLabel jlPersonne = new JLabel(personne.getPrenom() + " " + personne.getNom());
         jpMainPanel.add(jlPersonne);
 
+        // Boucle permettant de crée les boutons correspondant au tâches non-assignés, et les efface
+        // en attribuant la tache sélectionné (cliqué) à la personne
         ArrayList<JButton> buttons = new ArrayList<>();
         for(int i = 0; i < tasks.size(); ++i){
             JButton task = new JButton(tasks.get(i).getDescription());
@@ -39,6 +41,7 @@ public class TaskStaffPanel extends GenericWindow{
             });
         }
 
+        // Permet d'ajouter chaque bouttons au pannel
         for(int i = 0; i < buttons.size(); ++i){
             jpMainPanel.add(buttons.get(i));
             System.out.println(buttons.get(i).getName());

@@ -47,6 +47,7 @@ public class StaffView extends GenericWindow {
 
         JPanel jpLeftTitle = new JPanel();
 
+        // Permet d'ajouter le Panel de Gauche qui contiendra le tableau et les bouton d'impression et d'ajout de personnel
         jpMainPanel.add(jpLeft);
 
         JLabel jlStock = new JLabel("Listes du personnel");
@@ -100,16 +101,17 @@ public class StaffView extends GenericWindow {
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbCreateListOrder, gbcStockBouton);
 
-/*
+        // Création de l'objet pour interragir avec la DB
         DBInteraction querry = null;
         try {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
-/*
+
         ArrayList<Personne> tab = null;
 
+        // Permet de récupérer l'Arraylist du personnel
         try{
             tab = querry.selAllFirstLastNameEmployee();
         } catch (ExceptionDataBase exceptionDB){
@@ -117,9 +119,10 @@ public class StaffView extends GenericWindow {
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
         }
-*/
+
         ArrayList<Personne> personnes = new ArrayList<>();
         Vector<Vector<Object>> tableau = new Vector<>();
+        /*
         Personne p = new Personne(15, "3769796628117", "Rachel", "Martin", 15, "rmartine@apple.com", "31-(687)486-2730", new Date(1985-12-15), 2, "externe", new Date(2000-12-15), "CDD");
         Personne p1 = new Personne(2, "3712345698117", "Betty", "Boop", 1, "bettyboop@msn.com", "41-(687)123-8514", new Date(1966-11-19), 2, "interne", new Date(2000-12-15), "CDI");
         Personne p2 = new Personne(5, "1298546628117", "Bob", "Dylan", 3, "b.d@yahoo.com", "44-(456)789-3657", new Date(1982-02-21), 3, "externe", new Date(2000-12-15), "CDD");
@@ -136,16 +139,15 @@ public class StaffView extends GenericWindow {
         personnes.add(p2);
         personnes.add(p3);
         personnes.add(p4);
-
-/*
-        for(int i = 0; i < data.length; ++i){
-            for(int j = 0; j < data[i].length; ++i){
-                System.out.println(data[j].length);
-                System.out.println(tab[i][j]);
-                data[i][j] = tab[i][j];
-            }
-        }
         */
+
+        // Boucle permettant de mettre dans un ArrayList les personnes pour pouvoir travailler encore dessus plus tard
+        // permet d'ajouter au tableau les champs choisis par la méthode ToString des Personne
+        for(int i = 0; i < tab.size(); ++i){
+            personnes.add(tab.get(i));
+             tableau.add(tab.get(i).toVector());
+        }
+
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
@@ -154,6 +156,7 @@ public class StaffView extends GenericWindow {
         JPanel jpTableStock = new JPanel();
         jpTableStock.setPreferredSize(new Dimension(800, 500));
 
+        // permet de crée le tableau de saisie
         JTable jtTable = new JTable(new MyModelTable(tableau, columnName)){
             public boolean isCellEditable(int row, int column){
                 if(column == 4){
@@ -163,8 +166,10 @@ public class StaffView extends GenericWindow {
             }
         };
 
+        // Permet de capturer l'action du clic, et crée le panel de droite avec les détails des employées
         jtTable.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
+                jpRight.removeAll();
                 System.out.println(jtTable.getSelectedRow());
                 System.out.println(tableau.get(jtTable.getSelectedRow()));
                 System.out.println();
@@ -202,69 +207,10 @@ public class StaffView extends GenericWindow {
         JScrollPane jspStock = new JScrollPane(jtTable);
         jspStock.setPreferredSize(new Dimension(700, 450));
 
-
+        // permet d'ajouter le tableau pour obtenir une liste déroulante (!!!!pas sur)
         jpTableStock.add(jspStock);
         jpLeft.add(jpTableStock, gbcLeft);
 
-/*
-        // Création de notre boutton d'ajout de personnel
-        JButton addPersonnelButton = new JButton("Ajout de personnel");
-        JPanel addPersonnel = new JPanel();
-        addPersonnel.add(addPersonnelButton);
-        top.add(addPersonnel);
-        this.add(top, BorderLayout.NORTH);
-
-        // permet de demander l'instanciation de la fenêtre d'ajout de personnel
-        addPersonnelButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                controller.addView();
-                System.out.println("ajout personnel");
-            }
-        });
-
-        JPanel bottom = new JPanel(new FlowLayout(FlowLayout.LEFT, 30, 10));
-        // Bouton de modification
-        JButton modify = new JButton("Modification");
-        JPanel panelModify = new JPanel();
-        panelModify.add(modify);
-        bottom.add(modify);
-        bottom.add(Box.createHorizontalStrut(150));
-
-        // permet de demander l'instanciation de la fenêtre de modification de personnel
-        modify.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("modification personnel");
-                Personne personne = new Personne();
-                personne.setNom("paul");
-                personne.setPrenom("marcel");
-                personne.setAdresse(1);
-                personne.setResponsable(3);
-                personne.setEmail("marcel.paul@test.ch");
-                personne.setTelephone("1234567890");
-                controller.modifyView(personne);
-            }
-        });
-
-        // Bouton d'assignation de taches
-        JButton task = new JButton("Ajout de Tâches");
-        JPanel taskPanel = new JPanel();
-        taskPanel.add(task);
-        bottom.add(taskPanel);
-
-        // permet de demander l'instanciation de la fenêtre d'assignation de tâches au personnel
-        task.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Assignation taches");
-                controller.assignTaskView();
-            }
-        });
-
-        this.add(bottom, BorderLayout.SOUTH);
-        */
-        //FlowLayout flRight = new FlowLayout(FlowLayout.CENTER);
 
         jpRight = new JPanel();
         //jpRight.setLayout(flRight);
@@ -286,6 +232,7 @@ public class StaffView extends GenericWindow {
         configFrame(getJfFrame(), this);
     }
 
+    // obsolète
     public void revalidateView(){
         this.setVisible(true);
         jpMainPanel.setVisible(true);
@@ -293,6 +240,11 @@ public class StaffView extends GenericWindow {
         getJfFrame().setVisible(true);
     }
 
+    /**
+     * Méthode permettant d'afficher les informations d'un personnel sur le panneau de droite
+     * une fois que l'utilisateur clique sur une colonne
+     * @param personne personne dont on souhaite afficher les informations
+     */
     private void setRightPanel(Personne personne){
 
         // Ajout du champ de détails pour le nom
@@ -411,6 +363,48 @@ public class StaffView extends GenericWindow {
         jpContract.add(Box.createHorizontalStrut(50));
         jpContract.add(jlContractInfo);
         jpRight.add(jpContract);
-        
+
+        // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
+        JPanel jpButtons = new JPanel();
+
+        //Ajout du bouton de suppression de l'employé actuel
+        JButton jbDelete = new JButton("Suppression de l'employé");
+        jpButtons.add(jbDelete);
+        jpButtons.add(Box.createHorizontalStrut(20));
+        jbDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Suppression de personnel");
+                controller.erreurPopup("Voulez vous réelement supprimer " + personne.getPrenom() + " " + personne.getNom());
+            }
+        });
+
+
+        // Ajout du bouton d'édition du personnel
+        JButton jbEdit = new JButton("Modification");
+        jpButtons.add(jbEdit);
+        jpButtons.add(Box.createHorizontalStrut(20));
+        jbEdit.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("modification du personnel");
+                controller.modifyView(personne);
+            }
+        });
+
+        // Ajout du bouton d'assignation de taches
+        JButton jbAssignTask = new JButton("Assignation de tâches");
+        jpButtons.add(jbAssignTask);
+        jbAssignTask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Assignation de tâches");
+                controller.assignTaskView(personne);
+            }
+        });
+
+        // Ajout des bouttons dans le panel de droite
+        jpRight.add(jpButtons);
+
     }
 }
