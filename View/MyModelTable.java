@@ -57,8 +57,6 @@ public class MyModelTable extends AbstractTableModel{
     }
 
     public boolean isCellEditable(int row, int column){
-        for(int i = 0; i < column; i++){
-            return columnEditable[i];
-        }
+            return columnEditable[column];
     }
 }
