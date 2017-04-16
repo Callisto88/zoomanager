@@ -536,7 +536,7 @@ public class DBInteraction {
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
-        Enclos data;
+        Enclos data = new Enclos();
 
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun enclos correspondants");
@@ -544,7 +544,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data = new Enclos(rs.getInt("id"), rs.getInt("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getString("surface"));
             }
         }
 
@@ -615,6 +615,7 @@ public class DBInteraction {
      *
      * @return void
      */
+    /*
     public void insertEvenement (Evenement evenement) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_EVENEMENT);
@@ -626,6 +627,7 @@ public class DBInteraction {
 
         this.stmt.executeUpdate();
     }
+    */
 
     /**
      * Permet d'insérer un événement dans la DB à partir d'un objet Evenement

@@ -24,6 +24,9 @@ public class Enclos {
     private int secteur;
     private String surface;
 
+    public Enclos() {
+    }
+
     public Enclos(int id, int nom, int secteur, String surface) {
         this.id = id;
         this.nom = nom;
