@@ -408,7 +408,7 @@ public class DBInteraction {
     public void delAnimal(int id) throws ExceptionDataBase, SQLException {
 
         Animal a = new Animal(id);
-        if (a == null)
+        if (a.getNom().length() == 0)
             throw new ExceptionDataBase("L'animal n'existe pas dans la DB");
 
         this.stmt = null;
@@ -530,12 +530,25 @@ public class DBInteraction {
     /*
     ENCLOS
      */
-    public ArrayList<Enclos> selEnclos(int id) throws SQLException, ExceptionDataBase {
+    public Enclos selEnclos(int id) throws SQLException, ExceptionDataBase {
 
         this.stmt = db.con.prepareStatement(SEL_ENCLOS);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
-        return creerTableauEnclos(rs);
+
+        Enclos data;
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun enclos correspondants");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data = new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                        rs.getInt("secteur"), rs.getString("surface")));
+            }
+        }
+
+        return data;
 
     }
 
@@ -863,7 +876,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Evenement(rs.getInt("id"), rs.getString("description"),
-                        rs.getDate("date"), rs.getInt("type")));
+                        rs.getTimestamp("date"), rs.getInt("type")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
