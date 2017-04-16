@@ -74,7 +74,7 @@ public class AnimalTab extends GenericWindow {
 
 
         JPanel jpTableAnimal = new JPanel();
-        jpTableAnimal.setPreferredSize(new Dimension(820, 655));
+        jpTableAnimal.setPreferredSize(new Dimension(820, 720));
 
         //Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
 
@@ -109,15 +109,15 @@ public class AnimalTab extends GenericWindow {
             vAnimal.add(animal.toVector(1));
             //age = now - animal.getAnneeNaissance();
             //vAnimal.lastElement().elementAt(4) = age;
-            for (Enclos enclos : enclosDB) {
-                if (animal.getEnclos() != 0) {
+            if (animal.getEnclos() != 0) {
+                for (Enclos enclos : enclosDB) {
+
                     if (enclos.getId() == animal.getEnclos()) {
                         vAnimal.lastElement().add(enclos.getNom());
                     }
                 }
-                else{
-                    vAnimal.lastElement().add("");
-                }
+            } else {
+                vAnimal.lastElement().add("");
             }
         }
 
@@ -131,7 +131,7 @@ public class AnimalTab extends GenericWindow {
         jtTable.setPreferredScrollableViewportSize(d);
 
         JScrollPane jspAnimal = new JScrollPane(jtTable);
-        jspAnimal.setPreferredSize(new Dimension(820, 640));
+        jspAnimal.setPreferredSize(new Dimension(820, 710));
 
 
         jpTableAnimal.add(jspAnimal);
