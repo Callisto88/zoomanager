@@ -22,11 +22,11 @@ import java.util.Vector;
 public class AnimalTab extends GenericWindow {
     private String[] columnName = {"Nom", "Race", "Sexe", "Age", "Enclos"};
 
-    public AnimalTab(){
+    public AnimalTab() {
         super("Animaux");
 
         GridBagLayout gblLeft = new GridBagLayout();
-        GridBagConstraints gbcLeft  = new GridBagConstraints();
+        GridBagConstraints gbcLeft = new GridBagConstraints();
 
         JPanel jpLeft = new JPanel();
         jpLeft.setLayout(gblLeft);
@@ -43,8 +43,8 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        gbcLeft.insets = new Insets(5,5,5,5);
-        jpLeft.add(jpLeftTitle,gbcLeft);
+        gbcLeft.insets = new Insets(5, 5, 5, 5);
+        jpLeft.add(jpLeftTitle, gbcLeft);
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 1;
@@ -110,8 +110,13 @@ public class AnimalTab extends GenericWindow {
             //age = now - animal.getAnneeNaissance();
             //vAnimal.lastElement().elementAt(4) = age;
             for (Enclos enclos : enclosDB) {
-                if(enclos.getId() == animal.getEnclos()){
-                    vAnimal.lastElement().add(enclos.getNom());
+                if (animal.getEnclos() != 0) {
+                    if (enclos.getId() == animal.getEnclos()) {
+                        vAnimal.lastElement().add(enclos.getNom());
+                    }
+                }
+                else{
+                    vAnimal.lastElement().add("");
                 }
             }
         }
@@ -138,7 +143,7 @@ public class AnimalTab extends GenericWindow {
          */
 
         GridBagLayout gblRight = new GridBagLayout();
-        GridBagConstraints gbcRight  = new GridBagConstraints();
+        GridBagConstraints gbcRight = new GridBagConstraints();
 
         JPanel jpRight = new JPanel();
         jpRight.setLayout(gblRight);
@@ -155,7 +160,7 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridx = 0;
         gbcRight.anchor = GridBagConstraints.NORTH;
         gbcRight.gridy = 0;
-        jpRight.add(jpRightTitle,gbcRight);
+        jpRight.add(jpRightTitle, gbcRight);
 
         gbcRight.gridx = 0;
         gbcRight.gridy = 1;
@@ -183,8 +188,6 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
-
-
 
 
         configFrame(getJfFrame(), this);
