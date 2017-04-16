@@ -620,7 +620,7 @@ public class DBInteraction {
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
-        this.stmt.setDate(3, evenement.getDate());
+        this.stmt.setTimestamp(3, evenement.getDate());
         this.stmt.setInt(4, evenement.getType());
 
         this.stmt.executeUpdate();
