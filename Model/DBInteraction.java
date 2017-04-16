@@ -1,9 +1,5 @@
 package Model;
 
-import Model.Tools.DateSQL;
-
-import java.sql.Date;
-
 import java.sql.*;
 import java.util.*;
 
@@ -79,7 +75,11 @@ public class DBInteraction {
             "FROM Animal;";
     // Récupérer tous les paramètre d'un animal
     private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
-    // -----------------------------------------------------------------------------------------------------------------
+    // ----------------------------------------------------------------------------------x-------------------------------
+    // ENCLOS :
+    // ----------------------------------------------------------------------------------x-------------------------------
+    private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
+
     // EVENEMENT :
     // Liste de tous les événements qui n'ont pas de personne attribué
     private static final String SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE = "SELECT * " +
@@ -344,7 +344,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Animal>
      */
-    public ArrayList<Animal> getAnimals() throws SQLException, ExceptionDataBase {
+    public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
         this.stmt = db.con.prepareStatement(SEL_ANIMAL);
         ResultSet rs = this.stmt.executeQuery();
         return creerTableauAnimal(rs);
@@ -368,6 +368,29 @@ public class DBInteraction {
                         rs.getString("sexe"), rs.getDate("dateNaissance"),
                         rs.getInt("enclos"), rs.getString("origine"),
                         rs.getString("race"), rs.getDate("dateDeces")));
+            }
+        }
+        // Fermeture de la DB obligatoire après le ResultSet !
+        // Doit être ici !
+
+        return data;
+    }
+
+    /**
+     * Permet de créer une ArrayList d'Animal à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     * @return ArrayList<Animal>
+     */
+    private ArrayList<Enclos> creerTableauEnclos(ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Enclos> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun enclos correspondants");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                        rs.getInt("secteur"), rs.getString("surface")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -513,6 +536,19 @@ public class DBInteraction {
     }
 
 
+    /*
+    ENCLOS
+     */
+    public ArrayList<Enclos> selEnclos(int id) throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_ENCLOS);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+        return creerTableauEnclos(rs);
+
+    }
+
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
@@ -523,6 +559,7 @@ public class DBInteraction {
      * @return ArrayList<Evenement>
      */
     public ArrayList<Evenement> getAllUnassignedTaskEmployee() throws ExceptionDataBase, SQLException {
+
         this.stmt = db.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE);
         ResultSet rs = this.stmt.executeQuery();
 
