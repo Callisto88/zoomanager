@@ -169,9 +169,9 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridy = 0;
         jpRight.add(jpRightTitle, gbcRight);
 
+        // deuxième ligne qui contient les boutons modifier et ajouter
         gbcRight.gridx = 0;
         gbcRight.gridy = 1;
-
 
         JPanel jpDetAnimal = new JPanel();
         jpRight.add(jpDetAnimal, gbcRight);
@@ -181,7 +181,6 @@ public class AnimalTab extends GenericWindow {
 
         JButton jbAdd = new JButton("Ajouter");
         setButtonConfig(jbAdd);
-
 
         GridBagLayout gblDetAnimalButton = new GridBagLayout();
         jpDetAnimal.setLayout(gblDetAnimalButton);
@@ -197,6 +196,7 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
 
 
+        // 3 e ligne (et +) : formulaire avec les détails d'un animal
         JLabel jlEnclos = new JLabel("Enclos :");
         gbcDetAnimalButton.gridx = 0;
         gbcDetAnimalButton.gridy = 1;
@@ -209,9 +209,10 @@ public class AnimalTab extends GenericWindow {
         }
 
         JComboBox jcEnclos = new JComboBox(sEnclos);
-        jcEnclos.setEditable(true);
+        //jcEnclos.setEditable(true);
         AutoCompletion ac = new AutoCompletion(jcEnclos);
         ac.setStrict(false);
+        jcEnclos.setSelectedIndex(2);
 
 
         gbcDetAnimalButton.gridx = 1;
