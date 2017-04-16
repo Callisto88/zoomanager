@@ -40,6 +40,7 @@ public class ManagerDashboard extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Lancement fenêtre Stock");
+                controller.StockView();
             }
         });
 

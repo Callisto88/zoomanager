@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Staff.StaffController;
 import View.ManagerDashboard.ManagerDashboard;
+import View.Stock.StockTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,9 @@ import java.awt.*;
  * Controlleur pour la fenêtre du dashboard
  */
 public class ManagerDashboardController {
-    StaffController persControl = null;
+    private StaffController persControl = null;
     // Ajout des autres controlleur
+    private StockTab stStock = null;
 
     // Fenêtre principale
     JFrame f = null;
@@ -51,5 +53,9 @@ public class ManagerDashboardController {
     public void employeeView() {
         persControl = new StaffController();
 
+    }
+
+    public void StockView() {
+        stStock = new StockTab();
     }
 }
