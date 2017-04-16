@@ -350,7 +350,7 @@ public class StaffView extends GenericWindow {
 
         // Ajout du champ de détails pour le type de contrat
         JPanel jpContract = new JPanel();
-        JLabel jlContract = new JLabel("E-Mail : ");
+        JLabel jlContract = new JLabel("Contrat : ");
         JLabel jlContractInfo = new JLabel(personne.getTypeContrat());
         jpContract.add(jlContract);
         jpContract.add(Box.createHorizontalStrut(50));
