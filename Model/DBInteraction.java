@@ -536,7 +536,7 @@ public class DBInteraction {
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
-        Enclos data = new Enclos();
+        Enclos data = null;
 
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun enclos correspondants");
@@ -549,7 +549,6 @@ public class DBInteraction {
         }
 
         return data;
-
     }
 
 
@@ -615,19 +614,17 @@ public class DBInteraction {
      *
      * @return void
      */
-    /*
     public void insertEvenement (Evenement evenement) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_EVENEMENT);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
-        this.stmt.setDate(3, evenement.getDate());
+        this.stmt.setTimestamp(3, evenement.getDate());
         this.stmt.setInt(4, evenement.getType());
 
         this.stmt.executeUpdate();
     }
-    */
 
     /**
      * Permet d'insérer un événement dans la DB à partir d'un objet Evenement
