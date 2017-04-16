@@ -47,12 +47,11 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        //gbcLeft.insets = new Insets(15,15,15,15);
+        gbcLeft.insets = new Insets(5,5,5,5);
         jpLeft.add(jpLeftTitle,gbcLeft);
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 1;
-
 
         JPanel jpButtonAnimal = new JPanel();
         jpLeft.add(jpButtonAnimal, gbcLeft);
@@ -65,7 +64,7 @@ public class AnimalTab extends GenericWindow {
         jpButtonAnimal.setLayout(gblButtonAnimal);
         GridBagConstraints gbcButtonAnimal = new GridBagConstraints();
 
-        gbcButtonAnimal.insets = new Insets(15, 20, 15, 30);
+        gbcButtonAnimal.insets = new Insets(5, 5, 5, 5);
         gbcButtonAnimal.gridx = 0;
         gbcButtonAnimal.gridy = 0;
         jpButtonAnimal.add(jbPrint, gbcButtonAnimal);
@@ -75,14 +74,14 @@ public class AnimalTab extends GenericWindow {
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
-        gbcLeft.weighty = 20;
+        gbcLeft.weighty = 10;
 
 
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setPreferredSize(new Dimension(820, 655));
 
         Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
-        Animal sTest2 = new Animal("Michel", "Femelle", new java.sql.Date(999999999), 2, "Brésil", "Aigle");
+
 
         Vector<Vector<Object>> vAnimal = new Vector<>();
 
@@ -110,11 +109,8 @@ public class AnimalTab extends GenericWindow {
         }
 
         Vector<Object> sTest = sTest1.toVector(1);
-        Vector<Object> sTest3 = sTest2.toVector(1);
-
 
         vAnimal.add(sTest);
-        vAnimal.add(sTest3);
 
         JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
 

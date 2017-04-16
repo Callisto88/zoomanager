@@ -17,8 +17,8 @@ abstract public class GenericWindow extends JPanel {
     static private int WINDOW_TITLE_FONT_SIZE = 15;
     static private int TABLE_FONT_SIZE = 15;
     static private int ERROR_MESSAGE_FONT_SIZE = 15;
-    static private int MIN_WIDTH = 1366;
-    static private int MIN_HEIGHT = 810;
+    static private int MIN_WIDTH = 1440;
+    static private int MIN_HEIGHT = 900;
     protected JPanel jpMainPanel;
     protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     Dimension dim;
@@ -97,7 +97,7 @@ abstract public class GenericWindow extends JPanel {
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-        jfFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
+        jfFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         //jfFrame.getContentPane().add(gw);
         jfFrame.pack();
         jfFrame.setVisible(true);

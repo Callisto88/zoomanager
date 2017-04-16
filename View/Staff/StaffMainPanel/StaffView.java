@@ -157,14 +157,7 @@ public class StaffView extends GenericWindow {
         jpTableStock.setPreferredSize(new Dimension(800, 500));
 
         // permet de crée le tableau de saisie
-        JTable jtTable = new JTable(new MyModelTable(tableau, columnName)){
-            public boolean isCellEditable(int row, int column){
-                if(column == 4){
-                    return true;
-                };
-                return false;
-            }
-        };
+        JTable jtTable = new JTable(new MyModelTable(tableau, columnName));
 
         // Permet de capturer l'action du clic, et crée le panel de droite avec les détails des employées
         jtTable.addMouseListener(new MouseListener() {

@@ -50,7 +50,7 @@ public class StockTab extends GenericWindow {
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        //gbcLeft.insets = new Insets(15,15,15,15);
+        gbcLeft.insets = new Insets(5,5,5,5);
         jpLeft.add(jpLeftTitle,gbcLeft);
 
         gbcLeft.gridx = 0;
@@ -71,7 +71,7 @@ public class StockTab extends GenericWindow {
         jpButtonStock.setLayout(gblStockBoutton);
         GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-        gbcStockBouton.insets = new Insets(15, 50, 15, 50);
+        gbcStockBouton.insets = new Insets(10, 30, 10, 30);
         gbcStockBouton.gridx = 0;
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbPrint, gbcStockBouton);
