@@ -109,7 +109,6 @@ public class AnimalTab extends GenericWindow {
             vAnimal.add(animal.toVector(1));
             //age = now - animal.getAnneeNaissance();
             //vAnimal.lastElement().elementAt(4) = age;
-            vAnimal.lastElement().add(animal.getEnclos());
             for (Enclos enclos : enclosDB) {
                 if(enclos.getId() == animal.getEnclos()){
                     vAnimal.lastElement().add(enclos.getNom());

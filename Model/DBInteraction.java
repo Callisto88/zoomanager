@@ -79,6 +79,7 @@ public class DBInteraction {
     // ENCLOS :
     // ----------------------------------------------------------------------------------x-------------------------------
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
+    private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
 
     // EVENEMENT :
     // Liste de tous les événements qui n'ont pas de personne attribué
@@ -545,6 +546,27 @@ public class DBInteraction {
             while (rs.next()) {
                 data = new Enclos(rs.getInt("id"), rs.getString("nom"),
                         rs.getInt("secteur"), rs.getString("surface"));
+            }
+        }
+
+        return data;
+    }
+
+
+    public ArrayList<Enclos> selEnclos() throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_ENCLOS_ALL);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Enclos> data = new ArrayList<>();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun enclos correspondants");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
+                        rs.getInt("secteur"), rs.getString("surface")));
             }
         }
 
