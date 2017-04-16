@@ -536,7 +536,7 @@ public class DBInteraction {
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
-        Enclos data;
+        Enclos data = null;
 
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun enclos correspondants");
@@ -544,12 +544,11 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data = new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getString("surface"));
             }
         }
 
         return data;
-
     }
 
 
