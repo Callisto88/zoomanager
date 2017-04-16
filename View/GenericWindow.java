@@ -17,8 +17,8 @@ abstract public class GenericWindow extends JPanel {
     static private int WINDOW_TITLE_FONT_SIZE = 15;
     static private int TABLE_FONT_SIZE = 15;
     static private int ERROR_MESSAGE_FONT_SIZE = 15;
-    static private int MIN_WIDTH = 1440;
-    static private int MIN_HEIGHT = 900;
+    static private int MIN_WIDTH = 1366;
+    static private int MIN_HEIGHT = 810;
     protected JPanel jpMainPanel;
     protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     Dimension dim;

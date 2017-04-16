@@ -1,14 +1,6 @@
 package View.Animal;
 
-import Model.Animal;
-import Model.Felin;
-import Model.Oiseau;
-import Model.Primate;
-import Model.Race;
-import Model.Reptile;
-import Model.Enclos;
-import Model.Animal_Evenement;
-import Model.DBInteraction;
+import Model.*;
 import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
@@ -19,6 +11,8 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
 
@@ -71,7 +65,7 @@ public class AnimalTab extends GenericWindow {
         jpButtonAnimal.setLayout(gblButtonAnimal);
         GridBagConstraints gbcButtonAnimal = new GridBagConstraints();
 
-        gbcButtonAnimal.insets = new Insets(15, 50, 15, 50);
+        gbcButtonAnimal.insets = new Insets(15, 20, 15, 30);
         gbcButtonAnimal.gridx = 0;
         gbcButtonAnimal.gridy = 0;
         jpButtonAnimal.add(jbPrint, gbcButtonAnimal);
@@ -85,14 +79,42 @@ public class AnimalTab extends GenericWindow {
 
 
         JPanel jpTableAnimal = new JPanel();
-        jpTableAnimal.setPreferredSize(new Dimension(800, 720));
+        jpTableAnimal.setPreferredSize(new Dimension(820, 655));
 
-        Animal sTest1 = new Animal();
-
-        Vector<Object> sTest = sTest1.toVector();
+        Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
+        Animal sTest2 = new Animal("Michel", "Femelle", new java.sql.Date(999999999), 2, "Brésil", "Aigle");
 
         Vector<Vector<Object>> vAnimal = new Vector<>();
+
+        DBInteraction query = null;
+        ArrayList<Animal> animauxDB = new ArrayList<>();
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            animauxDB = query.getAnimals();
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        query = null;
+
+        for (Animal animal : animauxDB) {
+            vAnimal.add(animal.toVector(1));
+        }
+
+        Vector<Object> sTest = sTest1.toVector(1);
+        Vector<Object> sTest3 = sTest2.toVector(1);
+
+
         vAnimal.add(sTest);
+        vAnimal.add(sTest3);
 
         JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
 
@@ -101,7 +123,7 @@ public class AnimalTab extends GenericWindow {
         jtTable.setPreferredScrollableViewportSize(d);
 
         JScrollPane jspAnimal = new JScrollPane(jtTable);
-        jspAnimal.setPreferredSize(new Dimension(700, 700));
+        jspAnimal.setPreferredSize(new Dimension(820, 640));
 
 
         jpTableAnimal.add(jspAnimal);
@@ -122,9 +144,9 @@ public class AnimalTab extends GenericWindow {
 
         jpMainPanel.add(jpRight);
 
-        JLabel jlOrder = new JLabel("Historique Commandes");
-        setTitleConfig(jlOrder);
-        jpRightTitle.add(jlOrder);
+        JLabel jlDetAnimal = new JLabel("Détail animal");
+        setTitleConfig(jlDetAnimal);
+        jpRightTitle.add(jlDetAnimal);
 
         gbcRight.fill = GridBagConstraints.CENTER;
         gbcRight.gridx = 0;
@@ -136,69 +158,31 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridy = 1;
 
 
-        JPanel jpHistoryOrder = new JPanel();
-        //jpHistoryOrder.setLayout(new FlowLayout());
-        jpRight.add(jpHistoryOrder, gbcRight);
+        JPanel jpDetAnimal = new JPanel();
+        jpRight.add(jpDetAnimal, gbcRight);
 
-        JButton jbHistory = new JButton("Historique");
-        setButtonConfig(jbHistory);
+        JButton jbMod = new JButton("Modifier");
+        setButtonConfig(jbMod);
 
-
-        Properties pStartProperties = new Properties();
-        pStartProperties.put("text.today", "Aujourd'hui");
-        pStartProperties.put("text.month", "Mois");
-        pStartProperties.put("text.year", "Année");
-
-        SqlDateModel sdmModel1 = new SqlDateModel();
-        SqlDateModel sdmModel2 = new SqlDateModel();
-
-        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
-        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
-        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
-
-        Properties pEndProperties = new Properties();
-        pEndProperties.put("text.today", "Aujourd'hui");
-        pEndProperties.put("text.month", "Mois");
-        pEndProperties.put("text.year", "Année");
-
-        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModel2, pEndProperties);
-        jdpliEndDatePanel.setPreferredSize(new Dimension(200, 200));
-        JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpliEndDatePanel, new DateLabelFormatter());
-
-        JLabel jlStartDate = new JLabel("De: ");
-        JLabel jlEndDate = new JLabel("A: ");
-
-        GridBagLayout gblOrderBoutton = new GridBagLayout();
-        jpHistoryOrder.setLayout(gblOrderBoutton);
-        GridBagConstraints gbcOrderBouton = new GridBagConstraints();
-
-        gbcOrderBouton.insets = new Insets(15, 30, 15, 30);
-        gbcOrderBouton.gridx = 0;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jbHistory, gbcOrderBouton);
+        JButton jbAdd = new JButton("Ajouter");
+        setButtonConfig(jbAdd);
 
 
-        gbcOrderBouton.gridx = 1;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jlStartDate);
+        GridBagLayout gblDetAnimalButton = new GridBagLayout();
+        jpDetAnimal.setLayout(gblDetAnimalButton);
+        GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
-        gbcOrderBouton.gridx = 2;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderBouton);
-        //jpButtonOrder.add(jbChooseHistory, gbcOrderBouton);
+        gbcDetAnimalButton.insets = new Insets(15, 30, 15, 30);
+        gbcDetAnimalButton.gridx = 0;
+        gbcDetAnimalButton.gridy = 0;
+        jpDetAnimal.add(jbMod, gbcDetAnimalButton);
 
-        gbcOrderBouton.gridx = 3;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jlEndDate);
-
-        gbcOrderBouton.gridx = 4;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderBouton);
-
+        gbcDetAnimalButton.gridx = 1;
+        gbcDetAnimalButton.gridy = 0;
+        jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
 
 
         configFrame(getJfFrame(), this);
-
 
     }
 }

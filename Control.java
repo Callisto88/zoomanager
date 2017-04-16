@@ -4,6 +4,7 @@ import Controller.Staff.AssignStaffTaskController;
 import Controller.Staff.ModifyStaffController;
 import Model.Evenement;
 import Model.Personne;
+import View.Animal.AnimalTab;
 import View.Stock.StockTab;
 
 import java.sql.Date;
@@ -15,8 +16,10 @@ import java.util.ArrayList;
 public class Control {
     public static void main(String[] args) {
         String windowTitle = "Zoo Manager";
-        ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
-        StockTab tab = new StockTab();
+        //ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
+        //StockTab tab = new StockTab();
+
+        AnimalTab ann = new AnimalTab();
         //String[] labels = {"allo", "alhuile", "echo", "bravo", "tango", "caca"};
         //String[] buttonLabel = {"soleil", "fendant", "comptoir", "vaches", "carna", "valais"};
 

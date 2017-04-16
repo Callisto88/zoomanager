@@ -89,7 +89,7 @@ public class StockTab extends GenericWindow {
 
 
         JPanel jpTableStock = new JPanel();
-        jpTableStock.setPreferredSize(new Dimension(800, 720));
+        jpTableStock.setPreferredSize(new Dimension(820, 655));
 
         Stock sTest1 = new Stock("Poisson", 5.0, 7.0, "kg");
 
@@ -116,7 +116,7 @@ public class StockTab extends GenericWindow {
         jtTable.setPreferredScrollableViewportSize(d);
 
         JScrollPane jspStock = new JScrollPane(jtTable);
-        jspStock.setPreferredSize(new Dimension(700, 700));
+        jspStock.setPreferredSize(new Dimension(820, 640));
 
 
         jpTableStock.add(jspStock);
