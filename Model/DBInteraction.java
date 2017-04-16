@@ -79,6 +79,7 @@ public class DBInteraction {
     // ENCLOS :
     // ----------------------------------------------------------------------------------x-------------------------------
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
+    private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
 
     // EVENEMENT :
     // Liste de tous les événements qui n'ont pas de personne attribué
@@ -380,7 +381,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
                         rs.getInt("secteur"), rs.getString("surface")));
             }
         }
@@ -536,20 +537,40 @@ public class DBInteraction {
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
-        Enclos data = new Enclos();
+        Enclos data = null;
 
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun enclos correspondants");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data = new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                data = new Enclos(rs.getInt("id"), rs.getString("nom"),
                         rs.getInt("secteur"), rs.getString("surface"));
             }
         }
 
         return data;
+    }
 
+
+    public ArrayList<Enclos> selEnclos() throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_ENCLOS_ALL);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Enclos> data = new ArrayList<>();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun enclos correspondants");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
+                        rs.getInt("secteur"), rs.getString("surface")));
+            }
+        }
+
+        return data;
     }
 
 
@@ -615,19 +636,17 @@ public class DBInteraction {
      *
      * @return void
      */
-    /*
     public void insertEvenement (Evenement evenement) throws SQLException {
 
         this.stmt = this.db.con.prepareStatement(INSERT_EVENEMENT);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
-        this.stmt.setDate(3, evenement.getDate());
+        this.stmt.setTimestamp(3, evenement.getDate());
         this.stmt.setInt(4, evenement.getType());
 
         this.stmt.executeUpdate();
     }
-    */
 
     /**
      * Permet d'insérer un événement dans la DB à partir d'un objet Evenement
