@@ -13,18 +13,14 @@ import java.awt.event.ActionListener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Properties;
 import java.util.Vector;
 
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.SqlDateModel;
 
 /**
  * Created by Andre on 10.03.2017.
  */
 public class AnimalTab extends GenericWindow {
-    private String[] columnName = {"Nom", "Race", "Sexe", "Age"};
+    private String[] columnName = {"Nom", "Race", "Sexe", "Age", "Enclos"};
 
     public AnimalTab(){
         super("Animaux");
@@ -80,13 +76,14 @@ public class AnimalTab extends GenericWindow {
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setPreferredSize(new Dimension(820, 655));
 
-        Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
-
+        //Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
 
         Vector<Vector<Object>> vAnimal = new Vector<>();
 
         DBInteraction query = null;
         ArrayList<Animal> animauxDB = new ArrayList<>();
+        ArrayList<Enclos> enclosDB = new ArrayList<>();
+        int[] enclos;
 
         try {
             query = new DBInteraction();
@@ -96,6 +93,7 @@ public class AnimalTab extends GenericWindow {
 
         try {
             animauxDB = query.getAnimals();
+            //enclosDB = query.getEnclos();
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
@@ -104,13 +102,20 @@ public class AnimalTab extends GenericWindow {
 
         query = null;
 
+
+        //java.sql.Date now = new java.sql.Date(System.currentTimeMillis());
+        //int age;
+
         for (Animal animal : animauxDB) {
             vAnimal.add(animal.toVector(1));
+            //age = now - animal.getAnneeNaissance();
+            //vAnimal.lastElement().elementAt(4) = age;
+            vAnimal.lastElement().add(animal.getEnclos());
+            //System.out.println(enclosDB.get(animal.getEnclos()).getNom());
         }
 
-        Vector<Object> sTest = sTest1.toVector(1);
-
-        vAnimal.add(sTest);
+        //Vector<Object> sTest = sTest1.toVector(1);
+        //vAnimal.add(sTest);
 
         JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
 
@@ -168,7 +173,7 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.setLayout(gblDetAnimalButton);
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
-        gbcDetAnimalButton.insets = new Insets(15, 30, 15, 30);
+        gbcDetAnimalButton.insets = new Insets(5, 20, 5, 20);
         gbcDetAnimalButton.gridx = 0;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbMod, gbcDetAnimalButton);
@@ -176,6 +181,8 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
+
+
 
 
         configFrame(getJfFrame(), this);
