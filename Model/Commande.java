@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.Date;
+import java.util.Vector;
 
 /**
  *
@@ -44,5 +45,13 @@ public class Commande {
 
     public void setDate(java.sql.Date date) {
         this.date = date;
+    }
+
+    public Vector<Object> toVector(){
+        Vector<Object> vCommande = new Vector<Object>();
+        vCommande.add(id);
+        vCommande.add(date);
+
+        return vCommande;
     }
 }

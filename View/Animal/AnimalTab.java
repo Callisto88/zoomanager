@@ -1,98 +1,80 @@
 package View.Animal;
 
-import View.*;
+import Model.Animal;
+import Model.Felin;
+import Model.Oiseau;
+import Model.Primate;
+import Model.Race;
+import Model.Reptile;
+import Model.Enclos;
+import Model.Animal_Evenement;
+import Model.DBInteraction;
+import View.DateLabelFormatter;
+import View.GenericWindow;
+import View.MyModelTable;
+
 import javax.swing.*;
-import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import java.util.Properties;
+import java.util.Vector;
+
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 
 /**
  * Created by Andre on 10.03.2017.
  */
 public class AnimalTab extends GenericWindow {
+    private String[] columnName = {"Nom", "Race", "Sexe", "Age"};
 
     public AnimalTab(){
-        super("Animal");
+        super("Animaux");
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
 
-        BorderLayout gblRight = new BorderLayout();
-        //GridBagConstraints gbcRight = new GridBagConstraints();
-
         JPanel jpLeft = new JPanel();
-        jpLeft.setBackground(Color.blue);
         jpLeft.setLayout(gblLeft);
 
-        JPanel jpRight = new JPanel();
-        jpRight.setBackground(Color.gray);
-        jpRight.setLayout(gblRight);
-
-        JPanel jpLeftTest = new JPanel();
-        jpLeftTest.setBackground(Color.magenta);
+        JPanel jpLeftTitle = new JPanel();
 
         jpMainPanel.add(jpLeft);
-        jpMainPanel.add(jpRight);
 
         JLabel jlStock = new JLabel("Liste des animaux");
         setTitleConfig(jlStock);
-        jpLeftTest.add(jlStock);
-
+        jpLeftTitle.add(jlStock);
 
         gbcLeft.fill = GridBagConstraints.CENTER;
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        gbcLeft.insets = new Insets(15,15,15,15);
-        jpLeft.add(jpLeftTest,gbcLeft);
-
-        JLabel test = new JLabel("Essai");
-        jpRight.add(test, BorderLayout.WEST);
-
-
-        /*
-        gbcRight.gridx = 1;
-        gbcRight.gridy = 0;
-        jpRight.add(jlLowStock, gbcRight);
-        *
-
-        /***************************************************************/
+        //gbcLeft.insets = new Insets(15,15,15,15);
+        jpLeft.add(jpLeftTitle,gbcLeft);
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 1;
 
-        JPanel jpButtonsAnimal = new JPanel();
-        jpButtonsAnimal.setBackground(Color.cyan);
-        jpLeft.add(jpButtonsAnimal, gbcLeft);
 
-        JButton jbFilterSearch = new JButton("Filtrer/Rechercher");
-        setButtonConfig(jbFilterSearch);
+        JPanel jpButtonAnimal = new JPanel();
+        jpLeft.add(jpButtonAnimal, gbcLeft);
 
         JButton jbPrint = new JButton("Imprimer");
         setButtonConfig(jbPrint);
 
-        JButton jbAddAnimal = new JButton("Ajouter");
-        setButtonConfig(jbAddAnimal);
 
+        GridBagLayout gblButtonAnimal = new GridBagLayout();
+        jpButtonAnimal.setLayout(gblButtonAnimal);
+        GridBagConstraints gbcButtonAnimal = new GridBagConstraints();
 
-        GridBagLayout gblAnimalButtons = new GridBagLayout();
-        jpButtonsAnimal.setLayout(gblAnimalButtons);
-        GridBagConstraints gbcAnimalButtons = new GridBagConstraints();
-
-       // gbcStockBouton.fill = GridBagConstraints.NORTH;
-        //gbcStockBouton.anchor = GridBagConstraints.HORIZONTAL;
-        gbcAnimalButtons.insets = new Insets(0,15,0,15);
-        gbcAnimalButtons.gridx = 0;
-        gbcAnimalButtons.gridy = 0;
-        jpButtonsAnimal.add(jbFilterSearch, gbcAnimalButtons);
-
-        gbcAnimalButtons.gridx = 1;
-        gbcAnimalButtons.gridy = 0;
-        jpButtonsAnimal.add(jbPrint, gbcAnimalButtons);
-
-        gbcAnimalButtons.gridx = 2;
-        gbcAnimalButtons.gridy = 0;
-        jpButtonsAnimal.add(jbAddAnimal, gbcAnimalButtons);
+        gbcButtonAnimal.insets = new Insets(15, 50, 15, 50);
+        gbcButtonAnimal.gridx = 0;
+        gbcButtonAnimal.gridy = 0;
+        jpButtonAnimal.add(jbPrint, gbcButtonAnimal);
 
 
         /**************************************************************/
@@ -102,131 +84,121 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.weighty = 20;
 
 
-        /*
-        JScrollBar jsbStock = new JScrollBar();
-        JScrollPane jspStock = new JScrollPane();
-        */
-
-        String[] columnName = {"Nom", "Race", "Sexe", "Âge", "boutons modification, détails"};
-
-        Object[][] data = {
-                {"Kathy", "Lapin", 1, 5, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") },
-                {"John", "Doe", 0, 3, new ImageIcon("loupe.jpg") }
-        };
-
         JPanel jpTableAnimal = new JPanel();
-        jpTableAnimal.setBackground(Color.ORANGE);
-        jpTableAnimal.setPreferredSize(new Dimension(800, 800));
-        //jpTableStock.setMinimumSize(new Dimension(400,800));
-        JTable jtTable = new JTable(data, columnName){
-            /*détection automatique des types de données
-             *de toutes les colonnes
-             */
-            public Class getColumnClass(int column)
-            {
-                return getValueAt(0, column).getClass();
-            }
-        };
+        jpTableAnimal.setPreferredSize(new Dimension(800, 720));
+
+        Animal sTest1 = new Animal();
+
+        Vector<Object> sTest = sTest1.toVector();
+
+        Vector<Vector<Object>> vAnimal = new Vector<>();
+        vAnimal.add(sTest);
+
+        JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
+
         Dimension d = jtTable.getPreferredScrollableViewportSize();
-
         d.width = jtTable.getPreferredSize().width;
-
         jtTable.setPreferredScrollableViewportSize(d);
-        //resizeColumnWidth(jtTable);
-        //jtTable.setMinimumSize(new Dimension(400,400));
-        //jtTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        //jtTable.setPreferredSize(new Dimension(400,400));
-        //jtTable.sizeColumnsToFit(50);
         JScrollPane jspAnimal = new JScrollPane(jtTable);
-        jspAnimal.setPreferredSize(new Dimension(800, 800));
+        jspAnimal.setPreferredSize(new Dimension(700, 700));
 
 
         jpTableAnimal.add(jspAnimal);
         jpLeft.add(jpTableAnimal, gbcLeft);
 
 
+        /***********************************************************************************
+         * Partie droite de la fenêtre
+         */
 
-        /*
-        jpMainPanel.add(jspStock);
-        jspStock.setViewportView(jpTableStock);
-        jspStock.add(jsbStock);
-        */
+        GridBagLayout gblRight = new GridBagLayout();
+        GridBagConstraints gbcRight  = new GridBagConstraints();
 
-        /*
-        JLabel jlFoodName = new JLabel("Aliment");
-        jlFoodName.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlQuantity = new JLabel("Quantité");
-        jlQuantity.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlMinimumQuantity = new JLabel("Quantité Minimum");
-        jlMinimumQuantity.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlActivateOrder = new JLabel("Activer Commande");
-        jlActivateOrder.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlQuantityOrdered = new JLabel("Quantité A Commander (kg)");
-        jlQuantityOrdered.setFont(new Font("test", Font.PLAIN, 15));
+        JPanel jpRight = new JPanel();
+        jpRight.setLayout(gblRight);
 
-        GridBagLayout gblStock = new GridBagLayout();
-        jpTableStock.setLayout(gblStock);
-        GridBagConstraints gbcStock = new GridBagConstraints();
+        JPanel jpRightTitle = new JPanel();
 
-        //gbcStock.fill = GridBagConstraints.NORTH;
-        gbcStock.gridx = 0;
-        gbcStock.anchor = GridBagConstraints.NORTH;
-        gbcStock.insets = new Insets(0,10,0,10);
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlFoodName, gbcStock);
+        jpMainPanel.add(jpRight);
 
-        gbcStock.gridx = 1;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlQuantity, gbcStock);
+        JLabel jlOrder = new JLabel("Historique Commandes");
+        setTitleConfig(jlOrder);
+        jpRightTitle.add(jlOrder);
 
-        gbcStock.gridx = 2;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlMinimumQuantity, gbcStock);
+        gbcRight.fill = GridBagConstraints.CENTER;
+        gbcRight.gridx = 0;
+        gbcRight.anchor = GridBagConstraints.NORTH;
+        gbcRight.gridy = 0;
+        jpRight.add(jpRightTitle,gbcRight);
 
-        gbcStock.gridx = 3;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlActivateOrder, gbcStock);
+        gbcRight.gridx = 0;
+        gbcRight.gridy = 1;
 
-        gbcStock.gridx = 4;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlQuantityOrdered, gbcStock);
-        */
 
-        /******************************************************************/
+        JPanel jpHistoryOrder = new JPanel();
+        //jpHistoryOrder.setLayout(new FlowLayout());
+        jpRight.add(jpHistoryOrder, gbcRight);
+
+        JButton jbHistory = new JButton("Historique");
+        setButtonConfig(jbHistory);
+
+
+        Properties pStartProperties = new Properties();
+        pStartProperties.put("text.today", "Aujourd'hui");
+        pStartProperties.put("text.month", "Mois");
+        pStartProperties.put("text.year", "Année");
+
+        SqlDateModel sdmModel1 = new SqlDateModel();
+        SqlDateModel sdmModel2 = new SqlDateModel();
+
+        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+
+        Properties pEndProperties = new Properties();
+        pEndProperties.put("text.today", "Aujourd'hui");
+        pEndProperties.put("text.month", "Mois");
+        pEndProperties.put("text.year", "Année");
+
+        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModel2, pEndProperties);
+        jdpliEndDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpliEndDatePanel, new DateLabelFormatter());
+
+        JLabel jlStartDate = new JLabel("De: ");
+        JLabel jlEndDate = new JLabel("A: ");
+
+        GridBagLayout gblOrderBoutton = new GridBagLayout();
+        jpHistoryOrder.setLayout(gblOrderBoutton);
+        GridBagConstraints gbcOrderBouton = new GridBagConstraints();
+
+        gbcOrderBouton.insets = new Insets(15, 30, 15, 30);
+        gbcOrderBouton.gridx = 0;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jbHistory, gbcOrderBouton);
+
+
+        gbcOrderBouton.gridx = 1;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jlStartDate);
+
+        gbcOrderBouton.gridx = 2;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderBouton);
+        //jpButtonOrder.add(jbChooseHistory, gbcOrderBouton);
+
+        gbcOrderBouton.gridx = 3;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jlEndDate);
+
+        gbcOrderBouton.gridx = 4;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderBouton);
+
+
 
         configFrame(getJfFrame(), this);
 
 
-    }
-
-    public void resizeColumnWidth(JTable table) {
-        final TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int width = 15; // Min width
-            for (int row = 0; row < table.getRowCount(); row++) {
-                TableCellRenderer renderer = table.getCellRenderer(row, column);
-                Component comp = table.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width +10 , width);
-            }
-            if(width > 300)
-                width=500;
-            columnModel.getColumn(column).setPreferredWidth(width);
-        }
     }
 }
