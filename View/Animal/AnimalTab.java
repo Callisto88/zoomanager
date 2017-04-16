@@ -4,6 +4,9 @@ import Model.*;
 import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
+import ca.odell.glazedlists.GlazedLists;
+import ca.odell.glazedlists.swing.AutoCompleteSupport;
+import com.jidesoft.swing.AutoCompletion;
 
 import javax.swing.*;
 
@@ -11,9 +14,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+
+import static Model.Tools.DateSQL.calculateAge;
 
 
 /**
@@ -102,16 +109,16 @@ public class AnimalTab extends GenericWindow {
         query = null;
 
 
-        //java.sql.Date now = new java.sql.Date(System.currentTimeMillis());
-        //int age;
+        short age;
+        String ageL;
 
         for (Animal animal : animauxDB) {
             vAnimal.add(animal.toVector(1));
-            //age = now - animal.getAnneeNaissance();
-            //vAnimal.lastElement().elementAt(4) = age;
+            age = calculateAge(animal.getAnneeNaissance());
+            ageL = animal.getAnneeNaissance().toString() + " : " + age;
+            vAnimal.lastElement().setElementAt(ageL ,3);
             if (animal.getEnclos() != 0) {
                 for (Enclos enclos : enclosDB) {
-
                     if (enclos.getId() == animal.getEnclos()) {
                         vAnimal.lastElement().add(enclos.getNom());
                     }
@@ -188,6 +195,28 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
+
+
+        JLabel jlEnclos = new JLabel("Enclos :");
+        gbcDetAnimalButton.gridx = 0;
+        gbcDetAnimalButton.gridy = 1;
+        jpDetAnimal.add(jlEnclos, gbcDetAnimalButton);
+
+
+        String[] sEnclos = new String[enclosDB.size()];
+        for (int i = 0; i < enclosDB.size(); i++){
+            sEnclos[i] = enclosDB.get(i).getNom();
+        }
+
+        JComboBox jcEnclos = new JComboBox(sEnclos);
+        jcEnclos.setEditable(true);
+        AutoCompletion ac = new AutoCompletion(jcEnclos);
+        ac.setStrict(false);
+
+
+        gbcDetAnimalButton.gridx = 1;
+        gbcDetAnimalButton.gridy = 1;
+        jpDetAnimal.add(jcEnclos, gbcDetAnimalButton);
 
 
         configFrame(getJfFrame(), this);

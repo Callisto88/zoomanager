@@ -3,16 +3,17 @@ package Model.Tools;
 
 import java.sql.Date;
 import java.text.DateFormatSymbols;
-import java.time.Month;
+import java.time.temporal.ChronoUnit;
 import java.util.Calendar;
 import Controller.Validate.Validate;
+import java.time.*;
 
 /**
  * Created by lapin on 11.04.17.
  */
 public class DateSQL {
 
-    static public java.sql.Date convertDateSQL(int annee, int mois, int jour) {
+    static public Date convertDateSQL(int annee, int mois, int jour) {
 
         Validate.isDate(annee, mois, jour);
 
@@ -26,4 +27,15 @@ public class DateSQL {
 
         return d;
     }
+
+    static public short calculateAge(Date dateNaissance) {
+        short age;
+        LocalDate naissance = dateNaissance.toLocalDate();
+        LocalDate now = LocalDate.now(ZoneId.systemDefault());
+        age = (short) ChronoUnit.YEARS.between(naissance, now);
+
+        return age;
+    }
+
+
 }
