@@ -18,7 +18,7 @@ public class MyModelTable extends AbstractTableModel{
 
         this.vData = vData;
         this.columnNames = columnNames;
-        this.columnEditable = new boolean[columnNames.length];
+        this.columnEditable = new boolean[columnNames.length]; // false par défaut
     }
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames, boolean[] columnEditable){
