@@ -1,9 +1,11 @@
 package Model.Tools;
 
+
 import java.sql.Date;
 import java.text.DateFormatSymbols;
 import java.time.Month;
 import java.util.Calendar;
+import Controller.Validate.Validate;
 
 /**
  * Created by lapin on 11.04.17.
@@ -11,6 +13,8 @@ import java.util.Calendar;
 public class DateSQL {
 
     static public java.sql.Date convertDateSQL(int annee, int mois, int jour) {
+
+        Validate.isDate(annee, mois, jour);
 
         Calendar cal2 = Calendar.getInstance();
         cal2.set(Calendar.YEAR, annee);

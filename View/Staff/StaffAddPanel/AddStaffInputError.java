@@ -8,18 +8,19 @@ import java.awt.*;
  */
 public class AddStaffInputError extends JPanel {
     private JLabel lastNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel firstNameError = new JLabel("*");
-    private JLabel birthdayError = new JLabel("*");
+    private JLabel firstNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel birthdayError = new JLabel("*", JLabel.CENTER);
     private JLabel avsError = new JLabel("*", JLabel.CENTER);
-    private JLabel emailError = new JLabel("*");
-    private JLabel addressError = new JLabel("*");
-    private JLabel cityError = new JLabel("*");
-    private JLabel npaError = new JLabel("*");
-    private JLabel phoneError = new JLabel("*", JLabel.RIGHT);
-    private JLabel salaryError = new JLabel("*");
+    private JLabel emailError = new JLabel("*", JLabel.CENTER);
+    private JLabel addressError = new JLabel("*", JLabel.CENTER);
+    private JLabel cityError = new JLabel("*", JLabel.CENTER);
+    private JLabel npaError = new JLabel("*", JLabel.CENTER);
+    private JLabel phoneError = new JLabel("*", JLabel.CENTER);
+    private JLabel responsableError = new JLabel("*", JLabel.CENTER);
 
     public AddStaffInputError() {
         setLayout(new GridLayout(12, 1, 10, 10));
+        setMinimumSize(new Dimension(50, 500));
         //this.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Sous ensemble de gauche contenant les label pour les employées
@@ -78,13 +79,16 @@ public class AddStaffInputError extends JPanel {
         phoneError.setHorizontalAlignment(JLabel.CENTER);
         this.add(phoneError);
 
-        // Salaire
-        salaryError.setFont(new Font("Serif", Font.BOLD, 32));
-        salaryError.setForeground(Color.RED);
-        salaryError.setHorizontalAlignment(JLabel.CENTER);
-        this.add(salaryError);
+        // Responsable
+        responsableError.setFont(new Font("Serif", Font.BOLD, 32));
+        responsableError.setForeground(Color.RED);
+        responsableError.setHorizontalAlignment(JLabel.CENTER);
+        this.add(responsableError);
 
         disableError();
+
+        this.setBackground(Color.green);
+        this.setPreferredSize(new Dimension(300, 700));
     }
 
     public void disableError() {
@@ -97,7 +101,7 @@ public class AddStaffInputError extends JPanel {
         cityError.setVisible(false);
         npaError.setVisible(false);
         phoneError.setVisible(false);
-        salaryError.setVisible(false);
+        responsableError.setVisible(false);
     }
 
     public void setLastNameError(String error) {
@@ -145,8 +149,9 @@ public class AddStaffInputError extends JPanel {
         phoneError.setToolTipText(error);
     }
 
-    public void setSalaryError(String error) {
-        salaryError.setVisible(true);
-        salaryError.setToolTipText(error);
+    public void setResponsableError(String error) {
+        responsableError.setVisible(true);
+        responsableError.setToolTipText(error);
     }
+
 }

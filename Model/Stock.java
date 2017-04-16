@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Vector;
+
 /**
  *
  * Cette classe contient la conception de la table Stock de la base de données
@@ -24,6 +26,7 @@ public class Stock {
     private double quantite;
     private double quantiteMin;
     private String unite;
+    private int commande;
 
     /**
      * Constructeur par défaut
@@ -90,5 +93,23 @@ public class Stock {
 
     public void setUnite(String unite) {
         this.unite = unite;
+    }
+
+    public Vector<Object> toVector() {
+        Vector<Object> vStock = new Vector<>();
+        vStock.add(getNom());
+        vStock.add(getQuantite());
+        vStock.add(getQuantiteMin());
+        vStock.add(getUnite());
+        if (commande < 0) {
+            commande = 0;
+        }
+        vStock.add(getCommande());
+
+        return vStock;
+    }
+
+    public int getCommande() {
+        return commande;
     }
 }
