@@ -380,7 +380,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
                         rs.getInt("secteur"), rs.getString("surface")));
             }
         }
@@ -543,7 +543,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data = new Enclos(rs.getInt("id"), rs.getInt("nom"),
+                data = new Enclos(rs.getInt("id"), rs.getString("nom"),
                         rs.getInt("secteur"), rs.getString("surface"));
             }
         }
