@@ -1,6 +1,5 @@
 package View;
 
-import Model.Stock;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
@@ -11,6 +10,7 @@ import java.util.Vector;
 public class MyModelTable extends AbstractTableModel{
 
     private String[] columnNames;
+    private boolean[] columnEditable; // false par défaut
     private Vector<Vector<Object>> vData;
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames){
@@ -18,6 +18,15 @@ public class MyModelTable extends AbstractTableModel{
 
         this.vData = vData;
         this.columnNames = columnNames;
+        this.columnEditable = new boolean[columnNames.length];
+    }
+
+    public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames, boolean[] columnEditable){
+        super();
+
+        this.vData = vData;
+        this.columnNames = columnNames;
+        this.columnEditable = columnEditable;
     }
 
     @Override
@@ -48,10 +57,8 @@ public class MyModelTable extends AbstractTableModel{
     }
 
     public boolean isCellEditable(int row, int column){
-        if (column == 0 || column == 1 || column == 2 || column == 3) {
-            return false;
-        } else {
-            return true;
+        for(int i = 0; i < column; i++){
+            return columnEditable[i];
         }
     }
 }
