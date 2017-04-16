@@ -1,4 +1,4 @@
-package View.Stock;
+package View;
 
 import Model.Stock;
 
@@ -41,46 +41,7 @@ public class MyModelTable extends AbstractTableModel{
         return columnNames.length;
     }
 
-    /*
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        String tempS = "";
-        double tempD = 0.0;
-
-        //Checkbox tempC = new Checkbox("",false);
-        // temp = new JTextField();
-
-        boolean str = false;
-        boolean dbl = false;
-        boolean cbx = false;
-
-        switch (columnIndex) {
-            case 0:
-                tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-            case 1:
-                tempD = (Double)test[rowIndex][columnIndex];
-                dbl = true;
-                break;
-            case 2:
-                tempD = (Double)test[rowIndex][columnIndex];
-                dbl = true;
-                break;
-            case 3:
-                tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-
-            case 4: cbx = (Boolean)test[rowIndex][columnIndex];
-                break;
-            case 5: tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-
-        }
-        */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return vData.elementAt(rowIndex).elementAt(columnIndex);

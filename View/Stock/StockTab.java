@@ -1,15 +1,33 @@
 package View.Stock;
 
-import View.*;
+import Model.Stock;
+import View.DateLabelFormatter;
+import View.GenericWindow;
+import View.MyModelTable;
+import org.jdatepicker.JDatePicker;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
+import org.jdatepicker.impl.UtilDateModel;
+//import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Properties;
+import java.util.Vector;
 
 /**
  * Created by Andre on 10.03.2017.
  */
 public class StockTab extends GenericWindow {
+    private String[] columnName = {"Aliment", "Quantité", "Quantité Minimum", "Unite", "Commande"};
+    private Class[] columnClass = {String.class, Double.class, Double.class, String.class, Double.class};
 
     public StockTab(){
         super("Stock");
@@ -17,105 +35,51 @@ public class StockTab extends GenericWindow {
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
 
-        BorderLayout gblRight = new BorderLayout();
-        //GridBagConstraints gbcRight = new GridBagConstraints();
-
         JPanel jpLeft = new JPanel();
-        jpLeft.setBackground(Color.blue);
         jpLeft.setLayout(gblLeft);
 
-        JPanel jpRight = new JPanel();
-        jpRight.setBackground(Color.gray);
-        jpRight.setLayout(gblRight);
-
-        JPanel jpLeftTest = new JPanel();
-        jpLeftTest.setBackground(Color.magenta);
+        JPanel jpLeftTitle = new JPanel();
 
         jpMainPanel.add(jpLeft);
-        jpMainPanel.add(jpRight);
 
         JLabel jlStock = new JLabel("Liste d'aliment en stock");
         setTitleConfig(jlStock);
-        jpLeftTest.add(jlStock);
-
-        JLabel jlLowStock = new JLabel("Liste du minimum requis");
-        setTitleConfig(jlLowStock);
-
+        jpLeftTitle.add(jlStock);
 
         gbcLeft.fill = GridBagConstraints.CENTER;
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        gbcLeft.insets = new Insets(15,15,15,15);
-        jpLeft.add(jpLeftTest,gbcLeft);
-
-        jpRight.add(jlLowStock, BorderLayout.NORTH);
-
-        JLabel test = new JLabel("test");
-        jpRight.add(test, BorderLayout.WEST);
-
-
-        /*
-        gbcRight.gridx = 1;
-        gbcRight.gridy = 0;
-        jpRight.add(jlLowStock, gbcRight);
-        *
-
-        /***************************************************************/
+        //gbcLeft.insets = new Insets(15,15,15,15);
+        jpLeft.add(jpLeftTitle,gbcLeft);
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 1;
 
+
         JPanel jpButtonStock = new JPanel();
-        jpButtonStock.setBackground(Color.cyan);
         jpLeft.add(jpButtonStock, gbcLeft);
 
         JButton jbPrint = new JButton("Imprimer");
         setButtonConfig(jbPrint);
 
-        JButton jbCreateListOrder = new JButton("Liste minimum requis");
-        setButtonConfig(jbCreateListOrder);
-
-        JButton jbAllOrderHistory = new JButton("Historique Commande");
-        setButtonConfig(jbAllOrderHistory);
-
-        JButton jbReset = new JButton("Effacer");
-        setButtonConfig(jbReset);
-
-        /*
-        JButton jbLeave = new JButton("Quit");
-        setButtonConfig(jbLeave);
-        */
+        JButton jbOrder = new JButton("Commande");
+        setButtonConfig(jbOrder);
 
 
         GridBagLayout gblStockBoutton = new GridBagLayout();
         jpButtonStock.setLayout(gblStockBoutton);
         GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-       // gbcStockBouton.fill = GridBagConstraints.NORTH;
-        //gbcStockBouton.anchor = GridBagConstraints.HORIZONTAL;
-        gbcStockBouton.insets = new Insets(0,15,0,15);
+        gbcStockBouton.insets = new Insets(15, 50, 15, 50);
         gbcStockBouton.gridx = 0;
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbPrint, gbcStockBouton);
 
         gbcStockBouton.gridx = 1;
         gbcStockBouton.gridy = 0;
-        jpButtonStock.add(jbCreateListOrder, gbcStockBouton);
+        jpButtonStock.add(jbOrder, gbcStockBouton);
 
-        gbcStockBouton.gridx = 2;
-        gbcStockBouton.gridy = 0;
-        jpButtonStock.add(jbAllOrderHistory, gbcStockBouton);
-
-        gbcStockBouton.gridx = 3;
-        gbcStockBouton.gridy = 0;
-        jpButtonStock.add(jbReset, gbcStockBouton);
-
-        /*
-        gbcStockBouton.gridx = 3;
-        gbcStockBouton.gridy = 0;
-        jpButtonStock.add(jbLeave, gbcStockBouton);
-        */
 
         /**************************************************************/
 
@@ -124,104 +88,33 @@ public class StockTab extends GenericWindow {
         gbcLeft.weighty = 20;
 
 
+        JPanel jpTableStock = new JPanel();
+        jpTableStock.setPreferredSize(new Dimension(800, 720));
 
-        /*
-        JScrollBar jsbStock = new JScrollBar();
-        JScrollPane jspStock = new JScrollPane();
-        */
+        Stock sTest1 = new Stock("Poisson", 5.0, 7.0, "kg");
 
-        String[] columnName = {"Aliment", "Quantité", "Quantité Minimum", "Activer Commande", "Quantité A Commander (kg)"};
+        Vector<Object> sTest = sTest1.toVector();
 
-        Object[][] data = {
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Joe", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)},
-                {"Kathy", "Smith",
-                        "Snowboarding", new Integer(5), new Boolean(false)},
-                {"John", "Doe",
-                        "Rowing", new Integer(3), new Boolean(true)},
-                {"Sue", "Black",
-                        "Knitting", new Integer(2), new Boolean(false)},
-                {"Jane", "White",
-                        "Speed reading", new Integer(20), new Boolean(true)},
-                {"Miguel", "Brown",
-                        "Pool", new Integer(10), new Boolean(false)}
+        //Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg", 3.0);
+
+        Vector<Vector<Object>> vStock = new Vector<Vector<Object>>();
+        vStock.add(sTest);
+        //vStock.elementAt();
+
+        JTable jtTable = new JTable(new MyModelTable(vStock, columnName)){
+            public boolean isCellEditable(int row, int column){
+                if(column == 4){
+                    return true;
+                };
+                return false;
+            }
         };
 
-        JPanel jpTableStock = new JPanel();
-        jpTableStock.setBackground(Color.ORANGE);
-        jpTableStock.setPreferredSize(new Dimension(800, 800));
-        //jpTableStock.setMinimumSize(new Dimension(400,800));
-        JTable jtTable = new JTable(data, columnName);
-        //jtTable.setPreferredSize(JTable);
+        //MyPersonnalJTable jtTable = new MyPersonnalJTable();
         Dimension d = jtTable.getPreferredScrollableViewportSize();
-
         d.width = jtTable.getPreferredSize().width;
-
         jtTable.setPreferredScrollableViewportSize(d);
-        //resizeColumnWidth(jtTable);
-        //jtTable.setMinimumSize(new Dimension(400,400));
-        //jtTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
-        //jtTable.setPreferredSize(new Dimension(400,400));
-        //jtTable.sizeColumnsToFit(50);
         JScrollPane jspStock = new JScrollPane(jtTable);
         jspStock.setPreferredSize(new Dimension(700, 700));
 
@@ -229,74 +122,152 @@ public class StockTab extends GenericWindow {
         jpTableStock.add(jspStock);
         jpLeft.add(jpTableStock, gbcLeft);
 
+        /***********************************************************************************/
 
 
+        GridBagLayout gblRight = new GridBagLayout();
+        GridBagConstraints gbcRight  = new GridBagConstraints();
 
-        /*
-        jpMainPanel.add(jspStock);
-        jspStock.setViewportView(jpTableStock);
-        jspStock.add(jsbStock);
-        */
+        JPanel jpRight = new JPanel();
+        jpRight.setLayout(gblRight);
 
-        /*
-        JLabel jlFoodName = new JLabel("Aliment");
-        jlFoodName.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlQuantity = new JLabel("Quantité");
-        jlQuantity.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlMinimumQuantity = new JLabel("Quantité Minimum");
-        jlMinimumQuantity.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlActivateOrder = new JLabel("Activer Commande");
-        jlActivateOrder.setFont(new Font("test", Font.PLAIN, 15));
-        JLabel jlQuantityOrdered = new JLabel("Quantité A Commander (kg)");
-        jlQuantityOrdered.setFont(new Font("test", Font.PLAIN, 15));
+        JPanel jpRightTitle = new JPanel();
 
-        GridBagLayout gblStock = new GridBagLayout();
-        jpTableStock.setLayout(gblStock);
-        GridBagConstraints gbcStock = new GridBagConstraints();
+        jpMainPanel.add(jpRight);
 
-        //gbcStock.fill = GridBagConstraints.NORTH;
-        gbcStock.gridx = 0;
-        gbcStock.anchor = GridBagConstraints.NORTH;
-        gbcStock.insets = new Insets(0,10,0,10);
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlFoodName, gbcStock);
+        JLabel jlOrder = new JLabel("Historique Commandes");
+        setTitleConfig(jlOrder);
+        jpRightTitle.add(jlOrder);
 
-        gbcStock.gridx = 1;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlQuantity, gbcStock);
+        gbcRight.fill = GridBagConstraints.CENTER;
+        gbcRight.gridx = 0;
+        gbcRight.anchor = GridBagConstraints.NORTH;
+        gbcRight.gridy = 0;
+        jpRight.add(jpRightTitle,gbcRight);
 
-        gbcStock.gridx = 2;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlMinimumQuantity, gbcStock);
+        gbcRight.gridx = 0;
+        gbcRight.gridy = 1;
 
-        gbcStock.gridx = 3;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlActivateOrder, gbcStock);
 
-        gbcStock.gridx = 4;
-        gbcStock.gridy = 0;
-        jpTableStock.add(jlQuantityOrdered, gbcStock);
-        */
+        JPanel jpHistoryOrder = new JPanel();
+        //jpHistoryOrder.setLayout(new FlowLayout());
+        jpRight.add(jpHistoryOrder, gbcRight);
 
-        /******************************************************************/
+        JButton jbHistory = new JButton("Historique");
+        setButtonConfig(jbHistory);
+
+
+        Properties pStartProperties = new Properties();
+        pStartProperties.put("text.today", "Aujourd'hui");
+        pStartProperties.put("text.month", "Mois");
+        pStartProperties.put("text.year", "Année");
+
+        SqlDateModel sdmModel1 = new SqlDateModel();
+        SqlDateModel sdmModel2 = new SqlDateModel();
+
+        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+
+        Properties pEndProperties = new Properties();
+        pEndProperties.put("text.today", "Aujourd'hui");
+        pEndProperties.put("text.month", "Mois");
+        pEndProperties.put("text.year", "Année");
+
+        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModel2, pEndProperties);
+        jdpliEndDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpliEndDatePanel, new DateLabelFormatter());
+
+        JLabel jlStartDate = new JLabel("De: ");
+        JLabel jlEndDate = new JLabel("A: ");
+
+        GridBagLayout gblOrderBoutton = new GridBagLayout();
+        jpHistoryOrder.setLayout(gblOrderBoutton);
+        GridBagConstraints gbcOrderBouton = new GridBagConstraints();
+
+        gbcOrderBouton.insets = new Insets(15, 30, 15, 30);
+        gbcOrderBouton.gridx = 0;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jbHistory, gbcOrderBouton);
+
+
+        gbcOrderBouton.gridx = 1;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jlStartDate);
+
+        gbcOrderBouton.gridx = 2;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderBouton);
+        //jpButtonOrder.add(jbChooseHistory, gbcOrderBouton);
+
+        gbcOrderBouton.gridx = 3;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jlEndDate);
+
+        gbcOrderBouton.gridx = 4;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderBouton);
+
+
+        /**************************************************************/
+
+
+        gbcRight.gridx = 0;
+        gbcRight.gridy = 2;
+        gbcRight.weighty = 20;
+
+
+        JPanel jpTableOrder = new JPanel();
+        jpTableOrder.setPreferredSize(new Dimension(800, 720));
+
+        Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg");
+
+        Vector<Object> sTest3 = sTest1.toVector();
+
+        //Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg", 3.0);
+
+        Vector<Vector<Object>> vStock1 = new Vector<Vector<Object>>();
+        vStock1.add(sTest3);
+        //vStock.elementAt();
+
+        JTable jtTable1 = new JTable(new MyModelTable(vStock1, columnName)){
+            public boolean isCellEditable(int row, int column){
+                if(column == 4){
+                    return true;
+                };
+                return false;
+            }
+        };
+
+        //MyPersonnalJTable jtTable = new MyPersonnalJTable();
+        Dimension d1 = jtTable1.getPreferredScrollableViewportSize();
+        d1.width = jtTable1.getPreferredSize().width;
+        jtTable1.setPreferredScrollableViewportSize(d1);
+
+        JScrollPane jspStock1 = new JScrollPane(jtTable1);
+        jspStock1.setPreferredSize(new Dimension(700, 700));
+
+
+        jpTableOrder.add(jspStock1);
+        jpRight.add(jpTableOrder, gbcRight);
+
+        jbOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        jbHistory.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         configFrame(getJfFrame(), this);
 
 
     }
 
-    public void resizeColumnWidth(JTable table) {
-        final TableColumnModel columnModel = table.getColumnModel();
-        for (int column = 0; column < table.getColumnCount(); column++) {
-            int width = 15; // Min width
-            for (int row = 0; row < table.getRowCount(); row++) {
-                TableCellRenderer renderer = table.getCellRenderer(row, column);
-                Component comp = table.prepareRenderer(renderer, row, column);
-                width = Math.max(comp.getPreferredSize().width +10 , width);
-            }
-            if(width > 300)
-                width=500;
-            columnModel.getColumn(column).setPreferredWidth(width);
-        }
-    }
 }
