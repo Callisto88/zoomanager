@@ -401,7 +401,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, f.getId());
-            this.stmt.setFloat(2, f.getPoids());
+            this.stmt.setDouble(2, f.getPoids());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -414,7 +414,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, r.getId());
-            this.stmt.setFloat(2, r.getTemperature());
+            this.stmt.setDouble(2, r.getTemperature());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -502,6 +502,8 @@ public class DBInteraction {
             }
         }
     }
+
+
 
 
     // -----------------------------------------------------------------------------------------------------------------

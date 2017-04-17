@@ -2,6 +2,7 @@ package Test;
 
 import Controller.Validate.Validate;
 import Model.*;
+import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class Test {
             }
 
         } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
+            System.out.println(exceptionDataBase.getMsg());
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -72,6 +73,36 @@ public class Test {
         System.out.println(avs2.length());
 
     }
+
+    public static void callAnimalTest () {
+        Oiseau o1 = new Oiseau();
+        Reptile r1 = new Reptile();
+        Felin f1 = new Felin();
+        Primate p1 = new Primate();
+        Animal a1 = new Animal();
+
+        privateCallAnimalTest(o1);
+        privateCallAnimalTest(r1);
+        privateCallAnimalTest(f1);
+        privateCallAnimalTest(p1);
+        privateCallAnimalTest(a1);
+    }
+
+    private static void privateCallAnimalTest(Animal a) {
+        System.out.println("privateCallAnimalTest => ");
+        if (a instanceof Oiseau)
+            System.out.println("Oiseau");
+        else if (a instanceof Reptile)
+            System.out.println("Reptile");
+        else if (a instanceof Felin)
+            System.out.println("Felin");
+        else if (a instanceof Primate)
+            System.out.println("Primate");
+        else
+            System.out.println("Rien");
+
+    }
+
 
 
 }

@@ -11,6 +11,7 @@ public class Start {
 
         Test.testClassValidate();
         Test.testDataBase();
+        Test.callAnimalTest();
 
         /*
         DBInteraction query = new DBInteraction();

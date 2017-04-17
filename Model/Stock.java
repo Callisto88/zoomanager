@@ -13,6 +13,8 @@ package Model;
  *
  * @date    28.03.2017 (Création)
  * @date    28.03.2017 (Finalisation v1.0)
+ * @date    17.04.2017 (Changement a la mise à jour de la DB - nouveau parametre "id")
+ *
  *
  */
 public class Stock {
@@ -20,6 +22,7 @@ public class Stock {
     /**
      * Membres privés
      */
+    private int id;
     private String nom;
     private double quantite;
     private double quantiteMin;
@@ -32,6 +35,22 @@ public class Stock {
 
     /**
      * Constructeur avec tous les membres
+     * @param id
+     * @param nom
+     * @param quantite
+     * @param quantiteMin
+     * @param unite
+     */
+    public Stock(int id, String nom, double quantite, double quantiteMin, String unite) {
+        this.id = id;
+        this.nom = nom;
+        this.quantite = quantite;
+        this.quantiteMin = quantiteMin;
+        this.unite = unite;
+    }
+
+    /**
+     * Constructeur avec tous les membres sauf l'ID. AUTO_INCREMENT
      * @param nom
      * @param quantite
      * @param quantiteMin
@@ -42,6 +61,22 @@ public class Stock {
         this.quantite = quantite;
         this.quantiteMin = quantiteMin;
         this.unite = unite;
+    }
+
+    /**
+     * Getter ID
+     * @return int id
+     */
+    public int getId() {
+        return id;
+    }
+
+    /**
+     * Setter ID
+     * @param id int
+     */
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
@@ -76,18 +111,35 @@ public class Stock {
         this.quantite = quantite;
     }
 
+    /**
+     * Getter quantiteMin Stock
+     * @return getQuantiteMin double
+     */
     public double getQuantiteMin() {
         return quantiteMin;
     }
 
+
+    /**
+     * Setter nom
+     * @param quantiteMin double
+     */
     public void setQuantiteMin(double quantiteMin) {
         this.quantiteMin = quantiteMin;
     }
 
+    /**
+     * Getter unite Stock
+     * @return unite String
+     */
     public String getUnite() {
         return unite;
     }
 
+    /**
+     * Setter unite
+     * @param unite String
+     */
     public void setUnite(String unite) {
         this.unite = unite;
     }

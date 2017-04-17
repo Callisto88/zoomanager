@@ -27,12 +27,12 @@ public class Reptile extends Animal {
     /*
      *  CONSTRUCTEURS
      */
-
-    // Par défaut
     public Reptile() {
     }
 
-    // Avec tous les attributs
+    /*
+     *  CONSTRUCTEURS avec tous les attributs
+     */
     public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, float temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;

@@ -18,31 +18,71 @@ package Model;
  *
  */
 public class Secteur {
-
+    /**
+     * Membres privés
+     */
     private int id;
     private String nom;
     private int responsable;
 
+
+    /**
+     * Constructeur avec tous les parametres
+     * @param id
+     * @param nom
+     * @param responsable
+     */
+    public Secteur(int id, String nom, int responsable) {
+        this.id = id;
+        this.nom = nom;
+        this.responsable = responsable;
+    }
+
+    /**
+     * Getter id Secteur
+     * @return id int
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     * Setter id
+     * @param id int
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     * Getter nom Secteur
+     * @return nom String
+     */
     public String getNom() {
         return nom;
     }
 
+
+    /**
+     * Setter nom
+     * @param nom String
+     */
     public void setNom(String nom) {
         this.nom = nom;
     }
 
+    /**
+     * Getter responsable Secteur
+     * @return responsable int
+     */
     public int getResponsable() {
         return responsable;
     }
 
+    /**
+     * Setter responsable
+     * @param responsable int
+     */
     public void setResponsable(int responsable) {
         this.responsable = responsable;
     }
