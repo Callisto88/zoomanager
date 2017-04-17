@@ -1,11 +1,38 @@
 package Test;
 
 import Controller.Validate.Validate;
+import Model.*;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by D.Hamel on 12.04.17.
  */
 public class Test {
+
+
+
+    public static void testDataBase () {
+
+        DBInteraction query = null;
+
+        try {
+            query = new DBInteraction();
+
+            ArrayList<Animal> animal = query.getAnimals();
+
+            for (int i = 0; i < animal.size(); i++) {
+                System.out.print(animal.get(i).getId() + "    ");
+                System.out.println(animal.get(i).getNom());
+            }
+
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void testClassValidate () {
 
