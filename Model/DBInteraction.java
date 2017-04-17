@@ -33,6 +33,7 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE :
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
+    private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
     private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
     private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
             "FROM Personne " +
@@ -152,6 +153,16 @@ public class DBInteraction {
         this.stmt.setInt(7, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
+    }
+
+    public ArrayList<Personne> selAllEmployes() throws SQLException, ExceptionDataBase {
+
+        ArrayList<Personne> listEmployes = new ArrayList<Personne>();
+        this.stmt = db.con.prepareStatement(SEL_ALL_EMPLOYES);
+        ResultSet rs = this.stmt.executeQuery();
+        listEmployes = creerTableauPersonne(rs);
+
+        return listEmployes;
     }
 
     /**
