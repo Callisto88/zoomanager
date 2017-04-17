@@ -1,6 +1,10 @@
 package View.Stock;
 
+import Controller.Stock.AddStockController;
+import Controller.Stock.StockTabController;
+import Model.Commande;
 import Model.Stock;
+//import View.Stock;
 import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
@@ -18,18 +22,34 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Properties;
 import java.util.Vector;
 
 /**
- * Created by Andre on 10.03.2017.
+ *
+ * Cette classe est celle de l'interface principale du stock.
+ *
+ * A gauche le stock actuel avec plusieurs fonctionnalités (Commande, Ajouter, ...)
+ *
+ * A droite les commandes et leurs différents statuts.
+ *
+ * @author M.Silva
+ *
+ * @version 1.0
+ *
+ * @date    17.04.2017
+ *
  */
-public class StockTab extends GenericWindow {
-    private String[] columnName = {"Aliment", "Quantité", "Quantité Minimum", "Unite", "Commande"};
-    private Class[] columnClass = {String.class, Double.class, Double.class, String.class, Double.class};
 
-    public StockTab(){
+public class StockTab extends GenericWindow {
+    private static String[] COLUMN_STOCK_NAME = {"Aliment", "Quantité", "Quantité Minimum", "Unite", "Commande"};
+    private static boolean[] COLUMN_STOCK_EDITABLE = {false, false, false, false, true};
+
+    private static String[] COLUMN_HISTORY_NAME = {"ID", "Date"};
+
+    public StockTab(StockTabController stcStockTabController){
         super("Stock");
 
         GridBagLayout gblLeft = new GridBagLayout();
@@ -50,7 +70,6 @@ public class StockTab extends GenericWindow {
         gbcLeft.gridx = 0;
         gbcLeft.anchor = GridBagConstraints.NORTH;
         gbcLeft.gridy = 0;
-        gbcLeft.insets = new Insets(5,5,5,5);
         jpLeft.add(jpLeftTitle,gbcLeft);
 
         gbcLeft.gridx = 0;
@@ -66,12 +85,21 @@ public class StockTab extends GenericWindow {
         JButton jbOrder = new JButton("Commande");
         setButtonConfig(jbOrder);
 
+        JButton jbAdd = new JButton("Ajouter");
+        setButtonConfig(jbAdd);
+
+        JButton jbDelete = new JButton("Supprimer");
+        setButtonConfig(jbDelete);
+
+        JButton jbReset = new JButton("Effacer");
+        setButtonConfig(jbReset);
+
 
         GridBagLayout gblStockBoutton = new GridBagLayout();
         jpButtonStock.setLayout(gblStockBoutton);
         GridBagConstraints gbcStockBouton = new GridBagConstraints();
 
-        gbcStockBouton.insets = new Insets(10, 30, 10, 30);
+        gbcStockBouton.insets = new Insets(15, 5, 15, 5);
         gbcStockBouton.gridx = 0;
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbPrint, gbcStockBouton);
@@ -79,6 +107,18 @@ public class StockTab extends GenericWindow {
         gbcStockBouton.gridx = 1;
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbOrder, gbcStockBouton);
+
+        gbcStockBouton.gridx = 2;
+        gbcStockBouton.gridy = 0;
+        jpButtonStock.add(jbAdd, gbcStockBouton);
+
+        gbcStockBouton.gridx = 3;
+        gbcStockBouton.gridy = 0;
+        jpButtonStock.add(jbDelete, gbcStockBouton);
+
+        gbcStockBouton.gridx = 4;
+        gbcStockBouton.gridy = 0;
+        jpButtonStock.add(jbReset, gbcStockBouton);
 
 
         /**************************************************************/
@@ -89,34 +129,24 @@ public class StockTab extends GenericWindow {
 
 
         JPanel jpTableStock = new JPanel();
-        jpTableStock.setPreferredSize(new Dimension(820, 655));
+        jpTableStock.setPreferredSize(new Dimension(800, 720));
 
-        Stock sTest1 = new Stock("Poisson", 5.0, 7.0, "kg");
+        ArrayList<Stock> alStock = stcStockTabController.getAllStock();
+        Vector<Vector<Object>> vStock = new Vector<>();
 
-        Vector<Object> sTest = sTest1.toVector();
+        for(Stock sStock : alStock){
+            vStock.add(sStock.toVector());
+        }
 
-        //Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg", 3.0);
+        JTable jtTableStock = new JTable(new MyModelTable(vStock, COLUMN_STOCK_NAME, COLUMN_STOCK_EDITABLE));
+        //setTableConfig(jtTableStock);
 
-        Vector<Vector<Object>> vStock = new Vector<Vector<Object>>();
-        vStock.add(sTest);
-        //vStock.elementAt();
+        Dimension d = jtTableStock.getPreferredScrollableViewportSize();
+        d.width = jtTableStock.getPreferredSize().width;
+        jtTableStock.setPreferredScrollableViewportSize(d);
 
-        JTable jtTable = new JTable(new MyModelTable(vStock, columnName)){
-            public boolean isCellEditable(int row, int column){
-                if(column == 4){
-                    return true;
-                };
-                return false;
-            }
-        };
-
-        //MyPersonnalJTable jtTable = new MyPersonnalJTable();
-        Dimension d = jtTable.getPreferredScrollableViewportSize();
-        d.width = jtTable.getPreferredSize().width;
-        jtTable.setPreferredScrollableViewportSize(d);
-
-        JScrollPane jspStock = new JScrollPane(jtTable);
-        jspStock.setPreferredSize(new Dimension(820, 640));
+        JScrollPane jspStock = new JScrollPane(jtTableStock);
+        jspStock.setPreferredSize(new Dimension(700, 700));
 
 
         jpTableStock.add(jspStock);
@@ -135,7 +165,7 @@ public class StockTab extends GenericWindow {
 
         jpMainPanel.add(jpRight);
 
-        JLabel jlOrder = new JLabel("Historique Commandes");
+        JLabel jlOrder = new JLabel("Commandes");
         setTitleConfig(jlOrder);
         jpRightTitle.add(jlOrder);
 
@@ -150,11 +180,13 @@ public class StockTab extends GenericWindow {
 
 
         JPanel jpHistoryOrder = new JPanel();
-        //jpHistoryOrder.setLayout(new FlowLayout());
         jpRight.add(jpHistoryOrder, gbcRight);
 
-        JButton jbHistory = new JButton("Historique");
+        JButton jbHistory = new JButton("Recherche");
         setButtonConfig(jbHistory);
+
+        Checkbox cWaiting = new Checkbox("En cours");
+        setCheckboxConfig(cWaiting);
 
 
         Properties pStartProperties = new Properties();
@@ -198,7 +230,6 @@ public class StockTab extends GenericWindow {
         gbcOrderBouton.gridx = 2;
         gbcOrderBouton.gridy = 0;
         jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderBouton);
-        //jpButtonOrder.add(jbChooseHistory, gbcOrderBouton);
 
         gbcOrderBouton.gridx = 3;
         gbcOrderBouton.gridy = 0;
@@ -220,43 +251,81 @@ public class StockTab extends GenericWindow {
         JPanel jpTableOrder = new JPanel();
         jpTableOrder.setPreferredSize(new Dimension(800, 720));
 
-        Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg");
+        ArrayList<Commande> alCommandeHistory = stcStockTabController.getAllCommandeHistory();
+        Vector<Vector<Object>> vCommandeHistory = new Vector<>();
 
-        Vector<Object> sTest3 = sTest1.toVector();
+        for(Commande cHistory : alCommandeHistory){
+            vCommandeHistory.add(cHistory.toVector());
+        }
 
-        //Stock sTest2 = new Stock("Poisson", 5.0, 7.0, "kg", 3.0);
+        JTable jtTableCommandeHistory = new JTable(new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME));
 
-        Vector<Vector<Object>> vStock1 = new Vector<Vector<Object>>();
-        vStock1.add(sTest3);
-        //vStock.elementAt();
+        Dimension d1 = jtTableCommandeHistory.getPreferredScrollableViewportSize();
+        d1.width = jtTableCommandeHistory.getPreferredSize().width;
+        jtTableCommandeHistory.setPreferredScrollableViewportSize(d1);
 
-        JTable jtTable1 = new JTable(new MyModelTable(vStock1, columnName)){
-            public boolean isCellEditable(int row, int column){
-                if(column == 4){
-                    return true;
-                };
-                return false;
-            }
-        };
-
-        //MyPersonnalJTable jtTable = new MyPersonnalJTable();
-        Dimension d1 = jtTable1.getPreferredScrollableViewportSize();
-        d1.width = jtTable1.getPreferredSize().width;
-        jtTable1.setPreferredScrollableViewportSize(d1);
-
-        JScrollPane jspStock1 = new JScrollPane(jtTable1);
+        JScrollPane jspStock1 = new JScrollPane(jtTableCommandeHistory);
         jspStock1.setPreferredSize(new Dimension(700, 700));
 
 
         jpTableOrder.add(jspStock1);
         jpRight.add(jpTableOrder, gbcRight);
 
-        jbOrder.addActionListener(new ActionListener() {
+        jbPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
             }
         });
+
+        jbOrder.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Vector<Stock> sOrder = new Vector<Stock>();
+                int column = 4;
+                for(int i = 0; i < jtTableStock.getRowCount(); ++i){
+                    if((double)jtTableStock.getValueAt(i, column) > 0){}
+
+
+                }
+            }
+        });
+
+        jbAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new AddStockController();
+            }
+        });
+
+        jbDelete.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+
+        /*
+        cWaiting.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
+        */
+
+        jbReset.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int column = 4;
+                for(int i = 0; i < jtTableStock.getRowCount(); ++i){
+                    jtTableStock.setValueAt(new Double(0), i, column);
+                }
+            }
+        });
+
+
+        /**************************/
 
         jbHistory.addActionListener(new ActionListener() {
             @Override

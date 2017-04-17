@@ -5,8 +5,22 @@ import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
 /**
- * Created by MSilva1 on 11.04.2017.
+ *
+ * Cette classe est un modèle créé pour instancier les différentes JTable.
+ *
+ * Ce modèle est requis afin de permettre de bloquer certaines cellules de la Jtable
+ * et de pouvoir éditer dans d'autre.
+ *
+ *
+ * @author M.Silva
+ * @author Y.Ansermoz
+ *
+ * @version 1.0
+ *
+ * @date    17.04.2017
+ *
  */
+
 public class MyModelTable extends AbstractTableModel{
 
     private String[] columnNames;
@@ -54,6 +68,11 @@ public class MyModelTable extends AbstractTableModel{
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return vData.elementAt(rowIndex).elementAt(columnIndex);
+    }
+
+    public void setValueAt(Object val, int rowIndex, int columnIndex) {
+        vData.elementAt(rowIndex).setElementAt(val, columnIndex);
+        fireTableDataChanged();
     }
 
     public boolean isCellEditable(int row, int column){

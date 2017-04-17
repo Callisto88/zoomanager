@@ -24,9 +24,10 @@ public class Stock {
      */
     private String nom;
     private double quantite;
+    //private double ordered;
     private double quantiteMin;
     private String unite;
-    private int commande;
+    private double commande;
 
     /**
      * Constructeur par défaut
@@ -45,6 +46,14 @@ public class Stock {
         this.quantite = quantite;
         this.quantiteMin = quantiteMin;
         this.unite = unite;
+
+        double temp = quantiteMin - quantite;
+        if(temp > 0){
+            this.commande = temp;
+        }else{
+            this.commande = 0;
+        }
+
     }
 
     /**
@@ -95,21 +104,19 @@ public class Stock {
         this.unite = unite;
     }
 
-    public Vector<Object> toVector() {
-        Vector<Object> vStock = new Vector<>();
+    public double getCommande(){
+        return commande;
+    }
+
+    public Vector<Object> toVector(){
+        Vector<Object> vStock = new Vector<Object>();
         vStock.add(getNom());
         vStock.add(getQuantite());
         vStock.add(getQuantiteMin());
         vStock.add(getUnite());
-        if (commande < 0) {
-            commande = 0;
-        }
         vStock.add(getCommande());
 
         return vStock;
     }
 
-    public int getCommande() {
-        return commande;
-    }
 }

@@ -4,24 +4,39 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by MSilva1 on 07.04.2017.
+ *
+ * Cette classe est une classe générique abstraite utilisée par toutes les fenêtres
+ * de l'application sauf la fenêtre de Login pour des raisons historiques.
+ *
+ * Elle met à disposition plusieurs méthodes et variables communes à toutes les fenêtres.
+ * C'est dans cette classe que les JFrame sont instanciées.
+ *
+ * @author M.Silva
+ *
+ * @version 1.0
+ *
+ * @date    08.04.2017
+ *
  */
+
 abstract public class GenericWindow extends JPanel {
     static private String BUTTON_FONT_NAME = "Fonte Bouton";
     static private String FONT_TITLE = "Fonte Titre";
     static private String FONT_WINDOW_TITLE = "Fonte Titre Fenêtre";
     static private String FONT_TABLE = "Fonte Table";
     static private String FONT_ERROR_MESSAGE = "Fonte Message Erreur";
+    static private String FONT_CHECKBOX_NAME = "Fonte Checkbox";
     static private int BUTTON_FONT_SIZE = 15;
     static private int TITLE_FONT_SIZE = 30;
     static private int WINDOW_TITLE_FONT_SIZE = 15;
     static private int TABLE_FONT_SIZE = 15;
     static private int ERROR_MESSAGE_FONT_SIZE = 15;
+    static private int CHECKBOX_FONT_SIZE = 15;
     static private int MIN_WIDTH = 1440;
     static private int MIN_HEIGHT = 900;
     protected JPanel jpMainPanel;
     protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
-    Dimension dim;
+    private Dimension dim;
     private String windowTitle;
     private JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
@@ -30,6 +45,7 @@ abstract public class GenericWindow extends JPanel {
     private Font fWindowTitleFont = new Font(FONT_WINDOW_TITLE, Font.PLAIN, WINDOW_TITLE_FONT_SIZE);
     private Font fTableFont = new Font(FONT_TABLE, Font.PLAIN, TABLE_FONT_SIZE);
     private Font fErrorMessageFont = new Font(FONT_ERROR_MESSAGE, Font.PLAIN, ERROR_MESSAGE_FONT_SIZE);
+    private Font fCheckboxFont = new Font(FONT_CHECKBOX_NAME, Font.PLAIN, CHECKBOX_FONT_SIZE);
 
     public GenericWindow(String windowTitle){
         this.windowTitle = windowTitle;
@@ -84,15 +100,19 @@ abstract public class GenericWindow extends JPanel {
         jlLabel.setFont(fWindowTitleFont);
     }
 
-    protected void setTableConfig(JLabel jlLabel){
-        jlLabel.setFont(fTableFont);
+    protected void setTableConfig(JTable jtTable){
+        jtTable.getTableHeader().setFont(fTableFont);
     }
 
     protected void setErrorMessageConfig(JLabel jlLabel){
         jlLabel.setFont(fErrorMessageFont);
     }
 
-    public void configFrame(JFrame jfFrame, GenericWindow gw){
+    protected void setCheckboxConfig(Checkbox cCheckbox){
+        cCheckbox.setFont(fCheckboxFont);
+    }
+
+    protected void configFrame(JFrame jfFrame, GenericWindow gw){
         jfFrame.add(jpMainPanel,BorderLayout.NORTH);
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
