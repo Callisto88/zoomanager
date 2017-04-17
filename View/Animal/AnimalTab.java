@@ -1,21 +1,13 @@
 package View.Animal;
 
 import Model.*;
-import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
-import ca.odell.glazedlists.GlazedLists;
-import ca.odell.glazedlists.swing.AutoCompleteSupport;
-import com.jidesoft.swing.AutoCompletion;
 
 import javax.swing.*;
-
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -210,9 +202,9 @@ public class AnimalTab extends GenericWindow {
 
         JComboBox jcEnclos = new JComboBox(sEnclos);
         //jcEnclos.setEditable(true);
-        AutoCompletion ac = new AutoCompletion(jcEnclos);
-        ac.setStrict(false);
-        jcEnclos.setSelectedIndex(2);
+        //AutoCompletion ac = new AutoCompletion(jcEnclos);
+        //ac.setStrict(false);
+        //jcEnclos.setSelectedIndex(2);
 
 
         gbcDetAnimalButton.gridx = 1;

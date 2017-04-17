@@ -1,7 +1,6 @@
 import Model.*;
 import Test.Test;
 
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -18,8 +17,8 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        try {
-            ArrayList<Personne> listEmployes = query.selAllEmployee();
+        /*try {
+            ArrayList<Personne> listEmployes = query.selAllEmployes();
             for (Personne s : listEmployes) {
                 System.out.println(s.toString());
             }
@@ -27,6 +26,17 @@ public class Start {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }*/
+
+        try {
+            ArrayList<String> listStatuts = query.getAllStatuts();
+            for (String s : listStatuts) {
+                System.out.println(s);
+            }
+        } catch (ExceptionDataBase e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         query = null;

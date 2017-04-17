@@ -62,6 +62,9 @@ public class DBInteraction {
             "telephone = ?, " +
             "responsable = ? " +
             "WHERE idPersonne = ?;";
+    private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
+    private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
+    private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -153,6 +156,64 @@ public class DBInteraction {
         this.stmt.setInt(7, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
+    }
+
+    public ArrayList<String> getAllStatuts() throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_ALL_STATUTS);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<String> listStatuts = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                listStatuts.add(new String(rs.getString("statut")));
+            }
+        }
+        return listStatuts;
+    }
+
+    public ArrayList<String> getAllDifferentStatus() throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_TYPE_CONTRAT);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<String> listTypeContrat = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                listTypeContrat.add(new String(rs.getString("typeContrat")));
+            }
+        }
+        return listTypeContrat;
+    }
+
+    public ArrayList<String> selAllContractType() throws SQLException, ExceptionDataBase {
+
+        this.stmt = db.con.prepareStatement(SEL_TYPE_CONTRAT);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<String> listTypeContrat = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                listTypeContrat.add(new String(rs.getString("typeContrat")));
+            }
+        }
+        return listTypeContrat;
+    }
+
+    public void delPersonne(int id) throws SQLException {
+
+        this.stmt = db.con.prepareStatement(DEL_PERSONNE);
+        this.stmt.setInt(1, id);
+        this.stmt.executeQuery();
     }
 
     public ArrayList<Personne> selAllEmployes() throws SQLException, ExceptionDataBase {
