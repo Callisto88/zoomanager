@@ -1,18 +1,15 @@
 import Model.*;
 import Test.Test;
 
-
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Start {
+
     public static void main(String arg[]) {
 
-        Test.testClassValidate();
-        Test.testDate();
-        Test.testUpdateAnimal();
+        // Test.testClassValidate();
 
-
-        /*
         DBInteraction query = null;
         try {
             query = new DBInteraction();
@@ -20,18 +17,26 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        try {
-            String[][] data = query.selAllFirstLastNameEmployee();
-            for (String[] s : data) {
-                for (String s2 : s) {
-                    System.out.print(s2 + " ");
-                }
-                System.out.println();
+        /*try {
+            ArrayList<Personne> listEmployes = query.selAllEmployes();
+            for (Personne s : listEmployes) {
+                System.out.println(s.toString());
             }
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }*/
+
+        try {
+            ArrayList<String> listStatuts = query.getAllStatuts();
+            for (String s : listStatuts) {
+                System.out.println(s);
+            }
+        } catch (ExceptionDataBase e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
 
         query = null;
@@ -111,6 +116,8 @@ public class Start {
             e.printStackTrace();
         }
         */
+
+
         System.out.println("\n_> Programme terminé ... \n");
     }
 
