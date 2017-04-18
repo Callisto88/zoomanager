@@ -103,18 +103,15 @@ public class DBInteraction {
     // STOCK :
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
     private static final String SEL_ALL_STOCK = "SELECT * FROM Stock;";
-    // Récupérer toutes les commandes qui ont été faites (Date et ID)
+
+    // Récupérer toutes les commandes qui ont été faites (id, date et statut)
     private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
-    // Récupérer le contenu d'une commande :
-    private static final String SEL_ALL_CONTENU_COMMAND_PAR_ID = "SELECT nom, quantite " +
-            " FROM Contenu_Commande " +
-            " WHERE commande = ?;";
+
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
+
     // Récupérer le contenu d'une commande en fonction de son ID
-    private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT nom quantite " +
-            " FROM Contenu_Commande " +
-            " WHERE commande = ? ;";
+    private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
 
@@ -894,9 +891,8 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Contenu_Commande> selAllContenuCommandeParID (int id_commande) throws SQLException, ExceptionDataBase {
-        ArrayList<Contenu_Commande> data = new ArrayList<Contenu_Commande>();
         this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
-
+        this.stmt.setInt(1, id_commande);
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabContenuCommande(rs);
@@ -920,8 +916,7 @@ public class DBInteraction {
                         rs.getDouble("quantiteMin"), rs.getString("unite")));
             }
         }
-        // Fermeture de la DB obligatoire après le ResultSet !
-        // Doit être ici !
+        this.stmt.close();
 
         return data;
     }
@@ -940,11 +935,15 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Commande(rs.getInt("id"), rs.getDate("date")));
+                data.add(new Commande(
+                                rs.getInt("id"),
+                                rs.getDate("date"),
+                                Statut.valueOf(rs.getString("statut"))
+                        )
+                );
             }
         }
-        // Fermeture de la DB obligatoire après le ResultSet !
-        // Doit être ici !
+        this.stmt.close();
 
         return data;
     }
@@ -957,7 +956,7 @@ public class DBInteraction {
      * @return ArrayList<Contenu_Commande>
      */
     private ArrayList<Contenu_Commande> createTabContenuCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Contenu_Commande> data = new ArrayList<Contenu_Commande>();
+        ArrayList<Contenu_Commande> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun produit n'est contenu dans la commande avec cet ID");
         } else {
@@ -967,8 +966,7 @@ public class DBInteraction {
                         rs.getDouble("quantite"), rs.getInt("commande")));
             }
         }
-        // Fermeture de la DB obligatoire après le ResultSet !
-        // Doit être ici !
+        this.stmt.close();
 
         return data;
     }
