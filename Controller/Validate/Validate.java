@@ -1,5 +1,7 @@
 package Controller.Validate;
 
+import Model.Tools.DateSQL;
+
 import java.sql.Date;
 
 /**
@@ -194,13 +196,9 @@ public class Validate {
      * @return boolean
      */
     public static boolean isDate(int year, int month, int day) {
-        if (year > 0 && year < 3000 && month > 0 && month < 13) {
-            if (day < 0 && day > Validate.numberOfDay(month, year)) {
-
-            }
-
-        }
-        return true;
+        return (year > 0
+                && month > 0 && month < 13
+                && day > 0 && day <= Validate.numberOfDay(month, year));
     }
 
     /**
@@ -210,9 +208,7 @@ public class Validate {
      *
      * @return boolean
      */
-    public static boolean isDate(Date date) {
-
-
+    public static boolean isDate(DateSQL date) {
 
         return true;
     }

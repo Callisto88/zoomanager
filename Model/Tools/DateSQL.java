@@ -13,9 +13,9 @@ import java.time.*;
  */
 public class DateSQL {
 
-    static public Date convertDateSQL(int annee, int mois, int jour) {
 
-        Validate.isDate(annee, mois, jour);
+
+    static public Date convertDateSQL(int annee, int mois, int jour) {
 
         Calendar cal2 = Calendar.getInstance();
         cal2.set(Calendar.YEAR, annee);
@@ -27,6 +27,8 @@ public class DateSQL {
 
         return d;
     }
+
+
 
     static public short calculateAge(Date dateNaissance) {
         short age;

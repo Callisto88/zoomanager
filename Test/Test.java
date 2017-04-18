@@ -2,6 +2,7 @@ package Test;
 
 import Controller.Validate.Validate;
 import Model.*;
+import Model.Tools.DateSQL;
 import com.sun.org.apache.regexp.internal.RE;
 
 import java.sql.SQLException;
@@ -103,6 +104,35 @@ public class Test {
 
     }
 
+
+    public static void testUpdateAnimal () {
+        java.sql.Date d1 = new java.sql.Date(93,07,14);
+        java.sql.Date d2 = new java.sql.Date(93,07,15);
+        System.out.println(d1);;
+
+
+        Felin f1 = new Felin("Dylan", "Mâle", d1, 1, 1,1 ,d2, 1, 2000.00);
+
+        try {
+            DBInteraction query = new DBInteraction();
+            query.updateAnimal(f1);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " UPDATE");
+        }
+
+
+        /*
+        (String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+        int race, java.sql.Date dateDeces, int id, double poids)
+        */
+
+    }
+
+
+    public static void testDate() {
+
+    }
 
 
 }

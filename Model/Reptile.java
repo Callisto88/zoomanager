@@ -22,7 +22,7 @@ public class Reptile extends Animal {
     /*
      *  MEMBRES PRIVES
      */
-    private float temperature;
+    private double temperature;
 
     /*
      *  CONSTRUCTEURS
@@ -33,7 +33,15 @@ public class Reptile extends Animal {
     /*
      *  CONSTRUCTEURS avec tous les attributs
      */
-    public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, String origine, String race, Date dateDeces, float temperature) {
+    public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, int origine, int race, Date dateDeces, int id, double temperature) {
+        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        this.temperature = temperature;
+    }
+
+    /*
+     *  CONSTRUCTEURS avec tous les attributs sauf l'ID
+     */
+    public Reptile(String nom, String sexe, Date anneeNaissance, int enclos, int origine, int race, Date dateDeces, double temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }
@@ -41,14 +49,14 @@ public class Reptile extends Animal {
     /*
      *  GETTERS
      */
-    public float getTemperature() {
+    public double getTemperature() {
         return temperature;
     }
 
     /*
      *  SETTERS
      */
-    public void setTemperature(float temperature) {
+    public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
 }

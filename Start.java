@@ -5,10 +5,11 @@ import Test.Test;
 import java.sql.SQLException;
 
 public class Start {
-
     public static void main(String arg[]) {
 
         Test.testClassValidate();
+        Test.testDate();
+        Test.testUpdateAnimal();
 
 
         /*

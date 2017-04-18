@@ -77,8 +77,81 @@ public class DBInteraction {
     // Récupérer uniquement ces 5 paramètre de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
             "FROM Animal;";
-    // Récupérer tous les paramètre d'un animal
+    // Récupérer tous les paramètre de tous les animaux
     private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
+    // Récupérer les informations d'un animal en fonction de son ID
+    private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
+    // Modifier les parametre d'un animal
+    private static final String UPDATE_ANIMAL = "UPDATE Animal " +
+            "SET nom = ?, " +
+            "sexe = ?, " +
+            "dateNaissance = ?, " +
+            "enclos = ?, " +
+            "origine = ?, " +
+            "dateDeces = ?, " +
+            "race = ? " +
+            "WHERE id = ?;";
+    // Modifier les parametre d'un FAUVE
+    private static final String UPDATE_ANIMAL_FAUVE = "UPDATE Animal_Fauve " +
+            "SET poids = ? " +
+            "WHERE id = ?;";
+    // Modifier les parametre d'un REPTILE
+    private static final String UPDATE_ANIMAL_REPTILE = "UPDATE Animal_Reptile " +
+            "SET temperature = ? " +
+            "WHERE id = ?;";
+    // Modifier les parametre d'un PRIMATE
+    private static final String UPDATE_ANIMAL_PRIMATE = "UPDATE Animal_Primate " +
+            "SET temperature = ? " +
+            "WHERE id = ?;";
+    // Modifier les parametre d'un OISEAU
+    private static final String UPDATE_ANIMAL_OISEAU = "UPDATE Animal_Oiseau " +
+            "SET envergure = ?, " +
+            "bague = ? " +
+            "WHERE id = ?;";
+    // Récupérer tous les ID des OISEAUX
+    private static final String SELECT_ALL_ID_OISEAU = "SELECT id FROM Animal_Oiseau;";
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_FAUVE = "SELECT id FROM Animal_Fauve;";
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_PRIMATE = "SELECT id FROM Animal_Primate;";
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_REPTILE = "SELECT id FROM Animal_Reptile;";
+    // Récupérer toues les infos d'un FAUVE par rapport à un ID
+    private static final String SELECT_ALL_INFO_FAUVE_ID =
+            "SELECT Animal_Fauve.id AS id, poids, nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+            "FROM Animal_Fauve " +
+            "INNER JOIN Animal " +
+            "ON Animal.id = Animal_Fauve.id " +
+            "WHERE Animal.id =  ? ;";
+    // Récupérer toues les infos d'un OISEAU par rapport à un ID
+    private static final String SELECT_ALL_INFO_OISEAU_ID =
+            "SELECT Animal_Oiseau.id AS id , envergure, bague , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Oiseau " +
+                    "INNER JOIN Animal " +
+                    "ON Animal.id = Animal_Oiseau.id " +
+                    "WHERE Animal.id =  ? ;";
+    // Récupérer toues les infos d'un REPTILE par rapport à un ID
+    private static final String SELECT_ALL_INFO_REPTILE_ID =
+            "SELECT Animal_Reptile.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+            "FROM Animal_Reptile " +
+            "INNER JOIN Animal " +
+            "ON Animal.id = Animal_Reptile.id " +
+            "WHERE Animal.id =  ? ;";
+    // Récupérer tous les infos d'un REPTILE par rapport à un ID
+    private static final String SELECT_ALL_INFO_PRIMATE_ID =
+            "SELECT Animal_Primate.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Primate " +
+                    "INNER JOIN Animal " +
+                    "ON Animal.id = Animal_Primate.id " +
+                    "WHERE Animal.id =  ? ;";
+    // Récupérer toutes les races d'animal
+    private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
+    // -----------------------------------------------------------------------------------------------------------------
+    // ENCLOS :
+    // Récupérer tous les infos sur tous les enclos
+    private static final String SEL_ALL_ENCLOS = "SELECT * FROM Enclos;";
+
+    private static final String SEL_ENCLOS_PAR_ID = "SELECT * FROM Enclos WHERE id = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
     // EVENEMENT :
     // Liste de tous les événements qui n'ont pas de personne attribué
@@ -170,7 +243,7 @@ public class DBInteraction {
     /**
      * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
      *
-     * @return String[][] / Prénom en première position
+     * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selAllFirstLastNameEmployee() throws ExceptionDataBase, SQLException {
         ArrayList<Personne> personne = this.recupererPersonne(SEL_ALL_PERSONNE);
@@ -226,20 +299,20 @@ public class DBInteraction {
     }
 
     /**
-     * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
+     * Permet d'insérer une personne dans la base de données
      *
      * @param noAVS             Nouveau numéro AVS de la personne
      * @param prenom            Nouveau prénom de la personne
-     * @param nom               Nouveau nom AVS de la personne
-     * @param adresse           Nouveau adresse AVS de la personne
-     * @param email             Nouveau email AVS de la personne
-     * @param telephone         Nouveau telephone AVS de la personne
-     * @param dateNaissance     Nouveau dateNaissance AVS de la personne
-     * @param responsable       Nouveau responsable AVS de la personne
-     * @param statut            Nouveau statut AVS de la personne
-     * @param salaire           Nouveau salaire AVS de la personne
-     * @param dateDebut         Nouveau dateDebut AVS de la personne
-     * @param typeContrat       Nouveau typeContrat AVS de la personne
+     * @param nom               Nouveau nom de la personne
+     * @param adresse           Nouveau adresse de la personne
+     * @param email             Nouveau email de la personne
+     * @param telephone         Nouveau telephone de la personne
+     * @param dateNaissance     Nouveau dateNaissance de la personne
+     * @param responsable       Nouveau responsable de la personne
+     * @param statut            Nouveau statut de la personne
+     * @param salaire           Nouveau salaire de la personne
+     * @param dateDebut         Nouveau dateDebut de la personne
+     * @param typeContrat       Nouveau typeContrat de la personne
      */
     public void insertPersonne(String noAVS, String prenom, String nom, String adresse, String email,
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
@@ -261,7 +334,7 @@ public class DBInteraction {
     }
 
     /**
-     * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
+     * Permet d'insérer une personne dans la base de données
      *
      * @param personne(Personne)
      */
@@ -283,7 +356,7 @@ public class DBInteraction {
 
 
     /**
-     * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
+     * Permet d'obtenir tous les noms et prenoms de tous les employés présents dans la base de données
      *
      * @param REQUETE qui est une chaine de caractère contenant la requete
      * @return ArrayList<Personne>
@@ -306,7 +379,7 @@ public class DBInteraction {
     private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+            throw new ExceptionDataBase("Aucune Personne ne correspond à la requête ");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -326,6 +399,268 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des ANIMAUX dans la DB
+
+    /**
+     * Permet d'obtenir tous les nom des races d'animaux disponibles
+     *
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> getAllRaceAnimal () throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SEL_ALL_ANIMAL_RACE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabAnimalRace(rs);
+    }
+    /**
+     * Permet de récupérer toutes les informations d'un ANIMAL en fonction de son ID
+     *
+     * @param id int
+     *
+     * @return Object
+     */
+    public Object getAnimal (int id) throws SQLException, ExceptionDataBase {
+        Object data = new Object();
+        if (isFelin(id)) {
+             ArrayList<Felin> dataF = selAllFelinByID(id);
+             data = dataF.get(0);
+        } else if (isOiseau(id)) {
+            ArrayList<Oiseau> dataO = selAllOiseauByID(id);
+            data = dataO.get(0);
+        } else if (isReptile(id)) {
+            ArrayList<Reptile> dataR = selAllReptileByID(id);
+            data = dataR.get(0);
+        } else if (isPrimate(id)) {
+            ArrayList<Primate> dataP = selAllPrimateByID(id);
+            data = dataP.get(0);
+        }
+        return data;
+    }
+    /**
+     * Permet de récupérer toutes les informations d'un PRIMATE
+     *
+     * @param id int
+     *
+     * @return ArrayList<Primate>
+     */
+    private ArrayList<Primate> selAllPrimateByID (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_PRIMATE_ID);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabPrimate(rs);
+    }
+
+    /**
+     * Permet de récupérer toutes les informations d'un REPTILE
+     *
+     * @param id int
+     *
+     * @return ArrayList<Reptile>
+     */
+    private ArrayList<Reptile> selAllReptileByID (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_REPTILE_ID);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabReptile(rs);
+
+    }
+
+    /**
+     * Permet de récupérer toutes les informations d'un FAUVE
+     *
+     * @param id int
+     *
+     * @return ArrayList<Felin>
+     */
+    private ArrayList<Felin> selAllFelinByID (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_FAUVE_ID);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabFelin(rs);
+
+    }
+
+    /**
+     * Permet de récupérer toutes les informations d'un OISEAU
+     *
+     * @param id int
+     *
+     * @return ArrayList<Oiseau>
+     */
+    private ArrayList<Oiseau> selAllOiseauByID (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_OISEAU_ID);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabOiseau(rs);
+
+    }
+
+    /**
+     * Permet de savoir si un Animal est de type FELIN
+     *
+     * @param id int
+     *
+     * @return boolean
+     */
+    private boolean isFelin (int id) throws SQLException {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_FAUVE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        while (rs.next()) {
+            if (rs.getInt("id") == id)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Permet de savoir si un Animal est de type OISEAU
+     *
+     * @param id int
+     *
+     * @return boolean
+     */
+    private boolean isOiseau (int id) throws SQLException {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_OISEAU);
+        ResultSet rs = this.stmt.executeQuery();
+
+        while (rs.next()) {
+            if (rs.getInt("id") == id)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Permet de savoir si un Animal est de type REPTILE
+     *
+     * @param id int
+     *
+     * @return boolean
+     */
+        private boolean isReptile (int id) throws SQLException {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_REPTILE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        while (rs.next()) {
+            if (rs.getInt("id") == id)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Permet de savoir si un Animal est de type PRIMATE
+     *
+     * @param id int
+     *
+     * @return boolean
+     */
+    private boolean isPrimate (int id) throws SQLException {
+        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_PRIMATE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        while (rs.next()) {
+            if (rs.getInt("id") == id)
+                return true;
+        }
+        return false;
+    }
+
+    /**
+     * Permet de mettre a jour les informations d'un animal
+     *
+     * @param animal Animal
+     */
+    public void updateAnimal (Animal animal) throws SQLException, ExceptionDataBase {
+        int id_animal = animal.getId();
+
+        // Modification dans la table ANIMAL
+        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL);
+        this.stmt.setString(1, animal.getNom());
+        this.stmt.setString(2, animal.getSexe());
+        this.stmt.setDate(3, animal.getAnneeNaissance());
+        this.stmt.setInt(4, animal.getEnclos());
+        this.stmt.setInt(5, animal.getOrigine());
+        this.stmt.setDate(6, animal.getDateDeces());
+        this.stmt.setInt(7, animal.getRace());
+        this.stmt.setInt(8, animal.getId());
+        this.stmt.executeUpdate();
+
+
+        // Definition du type de l'animal
+        if (animal instanceof Oiseau)
+            updateAnimalOiseau((Oiseau) animal);
+        else if (animal instanceof Reptile)
+            updateAnimalReptile((Reptile) animal);
+        else if (animal instanceof Felin)
+            updateAnimalFauve((Felin) animal);
+        else if (animal instanceof Primate)
+            updateAnimalPrimate((Primate) animal);
+        else
+            throw new ExceptionDataBase("L'animal passé en paramètre n'est pas Compatible avec la base de données");
+    }
+
+    /**
+     * Permet de mettre a jour les informations d'un Felin
+     *
+     * @param animal Felin
+     */
+    private void updateAnimalFauve (Felin animal) throws SQLException {
+        int id_animal = animal.getId();
+
+        // Modification dans la table ANIMAL
+        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_FAUVE);
+        this.stmt.setDouble(1, animal.getPoids());
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet de mettre a jour les informations d'un Reptile
+     *
+     * @param animal Reptile
+     */
+    private void updateAnimalReptile (Reptile animal) throws SQLException {
+        int id_animal = animal.getId();
+
+        // Modification dans la table ANIMAL
+        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_REPTILE);
+        this.stmt.setDouble(1, animal.getTemperature());
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet de mettre a jour les informations d'un Primate
+     *
+     * @param animal Primate
+     */
+    private void updateAnimalPrimate (Primate animal) throws SQLException {
+        int id_animal = animal.getId();
+
+        // Modification dans la table ANIMAL
+        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_PRIMATE);
+        this.stmt.setDouble(1, animal.getTemperature());
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet de mettre a jour les informations d'un Oiseau
+     *
+     * @param animal Oiseau
+     */
+    private void updateAnimalOiseau (Oiseau animal) throws SQLException {
+        int id_animal = animal.getId();
+
+        // Modification dans la table ANIMAL
+        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_OISEAU);
+        this.stmt.setDouble(1, animal.getEnvergure());
+        this.stmt.setString(2, animal.getBague());
+        this.stmt.executeUpdate();
+    }
+
 
     /**
      * Permet d'obtenir l'id, le nom, le sexe, la dateNaissance, et la race de tous les animaux
@@ -354,8 +689,8 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Animal(rs.getInt("id"), rs.getString("nom"),
                         rs.getString("sexe"), rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"), rs.getString("origine"),
-                        rs.getString("race"), rs.getDate("dateDeces")));
+                        rs.getInt("enclos"), rs.getInt("origine"),
+                        rs.getInt("race"), rs.getDate("dateDeces")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -398,7 +733,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, f.getId());
-            this.stmt.setFloat(2, f.getPoids());
+            this.stmt.setDouble(2, f.getPoids());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -411,7 +746,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, r.getId());
-            this.stmt.setFloat(2, r.getTemperature());
+            this.stmt.setDouble(2, r.getTemperature());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -453,7 +788,7 @@ public class DBInteraction {
         this.stmt.setString(3, a.getSexe());
         this.stmt.setDate(4, a.getAnneeNaissance());
         this.stmt.setInt(5, a.getEnclos());
-        this.stmt.setString(6, a.getOrigine());
+        this.stmt.setInt(6, a.getOrigine());
         this.stmt.setDate(7, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
@@ -500,7 +835,170 @@ public class DBInteraction {
         }
     }
 
+    /**
+     * Permet de créer une ArrayList de FAUVE à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Felin>
+     */
+    private ArrayList<Felin> createTabFelin (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Felin> data = new ArrayList<Felin>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun FELIN n'existe avec cet ID");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Felin(rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
+                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateDeces"), rs.getInt("id"),
+                        rs.getDouble("race")));
+            }
 
+            return data;
+        }
+    }
+    /**
+     * Permet de créer une ArrayList de OISEAU à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Oiseau>
+     */
+    private ArrayList<Oiseau> createTabOiseau (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Oiseau> data = new ArrayList<Oiseau>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Oiseau n'existe avec cet ID");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Oiseau(rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
+                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateDeces"), rs.getInt("id"),
+                        rs.getDouble("envergure"), rs.getString("bague")));
+            }
+            return data;
+        }
+    }
+    /**
+     * Permet de créer une ArrayList de REPTILE à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Reptile>
+     */
+    private ArrayList<Reptile> createTabReptile (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Reptile> data = new ArrayList<Reptile>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Reptile(rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
+                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateDeces"), rs.getInt("id"),
+                        rs.getDouble("temperature")));
+            }
+            return data;
+        }
+    }
+
+    /**
+     * Permet de créer une ArrayList de PRIMATE à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Primate>
+     */
+    private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Primate> data = new ArrayList<Primate>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Primate(rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
+                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateDeces"), rs.getInt("id"),
+                        rs.getDouble("temperature")));
+            }
+            return data;
+        }
+    }
+
+
+    /**
+     * Permet de créer un tableau contenant le nom de toutes les races d'animax à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<String>
+     */
+    private ArrayList<String> createTabAnimalRace (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<String> data = new ArrayList<String>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Enclos n'existe dans la base de données");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new String(rs.getString("nom")));
+            }
+            return data;
+        }
+    }
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Partie pour la gestion des INFRASTRUCTURE dans la DB
+
+    /**
+     * Permet d'obtenir tous les paramètres de tous les enclos
+     *
+     * @return ArrayList<Enclos>
+     */
+    public ArrayList<Enclos> getEnclos () throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SEL_ALL_ENCLOS);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabEnclos(rs);
+    }
+
+    /**
+     * Permet d'obtenir tous les paramètres de l'enclos passé en paramètre
+     *
+     * @return ArrayList<Enclos>
+     */
+    public ArrayList<Enclos> getEnclos (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SEL_ENCLOS_PAR_ID);
+        this.stmt.setInt(1, id);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabEnclos(rs);
+    }
+
+    /**
+     * Permet de créer une ArrayList d'ENCLOS à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Enclos>
+     */
+    private ArrayList<Enclos> createTabEnclos (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Enclos> data = new ArrayList<Enclos>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Enclos n'existe dans la base de données");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
+                        rs.getInt("secteur"), rs.getDouble("surface")));
+            }
+            return data;
+        }
+    }
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
@@ -514,7 +1012,7 @@ public class DBInteraction {
         this.stmt = db.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE);
         ResultSet rs = this.stmt.executeQuery();
 
-        return creerTableauEvenement(rs);
+        return createTabEvenement(rs);
     }
 
     /**
@@ -568,7 +1066,7 @@ public class DBInteraction {
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
-        this.stmt.setDate(3, evenement.getDate());
+        this.stmt.setTimestamp(3, evenement.getDate());
         this.stmt.setInt(4, evenement.getType());
 
         this.stmt.executeUpdate();
@@ -815,7 +1313,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Evenement>
      */
-    private ArrayList<Evenement> creerTableauEvenement (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Evenement> createTabEvenement (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Evenement> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
@@ -823,7 +1321,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Evenement(rs.getInt("id"), rs.getString("description"),
-                        rs.getDate("date"), rs.getInt("type")));
+                        rs.getTimestamp("date"), rs.getInt("type")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
