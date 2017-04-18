@@ -255,7 +255,7 @@ public class StockTab extends GenericWindow {
         Vector<Vector<Object>> vCommandeHistory = new Vector<>();
 
         for(Commande cHistory : alCommandeHistory){
-            vCommandeHistory.add(cHistory.toVector());
+            // vCommandeHistory.add(cHistory.toVector());
         }
 
         JTable jtTableCommandeHistory = new JTable(new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME));

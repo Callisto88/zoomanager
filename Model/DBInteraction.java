@@ -1,4 +1,5 @@
 package Model;
+
 import java.sql.*;
 import java.util.*;
 
@@ -116,15 +117,6 @@ public class DBInteraction {
 
     // Récupérer le contenu d'une commande en fonction de son ID
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
-
-    // Pour un article donné, récupère la quantité en cours de commande (si commandé)
-    private static final String SEL_ARTICLE_COMMANDE_EN_COURS = "SELECT SUM(quantite) AS `quantiteEnCours` \n" +
-            "FROM `Commande_Contenu` \n" +
-            "INNER JOIN Commande \n" +
-            "\tON Commande_Contenu.idCommande = Commande.id \n" +
-            "WHERE refArticle = ?\n" +
-            "AND Commande.statut = \"EN_COURS\";";
-
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
 
@@ -1047,39 +1039,6 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabContenuCommande(rs);
-    }
-
-    public String selCommandeEnCours(int idRefArticle) throws SQLException, ExceptionDataBase {
-
-        this.stmt = db.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
-        this.stmt.setInt(1, idRefArticle);
-        ResultSet rs = this.stmt.executeQuery();
-        ResultSetMetaData md = rs.getMetaData();
-        String result = "";
-
-        if (!rs.next()) {
-            throw new ExceptionDataBase("Aucune commande en cours pour cette article");
-        } else {
-            rs.beforeFirst();
-            rs.next();
-
-            // lecture du type de notre colonne
-            int columnType = md.getColumnType(1);
-
-            if (columnType == Types.INTEGER) {
-                String columnName = md.getColumnName(1);
-                int value = rs.getInt(1);
-                result = String.valueOf(value);
-            } else if (columnType == Types.VARCHAR) {
-                String columnName = md.getColumnName(1);
-                String value = rs.getString(columnName);
-            } else if (columnType == Types.DECIMAL) {
-                double value = rs.getDouble(1);
-                result = String.valueOf(value);
-            }
-        }
-
-        return result;
     }
 
     /**

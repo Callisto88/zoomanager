@@ -43,8 +43,30 @@ public class Oiseau extends Animal {
      * @param origine
      * @param race
      * @param dateDeces
+     * @param id
+     * @param envergure
+     * @param bague
      */
-    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine, String race,
+    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
+                  java.sql.Date dateDeces, int id, double envergure, String bague) {
+        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        this.envergure = envergure;
+        this.bague = bague;
+    }
+
+
+    /**
+     * Constructeur avec tous les membres sauf ID
+     *
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     * @param dateDeces
+     */
+    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
                   java.sql.Date dateDeces, double envergure, String bague) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.envergure = envergure;

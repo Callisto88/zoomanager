@@ -88,7 +88,7 @@ public class AnimalTab extends GenericWindow {
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
-
+        /*
         try {
             animauxDB = query.selAnimaux();
             enclosDB = query.selEnclos();
@@ -97,7 +97,7 @@ public class AnimalTab extends GenericWindow {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
+        */
         query = null;
 
 

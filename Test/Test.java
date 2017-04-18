@@ -1,11 +1,40 @@
 package Test;
 
 import Controller.Validate.Validate;
+import Model.*;
+import Model.Tools.DateSQL;
+import com.sun.org.apache.regexp.internal.RE;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by D.Hamel on 12.04.17.
  */
 public class Test {
+
+
+
+    public static void testDataBase () {
+
+        DBInteraction query = null;
+
+        try {
+            query = new DBInteraction();
+
+            ArrayList<Animal> animal = query.getAnimals();
+
+            for (int i = 0; i < animal.size(); i++) {
+                System.out.print(animal.get(i).getId() + "    ");
+                System.out.println(animal.get(i).getNom());
+            }
+
+        } catch (ExceptionDataBase exceptionDataBase) {
+            System.out.println(exceptionDataBase.getMsg());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     public static void testClassValidate () {
 
@@ -43,6 +72,65 @@ public class Test {
         System.out.println(avs4 + "    " + Validate.isAVS(avs4));
         System.out.println(avs5 + "    " + Validate.isAVS(avs5));
         System.out.println(avs2.length());
+
+    }
+
+    public static void callAnimalTest () {
+        Oiseau o1 = new Oiseau();
+        Reptile r1 = new Reptile();
+        Felin f1 = new Felin();
+        Primate p1 = new Primate();
+        Animal a1 = new Animal();
+
+        privateCallAnimalTest(o1);
+        privateCallAnimalTest(r1);
+        privateCallAnimalTest(f1);
+        privateCallAnimalTest(p1);
+        privateCallAnimalTest(a1);
+    }
+
+    private static void privateCallAnimalTest(Animal a) {
+        System.out.println("privateCallAnimalTest => ");
+        if (a instanceof Oiseau)
+            System.out.println("Oiseau");
+        else if (a instanceof Reptile)
+            System.out.println("Reptile");
+        else if (a instanceof Felin)
+            System.out.println("Felin");
+        else if (a instanceof Primate)
+            System.out.println("Primate");
+        else
+            System.out.println("Rien");
+
+    }
+
+
+    public static void testUpdateAnimal () {
+        java.sql.Date d1 = new java.sql.Date(93,07,14);
+        java.sql.Date d2 = new java.sql.Date(93,07,15);
+        System.out.println(d1);;
+
+
+        Felin f1 = new Felin("Dylan", "Mâle", d1, 1, 1,1 ,d2, 1, 2000.00);
+
+        try {
+            DBInteraction query = new DBInteraction();
+            query.updateAnimal(f1);
+
+        } catch (Exception e) {
+            System.out.println(e.getMessage() + " UPDATE");
+        }
+
+
+        /*
+        (String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+        int race, java.sql.Date dateDeces, int id, double poids)
+        */
+
+    }
+
+
+    public static void testDate() {
 
     }
 

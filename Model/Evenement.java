@@ -25,7 +25,7 @@ public class Evenement {
 
     private int id;
     private String description;
-    private Timestamp date;
+    private java.sql.Timestamp date;
     private int type;
 
     public Evenement(int id, String description, Timestamp date, int type) {
@@ -51,11 +51,11 @@ public class Evenement {
         this.description = description;
     }
 
-    public Timestamp getDate() {
+    public java.sql.Timestamp getDate() {
         return date;
     }
 
-    public void setDate(Timestamp date) {
+    public void setDate(java.sql.Timestamp date) {
         this.date = date;
     }
 

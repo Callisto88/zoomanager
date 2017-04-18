@@ -18,6 +18,7 @@ import java.util.Vector;
  *
  * @date    28.03.2017 (Création)
  * @date    28.03.2017 (Finalisation v1.0)
+ * @date    17.04.2017 (Modifié - Type de "race" passe de "String" à "int"
  *
  */
 public class Animal {
@@ -33,8 +34,8 @@ public class Animal {
     // private Sexe sexe;
     private Date dateNaissance;
     private int enclos; // REF (id)
-    private String origine;
-    private String race; // REF (nom)
+    private int origine; // REF Pays(pays_id)
+    private int race; // REF (nom)
     private Date dateDeces;
 
     /**
@@ -52,7 +53,7 @@ public class Animal {
     }
 
     public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
-                  String origine, String race, java.sql.Date dateDeces) {
+                  int origine, int race, java.sql.Date dateDeces) {
         this.id = id;
         this.nom = nom;
         this.sexe = sexe;
@@ -74,7 +75,7 @@ public class Animal {
      * @param dateDeces
      */
     public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
-                  int enclos, String origine, String race, java.sql.Date dateDeces) {
+                  int enclos, int origine, int race, java.sql.Date dateDeces) {
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
@@ -85,7 +86,7 @@ public class Animal {
     }
 
     public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
-                  int enclos, String origine, String race) {
+                  int enclos, int origine, int race) {
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
@@ -101,7 +102,7 @@ public class Animal {
         this.dateNaissance = anneeNaissance;
     }
 
-    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, String race) {
+    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int race) {
         this.id = id;
         this.nom = nom;
         this.sexe = sexe;
@@ -126,19 +127,19 @@ public class Animal {
         this.nom = nom;
     }
 
-    public String getOrigine() {
+    public int getOrigine() {
         return origine;
     }
 
-    public void setOrigine(String origine) {
+    public void setOrigine(int origine) {
         this.origine = origine;
     }
 
-    public String getRace() {
+    public int getRace() {
         return race;
     }
 
-    public void setRace(String race) {
+    public void setRace(int race) {
         this.race = race;
     }
 

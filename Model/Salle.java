@@ -16,9 +16,14 @@ package Model;
  *
  */
 public class Salle extends Infrastructure {
-
+    /**
+     * Membres privés
+     */
     private int nbPlace;
 
+    public Salle(int nbPlace) {
+        this.nbPlace = nbPlace;
+    }
 
     public int getNbPlace() {
         return nbPlace;

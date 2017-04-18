@@ -53,7 +53,27 @@ public class Primate extends Animal {
     }
 
     /**
-     * Constructeur avec tous les paramètres du parent ( Animal ) et du primate
+     * Constructeur avec tous les paramètres (sauf ID) du parent ( Animal ) et du primate
+     *
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     * @param dateDeces
+     * @param id
+     * @param temperature
+     */
+    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+                   int race, java.sql.Date dateDeces, int id, double temperature) {
+        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        this.temperature = temperature;
+    }
+
+
+    /**
+     * Constructeur avec tous les paramètres (sauf ID) du parent ( Animal ) et du primate
      *
      * @param nom
      * @param sexe
@@ -64,8 +84,8 @@ public class Primate extends Animal {
      * @param dateDeces
      * @param temperature
      */
-    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, String origine,
-                   String race, java.sql.Date dateDeces, double temperature) {
+    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+                   int race, java.sql.Date dateDeces, double temperature) {
         super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }

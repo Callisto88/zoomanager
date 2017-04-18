@@ -56,6 +56,6 @@ public class ManagerDashboardController {
     }
 
     public void StockView() {
-        stStock = new StockTab();
+        // stStock = new StockTab();
     }
 }
