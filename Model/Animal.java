@@ -1,6 +1,7 @@
 package Model;
 
 import java.sql.Date;
+import java.util.Vector;
 
 /**
  * Cette classes contient la conception de la table Personne de la base de données
@@ -24,9 +25,12 @@ public class Animal {
     /**
      * Membres privés
      */
+    protected enum Sexe {MALE, FEMELLE}
+    private static String[] ssexe = {"Mâle", "Femelle"};
     private int id;
     private String nom;
     private String sexe;
+    // private Sexe sexe;
     private Date dateNaissance;
     private int enclos; // REF (id)
     private String origine;
@@ -78,6 +82,16 @@ public class Animal {
         this.origine = origine;
         this.race = race;
         this.dateDeces = dateDeces;
+    }
+
+    public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
+                  int enclos, String origine, String race) {
+        this.nom = nom;
+        this.sexe = sexe;
+        this.dateNaissance = anneeNaissance;
+        this.enclos = enclos;
+        this.origine = origine;
+        this.race = race;
     }
 
     public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance) {
@@ -172,5 +186,49 @@ public class Animal {
         System.out.printf("%-10s : %s\n", "Décès", this.dateDeces);
         System.out.println("-----------------------------\n");
         return null;
+    }
+
+    public Vector<Object> toVector(int returnLength) {
+
+        Vector<Object> vAnimal = new Vector<>();
+
+        switch(returnLength){
+            case 0 :
+                vAnimal.add(this.getId());
+                vAnimal.add(this.getNom());
+                vAnimal.add(this.getSexe());
+                vAnimal.add(this.getRace());
+                vAnimal.add(this.getAnneeNaissance());
+                vAnimal.add(this.getEnclos());
+                vAnimal.add(this.getOrigine());
+                vAnimal.add(this.getDateDeces());
+                break;
+            case 1:
+                vAnimal.add(this.getNom());
+                vAnimal.add(this.getRace());
+                vAnimal.add(this.getSexe());
+                vAnimal.add(this.getAnneeNaissance());
+                break;
+            default:
+                break;
+        }
+
+        return vAnimal;
+    }
+
+    public Vector<Object> toVector() {
+
+        Vector<Object> vAnimal = new Vector<>();
+
+        vAnimal.add(this.getId());
+        vAnimal.add(this.getNom());
+        vAnimal.add(this.getSexe());
+        vAnimal.add(this.getRace());
+        vAnimal.add(this.getAnneeNaissance());
+        vAnimal.add(this.getEnclos());
+        vAnimal.add(this.getOrigine());
+        vAnimal.add(this.getDateDeces());
+
+        return vAnimal;
     }
 }

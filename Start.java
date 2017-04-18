@@ -3,27 +3,35 @@ import Test.Test;
 
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
 public class Start {
 
-    public static void main(String arg[]) throws ExceptionDataBase {
+    public static void main(String arg[]) {
 
         Test.testClassValidate();
-        Test.testDataBase();
-        Test.callAnimalTest();
+
 
         /*
-        DBInteraction query = new DBInteraction();
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
 
         try {
-            ArrayList<Personne> data = query.selAllFirstLastNameEmployee();
+            String[][] data = query.selAllFirstLastNameEmployee();
+            for (String[] s : data) {
+                for (String s2 : s) {
+                    System.out.print(s2 + " ");
+                }
+                System.out.println();
+            }
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
 
         query = null;
 

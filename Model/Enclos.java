@@ -20,9 +20,16 @@ package Model;
 public class Enclos {
 
     private int id;
-    private int nom;
+    private String nom;
     private int secteur;
     private String surface;
+
+    public Enclos(int id, String nom, int secteur, String surface) {
+        this.id = id;
+        this.nom = nom;
+        this.secteur = secteur;
+        this.surface = surface;
+    }
 
     public int getId() {
         return id;
@@ -32,11 +39,11 @@ public class Enclos {
         this.id = id;
     }
 
-    public int getNom() {
+    public String getNom() {
         return nom;
     }
 
-    public void setNom(int nom) {
+    public void setNom(String nom) {
         this.nom = nom;
     }
 

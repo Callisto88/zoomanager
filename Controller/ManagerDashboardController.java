@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Staff.StaffController;
 import View.ManagerDashboard.ManagerDashboard;
+import View.Stock.StockTab;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,8 +12,9 @@ import java.awt.*;
  * Controlleur pour la fenêtre du dashboard
  */
 public class ManagerDashboardController {
-    StaffController persControl = null;
+    private StaffController persControl = null;
     // Ajout des autres controlleur
+    private StockTab stStock = null;
 
     // Fenêtre principale
     JFrame f = null;
@@ -49,14 +51,11 @@ public class ManagerDashboardController {
      * permet d'instancier la fenêtre des employée
      */
     public void employeeView() {
-        if (persControl == null) {
-            persControl = new StaffController();
-            //f.dispose();
-            //f.setVisible(false);
-            //f.disable();
-        } else {
-            persControl.revalidateView();
-            //f.setVisible(false);
-        }
+        persControl = new StaffController();
+
+    }
+
+    public void StockView() {
+        // stStock = new StockTab();
     }
 }

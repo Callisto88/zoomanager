@@ -1,6 +1,8 @@
 package Model;
 
 import java.sql.Date;
+import java.sql.Time;
+import java.sql.Timestamp;
 
 /**
  *
@@ -23,10 +25,10 @@ public class Evenement {
 
     private int id;
     private String description;
-    private java.sql.Date date;
+    private Timestamp date;
     private int type;
 
-    public Evenement(int id, String description, java.sql.Date date, int type) {
+    public Evenement(int id, String description, Timestamp date, int type) {
         this.id = id;
         this.description = description;
         this.date = date;
@@ -49,11 +51,11 @@ public class Evenement {
         this.description = description;
     }
 
-    public java.sql.Date getDate() {
+    public Timestamp getDate() {
         return date;
     }
 
-    public void setDate(java.sql.Date date) {
+    public void setDate(Timestamp date) {
         this.date = date;
     }
 

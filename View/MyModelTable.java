@@ -1,16 +1,30 @@
-package View.Stock;
+package View;
 
-import Model.Stock;
 
 import javax.swing.table.AbstractTableModel;
 import java.util.Vector;
 
 /**
- * Created by MSilva1 on 11.04.2017.
+ *
+ * Cette classe est un modèle créé pour instancier les différentes JTable.
+ *
+ * Ce modèle est requis afin de permettre de bloquer certaines cellules de la Jtable
+ * et de pouvoir éditer dans d'autre.
+ *
+ *
+ * @author M.Silva
+ * @author Y.Ansermoz
+ *
+ * @version 1.0
+ *
+ * @date    17.04.2017
+ *
  */
+
 public class MyModelTable extends AbstractTableModel{
 
     private String[] columnNames;
+    private boolean[] columnEditable; // false par défaut
     private Vector<Vector<Object>> vData;
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames){
@@ -18,6 +32,15 @@ public class MyModelTable extends AbstractTableModel{
 
         this.vData = vData;
         this.columnNames = columnNames;
+        this.columnEditable = new boolean[columnNames.length]; // false par défaut
+    }
+
+    public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames, boolean[] columnEditable){
+        super();
+
+        this.vData = vData;
+        this.columnNames = columnNames;
+        this.columnEditable = columnEditable;
     }
 
     @Override
@@ -41,56 +64,18 @@ public class MyModelTable extends AbstractTableModel{
         return columnNames.length;
     }
 
-    /*
 
-    @Override
-    public Object getValueAt(int rowIndex, int columnIndex) {
-        String tempS = "";
-        double tempD = 0.0;
-
-        //Checkbox tempC = new Checkbox("",false);
-        // temp = new JTextField();
-
-        boolean str = false;
-        boolean dbl = false;
-        boolean cbx = false;
-
-        switch (columnIndex) {
-            case 0:
-                tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-            case 1:
-                tempD = (Double)test[rowIndex][columnIndex];
-                dbl = true;
-                break;
-            case 2:
-                tempD = (Double)test[rowIndex][columnIndex];
-                dbl = true;
-                break;
-            case 3:
-                tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-
-            case 4: cbx = (Boolean)test[rowIndex][columnIndex];
-                break;
-            case 5: tempS = (String)test[rowIndex][columnIndex];
-                str = true;
-                break;
-
-        }
-        */
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return vData.elementAt(rowIndex).elementAt(columnIndex);
     }
 
+    public void setValueAt(Object val, int rowIndex, int columnIndex) {
+        vData.elementAt(rowIndex).setElementAt(val, columnIndex);
+        fireTableDataChanged();
+    }
+
     public boolean isCellEditable(int row, int column){
-        if (column == 0 || column == 1 || column == 2 || column == 3) {
-            return false;
-        } else {
-            return true;
-        }
+            return columnEditable[column];
     }
 }
