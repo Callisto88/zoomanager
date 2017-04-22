@@ -1,24 +1,14 @@
 package View.Staff.StaffMainPanel;
 
 import Controller.Staff.StaffController;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Personne;
-import Model.Stock;
+import Model.*;
 import View.GenericWindow;
 import View.MyModelTable;
 
-import javax.management.Query;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.AncestorEvent;
-import javax.swing.event.AncestorListener;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
 
@@ -28,17 +18,25 @@ import java.util.Vector;
  */
 public class StaffView extends GenericWindow {
     private StaffController controller = null;
+    // Labels des colonnes pour le personnel
     private String[] columnName ={"Nom", "Prénom", "Numéro AVS", "Date de Naissance"};
+    // Labels des colonnes pour les externes
+    private String[] sColumnExternal = {"Nom", "Nrénom", "Entreprise", "Télephone"};
     private JPanel jpRight = null;
+    private JTable jtTable = null;
+    private ArrayList<Personne> personnes = null;
+    private Vector<Vector<Object>> tableau = null;
+    private ArrayList<Intervenant> alExternal = null;
 
     /**
      * Constructeur permettant d'instancier toutes les fenêtre composant la fenêtre principale
      *
      * @param persControl Controlleur de la fenêtre pour permettre de lui faire remonter les informations utiles.
      */
-    public StaffView(StaffController persControl) {
+    public StaffView(StaffController persControl, ArrayList<Personne> tab) {
         super("Personnel");
         controller = persControl;
+        personnes = tab;
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
 
@@ -77,14 +75,59 @@ public class StaffView extends GenericWindow {
             }
         });
 
+        // Bouton pour pouvoir ajouter du personnel
         JButton jbCreateListOrder = new JButton("Ajouter du personnel");
         setButtonConfig(jbCreateListOrder);
 
+        // Listener pour pouvoir 
         jbCreateListOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 controller.addView();
                 System.out.println("ajout personnel");
+            }
+        });
+
+        JButton jbSwitchexernalInternalStaff = new JButton("Afficher les externes");
+        //setButtonConfig(jbSwitchexernalInternalStaff);
+
+        // Ajout de listener pour permettre d'afficher la liste du personnel ou des intervenant externes
+        jbSwitchexernalInternalStaff.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
+                    // pour les test
+                    /********************************************/
+                    alExternal = new ArrayList<>();
+                    Vector<Vector<Object>> vInterneExterne = new Vector<>();
+                    Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
+                    Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
+                    Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
+                    vInterneExterne.add(i1.toVector());
+                    alExternal.add(i1);
+                    alExternal.add(i2);
+                    alExternal.add(i3);
+                    vInterneExterne.add(i2.toVector());
+                    vInterneExterne.add(i3.toVector());
+                    /*********************************************/
+                    // Permet de recrée une nouvelle table
+                    jtTable.setModel(new MyModelTable(vInterneExterne, sColumnExternal));
+                    // Permet de renommer le bouton pour faire afficher les employées
+                    ((JButton) e.getSource()).setText("Afficher les employés");
+                    jbSwitchexernalInternalStaff.repaint();
+                    jbSwitchexernalInternalStaff.revalidate();
+                }
+                else{
+                    for(int i = 0; i < tab.size(); ++i){
+                        tableau.add(personnes.get(i).toVector());
+                    }
+                    // Permet de recrée une nouvelle table
+                    jtTable.setModel(new MyModelTable(tableau, columnName));
+                    // Permet de renommer le bouton pour faire afficher les employées
+                    ((JButton) e.getSource()).setText("Afficher les externes");
+                    jbSwitchexernalInternalStaff.repaint();
+                    jbSwitchexernalInternalStaff.revalidate();
+                }
             }
         });
 
@@ -101,53 +144,16 @@ public class StaffView extends GenericWindow {
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbCreateListOrder, gbcStockBouton);
 
-        // Création de l'objet pour interragir avec la DB
-        DBInteraction querry = null;
-        try {
-            querry = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
+        gbcStockBouton.gridx = 2;
+        gbcStockBouton.gridy = 0;
+        jpButtonStock.add(jbSwitchexernalInternalStaff, gbcStockBouton);
 
-        ArrayList<Personne> tab = null;
+        tableau = new Vector<>();
 
-        // Permet de récupérer l'Arraylist du personnel
-        try{
-            tab = querry.selAllFirstLastNameEmployee();
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-        } catch (SQLException exceptionsql){
-            exceptionsql.printStackTrace();
-        }
-
-        ArrayList<Personne> personnes = new ArrayList<>();
-        Vector<Vector<Object>> tableau = new Vector<>();
-        /*
-        Personne p = new Personne(15, "3769796628117", "Rachel", "Martin", 15, "rmartine@apple.com", "31-(687)486-2730", new Date(1985-12-15), 2, "externe", new Date(2000-12-15), "CDD");
-        Personne p1 = new Personne(2, "3712345698117", "Betty", "Boop", 1, "bettyboop@msn.com", "41-(687)123-8514", new Date(1966-11-19), 2, "interne", new Date(2000-12-15), "CDI");
-        Personne p2 = new Personne(5, "1298546628117", "Bob", "Dylan", 3, "b.d@yahoo.com", "44-(456)789-3657", new Date(1982-02-21), 3, "externe", new Date(2000-12-15), "CDD");
-        Personne p3 = new Personne(7, "3769796987123", "Shrek", "Ogre", 9, "shrek@hotmail.com", "1-(684)196-3485", new Date(1935-05-30), 5, "externe", new Date(2000-12-15), "CDI");
-        Personne p4 = new Personne(9, "1234567890123", "Tom", "Pouce", 11, "tom.pouce@google.com", "24-(375)642-1534", new Date(1995-06-28), 5, "externe", new Date(2000-12-15), "CDD");
-        tableau.add(p.toVector());
-        tableau.add(p1.toVector());
-        tableau.add(p2.toVector());
-        tableau.add(p3.toVector());
-        tableau.add(p4.toVector());
-
-        personnes.add(p);
-        personnes.add(p1);
-        personnes.add(p2);
-        personnes.add(p3);
-        personnes.add(p4);
-        */
-
-        // Boucle permettant de mettre dans un ArrayList les personnes pour pouvoir travailler encore dessus plus tard
         // permet d'ajouter au tableau les champs choisis par la méthode ToString des Personne
         for(int i = 0; i < tab.size(); ++i){
-            personnes.add(tab.get(i));
-             tableau.add(tab.get(i).toVector());
+            tableau.add(personnes.get(i).toVector());
         }
-
 
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
@@ -157,18 +163,29 @@ public class StaffView extends GenericWindow {
         jpTableStock.setPreferredSize(new Dimension(800, 500));
 
         // permet de crée le tableau de saisie
-        JTable jtTable = new JTable(new MyModelTable(tableau, columnName));
+        jtTable = new JTable(new MyModelTable(tableau, columnName));
 
-        // Permet de capturer l'action du clic, et crée le panel de droite avec les détails des employées
+        // Permet de capturer l'action du clic, et crée le panel de droite avec les détails des employées ou des externes
         jtTable.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 jpRight.removeAll();
-                System.out.println(jtTable.getSelectedRow());
-                System.out.println(tableau.get(jtTable.getSelectedRow()));
-                System.out.println();
-                setRightPanel(personnes.get(jtTable.getSelectedRow()));
-                jpRight.revalidate();
-                jpRight.repaint();
+                // Permet de choisir si l'on affiche les détails d'un employée ou d'un externe
+                if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
+                    System.out.println(jtTable.getSelectedRow());
+                    System.out.println(tableau.get(jtTable.getSelectedRow()));
+                    System.out.println(jbSwitchexernalInternalStaff.getText());
+                    //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
+                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(jtTable.getSelectedRow()));
+                    jpRight.add(psDetail);
+                    jpRight.revalidate();
+                    jpRight.repaint();
+                }
+                else{
+                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(jtTable.getSelectedRow()));
+                    jpRight.add(external);
+                    jpRight.revalidate();
+                    jpRight.repaint();
+                }
             }
 
             @Override
@@ -219,7 +236,7 @@ public class StaffView extends GenericWindow {
         jpRight.add(jlLowStock, BorderLayout.NORTH);
 
 
-        JLabel test1 = new JLabel("test");
+        JLabel test1 = new JLabel("Test");
         jpRight.add(test1, BorderLayout.CENTER);
 
         configFrame(getJfFrame(), this);
@@ -238,7 +255,7 @@ public class StaffView extends GenericWindow {
      * une fois que l'utilisateur clique sur une colonne
      * @param personne personne dont on souhaite afficher les informations
      */
-    private void setRightPanel(Personne personne){
+    private void setRightPanelPersonnel(Personne personne){
 
         // Ajout du champ de détails pour le nom
         JPanel jpLastName = new JPanel();
