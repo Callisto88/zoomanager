@@ -79,7 +79,7 @@ public class StaffView extends GenericWindow {
         JButton jbCreateListOrder = new JButton("Ajouter du personnel");
         setButtonConfig(jbCreateListOrder);
 
-        // Listener pour pouvoir 
+        // Listener pour pouvoir
         jbCreateListOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -96,31 +96,18 @@ public class StaffView extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
-                    // pour les test
-                    /********************************************/
-                    alExternal = new ArrayList<>();
-                    Vector<Vector<Object>> vInterneExterne = new Vector<>();
-                    Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
-                    Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
-                    Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
-                    vInterneExterne.add(i1.toVector());
-                    alExternal.add(i1);
-                    alExternal.add(i2);
-                    alExternal.add(i3);
-                    vInterneExterne.add(i2.toVector());
-                    vInterneExterne.add(i3.toVector());
-                    /*********************************************/
+                    // Permet de mettre à jour le tableau pour les externes
+                    createExternalTab();
                     // Permet de recrée une nouvelle table
-                    jtTable.setModel(new MyModelTable(vInterneExterne, sColumnExternal));
+                    jtTable.setModel(new MyModelTable(tableau, sColumnExternal));
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les employés");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
                 else{
-                    for(int i = 0; i < tab.size(); ++i){
-                        tableau.add(personnes.get(i).toVector());
-                    }
+                    // Permet de mettre à jour le tableau pour le personnel
+                    createEmployeeTab();
                     // Permet de recrée une nouvelle table
                     jtTable.setModel(new MyModelTable(tableau, columnName));
                     // Permet de renommer le bouton pour faire afficher les employées
@@ -148,13 +135,6 @@ public class StaffView extends GenericWindow {
         gbcStockBouton.gridy = 0;
         jpButtonStock.add(jbSwitchexernalInternalStaff, gbcStockBouton);
 
-        tableau = new Vector<>();
-
-        // permet d'ajouter au tableau les champs choisis par la méthode ToString des Personne
-        for(int i = 0; i < tab.size(); ++i){
-            tableau.add(personnes.get(i).toVector());
-        }
-
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 20;
@@ -162,6 +142,8 @@ public class StaffView extends GenericWindow {
         JPanel jpTableStock = new JPanel();
         jpTableStock.setPreferredSize(new Dimension(800, 500));
 
+        // Permet de mettre à jour le tableau pour les employées
+        createEmployeeTab();
         // permet de crée le tableau de saisie
         jtTable = new JTable(new MyModelTable(tableau, columnName));
 
@@ -223,7 +205,6 @@ public class StaffView extends GenericWindow {
 
 
         jpRight = new JPanel();
-        //jpRight.setLayout(flRight);
         jpRight.setLayout(new BoxLayout(jpRight, BoxLayout.Y_AXIS));
 
         jpMainPanel.add(jpRight);
@@ -242,179 +223,22 @@ public class StaffView extends GenericWindow {
         configFrame(getJfFrame(), this);
     }
 
-    // obsolète
-    public void revalidateView(){
-        this.setVisible(true);
-        jpMainPanel.setVisible(true);
-        jpMainPanel.revalidate();
-        getJfFrame().setVisible(true);
+    public void createEmployeeTab(){
+        tableau = new Vector<>();
+        personnes = controller.getPersonnel();
+        for(int i = 0; i < personnes.size(); ++i){
+            tableau.add(personnes.get(i).toVector());
+        }
     }
 
-    /**
-     * Méthode permettant d'afficher les informations d'un personnel sur le panneau de droite
-     * une fois que l'utilisateur clique sur une colonne
-     * @param personne personne dont on souhaite afficher les informations
-     */
-    private void setRightPanelPersonnel(Personne personne){
-
-        // Ajout du champ de détails pour le nom
-        JPanel jpLastName = new JPanel();
-        JLabel jlLastName = new JLabel("Nom : ");
-        JLabel jlLastNameInfo = new JLabel(personne.getNom());
-        jpLastName.add(jlLastName);
-        jpLastName.add(Box.createHorizontalStrut(50));
-        jpLastName.add(jlLastNameInfo);
-        jpRight.add(jpLastName);
-
-        // Ajout du champ de détails pour le prénom
-        JPanel jpFirstName = new JPanel();
-        JLabel jlFirstName = new JLabel("Prénom : ");
-        JLabel jlFirstNameInfo = new JLabel(personne.getPrenom());
-        jpFirstName.add(jlFirstName);
-        jpFirstName.add(Box.createHorizontalStrut(50));
-        jpFirstName.add(jlFirstNameInfo);
-        jpRight.add(jpFirstName);
-
-        // Ajout du champ de détails pour la date de naissance
-        JPanel jpBirthday = new JPanel();
-        JLabel jlBirthday = new JLabel("Date de naissance : ");
-        JLabel jlBirthdayInfo = new JLabel(personne.getDateNaissance().toString());
-        jpBirthday.add(jlBirthday);
-        jpBirthday.add(Box.createHorizontalStrut(50));
-        jpBirthday.add(jlBirthdayInfo);
-        jpRight.add(jpBirthday);
-
-        // Ajout du champ de détails pour le numéro AVS
-        JPanel jpAVS = new JPanel();
-        JLabel jlAVS = new JLabel("Numéro AVS : ");
-        JLabel jlAVSInfo = new JLabel(personne.getNoAVS());
-        jpAVS.add(jlAVS);
-        jpAVS.add(Box.createHorizontalStrut(50));
-        jpAVS.add(jlAVSInfo);
-        jpRight.add(jpAVS);
-
-        // Ajout du champ de détails pour l'email
-        JPanel jpEmail = new JPanel();
-        JLabel jlEmail = new JLabel("E-Mail : ");
-        JLabel jlEmailInfo = new JLabel(personne.getEmail());
-        jpEmail.add(jlEmail);
-        jpEmail.add(Box.createHorizontalStrut(50));
-        jpEmail.add(jlEmailInfo);
-        jpRight.add(jpEmail);
-
-        // Ajout du champ de détails pour l'adresse
-        JPanel jpAddress = new JPanel();
-        JLabel jlAddress = new JLabel("Adresse : ");
-        JLabel jlAddressInfo = new JLabel(/*personne.getAdresse()*/ "Adresse");
-        jpAddress.add(jlAddress);
-        jpAddress.add(Box.createHorizontalStrut(50));
-        jpAddress.add(jlAddressInfo);
-        jpRight.add(jpAddress);
-
-        // Ajout du champ de détails pour la ville
-        JPanel jpCity = new JPanel();
-        JLabel jlCity = new JLabel("Ville : ");
-        JLabel jlCityInfo = new JLabel(/*personne.getAdresse()*/);
-        jpCity.add(jlCity);
-        jpCity.add(Box.createHorizontalStrut(50));
-        jpCity.add(jlCityInfo);
-        jpRight.add(jpCity);
-
-        // Ajout du champ de détails pour le npa
-        JPanel jpNPA = new JPanel();
-        JLabel jlNPA = new JLabel("NPA : ");
-        JLabel jlNPAInfo = new JLabel(/*personne.getAdresse()*/);
-        jpNPA.add(jlNPA);
-        jpNPA.add(Box.createHorizontalStrut(50));
-        jpNPA.add(jlNPAInfo);
-        jpRight.add(jpNPA);
-
-        // Ajout du champ de détails pour le numéro de téléphone
-        JPanel jpPhone = new JPanel();
-        JLabel jlPhone = new JLabel("Téléphone : ");
-        JLabel jlPhoneInfo = new JLabel(personne.getTelephone());
-        jpPhone.add(jlPhone);
-        jpPhone.add(Box.createHorizontalStrut(50));
-        jpPhone.add(jlPhoneInfo);
-        jpRight.add(jpPhone);
-
-        // Ajout du champ de détails pour la date de début
-        JPanel jpBeginingDate = new JPanel();
-        JLabel jlBeginingDate = new JLabel("E-Mail : ");
-        JLabel jlBeginingDateInfo = new JLabel(personne.getEmail());
-        jpBeginingDate.add(jlBeginingDate);
-        jpBeginingDate.add(Box.createHorizontalStrut(50));
-        jpBeginingDate.add(jlBeginingDateInfo);
-        jpRight.add(jpBeginingDate);
-
-        // Ajout du champ de détails pour le responsable
-        JPanel jpAdvisor = new JPanel();
-        JLabel jlAdvisor = new JLabel("Responsable : ");
-        JLabel jlAdvisorInfo = new JLabel(/*personne.getResponsable()*/ "Responsable");
-        jpAdvisor.add(jlAdvisor);
-        jpAdvisor.add(Box.createHorizontalStrut(50));
-        jpAdvisor.add(jlAdvisorInfo);
-        jpRight.add(jpAdvisor);
-
-        // Ajout du champ de détails pour le statut
-        JPanel jpStatut = new JPanel();
-        JLabel jlStatut = new JLabel("Statut : ");
-        JLabel jlStatutInfo = new JLabel(personne.getStatut());
-        jpStatut.add(jlStatut);
-        jpStatut.add(Box.createHorizontalStrut(50));
-        jpStatut.add(jlStatutInfo);
-        jpRight.add(jpStatut);
-
-        // Ajout du champ de détails pour le type de contrat
-        JPanel jpContract = new JPanel();
-        JLabel jlContract = new JLabel("Contrat : ");
-        JLabel jlContractInfo = new JLabel(personne.getTypeContrat());
-        jpContract.add(jlContract);
-        jpContract.add(Box.createHorizontalStrut(50));
-        jpContract.add(jlContractInfo);
-        jpRight.add(jpContract);
-
-        // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
-        JPanel jpButtons = new JPanel();
-
-        //Ajout du bouton de suppression de l'employé actuel
-        JButton jbDelete = new JButton("Suppression de l'employé");
-        jpButtons.add(jbDelete);
-        jpButtons.add(Box.createHorizontalStrut(20));
-        jbDelete.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Suppression de personnel");
-                controller.erreurPopup("Voulez vous réelement supprimer " + personne.getPrenom() + " " + personne.getNom());
-            }
-        });
-
-
-        // Ajout du bouton d'édition du personnel
-        JButton jbEdit = new JButton("Modification");
-        jpButtons.add(jbEdit);
-        jpButtons.add(Box.createHorizontalStrut(20));
-        jbEdit.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("modification du personnel");
-                controller.modifyView(personne);
-            }
-        });
-
-        // Ajout du bouton d'assignation de taches
-        JButton jbAssignTask = new JButton("Assignation de tâches");
-        jpButtons.add(jbAssignTask);
-        jbAssignTask.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("Assignation de tâches");
-                controller.assignTaskView(personne);
-            }
-        });
-
-        // Ajout des bouttons dans le panel de droite
-        jpRight.add(jpButtons);
-
+    public void createExternalTab(){
+        tableau = new Vector<>();
+        alExternal = controller.getExternal();
+        for(int i = 0; i < alExternal.size(); ++i){
+            tableau.add(alExternal.get(i).toVector());
+        }
     }
+
+
+
 }

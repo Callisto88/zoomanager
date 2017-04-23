@@ -91,6 +91,21 @@ public class AddStaffController {
         add.setVisible(true);
     }
 
+    /**
+     * Méthode permettant de checker qu'une personne est OK avant de l'insérer
+     * @param lastName Nom de la personne
+     * @param firstName Prénom de la personne
+     * @param day Jour de naissance de la personne
+     * @param month Mois de naissance de la personne
+     * @param year Année de naissance de la personne
+     * @param avs Numéro AVS de la personne
+     * @param email EMail de la personne
+     * @param address Adresse de la personne
+     * @param phone Numéro de télephone de la personne
+     * @param supervisor Superviseur de la personne
+     * @param status Statut de la personne
+     * @param contract Contrat de la personne
+     */
     public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address,
                               String phone, String supervisor, String status, String contract){
 
@@ -125,26 +140,6 @@ public class AddStaffController {
     }
 
     /**
-     * Méthode permettant de construire la chaîne de caractère contenant les éventuelles erreurs
-     *
-     * @param label String contenant le label et une description du problème
-     * @param input String contenant ce que l'utilisateur à tapé
-     */
-    private void addError(String label, String input) {
-        error.append(label);
-        error.append("\"" + input + "\"" + "\n");
-    }
-
-    /**
-     * Méthode permettant de savoir si il y a eu une erreur lors du contrôle d'erreur
-     *
-     * @return true si des erreur sont présentes, false sinon.
-     */
-    public boolean getErrorPanel() {
-        return errorPanel;
-    }
-
-    /**
      * Méthode permettant de réinitialisé les état d'erreur
      */
     public void resetError() {
@@ -152,19 +147,4 @@ public class AddStaffController {
         errorParsing = false;
     }
 
-    /**
-     * Méthode permettant d'obtenir les éventuelles erreurs
-     *
-     * @return String contenant les différentes erreurs
-     */
-    public String getError() {
-        return error.toString();
-    }
-
-    /**
-     * Méthode pour "vider" le buffer d'erreur
-     */
-    public void clearError() {
-        error.setLength(0);
-    }
 }

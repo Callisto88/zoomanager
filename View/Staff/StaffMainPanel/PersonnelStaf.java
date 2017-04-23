@@ -8,10 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Bureau on 22.04.2017.
+ * Created by André on 22.04.2017.
+ * Class permettant d'afficher les détail du personnel dans une fenêtre
  */
 public class PersonnelStaf extends JPanel{
-
+    /**
+     * Constructeur de la class pour afficher les détails
+     * @param controller controlleur StaffController permettant de faire remonter les informations
+     * @param personne personne pour lequel on souhaite afficher les détails
+     */
     public PersonnelStaf(StaffController controller, Personne personne){
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -157,7 +162,7 @@ public class PersonnelStaf extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("modification du personnel");
-                controller.modifyView(personne);
+                controller.modifyStaffView(personne);
             }
         });
 
@@ -168,7 +173,7 @@ public class PersonnelStaf extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Assignation de tâches");
-                controller.assignTaskView(personne);
+                controller.assignStaffTaskView(personne);
             }
         });
 

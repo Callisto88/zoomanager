@@ -1,14 +1,13 @@
 package Controller.Staff;
 
 import Controller.Error.ErrorController;
-import Controller.ManagerDashboardController;
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
+import Model.Intervenant;
 import Model.Personne;
 import View.Staff.StaffMainPanel.StaffView;
 
 import javax.swing.*;
-import java.awt.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,10 +20,12 @@ public class StaffController {
 
     // Controlleur des sous fenêtres de Staff
     private AddStaffController addController = null;
-    private ModifyStaffController modifyController = null;
+    private ModifyStaffController modifyStaffController = null;
     private AssignStaffTaskController assignController = null;
+    private AssignExternalTaskController aetcAssignExternal = null;
+
+    private ModifyExternalController mecModifyExternal = null;
     private ErrorController ecError = null;
-    private ArrayList<Personne> alpPersonnel = null;
     private DBInteraction querry = null;
 
     /**
@@ -34,10 +35,7 @@ public class StaffController {
         // établis la connection
         dbConnection();
 
-        // Permet de récupérer l'Arraylist du alpPersonnel
-        getPersonnel();
-
-        StaffView svPersonnel = new StaffView(this, alpPersonnel);
+        StaffView svPersonnel = new StaffView(this, getPersonnel());
     }
 
     /**
@@ -56,8 +54,10 @@ public class StaffController {
 
     /**
      * Méthode permettant d'obtenir le listing du personnel
+     * @return un ArrayList avec le personnel présent dans la base de donnée
      */
-    private void getPersonnel(){
+    public ArrayList<Personne> getPersonnel(){
+        ArrayList<Personne> alpPersonnel = null;
         try{
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
@@ -67,6 +67,34 @@ public class StaffController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());
         }
+        return alpPersonnel;
+    }
+
+    /**
+     * Méthode permettant d'obtenir le listing du personnel
+     * @return un ArrayList avec le personnel présent dans la base de donnée
+     */
+    public ArrayList<Intervenant> getExternal(){
+        ArrayList<Intervenant> aliExternal = null;
+        aliExternal = new ArrayList<>();
+        /*
+        try{
+            aliExternal = querry.getAllExternal;
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException exceptionsql){
+            exceptionsql.printStackTrace();
+            ecError = new ErrorController(exceptionsql.toString());
+        }
+        */
+        Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
+        Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
+        Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
+        aliExternal.add(i1);
+        aliExternal.add(i2);
+        aliExternal.add(i3);
+        return aliExternal;
     }
 
     /**
@@ -93,22 +121,33 @@ public class StaffController {
     /**
      * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour le alpPersonnel
      */
-    public void assignTaskView(Personne personne) {
+    public void assignStaffTaskView(Personne personne) {
         assignController = new AssignStaffTaskController(personne);
+    }
+
+    public void assignExternalTaskView(Intervenant external) {
+        aetcAssignExternal = new AssignExternalTaskController(external);
     }
 
     /**
      * Méthode pour instancier la fenêtre de modification d'une personne
      */
-    public void modifyView(Personne personne) {
-        modifyController = new ModifyStaffController(personne);
+    public void modifyStaffView(Personne personne) {
+        modifyStaffController = new ModifyStaffController(personne);
     }
 
+    public void modifyExternalView(Intervenant external){
+        mecModifyExternal = new ModifyExternalController(external);
+    }
 
     /**
      * Méthode permettant de lancer une fenêtre popup
      */
     public void erreurPopup(String error) {
         ErrorController ecError = new ErrorController(error);
+    }
+
+    public void deleteStaff(Personne personne){
+
     }
 }

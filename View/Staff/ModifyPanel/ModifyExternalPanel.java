@@ -1,6 +1,7 @@
-package View.Staff.StaffModifyPanel;
+package View.Staff.ModifyPanel;
 
-import Model.Personne;
+import Model.ExceptionDataBase;
+import Model.Intervenant;
 import View.GenericWindow;
 
 import javax.swing.*;
@@ -9,17 +10,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Andre on 09.04.2017.
+ * Created by Bureau on 23.04.2017.
  */
-public class StaffModifyPanel extends GenericWindow{
-    private Personne personne = null;
+public class ModifyExternalPanel extends GenericWindow {
     private JComboBox boxChoiceLabel = null;
+    private Intervenant external = null;
 
+    // Champs de saisie pour la modification
+    private JTextField jtfLastNameInput;
+    private JTextField jtfFirstNameInput;
+    private JTextField jtfCompagnyInput;
+    private JTextField jtfEmail;
+    private JTextField jtfAddress;
+    private JTextField jtfCity;
+    private JTextField jtfNPA;
+    private JTextField jtfCountry;
+    private JTextField jtfPhone;
 
-    public StaffModifyPanel(Personne personne){
-        super("Modificaion");
+    public ModifyExternalPanel(Intervenant external){
+        super("Modification Intervenant");
+        this.external = external;
         jpMainPanel.setLayout(new GridLayout(8,1));
-        this.personne = personne;
         /**
          * Liste déroulante pour séléctionner les champs que l'on souhaite modifier
          */
@@ -31,7 +42,6 @@ public class StaffModifyPanel extends GenericWindow{
         boxChoiceLabel.addItem("Adresse E-Mail");
         boxChoiceLabel.addItem("Adresse");
         boxChoiceLabel.addItem("Téléphone");
-        boxChoiceLabel.addItem("Responsable");
         modification.add(boxChoiceLabel);
         jpMainPanel.add(modification);
         //jpMainPanel.add(boxChoiceLabel);
@@ -68,16 +78,12 @@ public class StaffModifyPanel extends GenericWindow{
                     addPhone();
                 }
 
-                if(boxChoiceLabel.getSelectedItem().equals("Responsable")){
-                    addSupervisor();
-                }
                 if(boxChoiceLabel.getSelectedItem().equals("Tous les champs")){
                     addLastName();
                     addFirstName();
                     addEMail();
                     addAddress();
                     addPhone();
-                    addSupervisor();
                 }
             }
         });
@@ -94,7 +100,8 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel lastNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Nom : ");
         lastNamePanel.add(lastNameLabel);
-        lastNamePanel.add(new JTextField(personne.getNom(), 20));
+        jtfLastNameInput = new JTextField(external.getNom(), 20);
+        lastNamePanel.add(jtfLastNameInput);
         jpMainPanel.add(lastNamePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Nom");
@@ -107,7 +114,8 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel firstNamePanel = new JPanel();
         JLabel firstNameLabel = new JLabel("Prénom : ");
         firstNamePanel.add(firstNameLabel);
-        firstNamePanel.add(new JTextField(personne.getPrenom(), 20));
+        jtfFirstNameInput = new JTextField(external.getPrenom(),20);
+        firstNamePanel.add(jtfFirstNameInput);
         jpMainPanel.add(firstNamePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Prénom");
@@ -120,7 +128,8 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel emailPanel = new JPanel();
         JLabel emailLabel = new JLabel("Adresse E-Mail : ");
         emailPanel.add(emailLabel);
-        emailPanel.add(new JTextField(personne.getEmail(),20));
+        jtfEmail = new JTextField(external.getEmail(),20);
+        emailPanel.add(jtfEmail);
         jpMainPanel.add(emailPanel);
         jpMainPanel.revalidate();
         System.out.println("modif E-Mail");
@@ -146,23 +155,10 @@ public class StaffModifyPanel extends GenericWindow{
         JPanel telephonePanel = new JPanel();
         JLabel telephoneLabel = new JLabel("Téléphone : ");
         telephonePanel.add(telephoneLabel);
-        telephonePanel.add(new JTextField(personne.getTelephone(), 20));
+        jtfPhone = new JTextField(external.getTelephone(),20);
+        telephonePanel.add(jtfPhone);
         jpMainPanel.add(telephonePanel);
         jpMainPanel.revalidate();
         System.out.println("modif Téléphone");
     }
-
-    /**
-     * Méthode pour ajouter le superviseur au panneaux de modification
-     */
-    private void addSupervisor(){
-        JPanel npaPanel = new JPanel();
-        JLabel npaLabel = new JLabel("Responsable : ");
-        npaPanel.add(npaLabel);
-        npaPanel.add(new JTextField(/*personne.getResponsable()*/"Responsable", 20));
-        jpMainPanel.add(npaPanel);
-        jpMainPanel.revalidate();
-        System.out.println("modif Responsable");
-    }
-
 }

@@ -1,14 +1,18 @@
 package View.Staff.StaffAddPanel;
 
-import Controller.Error.ErrorController;
 import Controller.Staff.AddStaffController;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Properties;
 
 import View.*;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 
 /**
  * Created by Andre on 17.03.2017.
@@ -18,23 +22,24 @@ public class AddStaff extends GenericWindow {
     // Controlleur de la fenêtre pour faire remonté les informations
     private AddStaffController controller;
 
-    // String pour enregistrer la saisie.
-    private String lastName;
-    private String firstName;
-    private String avs;
-    private String email;
-    private String address;
-    private String city;
-    private String npa;
-    private String phone;
-    private String supervisor;
-    private String status;
-    private String contract;
+    // Variables pour enregistrer la saisie.
+    private String sLastName;
+    private String sFirstName;
+    private int iDay;
+    private int iMonth;
+    private int iYear;
+    private String sAVS;
+    private String sEMail;
+    private String sAddress;
+    private String sPhone;
+    private String sSupervisor;
+    private String sStatus;
+    private String sContract;
 
-    // Champs de saisie
+    // Champs de saisie ou sélection
     private JTextField jtfLastNameInput;
     private JTextField jtfFirstNameInput;
-    private JTextField jtfBirthdayInput;
+    private JDatePickerImpl jdpriStartDatePicker = null;
     private JTextField jtfAVSInput;
     private JTextField jtfEmail;
     private JTextField jtfAddress;
@@ -42,8 +47,8 @@ public class AddStaff extends GenericWindow {
     private JTextField jtfNPA;
     private JTextField jtfPhone;
     private JTextField jtfSupervisor;
-    private JTextField jtfStatus;
-    private JTextField jtfContract;
+    private JComboBox jcbStatus;
+    private JComboBox jcbContract;
 
     // Label d'erreur pour les différents champs
     private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
@@ -62,11 +67,11 @@ public class AddStaff extends GenericWindow {
     /**
      * Constructeur de la fenêtre principale d'ajout de personnel.
      *
-     * @param apc controlleur de la fenêtre pour permettre de lui remonter les information utiles.
+     * @param asc controlleur de la fenêtre pour permettre de lui remonter les information utiles.
      */
-    public AddStaff(AddStaffController apc) {
+    public AddStaff(AddStaffController asc, ArrayList<String> statut, ArrayList<String> contract) {
         super("Ajout");
-        controller = apc;
+        controller = asc;
         jpMainPanel.setLayout(new GridLayout(13,1));
 
 
@@ -99,20 +104,40 @@ public class AddStaff extends GenericWindow {
         // Ajout des champs utiles pour la date de naissance
         JPanel jpBirthdayPanel = new JPanel();
         JLabel jlBirthdayLabel = new JLabel("Date de Naissance : ");
-        jpBirthdayPanel.add(jlBirthdayLabel);
-        jtfBirthdayInput = new JTextField("birthday", 7);
-        jpBirthdayPanel.add(jtfBirthdayInput);
-        jlBirthdayError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlBirthdayError.setForeground(Color.RED);
-        jlBirthdayError.setHorizontalAlignment(JLabel.CENTER);
-        jpBirthdayPanel.add(jlBirthdayError);
+        GridBagConstraints gbcDateLabel = new GridBagConstraints();
+        gbcDateLabel.gridx = 0;
+        gbcDateLabel.gridy = 0;
+        jpBirthdayPanel.add(jlBirthdayLabel, gbcDateLabel);
+        Properties pStartProperties = new Properties();
+        pStartProperties.put("text.today", "Aujourd'hui");
+        pStartProperties.put("text.month", "Mois");
+        pStartProperties.put("text.year", "Année");
+        SqlDateModel sdmModel1 = new SqlDateModel();
+        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
+        jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+        GridBagLayout gblDate = new GridBagLayout();
+        jpBirthdayPanel.setLayout(gblDate);
+        GridBagConstraints gbcDate = new GridBagConstraints();
+        gbcDate.gridx = 1;
+        gbcDate.gridy = 0;
+        jpBirthdayPanel.add(jdpriStartDatePicker, gbcDate);
+        // Permet d'obtenir un retour lors de la sélection d'une date dans le calendrier
+        jdpriStartDatePicker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay());
+                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getMonth());
+                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getYear());
+            }
+        });
         jpMainPanel.add(jpBirthdayPanel);
 
         // Ajout des champs utiles pour le numéro AVS
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
         jpAVS.add(jlAVS);
-        jtfAVSInput = new JTextField("avs", 7);
+        jtfAVSInput = new JTextField("sAVS", 7);
         jpAVS.add(jtfAVSInput);
         jlAVSError.setFont(new Font("Serif", Font.BOLD, 32));
         jlAVSError.setForeground(Color.RED);
@@ -196,8 +221,12 @@ public class AddStaff extends GenericWindow {
         JPanel jpStatus = new JPanel();
         JLabel jlStatus = new JLabel("Status : ");
         jpStatus.add(jlStatus);
-        jtfStatus = new JTextField("statut", 7);
-        jpStatus.add(jtfStatus);
+        jcbStatus = new JComboBox();
+        for(int i = 0; i < statut.size(); ++i){
+            System.out.println(statut.get(i));
+            jcbStatus.addItem(statut.get(i));
+        }
+        jpStatus.add(jcbStatus);
         jlStatusError.setFont(new Font("Serif", Font.BOLD, 32));
         jlStatusError.setForeground(Color.RED);
         jlStatusError.setHorizontalAlignment(JLabel.CENTER);
@@ -208,8 +237,12 @@ public class AddStaff extends GenericWindow {
         JPanel jpContract = new JPanel();
         JLabel jlContract = new JLabel("Contrat : ");
         jpContract.add(jlContract);
-        jtfContract = new JTextField("contrat", 7);
-        jpContract.add(jtfContract);
+        jcbContract = new JComboBox();
+        for(int i = 0; i < contract.size(); ++i){
+            System.out.println(contract.get(i));
+            jcbContract.addItem(contract.get(i));
+        }
+        jpContract.add(jcbContract);
         jlContractError.setFont(new Font("Serif", Font.BOLD, 32));
         jlContractError.setForeground(Color.RED);
         jlContractError.setHorizontalAlignment(JLabel.CENTER);
@@ -227,25 +260,21 @@ public class AddStaff extends GenericWindow {
                 disableError();
                 controller.resetError();
                 System.out.println("ajout");
-                lastName = jtfLastNameInput.getText();
-                firstName = jtfLastNameInput.getText();
-                avs = jtfAVSInput.getText();
-                email = jtfEmail.getText();
-                address = jtfAddress.getText();
-                city = jtfCity.getText();
-                npa = jtfNPA.getText();
-                phone = jtfPhone.getText();
-                supervisor = jtfSupervisor.getText();
-                status = jtfStatus.getText();
-                contract = jtfContract.getText();
-                controller.checkFirstNameInput(firstName);
-                controller.checkLastNameInput(lastName);
-                controller.checkAVSInput(avs);
-                controller.checkEmailInput(email);
-                controller.checkAdress(address);
-                controller.checkCityInput(city);
-                controller.checkNPAInput(npa);
-                controller.checkPhoneInput(phone);
+                sLastName = jtfLastNameInput.getText();
+                sFirstName = jtfLastNameInput.getText();
+                iDay = jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay();
+                iMonth = jdpriStartDatePicker.getJDateInstantPanel().getModel().getMonth();
+                iYear = jdpriStartDatePicker.getJDateInstantPanel().getModel().getYear();
+                sAVS = jtfAVSInput.getText();
+                sEMail = jtfEmail.getText();
+                sAddress = jtfAddress.getText();
+                sAddress = sAddress + " " + jtfNPA.getText();
+                sAddress = sAddress + " " + jtfCity.getText();
+                sPhone = jtfPhone.getText();
+                sSupervisor = jtfSupervisor.getText();
+                sStatus = jcbStatus.getSelectedItem().toString();
+                sContract = jcbContract.getSelectedItem().toString();
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sPhone, sSupervisor, sStatus, sContract);
             }
         });
         configFrame(getJfFrame(), this);

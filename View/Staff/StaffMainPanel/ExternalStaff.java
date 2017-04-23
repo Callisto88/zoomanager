@@ -8,9 +8,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Bureau on 22.04.2017.
+ * Created by André on 22.04.2017.
+ * Class permettant d'afficher les détail des personnes externes dans une fenêtre
  */
 public class ExternalStaff extends JPanel{
+    /**
+     * Constructeur de la class pour afficher les détails
+     * @param controller controlleur StaffController permettant de faire remonter les informations
+     * @param external intervenant pour lequel on souhaite afficher les détails
+     */
     public ExternalStaff(StaffController controller, Intervenant external){
 
         this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
@@ -93,7 +99,7 @@ public class ExternalStaff extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("modification de l'intervenant");
-                //controller.modifyView(personne);
+                controller.modifyExternalView(external);
             }
         });
 
@@ -104,7 +110,7 @@ public class ExternalStaff extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Assignation de tâches");
-                //controller.assignTaskView(personne);
+                //controller.assignStaffTaskView(personne);
             }
         });
 
