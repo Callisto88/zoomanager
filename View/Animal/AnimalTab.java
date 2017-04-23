@@ -3,6 +3,8 @@ package View.Animal;
 import Model.*;
 import View.GenericWindow;
 import View.MyModelTable;
+import Controller.Animal.*;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -21,7 +23,7 @@ import static Model.Tools.DateSQL.calculateAge;
 public class AnimalTab extends GenericWindow {
     private String[] columnName = {"Nom", "Race", "Sexe", "Age", "Enclos"};
 
-    public AnimalTab() {
+    public AnimalTab(AnimalController atAnimalController) {
         super("Animaux");
 
         GridBagLayout gblLeft = new GridBagLayout();
@@ -79,27 +81,8 @@ public class AnimalTab extends GenericWindow {
 
         Vector<Vector<Object>> vAnimal = new Vector<>();
 
-        DBInteraction query = null;
-        ArrayList<Animal> animauxDB = new ArrayList<>();
-        ArrayList<Enclos> enclosDB = new ArrayList<>();
-
-        try {
-            query = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
-        /*
-        try {
-            animauxDB = query.selAnimaux();
-            enclosDB = query.selEnclos();
-        } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-        */
-        query = null;
-
+        ArrayList<Animal> animauxDB = atAnimalController.getAllAnimal();
+        ArrayList<Enclos> enclosDB = atAnimalController.getAllEnclos();
 
         short age;
         String ageL;
