@@ -22,7 +22,7 @@ public class Test {
         try {
             query = new DBInteraction();
 
-            ArrayList<Animal> animal = query.getAnimals();
+            ArrayList<Animal> animal = query.selAnimaux();
 
             for (int i = 0; i < animal.size(); i++) {
                 System.out.print(animal.get(i).getId() + "    ");
@@ -113,13 +113,13 @@ public class Test {
 
         Felin f1 = new Felin("Dylan", "Mâle", d1, 1, 1,1 ,d2, 1, 2000.00);
 
-        try {
+        /*try {
             DBInteraction query = new DBInteraction();
             query.updateAnimal(f1);
 
         } catch (Exception e) {
             System.out.println(e.getMessage() + " UPDATE");
-        }
+        }*/
 
 
         /*

@@ -436,8 +436,8 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Animal(rs.getInt("id"), rs.getString("nom"),
                         rs.getString("sexe"), rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"), rs.getString("origine"),
-                        rs.getString("race"), rs.getDate("dateDeces")));
+                        rs.getInt("enclos"), rs.getInt("origine"),
+                        rs.getInt("race"), rs.getDate("dateDeces")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -460,7 +460,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getDouble("surface")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -503,7 +503,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, f.getId());
-            this.stmt.setFloat(2, f.getPoids());
+            this.stmt.setDouble(2, f.getPoids());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -516,7 +516,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, r.getId());
-            this.stmt.setFloat(2, r.getTemperature());
+            this.stmt.setDouble(2, r.getTemperature());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -558,7 +558,7 @@ public class DBInteraction {
         this.stmt.setString(3, a.getSexe());
         this.stmt.setDate(4, a.getAnneeNaissance());
         this.stmt.setInt(5, a.getEnclos());
-        this.stmt.setString(6, a.getOrigine());
+        this.stmt.setInt(6, a.getOrigine());
         this.stmt.setDate(7, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
@@ -623,7 +623,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data = new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface"));
+                        rs.getInt("secteur"), rs.getDouble("surface"));
             }
         }
 
@@ -644,7 +644,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getDouble("surface")));
             }
         }
 
