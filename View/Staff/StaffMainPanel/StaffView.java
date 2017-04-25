@@ -83,7 +83,7 @@ public class StaffView extends GenericWindow {
         jbCreateListOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.addView();
+                controller.addStaffView();
                 System.out.println("ajout personnel");
             }
         });

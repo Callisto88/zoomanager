@@ -19,17 +19,12 @@ import java.util.ArrayList;
 public class AddStaffController {
     private JFrame addPanel = null;
     private AddStaff add = null;
-    // Booléen réutilise pour les TestDate dans les Strings
-    private boolean errorPanel = false;
-    private boolean errorParsing = false;
 
     private ArrayList<String> status = null;
     private ArrayList<String> contract = null;
 
     private ErrorController ecError = null;
     private DBInteraction querry = null;
-    // tableau de String contenant les erreur
-    private StringBuffer error = new StringBuffer();
 
     /**
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
@@ -111,11 +106,11 @@ public class AddStaffController {
         boolean bAVS = Validate.isAVS(avs);
         boolean bEmail = Validate.isEmail(email);
         //boolean bAddress = Validate.isStreet(address);
-        //boolean bNPA = Validate.isNPA(npa);
-        //boolean bCity = Validate.isCity(city);
-        //boolean bCountry = Validate.isCountry(country);
+        boolean bNPA = Validate.isNumeric(npa);
+        boolean bCity = Validate.isAlphabetic(city);
+        boolean bCountry = Validate.isAlphabetic(country);
         boolean bPhone = Validate.isPhoneNumber(phone);
-        if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bPhone){
+        if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bCity && bCountry && bPhone){
             dbConnection();
             Personne personne = new Personne(avs, firstName, lastName, 1,email, phone, new Date(year, month, day),2,status,new Date(1,1,1),contract);
             insertPersonne(personne);
@@ -136,14 +131,6 @@ public class AddStaffController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());
         }
-    }
-
-    /**
-     * Méthode permettant de réinitialisé les état d'erreur
-     */
-    public void resetError() {
-        errorPanel = false;
-        errorParsing = false;
     }
 
 }
