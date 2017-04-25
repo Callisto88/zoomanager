@@ -122,7 +122,7 @@ public class AddStaff extends GenericWindow {
 
         // Ajout des champs utiles pour l'adresse
         JPanel jpAddress = new JPanel();
-        JLabel jlAddress = new JLabel("Adresse : ");
+        JLabel jlAddress = new JLabel("Ville : ");
         jpAddress.add(jlAddress);
         jtfAddress = new JTextField("adresse", 7);
         jpAddress.add(jtfAddress);

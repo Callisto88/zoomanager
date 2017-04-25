@@ -14,28 +14,6 @@ import java.util.ArrayList;
 public class Test {
 
 
-
-    public static void testDataBase () {
-
-        DBInteraction query = null;
-
-        try {
-            query = new DBInteraction();
-
-            ArrayList<Animal> animal = query.getAnimals();
-
-            for (int i = 0; i < animal.size(); i++) {
-                System.out.print(animal.get(i).getId() + "    ");
-                System.out.println(animal.get(i).getNom());
-            }
-
-        } catch (ExceptionDataBase exceptionDataBase) {
-            System.out.println(exceptionDataBase.getMsg());
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void testClassValidate () {
 
         String s1 = "Salut-' ";
@@ -104,30 +82,25 @@ public class Test {
 
     }
 
+    public static void testAdresse () {
+        String pays = "China";
 
-    public static void testUpdateAnimal () {
-        java.sql.Date d1 = new java.sql.Date(93,07,14);
-        java.sql.Date d2 = new java.sql.Date(93,07,15);
-        System.out.println(d1);;
-
-
-        Felin f1 = new Felin("Dylan", "Mâle", d1, 1, 1,1 ,d2, 1, 2000.00);
+        DBInteraction query = null;
 
         try {
-            DBInteraction query = new DBInteraction();
-            query.updateAnimal(f1);
-
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " UPDATE");
+            query = new DBInteraction();
+            System.out.println(query.getPaysID(pays));
+        } catch (SQLException e) {
+            e.getMessage();
+        } catch (ExceptionDataBase e) {
+            e.getMsg();
         }
 
 
-        /*
-        (String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
-        int race, java.sql.Date dateDeces, int id, double poids)
-        */
 
     }
+
+
 
 
     public static void testDate() {

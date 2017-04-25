@@ -28,8 +28,8 @@ public class StaffModifyPanel extends GenericWindow{
         boxChoiceLabel.addItem("Tous les champs");
         boxChoiceLabel.addItem("Nom");
         boxChoiceLabel.addItem("Prénom");
-        boxChoiceLabel.addItem("Adresse E-Mail");
-        boxChoiceLabel.addItem("Adresse");
+        boxChoiceLabel.addItem("Ville E-Mail");
+        boxChoiceLabel.addItem("Ville");
         boxChoiceLabel.addItem("Téléphone");
         boxChoiceLabel.addItem("Responsable");
         modification.add(boxChoiceLabel);
@@ -57,11 +57,11 @@ public class StaffModifyPanel extends GenericWindow{
                 if(boxChoiceLabel.getSelectedItem().equals("Prénom")){
                     addFirstName();
                 }
-                if(boxChoiceLabel.getSelectedItem().equals("Adresse E-Mail")){
+                if(boxChoiceLabel.getSelectedItem().equals("Ville E-Mail")){
                     addEMail();
                 }
 
-                if(boxChoiceLabel.getSelectedItem().equals("Adresse")){
+                if(boxChoiceLabel.getSelectedItem().equals("Ville")){
                     addAddress();
                 }
                 if(boxChoiceLabel.getSelectedItem().equals("Téléphone")){
@@ -118,7 +118,7 @@ public class StaffModifyPanel extends GenericWindow{
      */
     private void addEMail(){
         JPanel emailPanel = new JPanel();
-        JLabel emailLabel = new JLabel("Adresse E-Mail : ");
+        JLabel emailLabel = new JLabel("Ville E-Mail : ");
         emailPanel.add(emailLabel);
         emailPanel.add(new JTextField(personne.getEmail(),20));
         jpMainPanel.add(emailPanel);
@@ -131,12 +131,12 @@ public class StaffModifyPanel extends GenericWindow{
      */
     private void addAddress(){
         JPanel addressPanel = new JPanel();
-        JLabel addressLabel = new JLabel("Adresse : ");
+        JLabel addressLabel = new JLabel("Ville : ");
         addressPanel.add(addressLabel);
         addressPanel.add(new JTextField(/*personne.getAdresse()*/"adresse",20));
         jpMainPanel.add(addressPanel);
         jpMainPanel.revalidate();
-        System.out.println("modif Adresse");
+        System.out.println("modif Ville");
     }
 
     /**

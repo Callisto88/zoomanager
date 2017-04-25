@@ -8,8 +8,12 @@ public class Start {
 
     public static void main(String arg[]) {
 
-        // Test.testClassValidate();
 
+        Test.testAdresse();
+
+
+        // Test.testClassValidate();
+        /*
         DBInteraction query = null;
         try {
             query = new DBInteraction();
@@ -26,7 +30,7 @@ public class Start {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }*/
+        }
 
         try {
             ArrayList<String> listStatuts = query.getAllStatuts();

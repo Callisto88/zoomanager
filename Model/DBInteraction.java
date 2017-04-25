@@ -31,6 +31,27 @@ public class DBInteraction {
      * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
      */
     // -----------------------------------------------------------------------------------------------------------------
+    // ADRESSE :
+    // Récupérer toutes les informations sur les villes
+    private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
+    // Récupérer toutes les informations sur les pays
+    private static final String SEL_ALL_PAYS = "SELECT * FROM Pays;";
+    // Insérer un nouveau Pays dans la DB
+    private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
+    // Insérer une nouvelle Ville dans la DB
+    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES (null, ? , ? , ? );";
+    // Insérer une nouvelle Adresse dans la DB
+    private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
+    // Récupérer le pays_id d'une ville "String"
+    private static final String SEL_PAYS_ID = "SELECT pays_id FROM Pays WHERE pays = ? ;";
+    // Récupérer la ville en fonction d'un code postal
+    private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
+    // Récupérer la ville en fonction d'un code postal
+    private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville_id FROM Ville WHERE codePostal = ? ;";
+    // Récupérer les informations sur une adresse et la ville en relation
+    private static final String SEL_ADRESSE_PAR_ADR_VILLE_ID =
+            "SELECT * FROM Adresse WHERE adresse = ? AND ville_id = ? ;";
+    // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE :
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
     private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
@@ -139,7 +160,191 @@ public class DBInteraction {
         this.db.init();
         this.stmt = null;
     }
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Partie pour la gestion des ADRESSES dans la DB
+    /**
+     * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
+     *
+     * @param pays String
+     * @param cp String
+     * @param pays String
+     */
+    public void insAddress (String adresse, String cp, String pays) throws SQLException {
+        // Check si le pays est déjà dans la DB
+        // l'insère si non
+        if (this.countryIsInDB(pays) == 0) {
+            this.insPays(pays);
+        }
 
+        // Check si la ville est déjà dans la DB
+        // l'insère si non
+        if (this.cpIsInDB(cp) == 0) {
+            this.insVille(this.getVilleParCP(cp), cp, pays);
+        }
+
+        // Check si l'adresse en fonction de la ville est déjà dans la DB
+        // l'insère si non
+        if (this.addressIsInDB(adresse, this.getVilleIDParCP(cp))) {
+            this.insAdresse(adresse, this.getVilleIDParCP(cp));
+        }
+    }
+
+    /**
+     * Permet d'insérer une nouvelle adresse dans la base de données
+     *
+     * @param adresse String
+     */
+    private void insAdresse (String adresse, int ville_id) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
+        this.stmt.setString(1, adresse);
+        this.stmt.setInt(2, ville_id);
+        this.stmt.executeUpdate();
+    }
+
+
+    /**
+     * Permet d'insérer un nouveau Pays dans la base de données
+     *
+     * @param pays String
+     */
+    private void insPays (String pays) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_PAYS);
+        this.stmt.setString(1, pays);
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet d'insérer une nouvelle Ville dans la base de données
+     *
+     * @param ville String
+     */
+    private void insVille (String ville, String codePostal, String pays) throws SQLException {
+        int pays_id = this.getPaysID(pays);
+
+        this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
+        this.stmt.setString(1, ville);
+        this.stmt.setString(2, codePostal);
+        this.stmt.setInt(3, pays_id);
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet de récupérer l'id d'un Pays
+     *
+     * @param pays String
+     *
+     * @return int
+     */
+    public int getPaysID (String pays) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_ID);
+        this.stmt.setString(1, pays);
+        ResultSet rs = this.stmt.executeQuery();
+        rs.next();
+
+        return rs.getInt("pays_id");
+    }
+
+    /**
+     * Permet de récupérer le nom d'une ville en fonction d'un code postal passé en paramètre
+     *
+     * @param cp String
+     *
+     * @return String
+     */
+    public String getVilleParCP (String cp) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
+        this.stmt.setString(1, cp);
+        ResultSet rs = this.stmt.executeQuery();
+        rs.next();
+
+        return rs.getString("ville");
+    }
+
+    /**
+     * Permet de récupérer le ville_id d'une ville en fonction d'un code postal passé en paramètre
+     *
+     * @param cp String
+     *
+     * @return int
+     */
+    public int getVilleIDParCP (String cp) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
+        this.stmt.setString(1, cp);
+        ResultSet rs = this.stmt.executeQuery();
+        rs.next();
+
+        return rs.getInt("ville_id");
+    }
+
+
+    /**
+     * Permet de savoir si un code postal est déjà présent dans la db
+     * Retourne la ville_id du code Postal si présent
+     * Retourne 0 si non présent
+     *
+     * @param cp Int
+     *
+     * @return int
+     */
+    public int cpIsInDB (String cp) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_VILLE);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Ville> data = new ArrayList<Ville>();
+
+        while (rs.next()) data.add(new Ville(rs.getInt("ville_id"), rs.getString("ville"),
+                rs.getString("codePostal"), rs.getInt("ville_id")));
+
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getCp().equals(cp))
+                return data.get(i).getVille_id();
+        }
+        return 0;
+    }
+
+    /**
+     * Permet de savoir si un Pays est déjà présent dans la db
+     * Retourne le pays_id du Pays si présent
+     * Retourne 0 si non présent
+     *
+     * @param pays String
+     *
+     * @return int
+     */
+    public int countryIsInDB (String pays) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_PAYS);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Pays> data = new ArrayList<Pays>();
+
+        while (rs.next()) data.add(new Pays(rs.getInt("pays_id"), rs.getString("pays")));
+
+        for (int i = 0; i < data.size(); i++) {
+            if (data.get(i).getPays().equals(pays))
+                return data.get(i).getPays_id();
+        }
+        return 0;
+    }
+
+    /**
+     * Permet de savoir si une Adresse est déjà présent dans la db en fonction de son lien avec la ville
+     *
+     * @param adresse String
+     * @param ville_id int
+     *
+     * @return boolean
+     */
+    public boolean addressIsInDB (String adresse, int ville_id) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_ADR_VILLE_ID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (!rs.next()) {
+            return false;
+        } else {
+            return true;
+        }
+    }
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des PERSONNE dans la DB
@@ -181,6 +386,7 @@ public class DBInteraction {
         return listStatuts;
     }
 
+
     public ArrayList<String> getAllDifferentStatus() throws SQLException, ExceptionDataBase {
 
         this.stmt = db.con.prepareStatement(SEL_TYPE_CONTRAT);
@@ -197,6 +403,7 @@ public class DBInteraction {
         }
         return listTypeContrat;
     }
+
 
     public ArrayList<String> selAllContractType() throws SQLException, ExceptionDataBase {
 
@@ -215,12 +422,14 @@ public class DBInteraction {
         return listTypeContrat;
     }
 
+
     public void delPersonne(int id) throws SQLException {
 
         this.stmt = db.con.prepareStatement(DEL_PERSONNE);
         this.stmt.setInt(1, id);
         this.stmt.executeQuery();
     }
+
 
     public ArrayList<Personne> selAllEmployes() throws SQLException, ExceptionDataBase {
 
@@ -252,7 +461,7 @@ public class DBInteraction {
     /**
      * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
      *
-     * @return String[][] / Prénom en première position
+     * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selAllFirstLastNameEmployee() throws ExceptionDataBase, SQLException {
         ArrayList<Personne> personne = this.recupererPersonne(SEL_ALL_PERSONNE);
@@ -323,7 +532,7 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insertPersonne(String noAVS, String prenom, String nom, String adresse, String email,
+    public void insertPersonne(String noAVS, String prenom, String nom, int adresse, String email,
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
                             double salaire, java.sql.Date dateDebut, String typeContrat)
             throws ExceptionDataBase, SQLException {
@@ -331,7 +540,7 @@ public class DBInteraction {
         this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
         this.stmt.setString(3, nom);
-        this.stmt.setString(4, adresse);
+        this.stmt.setInt(4, adresse);
         this.stmt.setString(5, email);
         this.stmt.setString(6, telephone);
         this.stmt.setDate(7, dateNaissance);
@@ -436,8 +645,8 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Animal(rs.getInt("id"), rs.getString("nom"),
                         rs.getString("sexe"), rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"), rs.getString("origine"),
-                        rs.getString("race"), rs.getDate("dateDeces")));
+                        rs.getInt("enclos"), rs.getInt("origine"),
+                        rs.getInt("race"), rs.getDate("dateDeces")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -460,7 +669,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getDouble("surface")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -503,7 +712,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, f.getId());
-            this.stmt.setFloat(2, f.getPoids());
+            this.stmt.setDouble(2, f.getPoids());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -516,7 +725,7 @@ public class DBInteraction {
 
         try {
             this.stmt.setInt(1, r.getId());
-            this.stmt.setFloat(2, r.getTemperature());
+            this.stmt.setDouble(2, r.getTemperature());
             this.stmt.execute();
         } catch (SQLException sqlE) {
             throw sqlE;     // Exception propagée à l'appelant
@@ -558,7 +767,7 @@ public class DBInteraction {
         this.stmt.setString(3, a.getSexe());
         this.stmt.setDate(4, a.getAnneeNaissance());
         this.stmt.setInt(5, a.getEnclos());
-        this.stmt.setString(6, a.getOrigine());
+        this.stmt.setInt(6, a.getOrigine());
         this.stmt.setDate(7, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
@@ -623,7 +832,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data = new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface"));
+                        rs.getInt("secteur"), rs.getDouble("surface"));
             }
         }
 
@@ -644,7 +853,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getString("surface")));
+                        rs.getInt("secteur"), rs.getDouble("surface")));
             }
         }
 
