@@ -20,39 +20,20 @@ public class Ville {
     /**
      * Membres privés
      */
-    private int ville_id;
+    private int cp;
     private String ville;
-    private String cp;
     private int pays_id;
 
     /**
      * Constructeur avec tous les membres
-     * @param ville_id
      * @param ville
      * @param cp
      * @param pays_id
      */
-    public Ville(int ville_id, String ville, String cp, int pays_id) {
-        this.ville_id = ville_id;
+    public Ville( int cp, String ville, int pays_id) {
         this.ville = ville;
         this.cp = cp;
-        this.ville_id = ville_id;
-    }
-
-    /**
-     * Getter ville_id
-     * @return int ville_id
-     */
-    public int getVille_id() {
-        return ville_id;
-    }
-
-    /**
-     * Setter ville_id
-     * @param ville_id int
-     */
-    public void setVille_id(int ville_id) {
-        this.ville_id = ville_id;
+        this.pays_id = pays_id;
     }
 
     /**
@@ -75,7 +56,7 @@ public class Ville {
      * Getter code postal
      * @return int cp
      */
-    public String getCp() {
+    public int getCp() {
         return cp;
     }
 
@@ -83,7 +64,7 @@ public class Ville {
      * Setter code postal
      * @param cp int
      */
-    public void setCp(String cp) {
+    public void setCp(int cp) {
         this.cp = cp;
     }
 

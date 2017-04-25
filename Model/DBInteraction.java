@@ -39,7 +39,7 @@ public class DBInteraction {
     // Insérer un nouveau Pays dans la DB
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
     // Insérer une nouvelle Ville dans la DB
-    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES (null, ? , ? , ? );";
+    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES ( ? , ? , ? );";
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
     // Récupérer le pays_id d'une ville "String"
@@ -100,9 +100,9 @@ public class DBInteraction {
             "FROM Animal;";
     // Récupérer tous les paramètre d'un animal
     private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
-    // ----------------------------------------------------------------------------------x-------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     // ENCLOS :
-    // ----------------------------------------------------------------------------------x-------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
 
@@ -170,7 +170,7 @@ public class DBInteraction {
      * @param cp String
      * @param pays String
      */
-    public void insAddress (String adresse, String cp, String pays) throws SQLException {
+    public void insAddress (String adresse, int cp, String pays) throws SQLException {
         // Check si le pays est déjà dans la DB
         // l'insère si non
         if (this.countryIsInDB(pays) == 0) {
@@ -219,12 +219,12 @@ public class DBInteraction {
      *
      * @param ville String
      */
-    private void insVille (String ville, String codePostal, String pays) throws SQLException {
+    private void insVille (String ville, int codePostal, String pays) throws SQLException {
         int pays_id = this.getPaysID(pays);
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
-        this.stmt.setString(1, ville);
-        this.stmt.setString(2, codePostal);
+        this.stmt.setInt(1, codePostal);
+        this.stmt.setString(2, ville);
         this.stmt.setInt(3, pays_id);
         this.stmt.executeUpdate();
     }
@@ -252,9 +252,9 @@ public class DBInteraction {
      *
      * @return String
      */
-    public String getVilleParCP (String cp) throws SQLException {
+    public String getVilleParCP (int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
-        this.stmt.setString(1, cp);
+        this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
@@ -268,9 +268,9 @@ public class DBInteraction {
      *
      * @return int
      */
-    public int getVilleIDParCP (String cp) throws SQLException {
+    public int getVilleIDParCP (int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
-        this.stmt.setString(1, cp);
+        this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
@@ -287,18 +287,18 @@ public class DBInteraction {
      *
      * @return int
      */
-    public int cpIsInDB (String cp) throws SQLException {
+    public int cpIsInDB (int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_VILLE);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<Ville> data = new ArrayList<Ville>();
 
-        while (rs.next()) data.add(new Ville(rs.getInt("ville_id"), rs.getString("ville"),
-                rs.getString("codePostal"), rs.getInt("ville_id")));
+        while (rs.next()) data.add(new Ville(rs.getInt("codePostal"), rs.getString("ville"),
+                rs.getInt("pays_id")));
 
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getCp().equals(cp))
-                return data.get(i).getVille_id();
+            if (data.get(i).getCp() == cp)
+                return data.get(i).getCp();
         }
         return 0;
     }
