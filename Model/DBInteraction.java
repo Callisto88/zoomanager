@@ -95,7 +95,7 @@ public class DBInteraction {
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
     private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
-    // Récupérer uniquement ces 5 paramètre de l'animal
+    // Récupérer uniquement ces 5 paramètress de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
             "FROM Animal;";
     // Récupérer tous les paramètre d'un animal
