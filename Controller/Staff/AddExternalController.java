@@ -58,11 +58,12 @@ public class AddExternalController {
         boolean bAVS = Validate.isAVS(avs);
         boolean bEmail = Validate.isEmail(email);
         //boolean bAddress = Validate.isStreet(address);
-        //boolean bNPA = Validate.isNPA(npa);
-        //boolean bCity = Validate.isCity(city);
-        //boolean bCountry = Validate.isCountry(country);
+/************************* A checker les adresses ******************************/
+        boolean bNPA = Validate.isNumeric(npa);
+        boolean bCity = Validate.isAlphabetic(city);
+        boolean bCountry = Validate.isAlphabetic(country);
         boolean bPhone = Validate.isPhoneNumber(phone);
-        if(bLastName && bFirstName && bAVS && bEmail && bPhone){
+        if(bLastName && bFirstName && bAVS && bEmail && bNPA && bCity && bCountry && bPhone){
             dbConnection();
             Intervenant external = new Intervenant(avs, lastName, firstName, 1,email, phone);
             insertExternal(external);

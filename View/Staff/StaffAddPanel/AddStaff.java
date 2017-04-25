@@ -275,7 +275,6 @@ public class AddStaff extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                controller.resetError();
                 System.out.println("ajout");
                 sLastName = jtfLastNameInput.getText();
                 sFirstName = jtfLastNameInput.getText();
