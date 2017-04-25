@@ -19,7 +19,7 @@ public class Control {
         //ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
         //StockTab tab = new StockTab();
 
-        AnimalTab ann = new AnimalTab();
+        // AnimalTab ann = new AnimalTab();
         //String[] labels = {"allo", "alhuile", "echo", "bravo", "tango", "caca"};
         //String[] buttonLabel = {"soleil", "fendant", "comptoir", "vaches", "carna", "valais"};
 

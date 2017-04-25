@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Vector;
+
 /**
  *
  * Cette classe contient la conception de la table Intervenant de la base de données
@@ -24,6 +26,24 @@ public class Intervenant {
     private int adresse;
     private String email;
     private String telephone;
+
+    /**
+     * Constructeur d'un intervenant avec les paramètres principaux
+     * @param entreprise nom de l'entreprise
+     * @param nom nom de l'intervenant
+     * @param prenom prénom de l'intervenant
+     * @param adresse adresse de l'entreprise
+     * @param email email de l'intervenant
+     * @param telephone télephone de l'intervenant
+     */
+    public Intervenant(String entreprise, String nom, String prenom, int adresse, String email, String telephone){
+        this.entreprise = entreprise;
+        this.nom = nom;
+        this.prenom = prenom;
+        this.adresse = adresse;
+        this.email = email;
+        this.telephone = telephone;
+    }
 
     public int getId() {
         return id;
@@ -79,5 +99,14 @@ public class Intervenant {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public Vector<Object> toVector() {
+        Vector<Object> vObjet = new Vector<>();
+        vObjet.add(nom);
+        vObjet.add(prenom);
+        vObjet.add(entreprise);
+        vObjet.add(telephone);
+        return vObjet;
     }
 }

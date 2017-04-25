@@ -21,6 +21,15 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
+        try {
+            String artPendingDelivery = query.selCommandeEnCours(1);
+            System.out.println(artPendingDelivery);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
         /*try {
             ArrayList<Personne> listEmployes = query.selAllEmployes();
             for (Personne s : listEmployes) {

@@ -287,8 +287,8 @@ public class StaffView extends GenericWindow {
 
         // Ajout du champ de détails pour l'adresse
         JPanel jpAddress = new JPanel();
-        JLabel jlAddress = new JLabel("Ville : ");
-        JLabel jlAddressInfo = new JLabel(/*personne.getAdresse()*/ "Ville");
+        JLabel jlAddress = new JLabel("Adresse : ");
+        JLabel jlAddressInfo = new JLabel(/*personne.getAdresse()*/ "Adresse");
         jpAddress.add(jlAddress);
         jpAddress.add(Box.createHorizontalStrut(50));
         jpAddress.add(jlAddressInfo);

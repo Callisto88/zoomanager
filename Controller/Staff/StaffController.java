@@ -1,35 +1,104 @@
 package Controller.Staff;
 
 import Controller.Error.ErrorController;
-import Controller.ManagerDashboardController;
+import Model.DBInteraction;
+import Model.ExceptionDataBase;
+import Model.Intervenant;
 import Model.Personne;
 import View.Staff.StaffMainPanel.StaffView;
 
 import javax.swing.*;
-import java.awt.*;
+import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by Andre on 15.03.2017.
- * Controlleur pour la fenêtre du personnel
+ * Controlleur pour la fenêtre du alpPersonnel
  */
 public class StaffController {
     JFrame mainPanel = null;
 
     // Controlleur des sous fenêtres de Staff
-    AddStaffController addController = null;
-    ModifyStaffController modifyController = null;
-    AssignStaffTaskController assignController = null;
-    ErrorController ecError = null;
+    private AddStaffController addController = null;
+    private ModifyStaffController modifyStaffController = null;
+    private AssignStaffTaskController assignController = null;
+    private AssignExternalTaskController aetcAssignExternal = null;
+
+    private ModifyExternalController mecModifyExternal = null;
+    private ErrorController ecError = null;
+    private DBInteraction querry = null;
 
     /**
-     * Constructeur du controlleur de la fenêtre du personnel
+     * Constructeur du controlleur de la fenêtre du alpPersonnel
      */
     public StaffController() {
-        StaffView personnel = new StaffView(this);
+        // établis la connection
+        dbConnection();
+
+        StaffView svPersonnel = new StaffView(this, getPersonnel());
     }
 
     /**
-     * Méthode permettant de réafficher la fenêtre du personnel
+     * Méthode permettant d'établir la connection avec la DB
+     */
+    private void dbConnection(){
+        try {
+            querry = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDB) {
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        }
+
+        ArrayList<Personne> personnel = null;
+    }
+
+    /**
+     * Méthode permettant d'obtenir le listing du personnel
+     * @return un ArrayList avec le personnel présent dans la base de donnée
+     */
+    public ArrayList<Personne> getPersonnel(){
+        ArrayList<Personne> alpPersonnel = null;
+        try{
+            alpPersonnel = querry.selAllEmployes();
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException exceptionsql){
+            exceptionsql.printStackTrace();
+            ecError = new ErrorController(exceptionsql.toString());
+        }
+        return alpPersonnel;
+    }
+
+    /**
+     * Méthode permettant d'obtenir le listing du personnel
+     * @return un ArrayList avec le personnel présent dans la base de donnée
+     */
+    public ArrayList<Intervenant> getExternal(){
+        ArrayList<Intervenant> aliExternal = null;
+        aliExternal = new ArrayList<>();
+        /*
+        try{
+            aliExternal = querry.getAllExternal;
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException exceptionsql){
+            exceptionsql.printStackTrace();
+            ecError = new ErrorController(exceptionsql.toString());
+        }
+        */
+        Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
+        Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
+        Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
+        aliExternal.add(i1);
+        aliExternal.add(i2);
+        aliExternal.add(i3);
+        return aliExternal;
+    }
+
+    /**
+     * Méthode permettant de réafficher la fenêtre du alpPersonnel
      */
     public void revalidateView() {
         mainPanel.setVisible(true);
@@ -50,24 +119,35 @@ public class StaffController {
     }
 
     /**
-     * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour le personnel
+     * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour le alpPersonnel
      */
-    public void assignTaskView(Personne personne) {
+    public void assignStaffTaskView(Personne personne) {
         assignController = new AssignStaffTaskController(personne);
+    }
+
+    public void assignExternalTaskView(Intervenant external) {
+        aetcAssignExternal = new AssignExternalTaskController(external);
     }
 
     /**
      * Méthode pour instancier la fenêtre de modification d'une personne
      */
-    public void modifyView(Personne personne) {
-        modifyController = new ModifyStaffController(personne);
+    public void modifyStaffView(Personne personne) {
+        modifyStaffController = new ModifyStaffController(personne);
     }
 
+    public void modifyExternalView(Intervenant external){
+        mecModifyExternal = new ModifyExternalController(external);
+    }
 
     /**
      * Méthode permettant de lancer une fenêtre popup
      */
     public void erreurPopup(String error) {
         ErrorController ecError = new ErrorController(error);
+    }
+
+    public void deleteStaff(Personne personne){
+
     }
 }

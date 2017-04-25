@@ -1,25 +1,18 @@
 package Controller.Staff;
 
 import Model.Evenement;
-import Model.Personne;
-import View.Staff.AssignTaskPanel.TaskStaffPanel;
+import Model.Intervenant;
+import View.Staff.AssignTaskPanel.TaskExternalPanel;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
- * Created by Andre on 17.03.2017.
- * Controlleur de la fenêtre d'assignation de tâche du personnel
+ * Created by André on 23.04.2017.
  */
-public class AssignStaffTaskController {
-    private TaskStaffPanel task = null;
-
-    /**
-     * Constructeur du controlleur de la fenêtre d'assignation de tâches pour le personnel
-     */
-    public AssignStaffTaskController(Personne personne) {
-        //JFrame panel = new JFrame("Assignation de tâches");
-        //panel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+public class AssignExternalTaskController {
+    private TaskExternalPanel tepExternal = null;
+    public AssignExternalTaskController(Intervenant external){
         ArrayList<Evenement> tasks = null;
 /*
         DBInteraction querry = null;
@@ -30,7 +23,7 @@ public class AssignStaffTaskController {
         }
 
         try{
-            tasks = querry.getAllUnassignedTaskEmployee();
+            tasks = querry.getExternalUnassignedTaskEmployee();
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
@@ -49,14 +42,6 @@ public class AssignStaffTaskController {
         tasks.add(e2);
         tasks.add(e3);
 /************************************************************/
-        task = new TaskStaffPanel(personne, tasks);
-        //panel.getContentPane().add(task);
-    }
-
-    /**
-     * Méthode permettant de réafficher la fenêtre
-     */
-    public void revalidateView() {
-
+        tepExternal = new TaskExternalPanel(external, tasks);
     }
 }

@@ -1,7 +1,7 @@
-package View.Staff.StaffAssignTaskPanel;
+package View.Staff.AssignTaskPanel;
 
 import Model.Evenement;
-import Model.Personne;
+import Model.Intervenant;
 import View.GenericWindow;
 
 import javax.swing.*;
@@ -11,14 +11,13 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by Andre on 28.03.2017.
+ * Created by Bureau on 23.04.2017.
  */
-public class TaskStaffPanel extends GenericWindow{
-
-    public TaskStaffPanel(Personne personne, ArrayList<Evenement> tasks){
-        super("Tâches");
+public class TaskExternalPanel extends GenericWindow {
+    public TaskExternalPanel(Intervenant external, ArrayList<Evenement> tasks){
+        super("Tâches Intervenant");
         jpMainPanel.setLayout(new GridLayout(tasks.size(), 1));
-        JLabel jlPersonne = new JLabel(personne.getPrenom() + " " + personne.getNom());
+        JLabel jlPersonne = new JLabel(external.getPrenom() + " " + external.getNom());
         jpMainPanel.add(jlPersonne);
 
         // Boucle permettant de crée les boutons correspondant au tâches non-assignés, et les efface
