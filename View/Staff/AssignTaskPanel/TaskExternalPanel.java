@@ -11,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
- * Created by Bureau on 23.04.2017.
+ * Created by André on 23.04.2017.§
  */
 public class TaskExternalPanel extends GenericWindow {
     public TaskExternalPanel(Intervenant external, ArrayList<Evenement> tasks){

@@ -10,15 +10,20 @@ import View.Staff.StaffAddPanel.AddExternal;
 import java.sql.SQLException;
 
 /**
- * Created by Bureau on 23.04.2017.
+ * Created by André on 23.04.2017.
+ * Class permettant d'instancier et de controller tout ce qui concerne l'ajout d'intervenant
  */
 public class AddExternalController {
     private AddExternal aeExternal = null;
     private DBInteraction querry = null;
     private ErrorController ecError = null;
 
-    public AddExternalController(Intervenant external){
+    /**
+     * Constructeur du controlleur d'ajout d'intervenant
+     */
+    public AddExternalController(){
         aeExternal = new AddExternal(this);
+        aeExternal.disableError();
     }
 
     /**
@@ -35,21 +40,27 @@ public class AddExternalController {
 
     /**
      * Méthode permettant de checker qu'un intervenant est OK avant de l'insérer
-     * @param lastName Nom de la personne
-     * @param firstName Prénom de la personne
-     * @param avs Numéro AVS de la personne
-     * @param email EMail de la personne
-     * @param address Adresse de la personne
-     * @param phone Numéro de télephone de la personne
+     * @param lastName Nom de l'intervenant
+     * @param firstName Prénom de l'intervenant
+     * @param avs Numéro AVS de l'intervenant
+     * @param email EMail de l'intervenant
+     * @param address Adresse de l'intervenant
+     * @param npa NPA de l'intervenant
+     * @param city Ville de l'intervenant
+     * @param country Pays de l'intervenant
+     * @param phone Numéro de télephone de l'intervenant
      */
-    public void checkExternal(String lastName, String firstName,String avs, String email, String address,
-                              String phone){
+    public void checkExternal(String lastName, String firstName,String avs, String email, String address, String npa, String city,
+                              String country, String phone){
 
         boolean bLastName = Validate.isAlphabetic(lastName);
         boolean bFirstName = Validate.isAlphabetic(firstName);
         boolean bAVS = Validate.isAVS(avs);
         boolean bEmail = Validate.isEmail(email);
-        //boolean bAddress = Validate.is(address);
+        //boolean bAddress = Validate.isStreet(address);
+        //boolean bNPA = Validate.isNPA(npa);
+        //boolean bCity = Validate.isCity(city);
+        //boolean bCountry = Validate.isCountry(country);
         boolean bPhone = Validate.isPhoneNumber(phone);
         if(bLastName && bFirstName && bAVS && bEmail && bPhone){
             dbConnection();

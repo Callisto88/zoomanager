@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Control {
     public static void main(String[] args) {
         String windowTitle = "Zoo Manager";
-        //ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
+        ManagerDashboardController mdc = new ManagerDashboardController(windowTitle);
         //StockTab tab = new StockTab();
 
         // AnimalTab ann = new AnimalTab();
