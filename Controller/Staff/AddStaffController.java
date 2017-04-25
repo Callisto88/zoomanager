@@ -14,7 +14,7 @@ import java.util.ArrayList;
 
 /**
  * Created by Andre on 17.03.2017.
- * Controlleur de la fenêtre d'ajout de personnel
+ * Class permettant d'instancier et de controller tout ce qui concerne l'ajout de personnel
  */
 public class AddStaffController {
     private JFrame addPanel = null;
@@ -55,7 +55,7 @@ public class AddStaffController {
     }
 
     /**
-     * Méthode permettant d'obtenir le listing des différents statuts
+     * Méthode permettant d'obtenir le listing des différents statuts présent dans la DB
      */
     private void getStatus(){
         try{
@@ -70,7 +70,7 @@ public class AddStaffController {
     }
 
     /**
-     * Méthode permettant d'obtenir le listing des différents contrats
+     * Méthode permettant d'obtenir le listing des différents contrats présent dans la DB
      */
     private void getContract(){
         try{
@@ -85,13 +85,6 @@ public class AddStaffController {
     }
 
     /**
-     * Méthode permettant de réafficher la fenêtre
-     */
-    public void revalidateView() {
-        add.setVisible(true);
-    }
-
-    /**
      * Méthode permettant de checker qu'une personne est OK avant de l'insérer
      * @param lastName Nom de la personne
      * @param firstName Prénom de la personne
@@ -101,20 +94,26 @@ public class AddStaffController {
      * @param avs Numéro AVS de la personne
      * @param email EMail de la personne
      * @param address Adresse de la personne
+     * @param npa NPA de la personne
+     * @param city Ville de la personne
+     * @param country Pays de la personne
      * @param phone Numéro de télephone de la personne
      * @param supervisor Superviseur de la personne
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
     public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address,
-                              String phone, String supervisor, String status, String contract){
+                              String npa, String city, String country, String phone, String supervisor, String status, String contract){
 
         boolean bLastName = Validate.isAlphabetic(lastName);
         boolean bFirstName = Validate.isAlphabetic(firstName);
         boolean bBirthday = Validate.isDate(day, month, year);
         boolean bAVS = Validate.isAVS(avs);
         boolean bEmail = Validate.isEmail(email);
-        //boolean bAddress = Validate.is(address);
+        //boolean bAddress = Validate.isStreet(address);
+        //boolean bNPA = Validate.isNPA(npa);
+        //boolean bCity = Validate.isCity(city);
+        //boolean bCountry = Validate.isCountry(country);
         boolean bPhone = Validate.isPhoneNumber(phone);
         if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bPhone){
             dbConnection();

@@ -31,6 +31,9 @@ public class AddStaff extends GenericWindow {
     private String sAVS;
     private String sEMail;
     private String sAddress;
+    private String sNPA;
+    private String sCity;
+    private String sCountry;
     private String sPhone;
     private String sSupervisor;
     private String sStatus;
@@ -45,6 +48,7 @@ public class AddStaff extends GenericWindow {
     private JTextField jtfAddress;
     private JTextField jtfCity;
     private JTextField jtfNPA;
+    private JTextField jtfCountry;
     private JTextField jtfPhone;
     private JTextField jtfSupervisor;
     private JComboBox jcbStatus;
@@ -57,8 +61,9 @@ public class AddStaff extends GenericWindow {
     private JLabel jlAVSError = new JLabel("*", JLabel.CENTER);
     private JLabel jlEmailError = new JLabel("*", JLabel.CENTER);
     private JLabel jlAddressError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlCityError = new JLabel("*", JLabel.CENTER);
     private JLabel jlNPAError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlCityError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlCountryError = new JLabel("*", JLabel.CENTER);
     private JLabel jlPhoneError = new JLabel("*", JLabel.CENTER);
     private JLabel jlSupervisorError = new JLabel("*", JLabel.CENTER);
     private JLabel jlStatusError = new JLabel("*", JLabel.CENTER);
@@ -72,7 +77,7 @@ public class AddStaff extends GenericWindow {
     public AddStaff(AddStaffController asc, ArrayList<String> statut, ArrayList<String> contract) {
         super("Ajout");
         controller = asc;
-        jpMainPanel.setLayout(new GridLayout(13,1));
+        jpMainPanel.setLayout(new GridLayout(14,1));
 
 
         // Ajout des champs utiles pour le nom
@@ -157,6 +162,18 @@ public class AddStaff extends GenericWindow {
         jpAddress.add(jlAddressError);
         jpMainPanel.add(jpAddress);
 
+        // Ajout des champs utiles pour le NPA
+        JPanel jpNPA = new JPanel();
+        JLabel jlNPA = new JLabel("NPA : ");
+        jpNPA.add(jlNPA);
+        jtfNPA = new JTextField("npa", 7);
+        jpNPA.add(jtfNPA);
+        jlNPAError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlNPAError.setForeground(Color.RED);
+        jlNPAError.setHorizontalAlignment(JLabel.CENTER);
+        jpNPA.add(jlNPAError);
+        jpMainPanel.add(jpNPA);
+
         // Ajout des champs utiles pour la ville
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
@@ -169,17 +186,17 @@ public class AddStaff extends GenericWindow {
         jpCity.add(jlCityError);
         jpMainPanel.add(jpCity);
 
-        // Ajout des champs utiles pour le NPA
-        JPanel jpNPA = new JPanel();
-        JLabel jlNPA = new JLabel("NPA : ");
-        jpNPA.add(jlNPA);
-        jtfNPA = new JTextField("npa", 7);
-        jpNPA.add(jtfNPA);
-        jlNPAError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlNPAError.setForeground(Color.RED);
-        jlNPAError.setHorizontalAlignment(JLabel.CENTER);
-        jpNPA.add(jlNPAError);
-        jpMainPanel.add(jpNPA);
+        // Ajout des champs utiles pour le Pays
+        JPanel jpCountry = new JPanel();
+        JLabel jlCountry = new JLabel("Pays : ");
+        jpCountry.add(jlCountry);
+        jtfCountry = new JTextField("npa", 7);
+        jpCountry.add(jtfCountry);
+        jlCountryError.setFont(new Font("Serif", Font.BOLD, 32));
+        jlCountryError.setForeground(Color.RED);
+        jlCountryError.setHorizontalAlignment(JLabel.CENTER);
+        jpCountry.add(jlCountryError);
+        jpMainPanel.add(jpCountry);
 
         // Ajout des champs utiles pour l'e-mail
         JPanel jpEmail = new JPanel();
@@ -268,13 +285,14 @@ public class AddStaff extends GenericWindow {
                 sAVS = jtfAVSInput.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
-                sAddress = sAddress + " " + jtfNPA.getText();
-                sAddress = sAddress + " " + jtfCity.getText();
+                sNPA = jtfNPA.getText();
+                sCity = jtfCity.getText();
+                sCountry = jtfCountry.getText();
                 sPhone = jtfPhone.getText();
                 sSupervisor = jtfSupervisor.getText();
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sPhone, sSupervisor, sStatus, sContract);
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity,  sCountry, sPhone, sSupervisor, sStatus, sContract);
             }
         });
         configFrame(getJfFrame(), this);
@@ -291,6 +309,7 @@ public class AddStaff extends GenericWindow {
         jlAddressError.setVisible(false);
         jlCityError.setVisible(false);
         jlNPAError.setVisible(false);
+        jlCountryError.setVisible(false);
         jlEmailError.setVisible(false);
         jlPhoneError.setVisible(false);
         jlStatusError.setVisible(false);
@@ -298,93 +317,4 @@ public class AddStaff extends GenericWindow {
         jlContractError.setVisible(false);
     }
 
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlFirstNameError(String error) {
-        jlFirstNameError.setToolTipText(error);
-        jlFirstNameError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlLastNameError(String error) {
-        jlLastNameError.setToolTipText(error);
-        jlLastNameError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlBirthdayError(String error) {
-        jlBirthdayError.setToolTipText(error);
-        jlBirthdayError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setAVSError(String error) {
-        jlAVSError.setToolTipText(error);
-        jlAVSError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlEmailError(String error) {
-        jlEmailError.setToolTipText(error);
-        jlEmailError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlAddressError(String error) {
-        jlAddressError.setToolTipText(error);
-        jlAddressError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlCityError(String error) {
-        jlCityError.setToolTipText(error);
-        jlCityError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setNPAError(String error) {
-        jlNPAError.setToolTipText(error);
-        jlNPAError.setVisible(true);
-    }
-
-    /**
-     * Méthode permettant d'afficher un astérix rouge signalant une erreur de saisie,
-     * en plus de mettre en information sur l'astérix le problème
-     * @param error permet de spécifier ce qui à déclenché l'erreur
-     */
-    public void setJlPhoneError(String error) {
-        jlPhoneError.setToolTipText(error);
-        jlPhoneError.setVisible(true);
-    }
 }

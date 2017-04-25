@@ -9,12 +9,19 @@ import java.util.ArrayList;
 
 /**
  * Created by André on 23.04.2017.
+ * Class permettant d'instancier et de controller tout ce qui concerne l'assignation de tâche à un intervenant
  */
 public class AssignExternalTaskController {
     private TaskExternalPanel tepExternal = null;
+
+    /**
+     * Constructeur du controlleur
+     * @param external
+     */
     public AssignExternalTaskController(Intervenant external){
         ArrayList<Evenement> tasks = null;
 /*
+        // Permet de récupérer les taches non assignées des intervenant
         DBInteraction querry = null;
         try {
             querry = new DBInteraction();

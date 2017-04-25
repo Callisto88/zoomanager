@@ -117,7 +117,7 @@ abstract public class GenericWindow extends JPanel {
         jfFrame.setContentPane(jpMainPanel);
         //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
-        jfFrame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        jfFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         //jfFrame.getContentPane().add(gw);
         jfFrame.pack();
         jfFrame.setVisible(true);

@@ -24,6 +24,7 @@ public class StaffController {
     private AssignStaffTaskController assignController = null;
     private AssignExternalTaskController aetcAssignExternal = null;
 
+    private AddExternalController aecAddExternal = null;
     private ModifyExternalController mecModifyExternal = null;
     private ErrorController ecError = null;
     private DBInteraction querry = null;
@@ -107,24 +108,29 @@ public class StaffController {
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
-    public void addView() {
+    public void addStaffView() {
         addController = new AddStaffController();
-        /*
-        if (addController == null) {
-            addController = new AddStaffController();
-        } else {
-            addController.revalidateView();
-        }
-        */
     }
 
     /**
-     * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour le alpPersonnel
+     * Méthode permettant l'ajout d'intervenant
+     */
+    public void addExternalView(){
+        aecAddExternal = new AddExternalController();
+    }
+
+    /**
+     * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour la Personne
+     * @param personne
      */
     public void assignStaffTaskView(Personne personne) {
         assignController = new AssignStaffTaskController(personne);
     }
 
+    /**
+     * Méthode permettant d'instancier la fenêtre d'assignation de tâches pour l'Intervenant
+     * @param external personne externe à qui attribuer des tâches
+     */
     public void assignExternalTaskView(Intervenant external) {
         aetcAssignExternal = new AssignExternalTaskController(external);
     }
@@ -147,7 +153,35 @@ public class StaffController {
         ErrorController ecError = new ErrorController(error);
     }
 
+    /**
+     * Méthode permettant de supprimer un personnel
+     * @param personne personne à supprimer
+     **************  Renvoyer un booleen?
+     */
     public void deleteStaff(Personne personne){
+        dbConnection();
+        try {
+            querry.delPersonne(personne.getIdPersonne());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+    }
 
+    /**
+     * Méthode permettant de supprimer un Intervenant
+     * @param external intervenant à supprimer
+     **************  Renvoyer un booleen?
+     */
+    public void deleteExternal(Intervenant external){
+        dbConnection();
+        /*
+        try{
+            querry.delIntervenant(external.getId());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        */
     }
 }

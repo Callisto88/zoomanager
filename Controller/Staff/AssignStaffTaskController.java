@@ -1,27 +1,31 @@
 package Controller.Staff;
 
+import Model.DBInteraction;
 import Model.Evenement;
+import Model.ExceptionDataBase;
 import Model.Personne;
 import View.Staff.AssignTaskPanel.TaskStaffPanel;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
  * Created by Andre on 17.03.2017.
- * Controlleur de la fenêtre d'assignation de tâche du personnel
+ * Class permettant d'instancier et de controller tout ce qui concerne l'assignation de tâche du personnel
  */
 public class AssignStaffTaskController {
     private TaskStaffPanel task = null;
 
     /**
      * Constructeur du controlleur de la fenêtre d'assignation de tâches pour le personnel
+     * @param personne personne à qui l'on souhaite attribuer des tâches
      */
     public AssignStaffTaskController(Personne personne) {
         //JFrame panel = new JFrame("Assignation de tâches");
         //panel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ArrayList<Evenement> tasks = null;
-/*
+
         DBInteraction querry = null;
         try {
             querry = new DBInteraction();
@@ -38,7 +42,7 @@ public class AssignStaffTaskController {
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
         }
-*/
+
 /***********************************************************/
         tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2),3);
