@@ -4,6 +4,7 @@ import Model.*;
 import View.GenericWindow;
 import View.MyModelTable;
 import Controller.Animal.*;
+import com.jidesoft.swing.AutoCompletion;
 
 
 import javax.swing.*;
@@ -77,34 +78,12 @@ public class AnimalTab extends GenericWindow {
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setPreferredSize(new Dimension(820, 720));
 
-        //Animal sTest1 = new Animal("Jean", "Mâle", new java.sql.Date(999999999), 1, "Vietnam", "Albatros");
-
-        Vector<Vector<Object>> vAnimal = new Vector<>();
 
         ArrayList<Animal> animauxDB = atAnimalController.getAllAnimal();
         ArrayList<Enclos> enclosDB = atAnimalController.getAllEnclos();
 
-        short age;
-        String ageL;
+        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
 
-        for (Animal animal : animauxDB) {
-            vAnimal.add(animal.toVector(1));
-            age = calculateAge(animal.getAnneeNaissance());
-            ageL = animal.getAnneeNaissance().toString() + " : " + age;
-            vAnimal.lastElement().setElementAt(ageL ,3);
-            if (animal.getEnclos() != 0) {
-                for (Enclos enclos : enclosDB) {
-                    if (enclos.getId() == animal.getEnclos()) {
-                        vAnimal.lastElement().add(enclos.getNom());
-                    }
-                }
-            } else {
-                vAnimal.lastElement().add("");
-            }
-        }
-
-        //Vector<Object> sTest = sTest1.toVector(1);
-        //vAnimal.add(sTest);
 
         JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
 
@@ -185,7 +164,7 @@ public class AnimalTab extends GenericWindow {
 
         JComboBox jcEnclos = new JComboBox(sEnclos);
         //jcEnclos.setEditable(true);
-        //AutoCompletion ac = new AutoCompletion(jcEnclos);
+        AutoCompletion ac = new AutoCompletion(jcEnclos);
         //ac.setStrict(false);
         //jcEnclos.setSelectedIndex(2);
 
