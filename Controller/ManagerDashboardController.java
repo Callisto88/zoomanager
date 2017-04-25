@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Staff.StaffController;
+import Controller.Animal.*;
 import View.ManagerDashboard.ManagerDashboard;
 import View.Stock.StockTab;
 
@@ -15,6 +16,7 @@ public class ManagerDashboardController {
     private StaffController persControl = null;
     // Ajout des autres controlleur
     private StockTab stStock = null;
+    protected AnimalController acAnimal = null;
 
     // Fenêtre principale
     JFrame f = null;
@@ -57,5 +59,9 @@ public class ManagerDashboardController {
 
     public void StockView() {
         // stStock = new StockTab();
+    }
+
+    public void AnimalView() {
+        acAnimal = new AnimalController();
     }
 }

@@ -9,7 +9,7 @@ public class Start {
     public static void main(String arg[]) {
 
 
-        Test.testAdresse();
+        //Test.testAdresse();
 
 
         // Test.testClassValidate();

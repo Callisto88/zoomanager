@@ -15,6 +15,7 @@ public class Test {
 
 
 
+    /*
     public static void testDataBase () {
 
         DBInteraction query = null;
@@ -127,8 +128,10 @@ public class Test {
         int race, java.sql.Date dateDeces, int id, double poids)
         */
 
-    }
 
+    /*
+    }
+    */
 
     public static void testDate() {
 
