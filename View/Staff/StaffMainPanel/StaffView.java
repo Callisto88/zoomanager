@@ -76,15 +76,21 @@ public class StaffView extends GenericWindow {
         });
 
         // Bouton pour pouvoir ajouter du personnel
-        JButton jbCreateListOrder = new JButton("Ajouter du personnel");
-        setButtonConfig(jbCreateListOrder);
+        JButton jbAdd = new JButton("Ajouter du personnel");
+        setButtonConfig(jbAdd);
 
         // Listener pour pouvoir
-        jbCreateListOrder.addActionListener(new ActionListener() {
+        jbAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.addView();
-                System.out.println("ajout personnel");
+                if(((JButton) e.getSource()).getText().equals("Ajouter un employé")) {
+                    controller.addStaffView();
+                    System.out.println("ajout personnel");
+                }
+                else{
+                    controller.addExternalView();
+                    System.out.println("ajout intervenant");
+                }
             }
         });
 
@@ -102,6 +108,7 @@ public class StaffView extends GenericWindow {
                     jtTable.setModel(new MyModelTable(tableau, sColumnExternal));
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les employés");
+                    jbAdd.setText("Ajouter un intervenant");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
@@ -112,6 +119,7 @@ public class StaffView extends GenericWindow {
                     jtTable.setModel(new MyModelTable(tableau, columnName));
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les externes");
+                    jbAdd.setText("Ajouter un employé");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
@@ -129,7 +137,7 @@ public class StaffView extends GenericWindow {
 
         gbcStockBouton.gridx = 1;
         gbcStockBouton.gridy = 0;
-        jpButtonStock.add(jbCreateListOrder, gbcStockBouton);
+        jpButtonStock.add(jbAdd, gbcStockBouton);
 
         gbcStockBouton.gridx = 2;
         gbcStockBouton.gridy = 0;

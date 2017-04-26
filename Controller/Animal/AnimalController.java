@@ -70,4 +70,29 @@ public class AnimalController {
         return enclosDB;
     }
 
+    public Vector<Vector<Object>> animauxToVector(ArrayList<Animal> animalTab, ArrayList<Enclos> enclosTab){
+        Vector<Vector<Object>> vectAnimaux = new Vector<>();
+
+        short age;
+        String ageL;
+
+        for (Animal animal : animalTab) {
+            vectAnimaux.add(animal.toVector(1));
+            age = calculateAge(animal.getAnneeNaissance());
+            ageL = animal.getAnneeNaissance().toString() + " : " + age;
+            vectAnimaux.lastElement().setElementAt(ageL ,3);
+            if (animal.getEnclos() != 0) {
+                for (Enclos enclos : enclosTab) {
+                    if (enclos.getId() == animal.getEnclos()) {
+                        vectAnimaux.lastElement().add(enclos.getNom());
+                    }
+                }
+            } else {
+                vectAnimaux.lastElement().add("");
+            }
+        }
+
+        return vectAnimaux;
+    }
+
 }

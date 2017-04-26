@@ -275,7 +275,6 @@ public class AddStaff extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                controller.resetError();
                 System.out.println("ajout");
                 sLastName = jtfLastNameInput.getText();
                 sFirstName = jtfLastNameInput.getText();
@@ -315,6 +314,46 @@ public class AddStaff extends GenericWindow {
         jlStatusError.setVisible(false);
         jlSupervisorError.setVisible(false);
         jlContractError.setVisible(false);
+    }
+
+    public void setFirstNameError(String error) {
+        jlFirstNameError.setVisible(true);
+    }
+
+    public void setLastNameError(String error) {
+        jlLastNameError.setVisible(true);
+    }
+
+    public void setBirthdayError(String error) {
+        jlBirthdayError.setVisible(true);
+    }
+
+    public void setAVSError(String error) {
+        jlAVSError.setVisible(true);
+    }
+
+    public void setEmailError(String error) {
+        jlEmailError.setVisible(true);
+    }
+
+    public void setAddressError(String error) {
+        jlAddressError.setVisible(true);
+    }
+
+    public void setCityError(String error) {
+        jlCityError.setVisible(true);
+    }
+
+    public void setNPAError(String error) {
+        jlNPAError.setVisible(true);
+    }
+
+    public void setCountryError(String error){
+        jlCountryError.setVisible(true);
+    }
+
+    public void setPhoneError(String error) {
+        jlPhoneError.setVisible(true);
     }
 
 }

@@ -42,7 +42,7 @@ public class AddExternalController {
      * Méthode permettant de checker qu'un intervenant est OK avant de l'insérer
      * @param lastName Nom de l'intervenant
      * @param firstName Prénom de l'intervenant
-     * @param avs Numéro AVS de l'intervenant
+     * @param compagny Numéro AVS de l'intervenant
      * @param email EMail de l'intervenant
      * @param address Adresse de l'intervenant
      * @param npa NPA de l'intervenant
@@ -50,21 +50,83 @@ public class AddExternalController {
      * @param country Pays de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
-    public void checkExternal(String lastName, String firstName,String avs, String email, String address, String npa, String city,
+    public void checkExternal(String lastName, String firstName,String compagny, String email, String address, String npa, String city,
                               String country, String phone){
 
+        // permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
+        if(!bLastName){
+            aeExternal.setLastNameError("Champ nom contenant des caractères innaproprié");
+        }
+        // permet de checker le prénom
         boolean bFirstName = Validate.isAlphabetic(firstName);
-        boolean bAVS = Validate.isAVS(avs);
+        if(!bFirstName){
+            aeExternal.setFirstNameError("Champ prénom contenant des caractères innaproprié");
+        }
+        // Permet de checker la compagny
+        boolean bCompagny = Validate.isAlphabetic(compagny);
+        if(!bCompagny){
+            aeExternal.setCompagnyError("Champ compagny non conforme");
+        }
+        // Permet de checker l'email
         boolean bEmail = Validate.isEmail(email);
-        //boolean bAddress = Validate.isStreet(address);
-        //boolean bNPA = Validate.isNPA(npa);
-        //boolean bCity = Validate.isCity(city);
-        //boolean bCountry = Validate.isCountry(country);
+        if(!bEmail){
+            aeExternal.setEmailError("Champ email non conforme");
+        }
+
+/************************* A checker les adresses ******************************/
+        // Permet de checker le NPA
+        boolean bNPA = Validate.isNumeric(npa);
+        if(!bNPA){
+            aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
+        }
+        // Permet de checker la ville
+        boolean bCity = Validate.isAlphabetic(city);
+        if(!bCity){
+            aeExternal.setCityError("Le champ ville non conforme");
+        }
+        // Permet de checker le pays
+        boolean bCountry = Validate.isAlphabetic(country);
+        if(!bCountry){
+            aeExternal.setCountryError("Le champ pays non conforme");
+        }
+
+        // permet de convertir le npa en int
+
+        int cp = 0;
+        boolean bChange = true;
+        if(bNPA) {
+            try {
+                cp = Integer.parseInt(npa);
+            } catch (Exception exception) {
+                bChange = false;
+                exception.printStackTrace();
+                ecError = new ErrorController(exception.toString());
+            }
+        }
+
+        // Permet d'insérer une adresse
+        dbConnection();
+        boolean bAddAddress = true;
+        try{
+            querry.insAddress(address, cp, city, country);
+        } catch(SQLException sqlException){
+            bAddAddress = false;
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+
+        // Permet de checker le numéro de télephone
         boolean bPhone = Validate.isPhoneNumber(phone);
-        if(bLastName && bFirstName && bAVS && bEmail && bPhone){
+        if(!bPhone){
+            aeExternal.setPhoneError("Champ télephone non conforme");
+        }
+
+        // Si tout est ok, on lance l'insertion
+        if(bLastName && bFirstName && bCompagny && bEmail && bNPA && bCity && bCountry && bChange && bAddAddress && bPhone){
             dbConnection();
-            Intervenant external = new Intervenant(avs, lastName, firstName, 1,email, phone);
+/***************** Problème pour récupérer l'id d'une adresse pour l'insertion ************************/
+            Intervenant external = new Intervenant(compagny, lastName, firstName, 1,email, phone);
             insertExternal(external);
         }
     }
@@ -74,6 +136,7 @@ public class AddExternalController {
      * @param external personne à insérer dans la DB
      */
     public void insertExternal(Intervenant external){
+/***************************** Problème méthode non présente dans la DB *************************************/
         /*
         try{
             querry.insertExternal(external);
@@ -86,5 +149,6 @@ public class AddExternalController {
         }
         */
         System.out.println("Intervenant externe inséré");
+
     }
 }

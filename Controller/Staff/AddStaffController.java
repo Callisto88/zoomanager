@@ -7,7 +7,6 @@ import Model.ExceptionDataBase;
 import Model.Personne;
 import View.Staff.StaffAddPanel.AddStaff;
 
-import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -17,19 +16,13 @@ import java.util.ArrayList;
  * Class permettant d'instancier et de controller tout ce qui concerne l'ajout de personnel
  */
 public class AddStaffController {
-    private JFrame addPanel = null;
     private AddStaff add = null;
-    // Booléen réutilise pour les TestDate dans les Strings
-    private boolean errorPanel = false;
-    private boolean errorParsing = false;
 
     private ArrayList<String> status = null;
     private ArrayList<String> contract = null;
 
     private ErrorController ecError = null;
     private DBInteraction querry = null;
-    // tableau de String contenant les erreur
-    private StringBuffer error = new StringBuffer();
 
     /**
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
@@ -105,18 +98,78 @@ public class AddStaffController {
     public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address,
                               String npa, String city, String country, String phone, String supervisor, String status, String contract){
 
+        // Permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
+        if(!bLastName){
+            add.setLastNameError("Champ nom contenant des caractères innaproprié");
+        }
+        // Permet de checker le prénom
         boolean bFirstName = Validate.isAlphabetic(firstName);
+        if(!bFirstName){
+            add.setFirstNameError("Champ prénom contenant des caractères innaproprié");
+        }
+        // Permet de checker la date de naissance
         boolean bBirthday = Validate.isDate(day, month, year);
+        if(!bBirthday){
+            add.setBirthdayError("Champs date inaproprié");
+        }
+        // Permet de checker le numéro AVS
         boolean bAVS = Validate.isAVS(avs);
+        if(!bAVS){
+            add.setAVSError("Champ AVS non conforme");
+        }
+        // Permet de checker l'email
         boolean bEmail = Validate.isEmail(email);
-        //boolean bAddress = Validate.isStreet(address);
-        //boolean bNPA = Validate.isNPA(npa);
-        //boolean bCity = Validate.isCity(city);
-        //boolean bCountry = Validate.isCountry(country);
+        if(!bEmail){
+            add.setEmailError("Champ Email non conforme");
+        }
+        //boolean bAddress = Validate.isAlphabetic(address);
+        // Permet de checker le npa
+        boolean bNPA = Validate.isNumeric(npa);
+        if(!bNPA){
+            add.setNPAError("Le champ NPA ne contient pas que des chiffres");
+        }
+        // Permet de checker la ville
+        boolean bCity = Validate.isAlphabetic(city);
+        if(!bCity){
+            add.setCityError("Le champ ville non conforme");
+        }
+        // Permet de checker le pays
+        boolean bCountry = Validate.isAlphabetic(country);
+        if(!bCountry){
+            add.setCountryError("Le champ pays non conforme");
+        }
+        // Permet de convertir en int le npa
+        int cp = 0;
+        boolean bChange = true;
+        if(bNPA) {
+            try {
+                cp = Integer.parseInt(npa);
+            } catch (Exception exception) {
+                bChange = false;
+                exception.printStackTrace();
+                ecError = new ErrorController(exception.toString());
+            }
+        }
+
+        // Permet d'insérer l'adresse dans la db
+        dbConnection();
+        boolean bAddAddress = true;
+        try{
+            querry.insAddress(address, cp, city, country);
+        } catch(SQLException sqlException){
+            bAddAddress = false;
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        // Permet de checker le numéro de télephone
         boolean bPhone = Validate.isPhoneNumber(phone);
-        if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bPhone){
+        if(!bPhone){
+            add.setPhoneError("Champ télephone non conforme");
+        }
+        if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bCity && bCountry && bChange && bAddAddress && bPhone){
             dbConnection();
+/***************** Problème pour récupérer l'id d'une adresse pour l'insertion ainsi que l'id d'un responsable **********************/
             Personne personne = new Personne(avs, firstName, lastName, 1,email, phone, new Date(year, month, day),2,status,new Date(1,1,1),contract);
             insertPersonne(personne);
         }
@@ -136,14 +189,6 @@ public class AddStaffController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());
         }
-    }
-
-    /**
-     * Méthode permettant de réinitialisé les état d'erreur
-     */
-    public void resetError() {
-        errorPanel = false;
-        errorParsing = false;
     }
 
 }
