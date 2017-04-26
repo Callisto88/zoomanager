@@ -32,9 +32,9 @@ public class Felin extends Animal {
     /*
      *  CONSTRUCTEURS avec tous les parametres
      */
-    public Felin(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+    public Felin(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
                  int race, java.sql.Date dateDeces, int id, double poids) {
-        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(id, nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.poids = poids;
     }
 
@@ -42,9 +42,9 @@ public class Felin extends Animal {
     /*
      *  CONSTRUCTEURS avec tous les parametres
      */
-    public Felin(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+    public Felin(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
                  int race, java.sql.Date dateDeces, double poids) {
-        super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.poids = poids;
     }
 

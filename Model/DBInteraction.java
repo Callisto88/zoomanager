@@ -42,23 +42,23 @@ public class DBInteraction {
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
 
     // Insérer une nouvelle Ville dans la DB
-    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES (null, ? , ? , ? );";
+    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES (? , ? , ? );";
 
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
 
     // Récupérer le pays_id d'une ville "String"
-    private static final String SEL_PAYS_ID = "SELECT pays_id FROM Pays WHERE pays = ? ;";
+    private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays = ? ;";
 
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
 
     // Récupérer la ville en fonction d'un code postal
-    private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville_id FROM Ville WHERE codePostal = ? ;";
+    private static final String SEL_VILLE_ID_PAR_CP = "SELECT villeId FROM Ville WHERE codePostal = ? ;";
 
     // Récupérer les informations sur une adresse et la ville en relation
     private static final String SEL_ADRESSE_PAR_ADR_VILLE_ID =
-            "SELECT * FROM Adresse WHERE adresse = ? AND ville_id = ? ;";
+            "SELECT * FROM Adresse WHERE adresse = ? AND villeId = ? ;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE
@@ -112,7 +112,7 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
 
     // Insertion d'un animal - 8 paramètres dans l'ordre
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, nomCommun, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
     // Insertion d'un félin, d'un oiseau, d'un reptile et d'un primate
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
@@ -178,11 +178,11 @@ public class DBInteraction {
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
 
     // Pour un article donné, récupère la quantité en cours de commande (si commandé)
-    private static final String SEL_ARTICLE_COMMANDE_EN_COURS = "SELECT SUM(quantite) AS `quantiteEnCours` \n" +
-            "FROM `Commande_Contenu` \n" +
-            "INNER JOIN Commande \n" +
-            "\tON Commande_Contenu.idCommande = Commande.id \n" +
-            "WHERE refArticle = ?\n" +
+    private static final String SEL_ARTICLE_COMMANDE_EN_COURS = "SELECT SUM(quantite) AS quantiteEnCours " +
+            "FROM Commande_Contenu " +
+            "INNER JOIN Commande " +
+            "ON Commande_Contenu.idCommande = Commande.id " +
+            "WHERE refArticle = ? " +
             "AND Commande.statut = \"EN_COURS\";";
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -208,7 +208,7 @@ public class DBInteraction {
      * @param cp String
      * @param pays String
      */
-    public void insAddress (String adresse, String cp, String pays) throws SQLException {
+    public void insAddress(String adresse, int cp, String pays) throws SQLException {
         // Check si le pays est déjà dans la DB
         // l'insère si non
         if (this.countryIsInDB(pays) == 0) {
@@ -233,10 +233,10 @@ public class DBInteraction {
      *
      * @param adresse String
      */
-    private void insAdresse (String adresse, int ville_id) throws SQLException {
+    private void insAdresse(String adresse, int villeId) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
         this.stmt.setString(1, adresse);
-        this.stmt.setInt(2, ville_id);
+        this.stmt.setInt(2, villeId);
         this.stmt.executeUpdate();
     }
 
@@ -258,12 +258,12 @@ public class DBInteraction {
      * @param ville String
      */
     private void insVille (String ville, String codePostal, String pays) throws SQLException {
-        int pays_id = this.getPaysID(pays);
+        int paysId = this.getPaysID(pays);
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
-        this.stmt.setString(1, ville);
-        this.stmt.setString(2, codePostal);
-        this.stmt.setInt(3, pays_id);
+        this.stmt.setString(1, codePostal);
+        this.stmt.setInt(2, paysId);
+        this.stmt.setString(3, ville);
         this.stmt.executeUpdate();
     }
 
@@ -290,9 +290,9 @@ public class DBInteraction {
      *
      * @return String
      */
-    public String getVilleParCP (String cp) throws SQLException {
+    public String getVilleParCP(int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
-        this.stmt.setString(1, cp);
+        this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
@@ -300,43 +300,48 @@ public class DBInteraction {
     }
 
     /**
-     * Permet de récupérer le ville_id d'une ville en fonction d'un code postal passé en paramètre
+     * Permet de récupérer le villeId d'une ville en fonction d'un code postal passé en paramètre
      *
      * @param cp String
      *
      * @return int
      */
-    public int getVilleIDParCP (String cp) throws SQLException {
+    public int getVilleIDParCP(int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
-        this.stmt.setString(1, cp);
+        this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
-        return rs.getInt("ville_id");
+        return rs.getInt("villeId");
     }
 
 
     /**
      * Permet de savoir si un code postal est déjà présent dans la db
-     * Retourne la ville_id du code Postal si présent
+     * Retourne la villeId du code Postal si présent
      * Retourne 0 si non présent
      *
      * @param cp Int
      *
      * @return int
      */
-    public int cpIsInDB (String cp) throws SQLException {
+    public int cpIsInDB(int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_VILLE);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<Ville> data = new ArrayList<Ville>();
 
-        while (rs.next()) data.add(new Ville(rs.getInt("ville_id"), rs.getString("ville"),
-                rs.getString("codePostal"), rs.getInt("ville_id")));
+        while (rs.next()) {
+            data.add(new Ville(
+                    rs.getInt("codePostal"),
+                    rs.getInt("paysId"),
+                    rs.getString("ville")
+            ));
+        }
 
         for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getCp().equals(cp))
-                return data.get(i).getVille_id();
+            if (data.get(i).getCp() == cp)
+                return data.get(i).getCp();
         }
         return 0;
     }
@@ -356,7 +361,7 @@ public class DBInteraction {
 
         ArrayList<Pays> data = new ArrayList<Pays>();
 
-        while (rs.next()) data.add(new Pays(rs.getInt("pays_id"), rs.getString("pays")));
+        while (rs.next()) data.add(new Pays(rs.getInt("paysId"), rs.getString("pays")));
 
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getPays().equals(pays))
@@ -369,11 +374,11 @@ public class DBInteraction {
      * Permet de savoir si une Adresse est déjà présent dans la db en fonction de son lien avec la ville
      *
      * @param adresse String
-     * @param ville_id int
+     * @param villeId int
      *
      * @return boolean
      */
-    public boolean addressIsInDB (String adresse, int ville_id) throws SQLException {
+    public boolean addressIsInDB(String adresse, int villeId) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_ADR_VILLE_ID);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -678,6 +683,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             a.setId(rs.getInt("id"));
+            a.setNomCommun(rs.getString("nomCommun"));
             a.setNom(rs.getString("nom"));
             a.setSexe(rs.getString("sexe"));
             a.setDateNaissance(rs.getDate("dateNaissance"));
@@ -703,7 +709,8 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Animal(rs.getInt("id"), rs.getString("nom"),
+                data.add(new Animal(rs.getInt("id"), rs.getString("nomCommun"),
+                        rs.getString("nom"),
                         rs.getString("sexe"), rs.getDate("dateNaissance"),
                         rs.getInt("enclos"), rs.getInt("origine"),
                         rs.getInt("race"), rs.getDate("dateDeces")));
@@ -823,12 +830,13 @@ public class DBInteraction {
 
         // Attribut communs à tous les animaux
         this.stmt.setNull(1, Types.NULL);
-        this.stmt.setString(2, a.getNom());
-        this.stmt.setString(3, a.getSexe());
-        this.stmt.setDate(4, a.getAnneeNaissance());
-        this.stmt.setInt(5, a.getEnclos());
-        this.stmt.setInt(6, a.getOrigine());
-        this.stmt.setDate(7, a.getDateDeces());
+        this.stmt.setString(2, a.getNomCommun());
+        this.stmt.setString(3, a.getNom());
+        this.stmt.setString(4, a.getSexe());
+        this.stmt.setDate(5, a.getAnneeNaissance());
+        this.stmt.setInt(6, a.getEnclos());
+        this.stmt.setInt(7, a.getOrigine());
+        this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
         try {

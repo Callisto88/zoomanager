@@ -48,10 +48,12 @@ public class Animal {
     public Animal(int id) {
         this.id = id;
     }
-    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
+
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
                   int origine, int race, java.sql.Date dateDeces) {
         this.id = id;
         this.nom = nom;
+        this.nomCommun = nomCommun;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
         this.enclos = enclos;
@@ -69,9 +71,10 @@ public class Animal {
      * @param race
      * @param dateDeces
      */
-    public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
+    public Animal(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance,
                   int enclos, int origine, int race, java.sql.Date dateDeces) {
         this.nom = nom;
+        this.nomCommun = nomCommun;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
         this.enclos = enclos;
@@ -80,9 +83,10 @@ public class Animal {
         this.dateDeces = dateDeces;
     }
 
-    public Animal(String nom, String sexe, java.sql.Date anneeNaissance,
+    public Animal(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance,
                   int enclos, int origine, int race) {
         this.nom = nom;
+        this.nomCommun = nomCommun;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
         this.enclos = enclos;
@@ -90,15 +94,17 @@ public class Animal {
         this.race = race;
     }
 
-    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance) {
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance) {
         this.id = id;
+        this.nomCommun = nomCommun;
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
     }
 
-    public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int race) {
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int race) {
         this.id = id;
+        this.nomCommun = nomCommun;
         this.nom = nom;
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
