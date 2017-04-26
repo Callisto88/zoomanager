@@ -26,16 +26,14 @@ public class Animal {
     /**
      * Membres privés
      */
-    protected enum Sexe {MALE, FEMELLE}
-    private static String[] ssexe = {"Mâle", "Femelle"};
     private int id;
     private String nom;
+    private String nomCommun;
     private String sexe;
-    // private Sexe sexe;
     private Date dateNaissance;
-    private int enclos; // REF (id)
-    private int origine; // REF Pays(pays_id)
-    private int race; // REF (nom)
+    private int enclos;     // REF (id)
+    private int origine;    // REF Pays(pays_id)
+    private int race;       // REF (nom)
     private Date dateDeces;
 
     /**
@@ -43,7 +41,6 @@ public class Animal {
      */
     public Animal() {
     }
-
     /**
      * Constructeur à partir de l'id de l'animal, permet de récupérer tous les attributs connus en base de données
      * @param id
@@ -51,7 +48,6 @@ public class Animal {
     public Animal(int id) {
         this.id = id;
     }
-
     public Animal(int id, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
                   int origine, int race, java.sql.Date dateDeces) {
         this.id = id;
@@ -63,7 +59,6 @@ public class Animal {
         this.race = race;
         this.dateDeces = dateDeces;
     }
-
     /**
      * Constructeur avec tous les membres sauf ID
      * @param nom
@@ -108,6 +103,22 @@ public class Animal {
         this.sexe = sexe;
         this.dateNaissance = anneeNaissance;
         this.race = race;
+    }
+
+    public String getNomCommun() {
+        return nomCommun;
+    }
+
+    public void setNomCommun(String nomCommun) {
+        this.nomCommun = nomCommun;
+    }
+
+    public Date getDateNaissance() {
+        return dateNaissance;
+    }
+
+    public void setDateNaissance(Date dateNaissance) {
+        this.dateNaissance = dateNaissance;
     }
 
     public int getId() {

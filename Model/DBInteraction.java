@@ -14,7 +14,6 @@ import java.util.*;
  *
  * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
  *
- *
  * @author D.Hamel
  * @author C.Balboni
  *
@@ -28,31 +27,42 @@ import java.util.*;
 public class DBInteraction {
 
     /**
-     * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
+     * Liste de toutes les requêtes possibles dans le programme !
      */
     // -----------------------------------------------------------------------------------------------------------------
-    // ADRESSE :
+    // ADRESSE
+    // -----------------------------------------------------------------------------------------------------------------
     // Récupérer toutes les informations sur les villes
     private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
+
     // Récupérer toutes les informations sur les pays
     private static final String SEL_ALL_PAYS = "SELECT * FROM Pays;";
+
     // Insérer un nouveau Pays dans la DB
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
+
     // Insérer une nouvelle Ville dans la DB
     private static final String INSERT_VILLE = "INSERT INTO Ville VALUES (null, ? , ? , ? );";
+
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
+
     // Récupérer le pays_id d'une ville "String"
     private static final String SEL_PAYS_ID = "SELECT pays_id FROM Pays WHERE pays = ? ;";
+
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
+
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville_id FROM Ville WHERE codePostal = ? ;";
+
     // Récupérer les informations sur une adresse et la ville en relation
     private static final String SEL_ADRESSE_PAR_ADR_VILLE_ID =
             "SELECT * FROM Adresse WHERE adresse = ? AND ville_id = ? ;";
+
     // -----------------------------------------------------------------------------------------------------------------
-    // PERSONNE :
+    // PERSONNE
+    // -----------------------------------------------------------------------------------------------------------------
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
     private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
     private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
@@ -60,20 +70,24 @@ public class DBInteraction {
             "FROM Personne " +
             "WHERE Personne.nom = ? " +
             " AND Personne.prenom = ? ;";
+
     // Recupère tous les paramètre des personnne répondant à la requête.
     // 12 Paramètres
     private static final String SEL_EMPLOYE_PAR_NOM = "SELECT * " +
             "FROM Personne " +
             "WHERE Personne.nom = ? ;";
-    // 12 Paramètres Dans l'ordre ci-dessous :
+
+    // 12 Paramètres dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / salaire / dateDebut	TypeContrat /
     private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (null, ?, ? , ? , ? , ? , ? , ? , ? , ? ," +
             " ? , ? , ? ); ";
+
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
             "FROM Personne;";
+
     // Permet de modifier les informations relatives à une Personne
     private static final String UPDATE_PERSONNE = "UPDATE Personne " +
             "SET prenom = ?, " +
@@ -83,23 +97,41 @@ public class DBInteraction {
             "telephone = ?, " +
             "responsable = ? " +
             "WHERE idPersonne = ?;";
+
+    // Suppresion d'une personne
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
+
+    // Sélectionne tous les différents types de contrat
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
+
+    // Sélectionne tous les status différents
     private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
+
     // -----------------------------------------------------------------------------------------------------------------
-    // ANIMAUX :
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    // ANIMAUX
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // Insertion d'un animal - 8 paramètres dans l'ordre
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, nomCommun, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+
+    // Insertion d'un félin, d'un oiseau, d'un reptile et d'un primate
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
+
+    // Suppression d'un animal d'après son ID
     private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
+
+    // Sélectionne toutes les races
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
+
     // Récupérer uniquement ces 5 paramètre de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
             "FROM Animal;";
     // Récupérer tous les paramètre d'un animal
-    private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
+    private static final String SEL_ANIMAUX = "SELECT * FROM Animal;";
+    private static final String SEL_ANIMAL = "SELECT * FROM Animal WHERE id = ? ;";
     // ----------------------------------------------------------------------------------x-------------------------------
     // ENCLOS :
     // ----------------------------------------------------------------------------------x-------------------------------
@@ -113,16 +145,22 @@ public class DBInteraction {
             "WHERE (id) NOT IN " +
             "(SELECT evenement FROM Personne_Evenement);";
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
+
     // Insertion d'un événement dans la DB
     private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (?, ?, ?, ?);";
+
     // Assigner un événement à un personne
     private static final String ASSIGNER_EVENEMENT_PERSONNE = "SELECT * FROM Personne_Evenement (?, ?, ?);";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_ANIMAL = "SELECT * FROM Animal_Evenement VALUES (?, ?, ?);";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INTERVENANT = "SELECT * FROM Intervenant_Evenement VALUES (?, ?, ?);";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
+
     // Selectionner le type d'un événement en fonction de son ID
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
@@ -624,9 +662,31 @@ public class DBInteraction {
      * @return ArrayList<Animal>
      */
     public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SEL_ANIMAL);
+        this.stmt = db.con.prepareStatement(SEL_ANIMAUX);
         ResultSet rs = this.stmt.executeQuery();
         return creerTableauAnimal(rs);
+    }
+
+    public Animal selAnimal(int idAnimal) throws SQLException, ExceptionDataBase {
+        this.stmt = db.con.prepareStatement(SEL_ANIMAL);
+        this.stmt.setInt(1, idAnimal);
+        ResultSet rs = this.stmt.executeQuery();
+        Animal a = new Animal();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Animal ne correspond à cet ID ( " + idAnimal + ")");
+        } else {
+            rs.beforeFirst();
+            a.setId(rs.getInt("id"));
+            a.setNom(rs.getString("nom"));
+            a.setSexe(rs.getString("sexe"));
+            a.setDateNaissance(rs.getDate("dateNaissance"));
+            a.setEnclos(rs.getInt("enclos"));
+            a.setOrigine(rs.getInt("origine"));
+            a.setRace(rs.getInt("race"));
+            a.setDateDeces(rs.getDate("dateDeces"));
+        }
+        return a;
     }
 
     /**
@@ -683,7 +743,7 @@ public class DBInteraction {
      *
      * @return ArrayList<String>
      */
-     public ArrayList<String> selAllRaceAnimal() throws ExceptionDataBase, SQLException {
+    public ArrayList<String> selToutesRacesAnimaux() throws ExceptionDataBase, SQLException {
          ArrayList<String> data = new ArrayList<>();
          this.stmt = db.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
          ResultSet rs = this.stmt.executeQuery();
