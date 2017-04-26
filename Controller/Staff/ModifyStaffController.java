@@ -1,6 +1,7 @@
 package Controller.Staff;
 
 import Controller.Error.ErrorController;
+import Controller.Validate.Validate;
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
 import Model.Personne;
@@ -15,12 +16,16 @@ import java.util.ArrayList;
  */
 public class ModifyStaffController {
     private ErrorController ecError = null;
+    private ModifyStaffPanel mspModifyStaff = null;
+    private Personne personne = null;
+    private DBInteraction querry = null;
 
     /**
      * Constructeur du controlleur
      */
     public ModifyStaffController(Personne personne) {
-        ModifyStaffPanel smp = new ModifyStaffPanel(this,personne);
+        mspModifyStaff = new ModifyStaffPanel(this,personne);
+        this.personne = personne;
     }
 
     /**
@@ -29,24 +34,79 @@ public class ModifyStaffController {
     public void checkModifyStaff(String sFirstName, String sLastName, String sSupervisor, String sEMail, String sAddress,
                                  String sNPA, String sCity, String sCountry, String sPhone) {
 
+        boolean bLastName = Validate.isAlphabetic(sLastName);
+        if(!bLastName){
+            mspModifyStaff.setLastNameError("Champ nom contenant des caractères innaproprié");
+        }
+        boolean bFirstName = Validate.isAlphabetic(sFirstName);
+        if(!bFirstName){
+            mspModifyStaff.setFirstNameError("Champ prénom contenant des caractères innaproprié");
+        }
+        boolean bEmail = Validate.isEmail(sEMail);
+        if(!bEmail){
+            mspModifyStaff.setEmailError("Champ Email non conforme");
+        }
+        //boolean bAddress = Validate.isAlphabetic(address);
+        boolean bNPA = Validate.isNumeric(sNPA);
+        if(!bNPA){
+            mspModifyStaff.setNPAError("Le champ NPA ne contient pas que des chiffres");
+        }
+        boolean bCity = Validate.isAlphabetic(sCity);
+        if(!bCity){
+            mspModifyStaff.setCityError("Le champ ville non conforme");
+        }
+        boolean bCountry = Validate.isAlphabetic(sCountry);
+        if(!bCountry){
+            mspModifyStaff.setCountryError("Le champ pays non conforme");
+        }
+        int cp = 0;
+        boolean bChange = true;
+        try{
+            cp = Integer.parseInt(sNPA);
+        } catch(Exception exception){
+            bChange = false;
+            exception.printStackTrace();
+            ecError = new ErrorController(exception.toString());
+        }
+        dbConnection();
+        boolean bAddAddress = true;
+        try{
+            querry.insAddress(sAddress, cp, sCity, sCountry);
+        } catch(SQLException sqlException){
+            bAddAddress = false;
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        boolean bPhone = Validate.isPhoneNumber(sPhone);
+
+        if(bFirstName && bLastName && bEmail && bCity && bNPA && bCountry && bChange && bAddAddress && bPhone){
+            personne.setEmail(sEMail);
+            personne.setPrenom(sFirstName);
+            personne.setNom(sLastName);
+/**************** problème, pas possible de récupérer le numéro d'une adresse ainsi que pour le responsable ***************/
+            modifyStaff(personne);
+        }
     }
 
     private void modifyStaff(Personne personne){
+        dbConnection();
+        // Permet d'insérer la personne modifié
+        try {
+            querry.updatePersonne(personne);
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+
+    }
+
+    private void dbConnection(){
         // Permet de joindre la BD
-        DBInteraction querry = null;
         try {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
         }
-
-        // Permet d'insérer la personne modifié
-        try {
-            querry.updatePersonne(personne);
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-        }
-
     }
 }

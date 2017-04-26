@@ -150,6 +150,7 @@ public class PersonnelStaf extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Suppression de personnel");
                 controller.erreurPopup("Voulez vous réelement supprimer " + personne.getPrenom() + " " + personne.getNom());
+                controller.deleteStaff(personne);
             }
         });
 

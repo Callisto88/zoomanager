@@ -17,7 +17,7 @@ public class AddExternal extends GenericWindow{
     // String permettant de récupérer les champs de saisie
     private String sLastName;
     private String sFirstName;
-    private String sAVS;
+    private String sCompagny;
     private String sEMail;
     private String sAddress;
     private String sNPA;
@@ -129,9 +129,9 @@ public class AddExternal extends GenericWindow{
 
         // Ajout des champs utiles pour le Pays
         JPanel jpCountry = new JPanel();
-        JLabel jlCountry = new JLabel("NPA : ");
+        JLabel jlCountry = new JLabel("Pays : ");
         jpCountry.add(jlCountry);
-        jtfCountry = new JTextField("npa", 7);
+        jtfCountry = new JTextField("pays", 7);
         jpCountry.add(jtfCountry);
         jlCountryError.setFont(new Font("Serif", Font.BOLD, 32));
         jlCountryError.setForeground(Color.RED);
@@ -175,14 +175,14 @@ public class AddExternal extends GenericWindow{
                 System.out.println("ajout");
                 sLastName = jtfLastNameInput.getText();
                 sFirstName = jtfLastNameInput.getText();
-                sAVS = jtfCompagnyInput.getText();
+                sCompagny = jtfCompagnyInput.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
                 sCity = jtfCity.getText();
                 sCountry = jtfCountry.getText();
                 sPhone = jtfPhone.getText();
-                controller.checkExternal(sLastName, sFirstName, sAVS, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
+                controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
             }
         });
         configFrame(getJfFrame(), this);
@@ -194,7 +194,6 @@ public class AddExternal extends GenericWindow{
     public void disableError() {
         jlLastNameError.setVisible(false);
         jlFirstNameError.setVisible(false);
-        jlBirthdayError.setVisible(false);
         jlCompagnyError.setVisible(false);
         jlAddressError.setVisible(false);
         jlCityError.setVisible(false);
@@ -202,5 +201,77 @@ public class AddExternal extends GenericWindow{
         jlCountryError.setVisible(false);
         jlEmailError.setVisible(false);
         jlPhoneError.setVisible(false);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du prénom
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setFirstNameError(String error) {
+        jlFirstNameError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du nom
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setLastNameError(String error) {
+        jlLastNameError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la compagnie
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCompagnyError(String error) {
+        jlCompagnyError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de l'email
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setEmailError(String error) {
+        jlEmailError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de l'adresse
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setAddressError(String error) {
+        jlAddressError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCityError(String error) {
+        jlCityError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du npa
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setNPAError(String error) {
+        jlNPAError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du pays
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCountryError(String error){
+        jlCountryError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du télephone
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setPhoneError(String error) {
+        jlPhoneError.setVisible(true);
     }
 }
