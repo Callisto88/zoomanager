@@ -1,5 +1,6 @@
 package View.Staff.AssignTaskPanel;
 
+import Controller.Staff.AssignStaffTaskController;
 import Model.Evenement;
 import Model.Personne;
 import View.GenericWindow;
@@ -14,9 +15,15 @@ import java.util.ArrayList;
  * Created by Andre on 28.03.2017.
  */
 public class TaskStaffPanel extends GenericWindow{
+    private ArrayList<Evenement> tasks = null;
+    private AssignStaffTaskController astcController = null;
+    private Personne personne = null;
 
-    public TaskStaffPanel(Personne personne, ArrayList<Evenement> tasks){
+    public TaskStaffPanel(AssignStaffTaskController astcController, Personne personne, ArrayList<Evenement> tasks){
         super("Tâches Staff");
+        this.tasks = tasks;
+        this.astcController = astcController;
+        this.personne = personne;
         jpMainPanel.setLayout(new GridLayout(tasks.size(), 1));
         JLabel jlPersonne = new JLabel(personne.getPrenom() + " " + personne.getNom());
         jpMainPanel.add(jlPersonne);
@@ -33,6 +40,7 @@ public class TaskStaffPanel extends GenericWindow{
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(e.getActionCommand());
                     JButton jb = (JButton)e.getSource();
+                    checkTask(jb.getText());
                     Container c = jb.getParent();
                     c.remove(jb);
                     c.revalidate();
@@ -48,5 +56,13 @@ public class TaskStaffPanel extends GenericWindow{
         }
 
         configFrame(getJfFrame(), this);
+    }
+
+    private void checkTask(String task){
+        for (Evenement event : tasks){
+            if (event.getDescription().equals(task)){
+                astcController.assignTask(personne, event);
+            }
+        }
     }
 }

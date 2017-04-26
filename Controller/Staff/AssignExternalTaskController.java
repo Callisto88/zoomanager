@@ -1,9 +1,12 @@
 package Controller.Staff;
 
+import Model.DBInteraction;
 import Model.Evenement;
+import Model.ExceptionDataBase;
 import Model.Intervenant;
 import View.Staff.AssignTaskPanel.TaskExternalPanel;
 
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 
@@ -20,7 +23,7 @@ public class AssignExternalTaskController {
      */
     public AssignExternalTaskController(Intervenant external){
         ArrayList<Evenement> tasks = null;
-/*
+
         // Permet de récupérer les taches non assignées des intervenant
         DBInteraction querry = null;
         try {
@@ -29,6 +32,8 @@ public class AssignExternalTaskController {
             exceptionDataBase.printStackTrace();
         }
 
+/**************** Problème méthodes non présente pour récupérer les taches non assignées des intervenant ***************/
+        /*
         try{
             tasks = querry.getExternalUnassignedTaskEmployee();
         }
@@ -38,7 +43,8 @@ public class AssignExternalTaskController {
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
         }
-*/
+        */
+
 /***********************************************************/
         tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2),3);
@@ -49,6 +55,16 @@ public class AssignExternalTaskController {
         tasks.add(e2);
         tasks.add(e3);
 /************************************************************/
-        tepExternal = new TaskExternalPanel(external, tasks);
+        tepExternal = new TaskExternalPanel(this, external, tasks);
     }
+
+    /**
+     * Méthode permettant d'attribuer une tâche à un intervenant
+     * @param external intervenant à qui l'on souhaite attribuer une tâche
+     * @param event tâche à attribuer
+     */
+    public void assignTask(Intervenant external, Evenement event){
+
+    }
+
 }

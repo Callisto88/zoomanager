@@ -87,6 +87,7 @@ public class ExternalStaff extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Suppression de l'intervenant");
                 controller.erreurPopup("Voulez vous réelement supprimer " + external.getPrenom() + " " + external.getNom());
+                controller.deleteExternal(external);
             }
         });
 

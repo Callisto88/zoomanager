@@ -1,5 +1,6 @@
 package View.Staff.AssignTaskPanel;
 
+import Controller.Staff.AssignExternalTaskController;
 import Model.Evenement;
 import Model.Intervenant;
 import View.GenericWindow;
@@ -14,8 +15,15 @@ import java.util.ArrayList;
  * Created by André on 23.04.2017.§
  */
 public class TaskExternalPanel extends GenericWindow {
-    public TaskExternalPanel(Intervenant external, ArrayList<Evenement> tasks){
+    private ArrayList<Evenement> aleTasks = null;
+    private Intervenant external = null;
+    private AssignExternalTaskController aetcAssignTaskController = null;
+
+    public TaskExternalPanel(AssignExternalTaskController aetcAssignTaskController, Intervenant external, ArrayList<Evenement> tasks){
         super("Tâches Intervenant");
+        aleTasks = tasks;
+        this.external = external;
+        this.aetcAssignTaskController = aetcAssignTaskController;
         jpMainPanel.setLayout(new GridLayout(tasks.size(), 1));
         JLabel jlPersonne = new JLabel(external.getPrenom() + " " + external.getNom());
         jpMainPanel.add(jlPersonne);
@@ -32,6 +40,7 @@ public class TaskExternalPanel extends GenericWindow {
                 public void actionPerformed(ActionEvent e) {
                     System.out.println(e.getActionCommand());
                     JButton jb = (JButton)e.getSource();
+                    checkTask(jb.getText());
                     Container c = jb.getParent();
                     c.remove(jb);
                     c.revalidate();
@@ -47,5 +56,13 @@ public class TaskExternalPanel extends GenericWindow {
         }
 
         configFrame(getJfFrame(), this);
+    }
+
+    private void checkTask(String task){
+        for (Evenement event : aleTasks){
+            if (event.getDescription().equals(task)){
+                aetcAssignTaskController.assignTask(external, event);
+            }
+        }
     }
 }

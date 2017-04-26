@@ -33,6 +33,7 @@ public class AssignStaffTaskController {
             exceptionDataBase.printStackTrace();
         }
 
+/************************* Erreur de récupérations **********************************/
         try{
             tasks = querry.getAllUnassignedTaskEmployee();
         }
@@ -53,14 +54,16 @@ public class AssignStaffTaskController {
         tasks.add(e2);
         tasks.add(e3);
 /************************************************************/
-        task = new TaskStaffPanel(personne, tasks);
+        task = new TaskStaffPanel(this, personne, tasks);
         //panel.getContentPane().add(task);
     }
 
     /**
-     * Méthode permettant de réafficher la fenêtre
+     * Méthode permettant d'attribuer une tâche à un employé
+     * @param personne employé à qui l'on souhaite attribuer une tâche
+     * @param event tâche que l'on souhaite attribuer
      */
-    public void revalidateView() {
+    public void assignTask(Personne personne, Evenement event){
 
     }
 }

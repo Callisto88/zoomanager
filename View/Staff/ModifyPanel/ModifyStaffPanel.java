@@ -12,7 +12,7 @@ import java.awt.event.ActionListener;
 /**
  * Created by Andre on 09.04.2017.
  */
-public class ModifyStaffPanel extends GenericWindow{
+public class ModifyStaffPanel extends GenericWindow {
     private Personne personne = null;
     private ModifyStaffController mscController = null;
     private JComboBox boxChoiceLabel = null;
@@ -20,10 +20,22 @@ public class ModifyStaffPanel extends GenericWindow{
     // Booléens pour savoir si les camps on été demandé
     private boolean bFirstName = false;
     private boolean bLastName = false;
-    private boolean bCompagny = false;
+    private boolean bSupervisor = false;
     private boolean bAddress = false;
     private boolean bEMail = false;
     private boolean bPhone = false;
+    private boolean bButton = false;
+
+    // String pour la récupération des champs de saisie
+    private String sLastName;
+    private String sFirstName;
+    private String sEMail;
+    private String sAddress;
+    private String sNPA;
+    private String sCity;
+    private String sCountry;
+    private String sPhone;
+    private String sSupervisor;
 
     // Champs de saisie pour la modification
     private JTextField jtfLastNameInput = null;
@@ -35,10 +47,20 @@ public class ModifyStaffPanel extends GenericWindow{
     private JTextField jtfCountry = null;
     private JTextField jtfPhone = null;
 
+    // Label indiquant une erreur de saisie
+    private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlFirstNameError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlEmailError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlAddressError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlNPAError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlCityError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlCountryError = new JLabel("*", JLabel.CENTER);
+    private JLabel jlPhoneError = new JLabel("*", JLabel.CENTER);
 
-    public ModifyStaffPanel(ModifyStaffController mscController, Personne personne){
+
+    public ModifyStaffPanel(ModifyStaffController mscController, Personne personne) {
         super("Modificaion");
-        jpMainPanel.setLayout(new GridLayout(12,1));
+        jpMainPanel.setLayout(new GridLayout(12, 1));
         this.personne = personne;
         this.mscController = mscController;
         /**
@@ -49,7 +71,7 @@ public class ModifyStaffPanel extends GenericWindow{
         boxChoiceLabel.addItem("Tous les champs");
         boxChoiceLabel.addItem("Nom");
         boxChoiceLabel.addItem("Prénom");
-        boxChoiceLabel.addItem("Entreprise");
+        boxChoiceLabel.addItem("Responsable");
         boxChoiceLabel.addItem("Adresse E-Mail");
         boxChoiceLabel.addItem("Adresse");
         boxChoiceLabel.addItem("Téléphone");
@@ -72,122 +94,111 @@ public class ModifyStaffPanel extends GenericWindow{
         newLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if(!bLastName && boxChoiceLabel.getSelectedItem().equals("Nom")){
+                if (boxChoiceLabel.getSelectedItem().equals("Nom")) {
                     addLastName();
-                    bLastName = true;
                     addModifyButton();
                 }
 
-                if(!bFirstName && boxChoiceLabel.getSelectedItem().equals("Prénom")){
+                if (boxChoiceLabel.getSelectedItem().equals("Prénom")) {
                     addFirstName();
-                    bFirstName = true;
                     addModifyButton();
                 }
-                if(!bEMail && boxChoiceLabel.getSelectedItem().equals("Adresse E-Mail")){
+                if (boxChoiceLabel.getSelectedItem().equals("Adresse E-Mail")) {
                     addEMail();
-                    bEMail = true;
                     addModifyButton();
                 }
 
-                if(!bAddress && boxChoiceLabel.getSelectedItem().equals("Adresse")){
+                if (boxChoiceLabel.getSelectedItem().equals("Adresse")) {
                     addAddress();
-                    bAddress = true;
                     addModifyButton();
                 }
-                if(!bPhone && boxChoiceLabel.getSelectedItem().equals("Téléphone")){
+                if (boxChoiceLabel.getSelectedItem().equals("Téléphone")) {
                     addPhone();
-                    bPhone = true;
                     addModifyButton();
                 }
 
-                if(!bCompagny && boxChoiceLabel.getSelectedItem().equals("Entreprise")){
+                if (boxChoiceLabel.getSelectedItem().equals("Responsable")) {
                     addSupervisor();
-                    bCompagny = true;
                     addModifyButton();
                 }
-                if(boxChoiceLabel.getSelectedItem().equals("Tous les champs")){
-                    if(!bLastName) {
-                        addLastName();
-                        bLastName = true;
-                    }
-                    if(!bFirstName) {
-                        addFirstName();
-                        bFirstName = true;
-                    }
-                    if(!bCompagny){
-                        addSupervisor();
-                        bCompagny = true;
-                    }
-                    if(!bEMail) {
-                        addEMail();
-                        bEMail = true;
-                    }
-                    if(!bAddress) {
-                        addAddress();
-                        bAddress = true;
-                    }
-                    if(!bPhone) {
-                        addPhone();
-                        bPhone = true;
-                    }
+                if (boxChoiceLabel.getSelectedItem().equals("Tous les champs")) {
+                    addLastName();
+                    addFirstName();
+                    addSupervisor();
+                    addEMail();
+                    addAddress();
+                    addPhone();
                     addModifyButton();
                 }
             }
         });
 
 
-
         this.setVisible(true);
         configFrame(getJfFrame(), this);
-        this.setMinimumSize(new Dimension(200,400));
+        this.setMinimumSize(new Dimension(200, 400));
     }
 
     /**
      * Méthode pour ajouter le nom de famille au panneaux de modification
      */
-    private void addLastName(){
-        JPanel lastNamePanel = new JPanel();
-        JLabel lastNameLabel = new JLabel("Nom : ");
-        lastNamePanel.add(lastNameLabel);
-        jtfLastNameInput = new JTextField(personne.getNom(), 20);
-        lastNamePanel.add(jtfLastNameInput);
-        jpMainPanel.add(lastNamePanel);
-        jpMainPanel.revalidate();
-        System.out.println("modif Nom");
+    private void addLastName() {
+        if (!bLastName) {
+            bLastName = true;
+            JPanel lastNamePanel = new JPanel();
+            JLabel lastNameLabel = new JLabel("Nom : ");
+            lastNamePanel.add(lastNameLabel);
+            jtfLastNameInput = new JTextField(personne.getNom(), 20);
+            lastNamePanel.add(jtfLastNameInput);
+            lastNameLabel.add(jlLastNameError);
+            jpMainPanel.add(lastNamePanel);
+            jpMainPanel.revalidate();
+            System.out.println("modif Nom");
+        }
     }
 
     /**
      * Méthode pour ajouter le prénom au panneaux de modification
      */
-    private void addFirstName(){
-        JPanel firstNamePanel = new JPanel();
-        JLabel firstNameLabel = new JLabel("Prénom : ");
-        firstNamePanel.add(firstNameLabel);
-        jtfFirstNameInput = new JTextField(personne.getPrenom(), 20);
-        firstNamePanel.add(jtfFirstNameInput);
-        jpMainPanel.add(firstNamePanel);
-        jpMainPanel.revalidate();
-        System.out.println("modif Prénom");
+    private void addFirstName() {
+        if (!bFirstName) {
+            bFirstName = true;
+            JPanel firstNamePanel = new JPanel();
+            JLabel firstNameLabel = new JLabel("Prénom : ");
+            firstNamePanel.add(firstNameLabel);
+            jtfFirstNameInput = new JTextField(personne.getPrenom(), 20);
+            firstNamePanel.add(jtfFirstNameInput);
+            firstNamePanel.add(jlFirstNameError);
+            jpMainPanel.add(firstNamePanel);
+            jpMainPanel.revalidate();
+            System.out.println("modif Prénom");
+        }
     }
 
     /**
      * Méthode pour ajouter l'e-mail au panneaux de modification
      */
-    private void addEMail(){
-        JPanel emailPanel = new JPanel();
-        JLabel emailLabel = new JLabel("Adresse E-Mail : ");
-        emailPanel.add(emailLabel);
-        jtfEmail = new JTextField(personne.getEmail(), 20);
-        emailPanel.add(jtfEmail);
-        jpMainPanel.add(emailPanel);
-        jpMainPanel.revalidate();
-        System.out.println("modif E-Mail");
+    private void addEMail() {
+        if (!bEMail) {
+            bEMail = true;
+            JPanel emailPanel = new JPanel();
+            JLabel emailLabel = new JLabel("Adresse E-Mail : ");
+            emailPanel.add(emailLabel);
+            jtfEmail = new JTextField(personne.getEmail(), 20);
+            emailPanel.add(jtfEmail);
+            emailPanel.add(jlEmailError);
+            jpMainPanel.add(emailPanel);
+            jpMainPanel.revalidate();
+            System.out.println("modif E-Mail");
+        }
     }
 
     /**
      * Méthode pour ajouter l'adresse au panneaux de modification
      */
-    private void addAddress(){
+    private void addAddress() {
+        if(!bAddress){
+            bAddress = true;
         // Pour ajouter l'adresse
         JPanel addressPanel = new JPanel();
         JLabel addressLabel = new JLabel("Adresse : ");
@@ -195,6 +206,7 @@ public class ModifyStaffPanel extends GenericWindow{
         // Récupération de l'adresse
         jtfAddress = new JTextField("adresse", 20);
         addressPanel.add(jtfAddress);
+        addressLabel.add(jlAddressError);
         jpMainPanel.add(addressPanel);
 
         // Pour ajouter le npa
@@ -204,6 +216,7 @@ public class ModifyStaffPanel extends GenericWindow{
         // récupération du npa
         jtfNPA = new JTextField("NPA", 20);
         jpNPA.add(jtfNPA);
+        jpNPA.add(jlNPAError);
         jpMainPanel.add(jpNPA);
 
         // Pour ajouter la ville
@@ -213,6 +226,7 @@ public class ModifyStaffPanel extends GenericWindow{
         // Récupération de la ville
         jtfCity = new JTextField("Ville", 20);
         jpCity.add(jtfCity);
+        jpCity.add(jlCityError);
         jpMainPanel.add(jpCity);
 
         //Pour ajouter le pays
@@ -222,48 +236,135 @@ public class ModifyStaffPanel extends GenericWindow{
         // Récupération du Pays
         jtfCountry = new JTextField("Pays", 20);
         jpCountry.add(jtfCountry);
+        jpCountry.add(jlCountryError);
         jpMainPanel.add(jpCountry);
 
         jpMainPanel.revalidate();
         System.out.println("modif Adresse");
     }
 
+}
+
     /**
      * Méthode pour ajouter le téléphone au panneaux de modification
      */
-    private void addPhone(){
-        JPanel telephonePanel = new JPanel();
-        JLabel telephoneLabel = new JLabel("Téléphone : ");
-        telephonePanel.add(telephoneLabel);
-        jtfPhone = new JTextField(personne.getTelephone(), 20);
-        telephonePanel.add(jtfPhone);
-        jpMainPanel.add(telephonePanel);
-        jpMainPanel.revalidate();
-        System.out.println("modif Téléphone");
+    private void addPhone() {
+        if (!bPhone) {
+            JPanel jpPhone = new JPanel();
+            JLabel jlPhone = new JLabel("Téléphone : ");
+            jpPhone.add(jlPhone);
+            jtfPhone = new JTextField(personne.getTelephone(), 20);
+            jpPhone.add(jtfPhone);
+            jpPhone.add(jlPhoneError);
+            jpMainPanel.add(jpPhone);
+            jpMainPanel.revalidate();
+            System.out.println("modif Téléphone");
+        }
     }
 
     /**
      * Méthode pour ajouter le superviseur au panneaux de modification
      */
-    private void addSupervisor(){
-        JPanel jpSupervisor = new JPanel();
-        JLabel jlSupervisor = new JLabel("Responsable : ");
-        jpSupervisor.add(jlSupervisor);
-        jpSupervisor.add(new JTextField(/*personne.getResponsable()*/"Responsable", 20));
-        jpMainPanel.add(jpSupervisor);
-        jpMainPanel.revalidate();
-        System.out.println("modif Responsable");
+    private void addSupervisor() {
+        if (!bSupervisor) {
+            JPanel jpSupervisor = new JPanel();
+            JLabel jlSupervisor = new JLabel("Responsable : ");
+            jpSupervisor.add(jlSupervisor);
+            jpSupervisor.add(new JTextField(/*personne.getResponsable()*/"Responsable", 20));
+            jpMainPanel.add(jpSupervisor);
+            jpMainPanel.revalidate();
+            System.out.println("modif Responsable");
+        }
     }
 
-    private void addModifyButton(){
-        JButton jbModify = new JButton("Modifier");
-        jpMainPanel.add(jbModify);
-        jbModify.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //mscController.checkModifyStaff();
-            }
-        });
+    /**
+     * Méthode pour ajouter le bouton de mise à jour
+     */
+    private void addModifyButton() {
+        if (!bButton) {
+            bButton = true;
+            JButton jbModify = new JButton("Modifier");
+            jpMainPanel.add(jbModify);
+            jbModify.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    sFirstName = jtfFirstNameInput.getText();
+                    sLastName = jtfLastNameInput.getText();
+                    //sSupervisor =
+                    sEMail = jtfEmail.getText();
+                    sAddress = jtfAddress.getText();
+                    sNPA = jtfNPA.getText();
+                    sCity = jtfCity.getText();
+                    sCountry = jtfCountry.getText();
+                    sPhone = jtfPhone.getText();
+                    mscController.checkModifyStaff(sFirstName, sLastName, sSupervisor, sEMail, sAddress,
+                            sNPA, sCity, sCountry, sPhone);
+                }
+            });
+        }
     }
 
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du prénom
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setFirstNameError(String error) {
+        jlFirstNameError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du nom
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setLastNameError(String error) {
+        jlLastNameError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de l'email
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setEmailError(String error) {
+        jlEmailError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de l'adresse
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setAddressError(String error) {
+        jlAddressError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCityError(String error) {
+        jlCityError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du npa
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setNPAError(String error) {
+        jlNPAError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du pays
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCountryError(String error){
+        jlCountryError.setVisible(true);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du télephone
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setPhoneError(String error) {
+        jlPhoneError.setVisible(true);
+    }
 }
