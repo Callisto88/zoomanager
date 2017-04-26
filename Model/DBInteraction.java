@@ -14,7 +14,6 @@ import java.util.*;
  *
  * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
  *
- *
  * @author D.Hamel
  * @author C.Balboni
  *
@@ -26,7 +25,6 @@ import java.util.*;
  */
 
 public class DBInteraction {
-
     /**
      * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
      */
@@ -167,13 +165,12 @@ public class DBInteraction {
                     "WHERE Animal.id =  ? ;";
     // Récupérer toutes les races d'animal
     private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
-
     // -----------------------------------------------------------------------------------------------------------------
     // ENCLOS :
-    // -----------------------------------------------------------------------------------------------------------------
+
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
-
+    // -----------------------------------------------------------------------------------------------------------------
     // EVENEMENT :
     // Liste de tous les événements qui n'ont pas de personne attribué
     private static final String SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE = "SELECT * " +
@@ -193,6 +190,16 @@ public class DBInteraction {
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
     // Selectionner le type d'un événement en fonction de son ID
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
+    // Enlever un peu de quantité d'un produit
+    private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
+            "UPDATE Stock " +
+                    "SET quantite = quantite - ? " +
+                    "WHERE id = ?;";
+    // Ajouter un peu de quantité d'un produit
+    private static final String UPDATE_ADD_QUANTITE_OF_DESCRIPTION =
+            "UPDATE Stock " +
+                    "SET quantite = quantite + ? " +
+                    "WHERE id = ?;";
     // -----------------------------------------------------------------------------------------------------------------
     // STOCK :
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
@@ -1644,6 +1651,35 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion STOCK  dans la DB
+
+    /**
+     * Permet d'ajouter de la quantite à une ligne dans le stock
+     *
+     * @param id int
+     * @param quantity double
+     */
+    public void addQuantity (int id, double quantity) throws SQLException {
+        this.stmt = db.con.prepareStatement(UPDATE_ADD_QUANTITE_OF_DESCRIPTION);
+        this.stmt.setInt(1, id);
+        this.stmt.setDouble(2, quantity);
+
+        this.stmt.executeUpdate();
+    }
+
+    /**
+     * Permet de supprimer de la quantite à une ligne dans le stock
+     *
+     * @param id int
+     * @param quantity double
+     */
+    public void delQuantity (int id, double quantity) throws SQLException {
+        this.stmt = db.con.prepareStatement(UPDATE_DELETE_QUANTITE_OF_DESCRIPTION);
+        this.stmt.setInt(1, id);
+        this.stmt.setDouble(2, quantity);
+
+        this.stmt.executeUpdate();
+    }
+
 
     /**
      * Permet de récupérer l'entierté du stock avec tous ses paramètres
