@@ -980,9 +980,9 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Animal(rs.getInt("id"), rs.getString("nom"),
-                        rs.getString("sexe"), rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"), rs.getInt("origine"),
+                data.add(new Animal(rs.getInt("id"), rs.getString("nomCommun"),
+                        rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), rs.getInt("enclos"), rs.getInt("origine"),
                         rs.getInt("race"), rs.getDate("dateDeces")));
             }
         }
@@ -1211,10 +1211,11 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Felin(rs.getString("nom"), rs.getString("sexe"),
+                data.add(new Felin(rs.getInt("id"), rs.getString("nomCommun"),
+                        rs.getString("nom"), rs.getString("sexe"),
                         rs.getDate("dateNaissance"), rs.getInt("enclos"),
                         rs.getInt("origine"), rs.getInt("race"),
-                        rs.getDate("dateDeces"), rs.getInt("id"),
+                        rs.getDate("dateDeces"),
                         rs.getDouble("race")));
             }
 
@@ -1235,11 +1236,12 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Oiseau(rs.getString("nom"), rs.getString("sexe"),
+                data.add(new Oiseau(rs.getInt("id"), rs.getString("nomCommun"),
+                        rs.getString("nom"), rs.getString("sexe"),
                         rs.getDate("dateNaissance"), rs.getInt("enclos"),
                         rs.getInt("origine"), rs.getInt("race"),
-                        rs.getDate("dateDeces"), rs.getInt("id"),
-                        rs.getDouble("envergure"), rs.getString("bague")));
+                        rs.getDate("dateDeces"), rs.getDouble("envergure"),
+                        rs.getString("bague")));
             }
             return data;
         }
@@ -1258,10 +1260,10 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Reptile(rs.getString("nom"), rs.getString("sexe"),
-                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
-                        rs.getInt("origine"), rs.getInt("race"),
-                        rs.getDate("dateDeces"), rs.getInt("id"),
+                data.add(new Reptile(rs.getInt("id"), rs.getString("nomCommun"), rs.getString("nom"),
+                        rs.getString("sexe"), rs.getDate("dateNaissance"),
+                        rs.getInt("enclos"), rs.getInt("origine"),
+                        rs.getInt("race"), rs.getDate("dateDeces"),
                         rs.getDouble("temperature")));
             }
             return data;
@@ -1282,11 +1284,11 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Primate(rs.getString("nom"), rs.getString("sexe"),
+                data.add(new Primate(rs.getInt("id"), rs.getString("nomCommun"),
+                        rs.getString("nom"), rs.getString("sexe"),
                         rs.getDate("dateNaissance"), rs.getInt("enclos"),
                         rs.getInt("origine"), rs.getInt("race"),
-                        rs.getDate("dateDeces"), rs.getInt("id"),
-                        rs.getDouble("temperature")));
+                        rs.getDate("dateDeces"), rs.getDouble("temperature")));
             }
             return data;
         }
