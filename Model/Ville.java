@@ -6,7 +6,7 @@ package Model;
  *
  * Elle contient uniquement les Setters, Getters et Constructeurs.
  *
- * pays_id    références la classe "Pays"
+ * paysId    références la classe "Pays"
  *
  * @author D.Hamel
  *

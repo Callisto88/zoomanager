@@ -40,8 +40,8 @@ public class DBInteraction {
     private static final String INSERT_VILLE = "INSERT INTO Ville VALUES ( ? , ? , ? );";
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
-    // Récupérer le pays_id d'une ville "String"
-    private static final String SEL_PAYS_ID = "SELECT pays_id FROM Pays WHERE pays = ? ;";
+    // Récupérer le paysId d'une ville "String"
+    private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays = ? ;";
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
     // Récupérer la ville en fonction d'un code postal
@@ -215,8 +215,8 @@ public class DBInteraction {
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
 
     // Pour un article donné, récupère la quantité en cours de commande (si commandé)
-    private static final String SEL_ARTICLE_COMMANDE_EN_COURS = "SELECT SUM(quantite) AS `quantiteEnCours` \n" +
-            "FROM `Commande_Contenu` \n" +
+    private static final String SEL_ARTICLE_COMMANDE_EN_COURS = "SELECT SUM(quantite) AS quantiteEnCours \n" +
+            "FROM Commande_Contenu \n" +
             "INNER JOIN Commande \n" +
             "\tON Commande_Contenu.idCommande = Commande.id \n" +
             "WHERE refArticle = ?\n" +
@@ -296,12 +296,12 @@ public class DBInteraction {
      * @param ville String
      */
     private void insVille (String ville, int codePostal, String pays) throws SQLException {
-        int pays_id = this.getPaysID(pays);
+        int paysId = this.getPaysID(pays);
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
         this.stmt.setInt(1, codePostal);
         this.stmt.setString(2, ville);
-        this.stmt.setInt(3, pays_id);
+        this.stmt.setInt(3, paysId);
         this.stmt.executeUpdate();
     }
 
@@ -318,7 +318,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
-        return rs.getInt("pays_id");
+        return rs.getInt("paysId");
     }
 
     /**
@@ -370,7 +370,7 @@ public class DBInteraction {
         ArrayList<Ville> data = new ArrayList<Ville>();
 
         while (rs.next()) data.add(new Ville(rs.getInt("codePostal"), rs.getString("ville"),
-                rs.getInt("pays_id")));
+                rs.getInt("paysId")));
 
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getCp() == cp)
@@ -381,7 +381,7 @@ public class DBInteraction {
 
     /**
      * Permet de savoir si un Pays est déjà présent dans la db
-     * Retourne le pays_id du Pays si présent
+     * Retourne le paysId du Pays si présent
      * Retourne 0 si non présent
      *
      * @param pays String
@@ -394,7 +394,7 @@ public class DBInteraction {
 
         ArrayList<Pays> data = new ArrayList<Pays>();
 
-        while (rs.next()) data.add(new Pays(rs.getInt("pays_id"), rs.getString("pays")));
+        while (rs.next()) data.add(new Pays(rs.getInt("paysId"), rs.getString("pays")));
 
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getPays().equals(pays))

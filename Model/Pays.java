@@ -18,34 +18,34 @@ public class Pays {
     /**
      * Membres privés
      */
-    private int pays_id;
+    private int paysId;
     private  String pays;
 
     /**
      * Constructeur avec tous les membres
      *
-     * @param pays_id
+     * @param paysId
      * @param pays
      */
-    public Pays(int pays_id, String pays) {
-        this.pays_id = pays_id;
+    public Pays(int paysId, String pays) {
+        this.paysId = paysId;
         this.pays = pays;
     }
 
     /**
-     * Getter pays_id
-     * @return int pays_id
+     * Getter paysId
+     * @return int paysId
      */
     public int getPays_id() {
-        return pays_id;
+        return paysId;
     }
 
     /**
-     * Setter pays_id
-     * @param pays_id int
+     * Setter paysId
+     * @param paysId int
      */
-    public void setPays_id(int pays_id) {
-        this.pays_id = pays_id;
+    public void setPays_id(int paysId) {
+        this.paysId = paysId;
     }
 
     /**
