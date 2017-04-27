@@ -76,6 +76,8 @@ public class ModifyStaffController {
             bAddAddress = false;
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
         }
         boolean bPhone = Validate.isPhoneNumber(sPhone);
 

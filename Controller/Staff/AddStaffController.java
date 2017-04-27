@@ -160,7 +160,11 @@ public class AddStaffController {
         dbConnection();
         boolean bAddAddress = true;
         try{
-            querry.insAddress(address, cp, city, country);
+            try {
+                querry.insAddress(address, cp, city, country);
+            } catch (ExceptionDataBase exceptionDataBase) {
+                exceptionDataBase.printStackTrace();
+            }
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
@@ -186,9 +190,6 @@ public class AddStaffController {
     public void insertPersonne (Personne personne){
         try{
             querry.insertPersonne(personne);
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());

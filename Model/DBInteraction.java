@@ -32,23 +32,40 @@ public class DBInteraction {
     // ADRESSE :
     // Récupérer toutes les informations sur les villes
     private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
+
     // Récupérer toutes les informations sur les pays
     private static final String SEL_ALL_PAYS = "SELECT * FROM Pays;";
+
+    // Récupère un pays en particulier d'après son nom
+    private static final String SEL_PAYS_PAR_NOM = "SELECT * FROM Pays WHERE pays LIKE ?;";
+
+    // Récupère une ville d'après son nom
+    private static final String SEL_VILLE_PAR_NOM = "SELECT * FROM Ville WHERE ville LIKE ?;";
+
     // Insérer un nouveau Pays dans la DB
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
+
     // Insérer une nouvelle Ville dans la DB
     private static final String INSERT_VILLE = "INSERT INTO Ville VALUES ( ? , ? , ? );";
+
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
+
     // Récupérer le paysId d'une ville "String"
-    private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays = ? ;";
+    private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays LIKE ? ;";
+
+    // Récupère le code postal d'après le nom de la ville
+    private static final String SEL_CP_PAR_VILLE = "SELECT codePostal FROM Ville WHERE ville LIKE ?;";
+
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
+
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
+
     // Récupérer les informations sur une adresse et la ville en relation
     private static final String SEL_ADRESSE_PAR_CP_ET_ADRESSE =
-            "SELECT * FROM Adresse WHERE adresse = ? AND codePostal = ? ;";
+            "SELECT * FROM Adresse WHERE adresse LIKE ? AND codePostal = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE :
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
@@ -246,23 +263,41 @@ public class DBInteraction {
      * @param ville String
      * @param pays String
      */
-    public void insAddress (String adresse, int cp, String ville, String pays) throws SQLException {
+    public void insAddress(String adresse, int cp, String ville, String pays) throws SQLException, ExceptionDataBase {
         // Check si le pays est déjà dans la DB
         // l'insère si non
-        if (this.countryIsInDB(pays) == 0) {
+        if (!this.countryIsInDB(pays)) {
             this.insPays(pays);
         }
 
         // Check si la ville est déjà dans la DB
         // l'insère si non
-        if (this.cpIsInDB(cp) == 0) {
+        if (!this.cpIsInDB(cp)) {
             this.insVille(ville, cp, pays);
         }
 
         // Check si l'adresse en fonction de la ville est déjà dans la DB
         // l'insère si non
-        if (this.addressIsInDB(adresse, this.getVilleIDParCP(cp))) {
-            this.insAdresse(adresse, this.getVilleIDParCP(cp));
+        int cpVille = this.getCodePostalParVille(adresse);
+        if (cpVille == 0) {
+            throw new ExceptionDataBase("Aucun code postal trouvé pour cette adresse : " + adresse);
+        }
+
+        if (!this.addressIsInDB(adresse, cpVille)) {
+            this.insAdresse(adresse, cpVille);
+        }
+    }
+
+    private int getCodePostalParVille(String ville) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_CP_PAR_VILLE);
+        this.stmt.setString(1, ville);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (rs.next()) {
+            rs.beforeFirst();
+            return rs.getInt("codePostal");
+        } else {
+            return 0;
         }
     }
 
@@ -273,8 +308,8 @@ public class DBInteraction {
      */
     private void insAdresse(String adresse, int codePostal) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
-        this.stmt.setString(1, adresse);
-        this.stmt.setInt(2, codePostal);
+        this.stmt.setString(2, adresse);
+        this.stmt.setInt(3, codePostal);
         this.stmt.executeUpdate();
     }
 
@@ -332,25 +367,25 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
-        rs.next();
+
 
         return rs.getString("ville");
     }
 
     /**
-     * Permet de récupérer le codePostal d'une ville en fonction d'un code postal passé en paramètre
+     * Permet de récupérer le nom d'une ville en fonction de son code postal
      *
      * @param cp String
      *
      * @return int
      */
-    public int getVilleIDParCP (int cp) throws SQLException {
+    public String getVilleIDParCP(int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
-        return rs.getInt("codePostal");
+        return rs.getString("ville");
     }
 
 
@@ -363,20 +398,12 @@ public class DBInteraction {
      *
      * @return int
      */
-    public int cpIsInDB (int cp) throws SQLException {
-        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_VILLE);
+    public boolean cpIsInDB(int cp) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
+        this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Ville> data = new ArrayList<Ville>();
-
-        while (rs.next()) data.add(new Ville(rs.getInt("codePostal"), rs.getString("ville"),
-                rs.getInt("paysId")));
-
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getCp() == cp)
-                return data.get(i).getCp();
-        }
-        return 0;
+        return rs.next();
     }
 
     /**
@@ -388,19 +415,12 @@ public class DBInteraction {
      *
      * @return int
      */
-    public int countryIsInDB (String pays) throws SQLException {
-        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_PAYS);
+    public boolean countryIsInDB(String pays) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_PAR_NOM);
+        this.stmt.setString(1, pays);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Pays> data = new ArrayList<Pays>();
-
-        while (rs.next()) data.add(new Pays(rs.getInt("paysId"), rs.getString("pays")));
-
-        for (int i = 0; i < data.size(); i++) {
-            if (data.get(i).getPays().equals(pays))
-                return data.get(i).getPays_id();
-        }
-        return 0;
+        return rs.next();
     }
 
     /**
@@ -446,7 +466,7 @@ public class DBInteraction {
     public ArrayList<String> getAllStatuts() throws SQLException, ExceptionDataBase {
 
         //noinspection AccessStaticViaInstance
-        this.stmt = db.con.prepareStatement(SEL_ALL_STATUTS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_STATUTS);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<String> listStatuts = new ArrayList<>();
@@ -455,7 +475,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                listStatuts.add(new String(rs.getString("statut")));
+                listStatuts.add(rs.getString("statut"));
             }
         }
         return listStatuts;
@@ -473,7 +493,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                listTypeContrat.add(new String(rs.getString("typeContrat")));
+                listTypeContrat.add(rs.getString("typeContrat"));
             }
         }
         return listTypeContrat;
@@ -482,7 +502,7 @@ public class DBInteraction {
 
     public ArrayList<String> selAllContractType() throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_TYPE_CONTRAT);
+        this.stmt = DBConnection.con.prepareStatement(SEL_TYPE_CONTRAT);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<String> listTypeContrat = new ArrayList<>();
@@ -491,7 +511,7 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                listTypeContrat.add(new String(rs.getString("typeContrat")));
+                listTypeContrat.add(rs.getString("typeContrat"));
             }
         }
         return listTypeContrat;
@@ -500,7 +520,7 @@ public class DBInteraction {
 
     public void delPersonne(int id) throws SQLException {
 
-        this.stmt = db.con.prepareStatement(DEL_PERSONNE);
+        this.stmt = DBConnection.con.prepareStatement(DEL_PERSONNE);
         this.stmt.setInt(1, id);
         this.stmt.executeQuery();
     }
@@ -508,8 +528,8 @@ public class DBInteraction {
 
     public ArrayList<Personne> selAllEmployes() throws SQLException, ExceptionDataBase {
 
-        ArrayList<Personne> listEmployes = new ArrayList<Personne>();
-        this.stmt = db.con.prepareStatement(SEL_ALL_EMPLOYES);
+        ArrayList<Personne> listEmployes;
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EMPLOYES);
         ResultSet rs = this.stmt.executeQuery();
         listEmployes = creerTableauPersonne(rs);
 
@@ -525,7 +545,7 @@ public class DBInteraction {
      */
     public Personne selEmployeDetails (int noAVS) throws ExceptionDataBase, SQLException {
         Personne p = new Personne();
-        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_DETAILS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_DETAILS);
         this.stmt.setInt(1, noAVS);
         ResultSet rs = this.stmt.executeQuery();
         ArrayList<Personne>  pers = creerTableauPersonne(rs);
@@ -553,7 +573,7 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selEmployeeParPrenomNom (String nom, String prenom) throws ExceptionDataBase, SQLException {
-        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_PAR_PRENOM_NOM);
+        this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_PAR_PRENOM_NOM);
         this.stmt.setString(1, nom);
         this.stmt.setString(2, prenom);
         ResultSet rs = this.stmt.executeQuery();
@@ -568,7 +588,7 @@ public class DBInteraction {
      * @return ArrayList<Personne>
      */
     public ArrayList<Personne> selEmployeeParNom (String nom) throws ExceptionDataBase, SQLException {
-        this.stmt = db.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
+        this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
         this.stmt.setString(1, nom);
 
         ResultSet rs = this.stmt.executeQuery();
@@ -583,7 +603,7 @@ public class DBInteraction {
     public int nombrePersonne () throws ExceptionDataBase, SQLException {
         int data = 0;
         this.db.init();
-        this.stmt = db.con.prepareStatement(NOMBRE_PERSONNE);
+        this.stmt = DBConnection.con.prepareStatement(NOMBRE_PERSONNE);
         ResultSet rs = this.stmt.executeQuery();
         while (rs.next()) {
             data =  rs.getInt("nbPersonne");
@@ -610,8 +630,8 @@ public class DBInteraction {
     public void insertPersonne(String noAVS, String prenom, String nom, int adresse, String email,
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
                             double salaire, java.sql.Date dateDebut, String typeContrat)
-            throws ExceptionDataBase, SQLException {
-        this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
+            throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
         this.stmt.setString(3, nom);
@@ -631,8 +651,8 @@ public class DBInteraction {
      *
      * @param personne(Personne)
      */
-    public void insertPersonne(Personne personne) throws ExceptionDataBase, SQLException {
-        this.stmt = db.con.prepareStatement(INSERT_EMPLOYE);
+    public void insertPersonne(Personne personne) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setString(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
         this.stmt.setString(3, personne.getNom());
@@ -656,7 +676,7 @@ public class DBInteraction {
      */
     private ArrayList<Personne> recupererPersonne (final String REQUETE) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
-        this.stmt = db.con.prepareStatement(REQUETE);
+        this.stmt = DBConnection.con.prepareStatement(REQUETE);
         ResultSet rs = this.stmt.executeQuery();
         return this.creerTableauPersonne(rs);
     }
@@ -701,7 +721,7 @@ public class DBInteraction {
      * @return ArrayList<Race>
      */
     public ArrayList<Race> getAllRaceAnimal() throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SEL_ALL_ANIMAL_RACE);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_ANIMAL_RACE);
         ResultSet rs = this.stmt.executeQuery();
 
         return createTabAnimalRace(rs);
@@ -738,7 +758,7 @@ public class DBInteraction {
      * @return ArrayList<Primate>
      */
     private ArrayList<Primate> selAllPrimateByID (int id) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_PRIMATE_ID);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_PRIMATE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -753,7 +773,7 @@ public class DBInteraction {
      * @return ArrayList<Reptile>
      */
     private ArrayList<Reptile> selAllReptileByID (int id) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_REPTILE_ID);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_REPTILE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -769,7 +789,7 @@ public class DBInteraction {
      * @return ArrayList<Felin>
      */
     private ArrayList<Felin> selAllFelinByID (int id) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_FAUVE_ID);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_FAUVE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -785,7 +805,7 @@ public class DBInteraction {
      * @return ArrayList<Oiseau>
      */
     private ArrayList<Oiseau> selAllOiseauByID (int id) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_INFO_OISEAU_ID);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_OISEAU_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -801,7 +821,7 @@ public class DBInteraction {
      * @return boolean
      */
     private boolean isFelin (int id) throws SQLException {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_FAUVE);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_FAUVE);
         ResultSet rs = this.stmt.executeQuery();
 
         while (rs.next()) {
@@ -819,7 +839,7 @@ public class DBInteraction {
      * @return boolean
      */
     private boolean isOiseau (int id) throws SQLException {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_OISEAU);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_OISEAU);
         ResultSet rs = this.stmt.executeQuery();
 
         while (rs.next()) {
@@ -837,7 +857,7 @@ public class DBInteraction {
      * @return boolean
      */
     private boolean isReptile (int id) throws SQLException {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_REPTILE);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_REPTILE);
         ResultSet rs = this.stmt.executeQuery();
 
         while (rs.next()) {
@@ -855,7 +875,7 @@ public class DBInteraction {
      * @return boolean
      */
     private boolean isPrimate (int id) throws SQLException {
-        this.stmt = db.con.prepareStatement(SELECT_ALL_ID_PRIMATE);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_PRIMATE);
         ResultSet rs = this.stmt.executeQuery();
 
         while (rs.next()) {
@@ -874,7 +894,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
-        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL);
         this.stmt.setString(1, animal.getNom());
         this.stmt.setString(2, animal.getSexe());
         this.stmt.setDate(3, animal.getAnneeNaissance());
@@ -908,7 +928,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
-        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_FAUVE);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_FAUVE);
         this.stmt.setDouble(1, animal.getPoids());
         this.stmt.executeUpdate();
     }
@@ -922,7 +942,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
-        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_REPTILE);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_REPTILE);
         this.stmt.setDouble(1, animal.getTemperature());
         this.stmt.executeUpdate();
     }
@@ -936,7 +956,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
-        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_PRIMATE);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_PRIMATE);
         this.stmt.setDouble(1, animal.getTemperature());
         this.stmt.executeUpdate();
     }
@@ -950,7 +970,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
-        this.stmt = db.con.prepareStatement(UPDATE_ANIMAL_OISEAU);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_OISEAU);
         this.stmt.setDouble(1, animal.getEnvergure());
         this.stmt.setString(2, animal.getBague());
         this.stmt.executeUpdate();
@@ -962,7 +982,7 @@ public class DBInteraction {
      * @return ArrayList<Animal>
      */
     public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SEL_ANIMAL);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL);
         ResultSet rs = this.stmt.executeQuery();
         return creerTableauAnimal(rs);
     }
@@ -975,7 +995,7 @@ public class DBInteraction {
      * @return ArrayList<Animal>
      */
     private ArrayList<Animal> creerTableauAnimal (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Animal> data = new ArrayList<Animal>();
+        ArrayList<Animal> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun Animal ne correspond aux infos rentrées ");
         } else {
@@ -1021,9 +1041,9 @@ public class DBInteraction {
      *
      * @return ArrayList<String>
      */
-     public ArrayList<String> selAllRaceAnimal() throws ExceptionDataBase, SQLException {
+    public ArrayList<String> selAllRaceAnimal() throws SQLException {
          ArrayList<String> data = new ArrayList<>();
-         this.stmt = db.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
          ResultSet rs = this.stmt.executeQuery();
          while (rs.next()) {
              data.add(rs.getString("nom"));
@@ -1038,66 +1058,45 @@ public class DBInteraction {
             throw new ExceptionDataBase("L'animal n'existe pas dans la DB");
 
         this.stmt = null;
-        this.stmt = db.con.prepareStatement(DELETE_ANIMAL);
+        this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
         this.stmt.setInt(1, id);
         this.stmt.execute();
     }
 
     private void insFelin(Felin f) throws SQLException {
-
         this.stmt = null;
-        this.stmt = this.db.con.prepareStatement(INSERT_FELIN);
-
-        try {
-            this.stmt.setInt(1, f.getId());
-            this.stmt.setDouble(2, f.getPoids());
-            this.stmt.execute();
-        } catch (SQLException sqlE) {
-            throw sqlE;     // Exception propagée à l'appelant
-        }
+        this.stmt = DBConnection.con.prepareStatement(INSERT_FELIN);
+        this.stmt.setInt(1, f.getId());
+        this.stmt.setDouble(2, f.getPoids());
+        this.stmt.execute();
     }
 
     private void insReptile(Reptile r) throws SQLException {
         this.stmt = null;
-        this.stmt = this.db.con.prepareStatement(INSERT_REPTILE);
-
-        try {
-            this.stmt.setInt(1, r.getId());
-            this.stmt.setDouble(2, r.getTemperature());
-            this.stmt.execute();
-        } catch (SQLException sqlE) {
-            throw sqlE;     // Exception propagée à l'appelant
-        }
+        this.stmt = DBConnection.con.prepareStatement(INSERT_REPTILE);
+        this.stmt.setInt(1, r.getId());
+        this.stmt.setDouble(2, r.getTemperature());
+        this.stmt.execute();
     }
 
     private void insOiseau(Oiseau o) throws SQLException {
         this.stmt = null;
-        this.stmt = this.db.con.prepareStatement(INSERT_OISEAU);
-
-        try {
-            this.stmt.setInt(1, o.getId());
-            this.stmt.setDouble(2, o.getEnvergure());
-            this.stmt.setString(3, o.getBague());
-        } catch (SQLException sqlE) {
-            throw sqlE;
-        }
+        this.stmt = DBConnection.con.prepareStatement(INSERT_OISEAU);
+        this.stmt.setInt(1, o.getId());
+        this.stmt.setDouble(2, o.getEnvergure());
+        this.stmt.setString(3, o.getBague());
     }
 
     private void insPrimate(Primate o) throws SQLException {
         this.stmt = null;
-        this.stmt = this.db.con.prepareStatement(INSERT_PRIMATE);
-
-        try {
-            this.stmt.setInt(1, o.getId());
-            this.stmt.setDouble(2, o.getTemperature());
-        } catch (SQLException sqlE) {
-            throw sqlE;
-        }
+        this.stmt = DBConnection.con.prepareStatement(INSERT_PRIMATE);
+        this.stmt.setInt(1, o.getId());
+        this.stmt.setDouble(2, o.getTemperature());
     }
 
     public void insAnimal(Animal a) throws SQLException {
 
-        this.stmt = this.db.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_ANIMAL, Statement.RETURN_GENERATED_KEYS);
 
         // Attribut communs à tous les animaux
         this.stmt.setNull(1, Types.NULL);
@@ -1109,56 +1108,31 @@ public class DBInteraction {
         this.stmt.setDate(7, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
-        try {
-            System.out.println(this.stmt.toString());
-
-            this.stmt.execute();
-            ResultSet rs = this.stmt.getGeneratedKeys();
-            if (rs.next()) {    // On récupère l'ID de l'animal inséré
-                int newAnimalID = rs.getInt(1);
-                a.setId(newAnimalID);
-            }
-        } catch (SQLException sqlE) {
-            throw sqlE;
+        this.stmt.execute();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+        if (rs.next()) {    // On récupère l'ID de l'animal inséré
+            rs.beforeFirst();   // On remet le curseur au début
+            int newAnimalID = rs.getInt(1);
+            a.setId(newAnimalID);
         }
 
         if (a instanceof Felin) {
-            try {
-                this.insFelin((Felin) a);
-            } catch (SQLException sqlE) {
-                throw sqlE;
-            }
-        }
-        if (a instanceof Reptile) {
-            try {
-                this.insReptile((Reptile) a);
-            } catch (SQLException sqlE) {
-                throw sqlE;
-            }
-        }
-        if (a instanceof Oiseau) {
-            try {
-                this.insOiseau((Oiseau) a);
-            } catch (SQLException sqlE) {
-                throw sqlE;
-            }
-        }
-        if (a instanceof Primate) {
-            try {
-                this.insPrimate((Primate) a);
-            } catch (SQLException sqlE) {
-                throw sqlE;
-            }
+            this.insFelin((Felin) a);
+        } else if (a instanceof Reptile) {
+            this.insReptile((Reptile) a);
+        } else if (a instanceof Oiseau) {
+            this.insOiseau((Oiseau) a);
+        } else if (a instanceof Primate) {
+            this.insPrimate((Primate) a);
         }
     }
-
 
     /*
     ENCLOS
      */
     public Enclos selEnclos(int id) throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_ENCLOS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLOS);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1180,7 +1154,7 @@ public class DBInteraction {
 
     public ArrayList<Enclos> selEnclos() throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_ENCLOS_ALL);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLOS_ALL);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<Enclos> data = new ArrayList<>();
@@ -1206,7 +1180,7 @@ public class DBInteraction {
      * @return ArrayList<Felin>
      */
     private ArrayList<Felin> createTabFelin (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Felin> data = new ArrayList<Felin>();
+        ArrayList<Felin> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun FELIN n'existe avec cet ID");
         } else {
@@ -1231,7 +1205,7 @@ public class DBInteraction {
      * @return ArrayList<Oiseau>
      */
     private ArrayList<Oiseau> createTabOiseau (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Oiseau> data = new ArrayList<Oiseau>();
+        ArrayList<Oiseau> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun Oiseau n'existe avec cet ID");
         } else {
@@ -1255,7 +1229,7 @@ public class DBInteraction {
      * @return ArrayList<Reptile>
      */
     private ArrayList<Reptile> createTabReptile (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Reptile> data = new ArrayList<Reptile>();
+        ArrayList<Reptile> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
         } else {
@@ -1279,7 +1253,7 @@ public class DBInteraction {
      * @return ArrayList<Primate>
      */
     private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Primate> data = new ArrayList<Primate>();
+        ArrayList<Primate> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
         } else {
@@ -1338,7 +1312,7 @@ public class DBInteraction {
      */
     public ArrayList<Evenement> getAllUnassignedTaskEmployee() throws ExceptionDataBase, SQLException {
 
-        this.stmt = db.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE);
         ResultSet rs = this.stmt.executeQuery();
 
         return creerTableauEvenement(rs);
@@ -1353,7 +1327,7 @@ public class DBInteraction {
      */
     public String selTypeEvenement (String type) throws ExceptionDataBase, SQLException {
         String res = null;
-        this.stmt = db.con.prepareStatement(SEL_TYPE_EVENEMENT);
+        this.stmt = DBConnection.con.prepareStatement(SEL_TYPE_EVENEMENT);
         this.stmt.setString(1, type);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1377,7 +1351,7 @@ public class DBInteraction {
      * @return void
      */
     public void insertTypeEvenement (TypeEvenement typeEvenement) throws SQLException {
-        this.stmt = this.db.con.prepareStatement(INSERT_TYPE_EVENEMET);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_TYPE_EVENEMET);
 
         this.stmt.setString(1, typeEvenement.getType());
     }
@@ -1391,7 +1365,7 @@ public class DBInteraction {
      */
     public void insertEvenement (Evenement evenement) throws SQLException {
 
-        this.stmt = this.db.con.prepareStatement(INSERT_EVENEMENT);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
@@ -1413,7 +1387,7 @@ public class DBInteraction {
     public void insertEvenement (String description, java.sql.Date date, int type) throws SQLException {
         // le type est une référence sur la table "TypeEvenement"
 
-        this.stmt = this.db.con.prepareStatement(INSERT_EVENEMENT);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, description);
@@ -1436,7 +1410,7 @@ public class DBInteraction {
         int numAVS_employe = employe.getIdPersonne();
         int id_evenement = evenement.getId();
 
-        this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setInt(2, numAVS_employe);
@@ -1461,7 +1435,7 @@ public class DBInteraction {
 
             for (int i = 0; i > evenements.size(); i++) {
 
-                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+                this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
                 this.stmt.setNull(1, Types.NULL);
                 this.stmt.setInt(2, numAVS_employe);
@@ -1485,11 +1459,11 @@ public class DBInteraction {
         if (tabEmploye.size() > 0) {
             int id_evenement = evenement.getId();
 
-            for (int i = 0; i < tabEmploye.size(); i++) {
-                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+            for (Personne aTabEmploye : tabEmploye) {
+                this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
                 this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, tabEmploye.get(i).getIdPersonne());
+                this.stmt.setInt(2, aTabEmploye.getIdPersonne());
                 this.stmt.setInt(3, id_evenement);
 
                 this.stmt.executeUpdate();
@@ -1509,7 +1483,7 @@ public class DBInteraction {
         int id_animal = animal.getId();
         int id_evenement = evenement.getId();
 
-        this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setInt(2, id_animal);
@@ -1531,11 +1505,11 @@ public class DBInteraction {
         if (tabAnimal.size() > 0) {
             int id_evenement = evenement.getId();
 
-            for (int i = 0; i < tabAnimal.size(); i++) {
-                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
+            for (Animal aTabAnimal : tabAnimal) {
+                this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
 
                 this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, tabAnimal.get(i).getId());
+                this.stmt.setInt(2, aTabAnimal.getId());
                 this.stmt.setInt(3, id_evenement);
 
                 this.stmt.executeUpdate();
@@ -1555,7 +1529,7 @@ public class DBInteraction {
         int id_intervenant = intervenant.getId();
         int id_evenement = evenement.getId();
 
-        this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setInt(2, id_intervenant);
@@ -1577,11 +1551,11 @@ public class DBInteraction {
         if (tabIntervenant.size() > 0) {
             int id_evenement = evenement.getId();
 
-            for (int i = 0; i < tabIntervenant.size(); i++) {
-                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
+            for (Intervenant aTabIntervenant : tabIntervenant) {
+                this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
 
                 this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, tabIntervenant.get(i).getId());
+                this.stmt.setInt(2, aTabIntervenant.getId());
                 this.stmt.setInt(3, id_evenement);
 
                 this.stmt.executeUpdate();
@@ -1601,7 +1575,7 @@ public class DBInteraction {
         int id_infrastructure = infrastructure.getId();
         int id_evenement = evenement.getId();
 
-        this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
 
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setInt(2, id_infrastructure);
@@ -1622,11 +1596,11 @@ public class DBInteraction {
         if (tabInfrastructure.size() > 0) {
             int id_evenement = evenement.getId();
 
-            for (int i = 0; i < tabInfrastructure.size(); i++) {
-                this.stmt = this.db.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
+            for (Infrastructure aTabInfrastructure : tabInfrastructure) {
+                this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
 
                 this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, tabInfrastructure.get(i).getId());
+                this.stmt.setInt(2, aTabInfrastructure.getId());
                 this.stmt.setInt(3, id_evenement);
 
                 this.stmt.executeUpdate();
@@ -1669,7 +1643,7 @@ public class DBInteraction {
      * @param quantity double
      */
     public void addQuantity (int id, double quantity) throws SQLException {
-        this.stmt = db.con.prepareStatement(UPDATE_ADD_QUANTITE_OF_DESCRIPTION);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ADD_QUANTITE_OF_DESCRIPTION);
         this.stmt.setInt(1, id);
         this.stmt.setDouble(2, quantity);
 
@@ -1683,7 +1657,7 @@ public class DBInteraction {
      * @param quantity double
      */
     public void delQuantity (int id, double quantity) throws SQLException {
-        this.stmt = db.con.prepareStatement(UPDATE_DELETE_QUANTITE_OF_DESCRIPTION);
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_DELETE_QUANTITE_OF_DESCRIPTION);
         this.stmt.setInt(1, id);
         this.stmt.setDouble(2, quantity);
 
@@ -1697,8 +1671,8 @@ public class DBInteraction {
      * @return ArrayList<Stock>
      */
     public ArrayList<Stock> selAllStock () throws SQLException, ExceptionDataBase {
-        ArrayList<Stock> data = new ArrayList<Stock>();
-        this.stmt = db.con.prepareStatement(SEL_ALL_STOCK);
+        ArrayList<Stock> data = new ArrayList<>();
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_STOCK);
 
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1712,8 +1686,8 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Commande> selAllCommande () throws SQLException, ExceptionDataBase {
-        ArrayList<Commande> data = new ArrayList<Commande>();
-        this.stmt = db.con.prepareStatement(SEL_ALL_COMMANDE);
+        ArrayList<Commande> data = new ArrayList<>();
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_COMMANDE);
 
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1730,8 +1704,8 @@ public class DBInteraction {
      */
     public ArrayList<Commande> selAllCommandeParDate (java.sql.Date dateDebut, java.sql.Date dateFin)
             throws SQLException, ExceptionDataBase {
-        ArrayList<Commande> data = new ArrayList<Commande>();
-        this.stmt = db.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
+        ArrayList<Commande> data = new ArrayList<>();
+        this.stmt = DBConnection.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
 
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1746,7 +1720,7 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Contenu_Commande> selAllContenuCommandeParID (int id_commande) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
+        this.stmt = DBConnection.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
         this.stmt.setInt(1, id_commande);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1755,7 +1729,7 @@ public class DBInteraction {
 
     public String selCommandeEnCours(int idRefArticle) throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
         this.stmt.setInt(1, idRefArticle);
         ResultSet rs = this.stmt.executeQuery();
         ResultSetMetaData md = rs.getMetaData();
