@@ -84,6 +84,11 @@ public class DBInteraction {
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
     private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
+    // Assigner une adresses à une Personne
+    private static final String UPDATE_ADDRESS_TO_PERSONNE =
+            "UPDATE Personne " +
+                    "SET adresse = ? " +
+                    "WHERE idPersonne = ?;";
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -167,7 +172,6 @@ public class DBInteraction {
     private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
     // -----------------------------------------------------------------------------------------------------------------
     // ENCLOS :
-
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
     // -----------------------------------------------------------------------------------------------------------------
@@ -190,16 +194,6 @@ public class DBInteraction {
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
     // Selectionner le type d'un événement en fonction de son ID
     private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
-    // Enlever un peu de quantité d'un produit
-    private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
-            "UPDATE Stock " +
-                    "SET quantite = quantite - ? " +
-                    "WHERE id = ?;";
-    // Ajouter un peu de quantité d'un produit
-    private static final String UPDATE_ADD_QUANTITE_OF_DESCRIPTION =
-            "UPDATE Stock " +
-                    "SET quantite = quantite + ? " +
-                    "WHERE id = ?;";
     // -----------------------------------------------------------------------------------------------------------------
     // STOCK :
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
@@ -221,7 +215,16 @@ public class DBInteraction {
             "\tON Commande_Contenu.idCommande = Commande.id \n" +
             "WHERE refArticle = ?\n" +
             "AND Commande.statut = \"EN_COURS\";";
-
+    // Enlever un peu de quantité d'un produit
+    private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
+            "UPDATE Stock " +
+                    "SET quantite = quantite - ? " +
+                    "WHERE id = ?;";
+    // Ajouter un peu de quantité d'un produit
+    private static final String UPDATE_ADD_QUANTITE_OF_DESCRIPTION =
+            "UPDATE Stock " +
+                    "SET quantite = quantite + ? " +
+                    "WHERE id = ?;";
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
 
@@ -238,14 +241,31 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des ADRESSES dans la DB
+
     /**
-     * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
+     * Permet d'assigner une adresse à une personne
+     *
+     * @param idAdresse int
+     * @param idPersonne int
+     */
+    public void assignAddressToPeople (int idAdresse, int idPersonne) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ADDRESS_TO_PERSONNE);
+        this.stmt.setInt(1, idAdresse);
+        this.stmt.setInt(2, idPersonne);
+
+        this.stmt.executeUpdate();
+    }
+
+
+    /**
+     * Permet d'insérer une nouvelle adresse complète (Adresse, codePostal , Pays)
      *
      * @param pays String
-     * @param cp String
+     * @param cp int
+     * @param ville String
      * @param pays String
      */
-    public void insAddress (String adresse, int cp, String pays) throws SQLException {
+    public void insAddress (String adresse, int cp, String ville, String pays) throws SQLException {
         // Check si le pays est déjà dans la DB
         // l'insère si non
         if (this.countryIsInDB(pays) == 0) {
@@ -255,7 +275,7 @@ public class DBInteraction {
         // Check si la ville est déjà dans la DB
         // l'insère si non
         if (this.cpIsInDB(cp) == 0) {
-            this.insVille(this.getVilleParCP(cp), cp, pays);
+            this.insVille(ville, cp, pays);
         }
 
         // Check si l'adresse en fonction de la ville est déjà dans la DB
