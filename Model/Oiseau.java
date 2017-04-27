@@ -34,8 +34,9 @@ public class Oiseau extends Animal {
     }
 
     /**
-     * Constructeur avec tous les membres sauf ID
+     * Constructeur avec tous les membres + ID
      *
+     * @param nomCommun
      * @param nom
      * @param sexe
      * @param anneeNaissance
@@ -47,9 +48,9 @@ public class Oiseau extends Animal {
      * @param envergure
      * @param bague
      */
-    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
-                  java.sql.Date dateDeces, int id, double envergure, String bague) {
-        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+    public Oiseau(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
+                  java.sql.Date dateDeces, double envergure, String bague) {
+        super(id, nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.envergure = envergure;
         this.bague = bague;
     }
@@ -58,6 +59,7 @@ public class Oiseau extends Animal {
     /**
      * Constructeur avec tous les membres sauf ID
      *
+     * @param nomCommun
      * @param nom
      * @param sexe
      * @param anneeNaissance
@@ -66,9 +68,9 @@ public class Oiseau extends Animal {
      * @param race
      * @param dateDeces
      */
-    public Oiseau(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
+    public Oiseau(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine, int race,
                   java.sql.Date dateDeces, double envergure, String bague) {
-        super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.envergure = envergure;
         this.bague = bague;
     }
