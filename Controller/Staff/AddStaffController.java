@@ -77,6 +77,10 @@ public class AddStaffController {
         }
     }
 
+    private void getSupervisor(){
+
+    }
+
     /**
      * Méthode permettant de checker qu'une personne est OK avant de l'insérer
      * @param lastName Nom de la personne
