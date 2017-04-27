@@ -1,11 +1,15 @@
 package View.Staff.StaffMainPanel;
 
 import Controller.Staff.StaffController;
+import Model.Evenement;
 import Model.Personne;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * Created by André on 22.04.2017.
@@ -19,7 +23,9 @@ public class PersonnelStaf extends JPanel{
      */
     public PersonnelStaf(StaffController controller, Personne personne){
 
-        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+        this.setLayout(new GridLayout(2,1));
+        JPanel jpLeft = new JPanel();
+        jpLeft.setLayout(new GridLayout(14,1));
 
         // Ajout du champ de détails pour le nom
         JPanel jpLastName = new JPanel();
@@ -28,7 +34,8 @@ public class PersonnelStaf extends JPanel{
         jpLastName.add(jlLastName);
         jpLastName.add(Box.createHorizontalStrut(50));
         jpLastName.add(jlLastNameInfo);
-        this.add(jpLastName);
+        //this.add(jpLastName);
+        jpLeft.add(jpLastName);
 
         // Ajout du champ de détails pour le prénom
         JPanel jpFirstName = new JPanel();
@@ -37,7 +44,8 @@ public class PersonnelStaf extends JPanel{
         jpFirstName.add(jlFirstName);
         jpFirstName.add(Box.createHorizontalStrut(50));
         jpFirstName.add(jlFirstNameInfo);
-        this.add(jpFirstName);
+        //this.add(jpFirstName);
+        jpLeft.add(jpFirstName);
 
         // Ajout du champ de détails pour la date de naissance
         JPanel jpBirthday = new JPanel();
@@ -46,7 +54,8 @@ public class PersonnelStaf extends JPanel{
         jpBirthday.add(jlBirthday);
         jpBirthday.add(Box.createHorizontalStrut(50));
         jpBirthday.add(jlBirthdayInfo);
-        this.add(jpBirthday);
+        //this.add(jpBirthday);
+        jpLeft.add(jpBirthday);
 
         // Ajout du champ de détails pour le numéro AVS
         JPanel jpAVS = new JPanel();
@@ -55,7 +64,8 @@ public class PersonnelStaf extends JPanel{
         jpAVS.add(jlAVS);
         jpAVS.add(Box.createHorizontalStrut(50));
         jpAVS.add(jlAVSInfo);
-        this.add(jpAVS);
+        //this.add(jpAVS);
+        jpLeft.add(jpAVS);
 
         // Ajout du champ de détails pour l'email
         JPanel jpEmail = new JPanel();
@@ -64,7 +74,8 @@ public class PersonnelStaf extends JPanel{
         jpEmail.add(jlEmail);
         jpEmail.add(Box.createHorizontalStrut(50));
         jpEmail.add(jlEmailInfo);
-        this.add(jpEmail);
+        //this.add(jpEmail);
+        jpLeft.add(jpEmail);
 
         // Ajout du champ de détails pour l'adresse
         JPanel jpAddress = new JPanel();
@@ -73,7 +84,8 @@ public class PersonnelStaf extends JPanel{
         jpAddress.add(jlAddress);
         jpAddress.add(Box.createHorizontalStrut(50));
         jpAddress.add(jlAddressInfo);
-        this.add(jpAddress);
+        //this.add(jpAddress);
+        jpLeft.add(jpAddress);
 
         // Ajout du champ de détails pour la ville
         JPanel jpCity = new JPanel();
@@ -82,7 +94,8 @@ public class PersonnelStaf extends JPanel{
         jpCity.add(jlCity);
         jpCity.add(Box.createHorizontalStrut(50));
         jpCity.add(jlCityInfo);
-        this.add(jpCity);
+        //this.add(jpCity);
+        jpLeft.add(jpCity);
 
         // Ajout du champ de détails pour le npa
         JPanel jpNPA = new JPanel();
@@ -91,7 +104,17 @@ public class PersonnelStaf extends JPanel{
         jpNPA.add(jlNPA);
         jpNPA.add(Box.createHorizontalStrut(50));
         jpNPA.add(jlNPAInfo);
-        this.add(jpNPA);
+        //this.add(jpNPA);
+        jpLeft.add(jpNPA);
+
+        // Ajout du champ de détails pour le pays
+        JPanel jpCountry = new JPanel();
+        JLabel jlCountry = new JLabel("Pays : ");
+        JLabel jlCountryInfo = new JLabel("pays");
+        jpCountry.add(jlCountry);
+        jpCountry.add(Box.createHorizontalStrut(50));
+        jpCountry.add(jlCountryInfo);
+        jpLeft.add(jpCountry);
 
         // Ajout du champ de détails pour le numéro de téléphone
         JPanel jpPhone = new JPanel();
@@ -100,7 +123,8 @@ public class PersonnelStaf extends JPanel{
         jpPhone.add(jlPhone);
         jpPhone.add(Box.createHorizontalStrut(50));
         jpPhone.add(jlPhoneInfo);
-        this.add(jpPhone);
+        //this.add(jpPhone);
+        jpLeft.add(jpPhone);
 
         // Ajout du champ de détails pour la date de début
         JPanel jpBeginingDate = new JPanel();
@@ -109,7 +133,8 @@ public class PersonnelStaf extends JPanel{
         jpBeginingDate.add(jlBeginingDate);
         jpBeginingDate.add(Box.createHorizontalStrut(50));
         jpBeginingDate.add(jlBeginingDateInfo);
-        this.add(jpBeginingDate);
+        //this.add(jpBeginingDate);
+        jpLeft.add(jpBeginingDate);
 
         // Ajout du champ de détails pour le responsable
         JPanel jpAdvisor = new JPanel();
@@ -118,7 +143,8 @@ public class PersonnelStaf extends JPanel{
         jpAdvisor.add(jlAdvisor);
         jpAdvisor.add(Box.createHorizontalStrut(50));
         jpAdvisor.add(jlAdvisorInfo);
-        this.add(jpAdvisor);
+        //this.add(jpAdvisor);
+        jpLeft.add(jpAdvisor);
 
         // Ajout du champ de détails pour le statut
         JPanel jpStatut = new JPanel();
@@ -127,7 +153,8 @@ public class PersonnelStaf extends JPanel{
         jpStatut.add(jlStatut);
         jpStatut.add(Box.createHorizontalStrut(50));
         jpStatut.add(jlStatutInfo);
-        this.add(jpStatut);
+        //this.add(jpStatut);
+        jpLeft.add(jpStatut);
 
         // Ajout du champ de détails pour le type de contrat
         JPanel jpContract = new JPanel();
@@ -136,7 +163,25 @@ public class PersonnelStaf extends JPanel{
         jpContract.add(jlContract);
         jpContract.add(Box.createHorizontalStrut(50));
         jpContract.add(jlContractInfo);
-        this.add(jpContract);
+        //this.add(jpContract);
+        jpLeft.add(jpContract);
+
+        JPanel fusion = new JPanel();
+        fusion.setLayout(new GridLayout(1,2));
+        fusion.add(jpLeft);
+
+        ArrayList<Evenement> tasks = new ArrayList<>();
+        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2),3);
+        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2),4);
+        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7),1);
+
+        tasks.add(e1);
+        tasks.add(e2);
+        tasks.add(e3);
+
+        fusion.add(new StaffTask(tasks));
+
+        this.add(fusion);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
         JPanel jpButtons = new JPanel();

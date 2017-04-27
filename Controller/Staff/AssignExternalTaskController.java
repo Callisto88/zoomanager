@@ -1,5 +1,6 @@
 package Controller.Staff;
 
+import Controller.Error.ErrorController;
 import Model.DBInteraction;
 import Model.Evenement;
 import Model.ExceptionDataBase;
@@ -15,7 +16,10 @@ import java.util.ArrayList;
  * Class permettant d'instancier et de controller tout ce qui concerne l'assignation de tâche à un intervenant
  */
 public class AssignExternalTaskController {
+
+    private DBInteraction querry = null;
     private TaskExternalPanel tepExternal = null;
+    ErrorController ecError = null;
 
     /**
      * Constructeur du controlleur
@@ -24,13 +28,7 @@ public class AssignExternalTaskController {
     public AssignExternalTaskController(Intervenant external){
         ArrayList<Evenement> tasks = null;
 
-        // Permet de récupérer les taches non assignées des intervenant
-        DBInteraction querry = null;
-        try {
-            querry = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
+        dbConnection();
 
 /**************** Problème méthodes non présente pour récupérer les taches non assignées des intervenant ***************/
         /*
@@ -64,7 +62,30 @@ public class AssignExternalTaskController {
      * @param event tâche à attribuer
      */
     public void assignTask(Intervenant external, Evenement event){
+        dbConnection();
+        try{
+            querry.assignEvenementIntervenant(event, external);
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+    }
 
+    public void getAssignedTask(){
+        dbConnection();
+
+    }
+
+    /**
+     * Méthode permettant d'établir la connection avec la DB
+     */
+    private void dbConnection(){
+        try {
+            querry = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDB) {
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
+        }
     }
 
 }

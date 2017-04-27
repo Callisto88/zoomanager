@@ -65,13 +65,19 @@ public class StaffView extends GenericWindow {
         JPanel jpButtonStock = new JPanel();
         jpLeft.add(jpButtonStock, gbcLeft);
 
-        JButton jbPrint = new JButton("Imprimer la liste des employées");
+        JButton jbPrint = new JButton("Imprimer listing employés");
         //setButtonConfig(jbPrint);
 
+        // Listener pour capter l'appui sur le boutton
         jbPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Impression");
+                if(((JButton) e.getSource()).getText().equals("Imprimer listing employés")){
+                    System.out.println("Impression listing employés");
+                }
+                else{
+                    System.out.println("Impression listing intervenants");
+                }
             }
         });
 
@@ -79,7 +85,7 @@ public class StaffView extends GenericWindow {
         JButton jbAdd = new JButton("Ajouter un employé");
         //setButtonConfig(jbAdd);
 
-        // Listener pour pouvoir
+        // Listener pour capter l'appui sur le boutton
         jbAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -109,6 +115,7 @@ public class StaffView extends GenericWindow {
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les employés");
                     jbAdd.setText("Ajouter un intervenant");
+                    jbPrint.setText("Imprimer listing intervenants");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
@@ -120,6 +127,7 @@ public class StaffView extends GenericWindow {
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les externes");
                     jbAdd.setText("Ajouter un employé");
+                    jbPrint.setText("Imprimer listing employés");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }

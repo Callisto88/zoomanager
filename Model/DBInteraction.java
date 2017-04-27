@@ -522,7 +522,7 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(DEL_PERSONNE);
         this.stmt.setInt(1, id);
-        this.stmt.executeQuery();
+        this.stmt.execute();
     }
 
 

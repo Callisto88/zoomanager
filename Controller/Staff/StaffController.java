@@ -35,7 +35,7 @@ public class StaffController {
      */
     public StaffController() {
         // établis la connection
-        dbConnection();
+        //dbConnection();
 
         StaffView svPersonnel = new StaffView(this, getPersonnel());
     }
@@ -59,7 +59,8 @@ public class StaffController {
      * @return un ArrayList avec le personnel présent dans la base de donnée
      */
     public ArrayList<Personne> getPersonnel(){
-        ArrayList<Personne> alpPersonnel = null;
+        ArrayList<Personne> alpPersonnel = new ArrayList<>();
+        /*
         try{
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
@@ -69,6 +70,21 @@ public class StaffController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());
         }
+        /******************* Permet de tester hors ligne **************************/
+        alpPersonnel = new ArrayList<>();
+        Personne p1 = new Personne("123.1234.1234.12", "Lara", "Gut", 2, "Lara.gut@swisscom.ch",
+                "00415678923", new Date(1988, 02, 28),1, "Aide",
+                new Date(2011, 9, 01), "CDD");
+        Personne p2 = new Personne("321.1234.1234.89", "Hector", "Newman", 4, "hector.newman@mas.ch",
+                "00415678923", new Date(1988, 02, 28),1, "Aide",
+                new Date(2009, 9, 01), "CDD");
+        Personne p3 = new Personne("678.1234.1234.56", "Lara", "Gut", 7, "Lara.gut@msn.ch",
+                "00415678923", new Date(1988, 02, 28),1, "Aide",
+                new Date(2010, 4, 20), "CDD");
+        alpPersonnel.add(p1);
+        alpPersonnel.add(p2);
+        alpPersonnel.add(p3);
+        /*********************************************************************/
         return alpPersonnel;
     }
 

@@ -93,11 +93,16 @@ public class ModifyStaffController {
     private void modifyStaff(Personne personne){
         dbConnection();
         // Permet d'insérer la personne modifié
+        boolean erreur = false;
         try {
             querry.updatePersonne(personne);
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
+            erreur = true;
+        }
+        if(!erreur){
+            mspModifyStaff.getParent().hide();
         }
 
     }

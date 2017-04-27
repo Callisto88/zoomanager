@@ -19,10 +19,10 @@ public class StaffTask extends JPanel {
      * Constructeur de la sous fenêtre affichant les tâches à faire pour un employé
      */
     public StaffTask(ArrayList<Evenement> events) {
-        setLayout(new GridLayout(1,events.size()));
+        setLayout(new GridLayout(events.size(), 1));
 
         for(int i = 0; i < events.size(); ++i){
-            add(new JLabel(events.get(i).getDescription()));
+            add(new JLabel(events.get(i).getDescription() + " " + events.get(i).getDate()));
         }
     }
 }
