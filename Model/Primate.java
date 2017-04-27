@@ -10,21 +10,19 @@ import java.sql.Date;
  * @author D.Hamel
  * @author C.Balboni
  * @version 1.1
+ *
  * @date 28.03.2017 (Création)
  * @date 28.03.2017 (Finalisation v1.0)
  * @date 10.04.2017 (Ajout des constructeurs et commentaires JavaDoc)
  * @data 10.04.2017 (Finalisation v1.1)
+ * @date 27.04.2017 (Ajout de l'attribut nomCommun, nettoyage du code et des commentaires)
  */
 public class Primate extends Animal {
 
     /**
-     * MEMBRES PRIVES
+     * Membres privés
      */
     private double temperature;
-
-    /**
-     * Constructeurs
-     */
 
     /**
      * Constructeur par défaut
@@ -36,7 +34,7 @@ public class Primate extends Animal {
      * Constructeur à partir de l'ID du primate
      * Récupère toutes les informations connu pour le primate portant l'id
      *
-     * @param id
+     * @param id un entier correspondant à l'ID de l'animal
      */
     public Primate(int id) {
         super(id);
@@ -46,35 +44,17 @@ public class Primate extends Animal {
      * Constructeur à partir de la température du primate
      * Instancie un nouveau primate avec sa température
      *
-     * @param temperature
+     * @param temperature un double
      */
     public Primate(double temperature) {
         this.temperature = temperature;
     }
 
     /**
-     * Constructeur avec tous les paramètres (sauf ID) du parent ( Animal ) et du primate
+     * Constructeur avec tous les attributs
      *
-     * @param nom
-     * @param sexe
-     * @param anneeNaissance
-     * @param enclos
-     * @param origine
-     * @param race
-     * @param dateDeces
      * @param id
-     * @param temperature
-     */
-    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
-                   int race, java.sql.Date dateDeces, int id, double temperature) {
-        super(id, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
-        this.temperature = temperature;
-    }
-
-
-    /**
-     * Constructeur avec tous les paramètres (sauf ID) du parent ( Animal ) et du primate
-     *
+     * @param nomCommun
      * @param nom
      * @param sexe
      * @param anneeNaissance
@@ -84,20 +64,45 @@ public class Primate extends Animal {
      * @param dateDeces
      * @param temperature
      */
-    public Primate(String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+    public Primate(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
                    int race, java.sql.Date dateDeces, double temperature) {
-        super(nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(id, nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        this.temperature = temperature;
+    }
+
+
+    /**
+     * Constructeur avec tous les attributs sauf ID
+     *
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     * @param dateDeces
+     * @param temperature
+     */
+    public Primate(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+                   int race, java.sql.Date dateDeces, double temperature) {
+        super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }
 
     /**
-     * Getters & Setters propres aux primates
-     *
-     * @return
+     * Retourne la température du primate
+     * @return un double
      */
     public double getTemperature() {
         return temperature;
     }
+
+    /**
+     * Définis la température du primate
+     *
+     * @param temperature un double
+     */
     public void setTemperature(double temperature) {
         this.temperature = temperature;
     }
