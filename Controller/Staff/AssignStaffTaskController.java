@@ -63,18 +63,18 @@ public class AssignStaffTaskController {
      */
     public void assignTask(Personne personne, Evenement event){
         dbConnection();
-        try{
+        try {
             querry.assignEvenementEmploye(event, personne);
-        } catch(SQLException sqlException){
+        } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            ecError = new ErrorController("Erreur assignation staff tache " +sqlException.toString());
+            ecError = new ErrorController("Erreur assignation staff tache " + sqlException.toString());
         }
     }
 
     /**
      * Méthode permettant d'établir la connection avec la DB
      */
-    private void dbConnection(){
+    private void dbConnection() {
         try {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {

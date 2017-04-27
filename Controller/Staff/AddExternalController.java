@@ -113,13 +113,9 @@ public class AddExternalController {
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
-<<<<<<< HEAD
             ecError = new ErrorController(sqlException.toString());
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
-=======
-            ecError = new ErrorController("Erreur insertion d'adresse " + sqlException.toString());
->>>>>>> 5d26b5210de22344bc33c4e9fa6aff0cf7c1c747
         }
 
         // Permet de checker le numéro de télephone

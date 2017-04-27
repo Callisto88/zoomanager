@@ -190,12 +190,12 @@ public class AddStaffController {
     public void insertPersonne (Personne personne){
         try{
             querry.insertPersonne(personne);
-<<<<<<< HEAD
-=======
-        } catch (ExceptionDataBase exceptionDB){
+<<<<<<<HEAD
+                    =======
+        } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
             ecError = new ErrorController("Erreur insertion personne " + exceptionDB.toString());
->>>>>>> 5d26b5210de22344bc33c4e9fa6aff0cf7c1c747
+>>>>>>>5d 26 b5210de22344bc33c4e9fa6aff0cf7c1c747
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             ecError = new ErrorController("Erreur insertion personne " + exceptionsql.toString());
