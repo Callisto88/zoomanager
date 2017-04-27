@@ -45,10 +45,10 @@ public class DBInteraction {
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
     // Récupérer la ville en fonction d'un code postal
-    private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville_id FROM Ville WHERE codePostal = ? ;";
+    private static final String SEL_VILLE_ID_PAR_CP = "SELECT codePostal FROM Ville WHERE codePostal = ? ;";
     // Récupérer les informations sur une adresse et la ville en relation
     private static final String SEL_ADRESSE_PAR_ADR_VILLE_ID =
-            "SELECT * FROM Adresse WHERE adresse = ? AND ville_id = ? ;";
+            "SELECT * FROM Adresse WHERE adresse = ? AND codePostal = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE :
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
@@ -271,10 +271,10 @@ public class DBInteraction {
      *
      * @param adresse String
      */
-    private void insAdresse (String adresse, int ville_id) throws SQLException {
+    private void insAdresse(String adresse, int codePostal) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
         this.stmt.setString(1, adresse);
-        this.stmt.setInt(2, ville_id);
+        this.stmt.setInt(2, codePostal);
         this.stmt.executeUpdate();
     }
 
@@ -338,7 +338,7 @@ public class DBInteraction {
     }
 
     /**
-     * Permet de récupérer le ville_id d'une ville en fonction d'un code postal passé en paramètre
+     * Permet de récupérer le codePostal d'une ville en fonction d'un code postal passé en paramètre
      *
      * @param cp String
      *
@@ -350,13 +350,13 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
         rs.next();
 
-        return rs.getInt("ville_id");
+        return rs.getInt("codePostal");
     }
 
 
     /**
      * Permet de savoir si un code postal est déjà présent dans la db
-     * Retourne la ville_id du code Postal si présent
+     * Retourne la codePostal du code Postal si présent
      * Retourne 0 si non présent
      *
      * @param cp Int
@@ -407,11 +407,11 @@ public class DBInteraction {
      * Permet de savoir si une Adresse est déjà présent dans la db en fonction de son lien avec la ville
      *
      * @param adresse String
-     * @param ville_id int
+     * @param codePostal int
      *
      * @return boolean
      */
-    public boolean addressIsInDB (String adresse, int ville_id) throws SQLException {
+    public boolean addressIsInDB(String adresse, int codePostal) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_ADR_VILLE_ID);
         ResultSet rs = this.stmt.executeQuery();
 
