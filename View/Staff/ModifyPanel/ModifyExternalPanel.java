@@ -177,7 +177,7 @@ public class ModifyExternalPanel extends GenericWindow {
         if (!bAddress) {
             bAddress = true;
             JPanel addressPanel = new JPanel();
-            JLabel addressLabel = new JLabel("Ville : ");
+            JLabel addressLabel = new JLabel("Adresse : ");
             addressPanel.add(addressLabel);
             addressPanel.add(new JTextField(/*personne.getAdresse()*/"adresse", 20));
             jpMainPanel.add(addressPanel);

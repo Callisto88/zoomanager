@@ -84,7 +84,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpLastNamePanel = new JPanel();
         JLabel jlLastNameLabel = new JLabel("Nom : ");
         jpLastNamePanel.add(jlLastNameLabel, JPanel.LEFT_ALIGNMENT);
-        jtfLastNameInput = new JTextField("last", 7);
+        jtfLastNameInput = new JTextField("Nom", 10);
         jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jpLastNamePanel.add(jtfLastNameInput, JPanel.CENTER_ALIGNMENT);
         jlLastNameError.setFont(new Font("Serif", Font.BOLD, 32));
@@ -97,7 +97,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpFirstNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Prénom : ");
         jpFirstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
-        jtfFirstNameInput = new JTextField("first", 7);
+        jtfFirstNameInput = new JTextField("prénom", 10);
         jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jpFirstNamePanel.add(jtfFirstNameInput, JPanel.CENTER_ALIGNMENT);
         jlFirstNameError.setFont(new Font("Serif", Font.BOLD, 32));
@@ -142,7 +142,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
         jpAVS.add(jlAVS);
-        jtfAVSInput = new JTextField("sAVS", 7);
+        jtfAVSInput = new JTextField("sAVS", 10);
         jpAVS.add(jtfAVSInput);
         jlAVSError.setFont(new Font("Serif", Font.BOLD, 32));
         jlAVSError.setForeground(Color.RED);
@@ -152,9 +152,9 @@ public class AddStaff extends GenericWindow {
 
         // Ajout des champs utiles pour l'adresse
         JPanel jpAddress = new JPanel();
-        JLabel jlAddress = new JLabel("Ville : ");
+        JLabel jlAddress = new JLabel("Adresse : ");
         jpAddress.add(jlAddress);
-        jtfAddress = new JTextField("adresse", 7);
+        jtfAddress = new JTextField("adresse", 15);
         jpAddress.add(jtfAddress);
         jlAddressError.setFont(new Font("Serif", Font.BOLD, 32));
         jlAddressError.setForeground(Color.RED);
@@ -178,7 +178,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jpCity.add(jlCity);
-        jtfCity = new JTextField("ville", 7);
+        jtfCity = new JTextField("ville", 10);
         jpCity.add(jtfCity);
         jlCityError.setFont(new Font("Serif", Font.BOLD, 32));
         jlCityError.setForeground(Color.RED);
@@ -190,7 +190,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jpCountry.add(jlCountry);
-        jtfCountry = new JTextField("npa", 7);
+        jtfCountry = new JTextField("pays", 7);
         jpCountry.add(jtfCountry);
         jlCountryError.setFont(new Font("Serif", Font.BOLD, 32));
         jlCountryError.setForeground(Color.RED);
@@ -202,7 +202,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-mail : ");
         jpEmail.add(jlEmail);
-        jtfEmail = new JTextField("e-mail", 7);
+        jtfEmail = new JTextField("e-mail", 10);
         jpEmail.add(jtfEmail);
         jlEmailError.setFont(new Font("Serif", Font.BOLD, 32));
         jlEmailError.setForeground(Color.RED);
@@ -214,7 +214,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
         jpPhone.add(jlPhone);
-        jtfPhone = new JTextField("téléphone", 7);
+        jtfPhone = new JTextField("téléphone", 10);
         jpPhone.add(jtfPhone);
         jlPhoneError.setFont(new Font("Serif", Font.BOLD, 32));
         jlPhoneError.setForeground(Color.RED);
@@ -226,7 +226,7 @@ public class AddStaff extends GenericWindow {
         JPanel jpSupervisor = new JPanel();
         JLabel jlSupervisor = new JLabel("Responsable : ");
         jpSupervisor.add(jlSupervisor);
-        jtfSupervisor = new JTextField("responsable", 7);
+        jtfSupervisor = new JTextField("responsable", 10);
         jpSupervisor.add(jtfSupervisor);
         jlSupervisorError.setFont(new Font("Serif", Font.BOLD, 32));
         jlSupervisorError.setForeground(Color.RED);
