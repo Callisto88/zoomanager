@@ -22,18 +22,18 @@ public class Ville {
      */
     private int cp;
     private String ville;
-    private int pays_id;
+    private int paysId;
 
     /**
      * Constructeur avec tous les membres
      * @param ville
      * @param cp
-     * @param pays_id
+     * @param paysId
      */
-    public Ville( int cp, String ville, int pays_id) {
+    public Ville(int cp, int paysId, String ville) {
         this.ville = ville;
         this.cp = cp;
-        this.pays_id = pays_id;
+        this.paysId = paysId;
     }
 
     /**
@@ -70,17 +70,17 @@ public class Ville {
 
     /**
      * Getter pays ID référence sur la table Pays
-     * @return int pays_id
+     * @return int paysId
      */
     public int getPays_id() {
-        return pays_id;
+        return paysId;
     }
 
     /**
      * Setter pays ID référence sur la table Pays
-     * @param pays_id int
+     * @param paysId int
      */
-    public void setPays_id(int pays_id) {
-        this.pays_id = pays_id;
+    public void setPays_id(int paysId) {
+        this.paysId = paysId;
     }
 }

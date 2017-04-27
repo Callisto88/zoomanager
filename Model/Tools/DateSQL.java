@@ -28,8 +28,6 @@ public class DateSQL {
         return d;
     }
 
-
-
     static public short calculateAge(Date dateNaissance) {
         short age;
         LocalDate naissance = dateNaissance.toLocalDate();

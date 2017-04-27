@@ -3,6 +3,7 @@ import Test.Test;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Start {
 
@@ -11,9 +12,7 @@ public class Start {
 
         //Test.testAdresse();
 
-
         // Test.testClassValidate();
-        /*
         DBInteraction query = null;
         try {
             query = new DBInteraction();
@@ -30,7 +29,7 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        /*try {
+        try {
             ArrayList<Personne> listEmployes = query.selAllEmployes();
             for (Personne s : listEmployes) {
                 System.out.println(s.toString());
@@ -54,7 +53,6 @@ public class Start {
 
         query = null;
 
-        /*
         try {
             int nb = query.nombrePersonne();
             System.out.println(nb);
@@ -64,16 +62,14 @@ public class Start {
             System.out.println(e.getMessage());
         }
 
-
-        try {
+        /*try {
             String typeEvenement = query.selTypeEvenement(2);
             System.out.println(typeEvenement);
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
-        }
-
+        }*/
 
         try {
             Personne p = query.selEmployeDetails(11);
@@ -84,11 +80,10 @@ public class Start {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-        */
 
         /*
          *  INSERTION D'UN FELIN
-
+         */
         DBInteraction req = null;
         try {
             req = new DBInteraction();
@@ -96,13 +91,13 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        Date dateNaissance = new Date(2017, 8, 4);
-        Animal lyra = new Felin("Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
+        /* Date dateNaissance = new Date(2017, 8, 4);
+        Animal lyra = new Felin("Chat domestique", "Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
         /*
          *  INSERTION D'UN REPTILE
@@ -127,8 +122,7 @@ public class Start {
             req.insAnimal(ernest);
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-        */
+        }*/
 
 
         System.out.println("\n_> Programme terminé ... \n");
