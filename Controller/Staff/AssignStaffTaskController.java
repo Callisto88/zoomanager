@@ -1,5 +1,6 @@
 package Controller.Staff;
 
+import Controller.Error.ErrorController;
 import Model.DBInteraction;
 import Model.Evenement;
 import Model.ExceptionDataBase;
@@ -16,6 +17,8 @@ import java.util.ArrayList;
  */
 public class AssignStaffTaskController {
     private TaskStaffPanel task = null;
+    private DBInteraction querry = null;
+    private ErrorController ecError = null;
 
     /**
      * Constructeur du controlleur de la fenêtre d'assignation de tâches pour le personnel
@@ -26,12 +29,7 @@ public class AssignStaffTaskController {
         //panel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ArrayList<Evenement> tasks = null;
 
-        DBInteraction querry = null;
-        try {
-            querry = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
+        dbConnection();
 
 /************************* Erreur de récupérations **********************************/
         try{
@@ -64,6 +62,24 @@ public class AssignStaffTaskController {
      * @param event tâche que l'on souhaite attribuer
      */
     public void assignTask(Personne personne, Evenement event){
+        dbConnection();
+        try{
+            querry.assignEvenementEmploye(event, personne);
+        } catch(SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController("Erreur assignation staff tache " +sqlException.toString());
+        }
+    }
 
+    /**
+     * Méthode permettant d'établir la connection avec la DB
+     */
+    private void dbConnection(){
+        try {
+            querry = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDB) {
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
+        }
     }
 }
