@@ -256,7 +256,7 @@ public class DBInteraction {
         // Check si la ville est déjà dans la DB
         // l'insère si non
         if (this.cpIsInDB(cp) == 0) {
-            this.insVille(this.getVilleParCP(cp), cp, pays);
+            this.insVille(ville, cp, pays);
         }
 
         // Check si l'adresse en fonction de la ville est déjà dans la DB
