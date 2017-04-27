@@ -697,9 +697,11 @@ public class DBInteraction {
     /**
      * Permet d'obtenir tous les nom des races d'animaux disponibles
      *
-     * @return ArrayList<String>
+     * @date 27.04.2017 Modification du type de retour : ArrayList<String> vers ArrayList<Race>
+     *
+     * @return ArrayList<Race>
      */
-    public ArrayList<String> getAllRaceAnimal () throws SQLException, ExceptionDataBase {
+    public ArrayList<Race> getAllRaceAnimal() throws SQLException, ExceptionDataBase {
         this.stmt = db.con.prepareStatement(SEL_ALL_ANIMAL_RACE);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1298,22 +1300,28 @@ public class DBInteraction {
     /**
      * Permet de créer un tableau contenant le nom de toutes les races d'animax à partir de Resultset passé en paramètre
      *
+     * @date 27.04.2017 Modification du type de retour de ArrayList<String> vers ArrayList<Race>
+     *
      * @param rs(ResultSet)
      *
-     * @return ArrayList<String>
+     * @return ArrayList<Race>
      */
-    private ArrayList<String> createTabAnimalRace (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<String> data = new ArrayList<String>();
+    private ArrayList<Race> createTabAnimalRace(ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Race> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun Enclos n'existe dans la base de données");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new String(rs.getString("nom")));
+                data.add(new Race(
+                        rs.getInt("id"),
+                        rs.getString("nom"))
+                );
             }
             return data;
         }
     }
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des INFRASTRUCTURE dans la DB

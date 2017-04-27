@@ -13,7 +13,7 @@ package Model;
  *
  * @date    28.03.2017 (Création)
  * @date    28.03.2017 (Finalisation v1.0)
- * @date 27.04.2017 (Ajout de l'attribut ID + nettoyage du code et des commentaires)
+ * @date 27.04.2017 (Ajout de l'attribut ID + nettoyage du code et des commentaires + ajouts des constructeurs)
  *
  */
 public class Race {
@@ -23,6 +23,23 @@ public class Race {
      */
     private int id;
     private String nom;
+
+    /**
+     * Constructeur par défaut
+     */
+    public Race() {
+    }
+
+    /**
+     * Constructeurs avec tous les attributs
+     *
+     * @param id  un entier
+     * @param nom une String
+     */
+    public Race(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
 
     /**
      * Retoure l'ID de la race
