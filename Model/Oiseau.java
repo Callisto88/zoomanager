@@ -13,19 +13,16 @@ import java.sql.Date;
  * @date 28.03.2017 (Création)
  * @date 28.03.2017 (Finalisation v1.0)
  * @date 10.04.2017 (Ajouts des constructeurs et des commentaires JavaDoc)
- * @date 10.04.2017 (Finalisation de la v1.1
+ * @date 10.04.2017 (Finalisation de la v1.1)
+ * @date 27.04.2017 (Ajout de l'attribut nomCommun, nettoyage du code et des commentaires)
  */
 public class Oiseau extends Animal {
 
     /**
-     * MEMBRES PRIVES
+     * Membres privés
      */
     private double envergure;
     private String bague;
-
-    /**
-     * Constructeurs
-     */
 
     /**
      * Constructeur par défaut
@@ -34,8 +31,9 @@ public class Oiseau extends Animal {
     }
 
     /**
-     * Constructeur avec tous les membres + ID
+     * Constructeur avec tous les attributs
      *
+     * @param id
      * @param nomCommun
      * @param nom
      * @param sexe
@@ -44,7 +42,6 @@ public class Oiseau extends Animal {
      * @param origine
      * @param race
      * @param dateDeces
-     * @param id
      * @param envergure
      * @param bague
      */
@@ -54,7 +51,6 @@ public class Oiseau extends Animal {
         this.envergure = envergure;
         this.bague = bague;
     }
-
 
     /**
      * Constructeur avec tous les membres sauf ID
@@ -74,7 +70,6 @@ public class Oiseau extends Animal {
         this.envergure = envergure;
         this.bague = bague;
     }
-
 
     /**
      * GETTERS & SETTERS

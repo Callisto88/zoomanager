@@ -32,12 +32,11 @@ public class Felin extends Animal {
     /*
      *  CONSTRUCTEURS avec tous les parametres
      */
-    public Felin(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
-                 int race, java.sql.Date dateDeces, int id, double poids) {
+    public Felin(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+                 int race, java.sql.Date dateDeces, double poids) {
         super(id, nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.poids = poids;
     }
-
 
     /*
      *  CONSTRUCTEURS avec tous les parametres
