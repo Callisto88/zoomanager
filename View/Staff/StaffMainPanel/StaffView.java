@@ -66,7 +66,7 @@ public class StaffView extends GenericWindow {
         jpLeft.add(jpButtonStock, gbcLeft);
 
         JButton jbPrint = new JButton("Imprimer la liste des employées");
-        setButtonConfig(jbPrint);
+        //setButtonConfig(jbPrint);
 
         jbPrint.addActionListener(new ActionListener() {
             @Override
@@ -76,8 +76,8 @@ public class StaffView extends GenericWindow {
         });
 
         // Bouton pour pouvoir ajouter du personnel
-        JButton jbAdd = new JButton("Ajouter du personnel");
-        setButtonConfig(jbAdd);
+        JButton jbAdd = new JButton("Ajouter un employé");
+        //setButtonConfig(jbAdd);
 
         // Listener pour pouvoir
         jbAdd.addActionListener(new ActionListener() {

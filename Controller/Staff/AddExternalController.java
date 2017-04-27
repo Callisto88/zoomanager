@@ -34,7 +34,7 @@ public class AddExternalController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
         }
     }
 
@@ -101,7 +101,7 @@ public class AddExternalController {
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
-                ecError = new ErrorController(exception.toString());
+                ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
             }
         }
 
@@ -113,9 +113,13 @@ public class AddExternalController {
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
+<<<<<<< HEAD
             ecError = new ErrorController(sqlException.toString());
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+=======
+            ecError = new ErrorController("Erreur insertion d'adresse " + sqlException.toString());
+>>>>>>> 5d26b5210de22344bc33c4e9fa6aff0cf7c1c747
         }
 
         // Permet de checker le numéro de télephone
@@ -147,7 +151,7 @@ public class AddExternalController {
             ecError = new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            ecError = new ErrorController("Erreur insertion externe " + exceptionsql.toString());
         }
         */
         System.out.println("Intervenant externe inséré");

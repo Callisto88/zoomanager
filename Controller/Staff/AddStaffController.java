@@ -43,7 +43,7 @@ public class AddStaffController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
         }
     }
 
@@ -55,10 +55,10 @@ public class AddStaffController {
             status = querry.getAllStatuts();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            ecError = new ErrorController("Erreur récup statut " + exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            ecError = new ErrorController("Erreur récup statut " + exceptionsql.toString());
         }
     }
 
@@ -70,10 +70,10 @@ public class AddStaffController {
             contract = querry.selAllContractType();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            ecError = new ErrorController("Erreur récup contrat " + exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            ecError = new ErrorController("Erreur récup contrat " + exceptionsql.toString());
         }
     }
 
@@ -152,7 +152,7 @@ public class AddStaffController {
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
-                ecError = new ErrorController(exception.toString());
+                ecError = new ErrorController("Erreur conversion NPA " + exception.toString());
             }
         }
 
@@ -168,7 +168,7 @@ public class AddStaffController {
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
         }
         // Permet de checker le numéro de télephone
         boolean bPhone = Validate.isPhoneNumber(phone);
@@ -190,9 +190,15 @@ public class AddStaffController {
     public void insertPersonne (Personne personne){
         try{
             querry.insertPersonne(personne);
+<<<<<<< HEAD
+=======
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController("Erreur insertion personne " + exceptionDB.toString());
+>>>>>>> 5d26b5210de22344bc33c4e9fa6aff0cf7c1c747
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            ecError = new ErrorController("Erreur insertion personne " + exceptionsql.toString());
         }
     }
 
