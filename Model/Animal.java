@@ -33,7 +33,7 @@ public class Animal {
     private Date dateNaissance;
     private int enclos;     // REF (id)
     private int origine;    // REF Pays(paysId)
-    private int race;       // REF (nom)
+    private int race;       // REF (raceId)
     private Date dateDeces;
 
     /**
