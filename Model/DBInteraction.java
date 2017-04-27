@@ -45,9 +45,9 @@ public class DBInteraction {
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
     // Récupérer la ville en fonction d'un code postal
-    private static final String SEL_VILLE_ID_PAR_CP = "SELECT codePostal FROM Ville WHERE codePostal = ? ;";
+    private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
     // Récupérer les informations sur une adresse et la ville en relation
-    private static final String SEL_ADRESSE_PAR_ADR_VILLE_ID =
+    private static final String SEL_ADRESSE_PAR_CP_ET_ADRESSE =
             "SELECT * FROM Adresse WHERE adresse = ? AND codePostal = ? ;";
     // -----------------------------------------------------------------------------------------------------------------
     // PERSONNE :
@@ -412,14 +412,12 @@ public class DBInteraction {
      * @return boolean
      */
     public boolean addressIsInDB(String adresse, int codePostal) throws SQLException {
-        this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_ADR_VILLE_ID);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_CP_ET_ADRESSE);
+        this.stmt.setString(1, adresse);
+        this.stmt.setInt(2, codePostal);
         ResultSet rs = this.stmt.executeQuery();
 
-        if (!rs.next()) {
-            return false;
-        } else {
-            return true;
-        }
+        return rs.next();
     }
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -447,6 +445,7 @@ public class DBInteraction {
 
     public ArrayList<String> getAllStatuts() throws SQLException, ExceptionDataBase {
 
+        //noinspection AccessStaticViaInstance
         this.stmt = db.con.prepareStatement(SEL_ALL_STATUTS);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -465,7 +464,7 @@ public class DBInteraction {
 
     public ArrayList<String> getAllDifferentStatus() throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_TYPE_CONTRAT);
+        this.stmt = DBConnection.con.prepareStatement(SEL_TYPE_CONTRAT);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<String> listTypeContrat = new ArrayList<>();
