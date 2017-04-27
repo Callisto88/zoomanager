@@ -30,7 +30,7 @@ public class Ville {
      * @param cp
      * @param paysId
      */
-    public Ville(int cp, int paysId, String ville) {
+    public Ville(int cp, String ville, int paysId) {
         this.ville = ville;
         this.cp = cp;
         this.paysId = paysId;

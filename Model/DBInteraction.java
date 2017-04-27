@@ -241,11 +241,12 @@ public class DBInteraction {
     /**
      * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
      *
-     * @param pays String
-     * @param cp String
+     * @param adresse String
+     * @param cp int
+     * @param ville String
      * @param pays String
      */
-    public void insAddress (String adresse, int cp, String pays) throws SQLException {
+    public void insAddress (String adresse, int cp, String ville, String pays) throws SQLException {
         // Check si le pays est déjà dans la DB
         // l'insère si non
         if (this.countryIsInDB(pays) == 0) {
