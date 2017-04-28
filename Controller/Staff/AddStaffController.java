@@ -96,8 +96,8 @@ public class AddStaffController {
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
-    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, Adresse address,
-                              Ville city, Pays country, String phone, String supervisor, String status, String contract) {
+    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address, String npa,
+                              String city, String country, String phone, String supervisor, String status, String contract) {
 
         // Permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
@@ -126,17 +126,17 @@ public class AddStaffController {
         }
         //boolean bAddress = Validate.isAlphabetic(address);
         // Permet de checker le npa
-        boolean bNPA = Validate.isNumeric(String.valueOf(city.getCp()));
+        boolean bNPA = Validate.isNumeric(npa);
         if(!bNPA){
             add.setNPAError("Le champ NPA ne contient pas que des chiffres");
         }
         // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city.getVille());
+        boolean bCity = Validate.isAlphabetic(city);
         if(!bCity){
             add.setCityError("Le champ ville non conforme");
         }
         // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country.getPays());
+        boolean bCountry = Validate.isAlphabetic(country);
         if(!bCountry){
             add.setCountryError("Le champ pays non conforme");
         }
@@ -162,7 +162,19 @@ public class AddStaffController {
         dbConnection();
         boolean bAddAddress = true;
         try {
-            querry.insAddress(address, city, country);
+
+            Pays pays = new Pays();
+            pays.setPays(country);
+
+            Ville ville = new Ville();
+            ville.setVille(city);
+            ville.setPays(pays);
+
+            Adresse adresse = new Adresse();
+            adresse.setAdresse(address);
+            adresse.setVille(ville);
+
+            querry.insAddress(adresse, ville, pays);
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         } catch(SQLException sqlException){

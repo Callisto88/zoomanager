@@ -295,18 +295,7 @@ public class AddStaff extends GenericWindow {
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
 
-                Pays pays = new Pays();
-                pays.setPays(sCountry);
-
-                Ville ville = new Ville();
-                ville.setVille(sCity);
-                ville.setPays(pays);
-
-                Adresse adresse = new Adresse();
-                adresse.setAdresse(sAddress);
-                adresse.setVille(ville);
-
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, adresse, ville, pays, sPhone, sSupervisor, sStatus, sContract);
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity, sCountry, sPhone, sSupervisor, sStatus, sContract);
             }
         });
         configFrame(getJfFrame(), this);
