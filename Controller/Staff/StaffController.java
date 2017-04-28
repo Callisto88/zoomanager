@@ -35,7 +35,7 @@ public class StaffController {
      */
     public StaffController() {
         // établis la connection
-        //dbConnection();
+        dbConnection();
 
         StaffView svPersonnel = new StaffView(this, getPersonnel());
     }
@@ -60,7 +60,7 @@ public class StaffController {
      */
     public ArrayList<Personne> getPersonnel(){
         ArrayList<Personne> alpPersonnel = new ArrayList<>();
-        /*
+
         try{
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
@@ -71,6 +71,7 @@ public class StaffController {
             ecError = new ErrorController(exceptionsql.toString());
         }
         /******************* Permet de tester hors ligne **************************/
+        /*
         alpPersonnel = new ArrayList<>();
         Personne p1 = new Personne("123.1234.1234.12", "Lara", "Gut", 2, "Lara.gut@swisscom.ch",
                 "00415678923", new Date(1988, 02, 28),1, "Aide",

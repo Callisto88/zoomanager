@@ -47,8 +47,8 @@ public class AddExternalController {
      * @param country Pays de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
-    public void checkExternal(String lastName, String firstName, String compagny, String email, Adresse address, Ville city,
-                              Pays country, String phone) {
+    public void checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,
+                              String city, String country, String phone) {
 
         // permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
@@ -73,17 +73,17 @@ public class AddExternalController {
 
 /************************* A checker les adresses ******************************/
         // Permet de checker le NPA
-        boolean bNPA = Validate.isNumeric(String.valueOf(city.getCp()));
+        boolean bNPA = Validate.isNumeric(npa);
         if(!bNPA){
             aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
         }
         // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city.getVille());
+        boolean bCity = Validate.isAlphabetic(city);
         if(!bCity){
             aeExternal.setCityError("Le champ ville non conforme");
         }
         // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country.getPays());
+        boolean bCountry = Validate.isAlphabetic(country);
         if(!bCountry){
             aeExternal.setCountryError("Le champ pays non conforme");
         }
@@ -109,14 +109,28 @@ public class AddExternalController {
         // Permet d'insérer une adresse
         dbConnection();
         boolean bAddAddress = true;
-        try{
-            querry.insAddress(address, city, country);
-        } catch(SQLException sqlException){
-            bAddAddress = false;
-            sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
+        if(bNPA && bCity && bCountry) {
+            try {
+
+                Pays pays = new Pays();
+                pays.setPays(country);
+
+                Ville ville = new Ville();
+                ville.setVille(city);
+                ville.setPays(pays);
+
+                Adresse adresse = new Adresse();
+                adresse.setAdresse(address);
+                adresse.setVille(ville);
+
+                querry.insAddress(adresse, ville, pays);
+            } catch (ExceptionDataBase exceptionDataBase) {
+                exceptionDataBase.printStackTrace();
+            } catch (SQLException sqlException) {
+                bAddAddress = false;
+                sqlException.printStackTrace();
+                ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
+            }
         }
 
         // Permet de checker le numéro de télephone

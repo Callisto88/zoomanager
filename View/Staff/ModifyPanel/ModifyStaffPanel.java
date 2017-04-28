@@ -310,6 +310,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setFirstNameError(String error) {
         jlFirstNameError.setVisible(true);
+        jlFirstNameError.setToolTipText(error);
+        jtfFirstNameInput.setBackground(Color.RED);
     }
 
     /**
@@ -318,6 +320,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setLastNameError(String error) {
         jlLastNameError.setVisible(true);
+        jlLastNameError.setToolTipText(error);
+        jtfLastNameInput.setBackground(Color.RED);
     }
 
     /**
@@ -326,6 +330,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setEmailError(String error) {
         jlEmailError.setVisible(true);
+        jlEmailError.setToolTipText(error);
+        jtfEmail.setBackground(Color.RED);
     }
 
     /**
@@ -334,6 +340,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setAddressError(String error) {
         jlAddressError.setVisible(true);
+        jlAddressError.setToolTipText(error);
+        jtfAddress.setBackground(Color.RED);
     }
 
     /**
@@ -342,6 +350,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setCityError(String error) {
         jlCityError.setVisible(true);
+        jlCityError.setToolTipText(error);
+        jtfCity.setBackground(Color.RED);
     }
 
     /**
@@ -350,6 +360,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setNPAError(String error) {
         jlNPAError.setVisible(true);
+        jlNPAError.setToolTipText(error);
+        jtfNPA.setBackground(Color.RED);
     }
 
     /**
@@ -358,6 +370,8 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setCountryError(String error){
         jlCountryError.setVisible(true);
+        jlCountryError.setToolTipText(error);
+        jtfCountry.setBackground(Color.RED);
     }
 
     /**
@@ -366,5 +380,7 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public void setPhoneError(String error) {
         jlPhoneError.setVisible(true);
+        jlPhoneError.setToolTipText(error);
+        jtfPhone.setBackground(Color.RED);
     }
 }

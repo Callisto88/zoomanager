@@ -75,7 +75,8 @@ public class AddStaffController {
         }
     }
 
-    private void getSupervisor(){
+    // permet d'obtenir la liste des superviseur actuels
+    private void getSupervisors(){
 
     }
 
@@ -161,26 +162,28 @@ public class AddStaffController {
         // Permet d'insérer l'adresse dans la db
         dbConnection();
         boolean bAddAddress = true;
-        try {
+        if(bNPA && bCity && bCountry) {
+            try {
 
-            Pays pays = new Pays();
-            pays.setPays(country);
+                Pays pays = new Pays();
+                pays.setPays(country);
 
-            Ville ville = new Ville();
-            ville.setVille(city);
-            ville.setPays(pays);
+                Ville ville = new Ville();
+                ville.setVille(city);
+                ville.setPays(pays);
 
-            Adresse adresse = new Adresse();
-            adresse.setAdresse(address);
-            adresse.setVille(ville);
+                Adresse adresse = new Adresse();
+                adresse.setAdresse(address);
+                adresse.setVille(ville);
 
-            querry.insAddress(adresse, ville, pays);
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        } catch(SQLException sqlException){
-            bAddAddress = false;
-            sqlException.printStackTrace();
-            ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
+                querry.insAddress(adresse, ville, pays);
+            } catch (ExceptionDataBase exceptionDataBase) {
+                exceptionDataBase.printStackTrace();
+            } catch (SQLException sqlException) {
+                bAddAddress = false;
+                sqlException.printStackTrace();
+                ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
+            }
         }
         // Permet de checker le numéro de télephone
         boolean bPhone = Validate.isPhoneNumber(phone);

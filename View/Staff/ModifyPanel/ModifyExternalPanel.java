@@ -240,6 +240,8 @@ public class ModifyExternalPanel extends GenericWindow {
      */
     public void setFirstNameError(String error) {
         jlFirstNameError.setVisible(true);
+        jlFirstNameError.setToolTipText(error);
+        jtfFirstNameInput.setBackground(Color.RED);
     }
 
     /**
@@ -248,6 +250,8 @@ public class ModifyExternalPanel extends GenericWindow {
      */
     public void setLastNameError(String error) {
         jlLastNameError.setVisible(true);
+        jlLastNameError.setToolTipText(error);
+        jtfLastNameInput.setBackground(Color.RED);
     }
 
     /**
@@ -256,6 +260,8 @@ public class ModifyExternalPanel extends GenericWindow {
      */
     public void setEmailError(String error) {
         jlEmailError.setVisible(true);
+        jlEmailError.setToolTipText(error);
+        jtfEmail.setBackground(Color.RED);
     }
 
     /**
@@ -264,5 +270,7 @@ public class ModifyExternalPanel extends GenericWindow {
      */
     public void setPhoneError(String error) {
         jlPhoneError.setVisible(true);
+        jlPhoneError.setToolTipText(error);
+        jtfPhone.setBackground(Color.RED);
     }
 }

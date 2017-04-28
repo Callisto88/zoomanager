@@ -126,11 +126,4 @@ public class ModifyStaffController {
             ecError = new ErrorController(exceptionDB.toString());
         }
     }
-
-    private String getCity(int Adresse){
-        String city = "";
-        dbConnection();
-
-        return city;
-    }
 }
