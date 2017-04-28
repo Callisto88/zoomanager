@@ -19,7 +19,13 @@ public class Pays {
      * Membres privés
      */
     private int paysId;
-    private  String pays;
+    private String pays;
+
+    /**
+     * Constructeur par défaut
+     */
+    public Pays() {
+    }
 
     /**
      * Constructeur avec tous les membres
@@ -36,7 +42,7 @@ public class Pays {
      * Getter paysId
      * @return int paysId
      */
-    public int getPays_id() {
+    public int getPaysId() {
         return paysId;
     }
 
@@ -44,7 +50,7 @@ public class Pays {
      * Setter paysId
      * @param paysId int
      */
-    public void setPays_id(int paysId) {
+    public void setPaysId(int paysId) {
         this.paysId = paysId;
     }
 

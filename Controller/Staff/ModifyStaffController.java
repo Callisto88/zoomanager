@@ -2,9 +2,7 @@ package Controller.Staff;
 
 import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Personne;
+import Model.*;
 import View.Staff.ModifyPanel.ModifyStaffPanel;
 
 import java.sql.SQLException;
@@ -71,7 +69,19 @@ public class ModifyStaffController {
         dbConnection();
         boolean bAddAddress = true;
         try{
-            querry.insAddress(sAddress, cp, sCity, sCountry);
+            Pays pays = new Pays();
+            pays.setPays(sCountry);
+
+            Ville ville = new Ville();
+            ville.setCp(cp);
+            ville.setVille(sCity);
+            ville.setPays(pays);
+
+            Adresse adresse = new Adresse();
+            adresse.setAdresse(sAddress);
+            adresse.setVille(ville);
+
+            querry.insAddress(adresse, ville, pays);
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();

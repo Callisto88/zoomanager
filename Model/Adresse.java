@@ -10,7 +10,7 @@ public class Adresse {
      */
     private int id;
     private String adresse;
-    private int codePostal;
+    private Ville ville;
 
     /**
      * Constructeur par défaut
@@ -20,24 +20,24 @@ public class Adresse {
     /**
      * Constructeur avec tous les attributs sauf l'ID
      * @param adresse
-     * @param codePostal
+     * @param ville
      */
-    public Adresse(String adresse, int codePostal) {
+    public Adresse(String adresse, Ville ville) {
         this.id = id;
         this.adresse = adresse;
-        this.codePostal = codePostal;
+        this.ville = ville;
     }
 
     /**
      * Constructeur avec tous les attributs
      * @param id
      * @param adresse
-     * @param codePostal
+     * @param ville
      */
-    public Adresse(int id, String adresse, int codePostal) {
+    public Adresse(int id, String adresse, Ville ville) {
         this.id = id;
         this.adresse = adresse;
-        this.codePostal = codePostal;
+        this.ville = ville;
     }
 
     /**
@@ -59,11 +59,11 @@ public class Adresse {
         this.adresse = adresse;
     }
 
-    public int getCodePostal() {
-        return codePostal;
+    public Ville getVille() {
+        return ville;
     }
 
-    public void setCodePostal(int codePostal) {
-        this.codePostal = codePostal;
+    public void setVille(Ville ville) {
+        this.ville = ville;
     }
 }

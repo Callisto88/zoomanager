@@ -2,9 +2,7 @@ package Controller.Staff;
 
 import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Intervenant;
+import Model.*;
 import View.Staff.StaffAddPanel.AddExternal;
 
 import java.sql.SQLException;
@@ -45,13 +43,12 @@ public class AddExternalController {
      * @param compagny Numéro AVS de l'intervenant
      * @param email EMail de l'intervenant
      * @param address Adresse de l'intervenant
-     * @param npa NPA de l'intervenant
-     * @param city Ville de l'intervenant
+     * @param city Ville de l'intervenant ( inclus le nom de la ville et le NPA )
      * @param country Pays de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
-    public void checkExternal(String lastName, String firstName,String compagny, String email, String address, String npa, String city,
-                              String country, String phone){
+    public void checkExternal(String lastName, String firstName, String compagny, String email, Adresse address, Ville city,
+                              Pays country, String phone) {
 
         // permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
@@ -76,40 +73,44 @@ public class AddExternalController {
 
 /************************* A checker les adresses ******************************/
         // Permet de checker le NPA
-        boolean bNPA = Validate.isNumeric(npa);
+        boolean bNPA = Validate.isNumeric(String.valueOf(city.getCp()));
         if(!bNPA){
             aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
         }
         // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city);
+        boolean bCity = Validate.isAlphabetic(city.getVille());
         if(!bCity){
             aeExternal.setCityError("Le champ ville non conforme");
         }
         // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country);
+        boolean bCountry = Validate.isAlphabetic(country.getPays());
         if(!bCountry){
             aeExternal.setCountryError("Le champ pays non conforme");
         }
 
-        // permet de convertir le npa en int
+        /*
 
+        ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
+
+        // permet de convertir le npa en int
         int cp = 0;
         boolean bChange = true;
         if(bNPA) {
             try {
-                cp = Integer.parseInt(npa);
+                cp = Integer.parseInt(city.getCp());
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
                 ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
             }
         }
+        */
 
         // Permet d'insérer une adresse
         dbConnection();
         boolean bAddAddress = true;
         try{
-            querry.insAddress(address, cp, city, country);
+            querry.insAddress(address, city, country);
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
@@ -125,7 +126,7 @@ public class AddExternalController {
         }
 
         // Si tout est ok, on lance l'insertion
-        if(bLastName && bFirstName && bCompagny && bEmail && bNPA && bCity && bCountry && bChange && bAddAddress && bPhone){
+        if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
 /***************** Problème pour récupérer l'id d'une adresse pour l'insertion ************************/
             Intervenant external = new Intervenant(compagny, lastName, firstName, 1,email, phone);

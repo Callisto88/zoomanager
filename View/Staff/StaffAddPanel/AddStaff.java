@@ -9,6 +9,9 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Properties;
 
+import Model.Adresse;
+import Model.Pays;
+import Model.Ville;
 import View.*;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -291,7 +294,19 @@ public class AddStaff extends GenericWindow {
                 sSupervisor = jtfSupervisor.getText();
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity,  sCountry, sPhone, sSupervisor, sStatus, sContract);
+
+                Pays pays = new Pays();
+                pays.setPays(sCountry);
+
+                Ville ville = new Ville();
+                ville.setVille(sCity);
+                ville.setPays(pays);
+
+                Adresse adresse = new Adresse();
+                adresse.setAdresse(sAddress);
+                adresse.setVille(ville);
+
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, adresse, ville, pays, sPhone, sSupervisor, sStatus, sContract);
             }
         });
         configFrame(getJfFrame(), this);

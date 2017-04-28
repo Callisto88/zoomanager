@@ -14,6 +14,7 @@ package Model;
  *
  * @date    22.04.2017 (Création)
  * @date    22.04.2017 (Finalisation v1.0)
+ * @date 28.04.2017 (Référence à un objet Pays plutôt qu'à son id)
  *
  */
 public class Ville {
@@ -22,18 +23,31 @@ public class Ville {
      */
     private int cp;
     private String ville;
-    private int paysId;
+    private Pays pays;
+
+    /**
+     * Constructeur par défaut
+     */
+    public Ville() {
+    }
+
+    /**
+     * Constructeur à partir du nom de la ville
+     */
+    public Ville(String villeName) {
+
+    }
 
     /**
      * Constructeur avec tous les membres
      * @param ville
      * @param cp
-     * @param paysId
+     * @param pays
      */
-    public Ville(int cp, String ville, int paysId) {
+    public Ville(int cp, String ville, Pays pays) {
         this.ville = ville;
         this.cp = cp;
-        this.paysId = paysId;
+        this.pays = pays;
     }
 
     /**
@@ -46,9 +60,9 @@ public class Ville {
 
     /**
      * Setter ville
-     * @param ville int
+     * @param ville String
      */
-    public void setPays(String ville) {
+    public void setVille(String ville) {
         this.ville = ville;
     }
 
@@ -69,18 +83,18 @@ public class Ville {
     }
 
     /**
-     * Getter pays ID référence sur la table Pays
-     * @return int paysId
+     * Getter pays
+     * @return pays
      */
-    public int getPays_id() {
-        return paysId;
+    public Pays getPays() {
+        return pays;
     }
 
     /**
-     * Setter pays ID référence sur la table Pays
-     * @param paysId int
+     * Setter pays référence sur la table Pays
+     * @param pays int
      */
-    public void setPays_id(int paysId) {
-        this.paysId = paysId;
+    public void setPays(Pays pays) {
+        this.pays = pays;
     }
 }

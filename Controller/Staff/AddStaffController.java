@@ -2,9 +2,7 @@ package Controller.Staff;
 
 import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Personne;
+import Model.*;
 import View.Staff.StaffAddPanel.AddStaff;
 
 import java.sql.Date;
@@ -91,7 +89,6 @@ public class AddStaffController {
      * @param avs Numéro AVS de la personne
      * @param email EMail de la personne
      * @param address Adresse de la personne
-     * @param npa NPA de la personne
      * @param city Ville de la personne
      * @param country Pays de la personne
      * @param phone Numéro de télephone de la personne
@@ -99,8 +96,8 @@ public class AddStaffController {
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
-    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address,
-                              String npa, String city, String country, String phone, String supervisor, String status, String contract){
+    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, Adresse address,
+                              Ville city, Pays country, String phone, String supervisor, String status, String contract) {
 
         // Permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
@@ -129,21 +126,26 @@ public class AddStaffController {
         }
         //boolean bAddress = Validate.isAlphabetic(address);
         // Permet de checker le npa
-        boolean bNPA = Validate.isNumeric(npa);
+        boolean bNPA = Validate.isNumeric(String.valueOf(city.getCp()));
         if(!bNPA){
             add.setNPAError("Le champ NPA ne contient pas que des chiffres");
         }
         // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city);
+        boolean bCity = Validate.isAlphabetic(city.getVille());
         if(!bCity){
             add.setCityError("Le champ ville non conforme");
         }
         // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country);
+        boolean bCountry = Validate.isAlphabetic(country.getPays());
         if(!bCountry){
             add.setCountryError("Le champ pays non conforme");
         }
+
+        /*
+
+        ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
         // Permet de convertir en int le npa
+
         int cp = 0;
         boolean bChange = true;
         if(bNPA) {
@@ -154,13 +156,13 @@ public class AddStaffController {
                 exception.printStackTrace();
                 ecError = new ErrorController("Erreur conversion NPA " + exception.toString());
             }
-        }
+        }*/
 
         // Permet d'insérer l'adresse dans la db
         dbConnection();
         boolean bAddAddress = true;
         try {
-            querry.insAddress(address, cp, city, country);
+            querry.insAddress(address, city, country);
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         } catch(SQLException sqlException){
@@ -173,7 +175,7 @@ public class AddStaffController {
         if(!bPhone){
             add.setPhoneError("Champ télephone non conforme");
         }
-        if(bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bCity && bCountry && bChange && bAddAddress && bPhone){
+        if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
 /***************** Problème pour récupérer l'id d'une adresse pour l'insertion ainsi que l'id d'un responsable **********************/
             Personne personne = new Personne(avs, firstName, lastName, 1,email, phone, new Date(year, month, day),2,status,new Date(1,1,1),contract);

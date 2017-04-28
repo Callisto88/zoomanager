@@ -1,6 +1,9 @@
 package View.Staff.StaffAddPanel;
 
 import Controller.Staff.AddExternalController;
+import Model.Adresse;
+import Model.Pays;
+import Model.Ville;
 import View.GenericWindow;
 
 import javax.swing.*;
@@ -178,11 +181,18 @@ public class AddExternal extends GenericWindow{
                 sCompagny = jtfCompagnyInput.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
+                Adresse adresse = new Adresse();
+                adresse.setAdresse(sAddress);
                 sNPA = jtfNPA.getText();
                 sCity = jtfCity.getText();
+                Ville ville = new Ville();
+                ville.setVille(sCity);
+                ville.setCp(Integer.parseInt(sNPA));
                 sCountry = jtfCountry.getText();
+                Pays pays = new Pays();
+                pays.setPays(sCountry);
                 sPhone = jtfPhone.getText();
-                controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
+                controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, adresse, ville, pays, sPhone);
             }
         });
         configFrame(getJfFrame(), this);

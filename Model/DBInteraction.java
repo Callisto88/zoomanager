@@ -259,11 +259,10 @@ public class DBInteraction {
      * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
      *
      * @param adresse String
-     * @param cp int
      * @param ville String
-     * @param pays String
+     * @param pays Pays
      */
-    public void insAddress(String adresse, int cp, String ville, String pays) throws SQLException, ExceptionDataBase {
+    public void insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
         // Check si le pays est déjà dans la DB
         // l'insère si non
         if (!this.countryIsInDB(pays)) {
@@ -272,19 +271,19 @@ public class DBInteraction {
 
         // Check si la ville est déjà dans la DB
         // l'insère si non
-        if (!this.cpIsInDB(cp)) {
-            this.insVille(ville, cp, pays);
+        if (!this.cpIsInDB(ville.getCp())) {
+            this.insVille(ville);
         }
 
         // Check si l'adresse en fonction de la ville est déjà dans la DB
         // l'insère si non
-        int cpVille = this.getCodePostalParVille(adresse);
+        int cpVille = this.getCodePostalParVille(ville.getVille());
         if (cpVille == 0) {
             throw new ExceptionDataBase("Aucun code postal trouvé pour cette adresse : " + adresse);
         }
 
-        if (!this.addressIsInDB(adresse, cpVille)) {
-            this.insAdresse(adresse, cpVille);
+        if (!this.addressIsInDB(adresse)) {
+            this.insAdresse(adresse);
         }
     }
 
@@ -304,12 +303,12 @@ public class DBInteraction {
     /**
      * Permet d'insérer une nouvelle adresse dans la base de données
      *
-     * @param adresse String
+     * @param adresse Adresse
      */
-    private void insAdresse(String adresse, int codePostal) throws SQLException {
+    private void insAdresse(Adresse adresse) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
-        this.stmt.setString(2, adresse);
-        this.stmt.setInt(3, codePostal);
+        this.stmt.setString(2, adresse.getAdresse());
+        this.stmt.setInt(3, adresse.getVille().getCp());
         this.stmt.executeUpdate();
     }
 
@@ -319,9 +318,9 @@ public class DBInteraction {
      *
      * @param pays String
      */
-    private void insPays (String pays) throws SQLException {
+    private void insPays(Pays pays) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_PAYS);
-        this.stmt.setString(1, pays);
+        this.stmt.setString(1, pays.getPays());
         this.stmt.executeUpdate();
     }
 
@@ -330,13 +329,11 @@ public class DBInteraction {
      *
      * @param ville String
      */
-    private void insVille (String ville, int codePostal, String pays) throws SQLException {
-        int paysId = this.getPaysID(pays);
-
+    private void insVille(Ville ville) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
-        this.stmt.setInt(1, codePostal);
-        this.stmt.setString(2, ville);
-        this.stmt.setInt(3, paysId);
+        this.stmt.setInt(1, ville.getCp());
+        this.stmt.setString(2, ville.getVille());
+        this.stmt.setInt(3, ville.getPays().getPaysId());   // paysId as foreign key
         this.stmt.executeUpdate();
     }
 
@@ -415,26 +412,25 @@ public class DBInteraction {
      *
      * @return int
      */
-    public boolean countryIsInDB(String pays) throws SQLException {
+    public boolean countryIsInDB(Pays pays) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_PAR_NOM);
-        this.stmt.setString(1, pays);
+        this.stmt.setString(1, pays.getPays());
         ResultSet rs = this.stmt.executeQuery();
 
         return rs.next();
     }
 
     /**
-     * Permet de savoir si une Adresse est déjà présent dans la db en fonction de son lien avec la ville
+     * Permet de savoir si une adresse existe déjà dans une ville
      *
-     * @param adresse String
-     * @param codePostal int
+     * @param adresse Adresse
      *
      * @return boolean
      */
-    public boolean addressIsInDB(String adresse, int codePostal) throws SQLException {
+    public boolean addressIsInDB(Adresse adresse) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_PAR_CP_ET_ADRESSE);
-        this.stmt.setString(1, adresse);
-        this.stmt.setInt(2, codePostal);
+        this.stmt.setString(1, adresse.getAdresse());
+        this.stmt.setInt(2, adresse.getVille().getCp());
         ResultSet rs = this.stmt.executeQuery();
 
         return rs.next();
