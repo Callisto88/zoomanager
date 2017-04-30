@@ -17,9 +17,9 @@ import java.util.ArrayList;
  */
 public class AssignExternalTaskController {
 
+    ErrorController ecError = null;
     private DBInteraction querry = null;
     private TaskExternalPanel tepExternal = null;
-    ErrorController ecError = null;
 
     /**
      * Constructeur du controlleur
@@ -46,11 +46,11 @@ public class AssignExternalTaskController {
 /***********************************************************/
         tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(
-                02, 11, 20, 15, 47, 13, 2),3);
+                02, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(
-                2012, 5, 25, 10, 57, 13, 2),4);
+                2012, 5, 25, 10, 57, 13, 2), "Spectacle");
         Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(
-                2015, 4, 12, 16, 50, 13, 7),1);
+                2015, 4, 12, 16, 50, 13, 7), "Représentation");
 
         tasks.add(e1);
         tasks.add(e2);

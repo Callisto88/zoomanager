@@ -20,7 +20,7 @@ public class Start {
             exceptionDataBase.printStackTrace();
         }
 
-        try {
+        /*try {
             String artPendingDelivery = query.selCommandeEnCours(1);
             System.out.println(artPendingDelivery);
         } catch (SQLException e) {
@@ -49,11 +49,11 @@ public class Start {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
-        query = null;
+        // query = null;
 
-        try {
+        /*try {
             int nb = query.nombrePersonne();
             System.out.println(nb);
         } catch (ExceptionDataBase e) {
@@ -70,7 +70,7 @@ public class Start {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }*/
-
+    /*
         try {
             Personne p = query.selEmployeDetails(11);
             System.out.println("\n\nDétails de l'employé");
@@ -79,19 +79,30 @@ public class Start {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+        }*/
+
+        try {
+            ArrayList<Animal> result = query.selAnimalsByEventID(2);
+            for (Animal a : result) {
+                System.out.println(a.getNom());
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
         /*
          *  INSERTION D'UN FELIN
          */
-        DBInteraction req = null;
+
+        /* DBInteraction req = null;
         try {
             req = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
 
-        /* Date dateNaissance = new Date(2017, 8, 4);
+        Date dateNaissance = new Date(2017, 8, 4);
         Animal lyra = new Felin("Chat domestique", "Lyra", "femelle", dateNaissance, 1, "Suisse", "Européen", null, 3.6f);
         try {
             req.insAnimal(lyra);

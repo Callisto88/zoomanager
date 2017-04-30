@@ -128,12 +128,12 @@ public class ExternalStaff extends JPanel{
 
         /******************* Permet de tester offline **************************/
         ArrayList<Evenement> tasks = new ArrayList<>();
-        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2),3);
-        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2),4);
-        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7),1);
-        Evenement e4 = new Evenement(1, "Nourrir singes", new Timestamp(2012, 11, 20, 15, 47, 13, 2),3);
-        Evenement e5 = new Evenement(1, "Nourrir pinguoin", new Timestamp(2011, 5, 25, 10, 57, 13, 2),4);
-        Evenement e6 = new Evenement(1, "Médicaments Yéti", new Timestamp(2016, 4, 12, 16, 50, 13, 7),1);
+        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
+        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Représentation");
+        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Spectacle");
+        Evenement e4 = new Evenement(1, "Nourrir singes", new Timestamp(2012, 11, 20, 15, 47, 13, 2), "animation");
+        Evenement e5 = new Evenement(1, "Nourrir pinguoin", new Timestamp(2011, 5, 25, 10, 57, 13, 2), "Spectacle");
+        Evenement e6 = new Evenement(1, "Médicaments Yéti", new Timestamp(2016, 4, 12, 16, 50, 13, 7), "Goûter");
 
         tasks.add(e1);
         tasks.add(e2);

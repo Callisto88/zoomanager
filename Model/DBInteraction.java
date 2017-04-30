@@ -1,5 +1,7 @@
 package Model;
 
+import jdk.nashorn.internal.runtime.ECMAException;
+
 import java.sql.*;
 import java.util.*;
 
@@ -189,6 +191,8 @@ public class DBInteraction {
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
     // -----------------------------------------------------------------------------------------------------------------
     // EVENEMENT :
+    private static final String SEL_EVENEMENTS_PAR_TYPE = "SELECT * FROM Evenement WHERE type LIKE ?;";
+
     // Liste de tous les événements qui n'ont pas de personne attribué
     private static final String SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE = "SELECT * " +
             "FROM Evenement " +
@@ -205,8 +209,18 @@ public class DBInteraction {
     private static final String ASSIGNER_EVENEMENT_INTERVENANT = "SELECT * FROM Intervenant_Evenement VALUES (?, ?, ?);";
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
-    // Selectionner le type d'un événement en fonction de son ID
-    private static final String SEL_TYPE_EVENEMENT = "SELECT type FROM TypeEvenement WHERE id = ? ;";
+
+    // Selectionner le nom du type d'un événement en fonction de son ID
+    private static final String SEL_EVENT_BY_ID = "SELECT * FROM Evenement WHERE id = ?;";
+    private static final String DEL_EVENT_BY_ID = "DELETE FROM Evenement WHERE id = ?;";
+
+    private static final String DEL_EVENT_TYPE = "DELETE FROM Evenement_Type WHERE type LIKE ?;";
+    private static final String SEL_EVENT_TYPES = "SELECT DISTINCT(type) FROM Evenement_Type;";
+    private static final String SEL_EVENT_TYPE_FROM_EVENT_ID = "SELECT type FROM Evenement WHERE id = ? ;";
+    private static final String SEL_EVENT_TYPE_FROM_EVENT_NAME = "SELECT type FROM Evenement WHERE description LIKE ? ;";
+
+    private static final String SEL_ANIMALS_FROM_EVENT_ID = "SELECT * FROM Animal INNER JOIN Animal_Evenement ON Animal.id = Animal_Evenement.animal WHERE Animal_Evenement.evenement = ?;";
+
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
             "UPDATE Stock " +
@@ -1301,6 +1315,58 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
 
+    public ArrayList<Animal> selAnimalsByEventID(int eventID) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMALS_FROM_EVENT_ID);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauAnimal(rs);
+    }
+
+    public boolean delEventType(String eventType) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(DEL_EVENT_TYPE);
+        this.stmt.setString(1, eventType);
+        int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
+
+        return (rowCount == 0) ? false : true;
+    }
+
+    public boolean delEventByID(int eventID) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(DEL_EVENT_BY_ID);
+        this.stmt.setInt(1, eventID);
+        int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
+
+        return (rowCount == 0) ? false : true;
+    }
+
+    public ArrayList<String> selEventTypes() throws SQLException, ExceptionDataBase {
+
+        ArrayList<String> result = new ArrayList<>();
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_TYPES);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun type d'événement dans la base de données");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                result.add(new String(rs.getString("type")));
+            }
+        }
+        return result;
+    }
+
+    public ArrayList<Evenement> selEventsByEventType(String eventType) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENEMENTS_PAR_TYPE);
+        this.stmt.setString(1, eventType);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauEvenement(rs);
+    }
+
     /**
      * Permet de récupérer tous les événements qui n'ont aucune personne assignée à ce dernier
      *
@@ -1314,6 +1380,24 @@ public class DBInteraction {
         return creerTableauEvenement(rs);
     }
 
+    public String SelEventTypeFromEventId(int eventID) throws ExceptionDataBase, SQLException {
+        String res = null;
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_TYPE_FROM_EVENT_ID);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun événement correspondant à l'ID " + eventID + " n'a été trouvé");
+        } else {
+            // Previous check has forwarded the pointer, just put it back at the start
+            rs.beforeFirst();
+            while (rs.next()) {
+                res = rs.getString("type");
+            }
+        }
+        return res;
+    }
+
     /**
      * Permet de selectionner un évenement en fonction de son ID
      *
@@ -1321,9 +1405,9 @@ public class DBInteraction {
      *
      * @return String
      */
-    public String selTypeEvenement (String type) throws ExceptionDataBase, SQLException {
+    public String selEventTypeFromEventName(String type) throws ExceptionDataBase, SQLException {
         String res = null;
-        this.stmt = DBConnection.con.prepareStatement(SEL_TYPE_EVENEMENT);
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_TYPE_FROM_EVENT_NAME);
         this.stmt.setString(1, type);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1339,6 +1423,15 @@ public class DBInteraction {
         return res;
     }
 
+    public ArrayList<Evenement> selEventByID(int eventID) throws ExceptionDataBase, SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_BY_ID);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauEvenement(rs);
+    }
+
     /**
      * Permet d'insérer un type d'événement dans la DB à partir d'un objet TypeEvenement
      *
@@ -1348,8 +1441,8 @@ public class DBInteraction {
      */
     public void insertTypeEvenement (TypeEvenement typeEvenement) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(INSERT_TYPE_EVENEMET);
-
         this.stmt.setString(1, typeEvenement.getType());
+        this.stmt.executeQuery();
     }
 
     /**
@@ -1366,7 +1459,7 @@ public class DBInteraction {
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setString(2, evenement.getDescription());
         this.stmt.setTimestamp(3, evenement.getDate());
-        this.stmt.setInt(4, evenement.getType());
+        this.stmt.setString(4, evenement.getType());
 
         this.stmt.executeUpdate();
     }
@@ -1619,7 +1712,7 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Evenement(rs.getInt("id"), rs.getString("description"),
-                        rs.getTimestamp("date"), rs.getInt("type")));
+                        rs.getTimestamp("date"), rs.getString("type")));
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
