@@ -26,9 +26,9 @@ public class Evenement {
     private int id;
     private String description;
     private java.sql.Timestamp date;
-    private int type;
+    private String type;
 
-    public Evenement(int id, String description, Timestamp date, int type) {
+    public Evenement(int id, String description, Timestamp date, String type) {
         this.id = id;
         this.description = description;
         this.date = date;
@@ -59,11 +59,11 @@ public class Evenement {
         this.date = date;
     }
 
-    public int getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(int type) {
+    public void setType(String type) {
         this.type = type;
     }
 }
