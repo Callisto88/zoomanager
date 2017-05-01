@@ -21,7 +21,7 @@ import java.util.Vector;
  *
  */
 
-public class MyModelTable extends AbstractTableModel{
+public class MyModelTable extends AbstractTableModel {
 
     private String[] columnNames;
     private boolean[] columnEditable; // false par défaut
@@ -64,6 +64,9 @@ public class MyModelTable extends AbstractTableModel{
         return columnNames.length;
     }
 
+    public void removeRow(int row) {
+        vData.removeElementAt(row);
+    }
 
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
@@ -78,4 +81,5 @@ public class MyModelTable extends AbstractTableModel{
     public boolean isCellEditable(int row, int column){
             return columnEditable[column];
     }
+
 }

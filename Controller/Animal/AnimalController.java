@@ -95,8 +95,10 @@ public class AnimalController {
         return vectAnimaux;
     }
 
-    public void delAnimal(Animal animalToDel){
+    public boolean delAnimal(Animal animalToDel){
         DBInteraction query = null;
+
+        boolean success = false;
 
         try {
             query = new DBInteraction();
@@ -105,7 +107,7 @@ public class AnimalController {
         }
 
         try {
-            query.delAnimal(animalToDel);
+            success = query.delAnimal(animalToDel);
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
         } catch (SQLException e) {
@@ -113,6 +115,8 @@ public class AnimalController {
         }
 
         query = null;
+
+        return success;
     }
 
     public void refreshTest(){

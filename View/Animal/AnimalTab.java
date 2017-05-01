@@ -8,6 +8,7 @@ import com.jidesoft.swing.AutoCompletion;
 
 
 import javax.swing.*;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 
 
@@ -15,6 +16,7 @@ import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
+import java.util.regex.Pattern;
 
 import static Model.Tools.DateSQL.calculateAge;
 
@@ -29,11 +31,13 @@ public class AnimalTab extends GenericWindow {
     private static String S_MODANIMAL = "Modification d'un animal";
     private static String S_ADDANIMAL = "Ajout d'un animal";
 
-
     protected int mode = 0;
     protected int selectedRow;
 
     protected JPanel jpDetAnimal;
+
+    protected MyModelTable dataTable;
+    private static TableRowSorter<MyModelTable> sorter;
 
     public AnimalTab(AnimalController atAnimalController) {
         super("Animaux");
@@ -99,7 +103,12 @@ public class AnimalTab extends GenericWindow {
 
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
 
-        JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
+        dataTable = new MyModelTable(vAnimal, columnName);
+        JTable jtTable = new JTable(dataTable);
+
+        sorter = new TableRowSorter<>(dataTable);
+        //sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote("Mouse")));
+        jtTable.setRowSorter(sorter);
 
         Dimension d = jtTable.getPreferredScrollableViewportSize();
         d.width = jtTable.getPreferredSize().width;
@@ -239,9 +248,11 @@ public class AnimalTab extends GenericWindow {
                         "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
                 if (n == 0) {
                     //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
-                    atAnimalController.delAnimal(animauxDB.get(selectedRow));
-                    jtTable.remove(selectedRow);
-                    jtTable.updateUI();
+                    if(atAnimalController.delAnimal(animauxDB.get(selectedRow))) {
+                        //jtTable.getModel().removeRow(selectedRow);
+                        jtTable.clearSelection();
+                        jtTable.updateUI();
+                    }
                 }
             }
         });
