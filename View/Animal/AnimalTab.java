@@ -244,7 +244,7 @@ public class AnimalTab extends GenericWindow {
 
 
         gbcRight.gridx = 0;
-        gbcRight.gridy = 1;
+        gbcRight.gridy = 2;
 
         jpDetAnimal = new JPanel();
 
