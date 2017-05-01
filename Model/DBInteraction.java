@@ -1082,17 +1082,20 @@ public class DBInteraction {
             if (a instanceof Felin) {
                 this.stmt = DBConnection.con.prepareStatement(DELETE_FAUVE);
                 this.stmt.setInt(1, a.getId());
+                result += this.stmt.executeUpdate();
             } else if (a instanceof Oiseau) {
                 this.stmt = DBConnection.con.prepareStatement(DELETE_OISEAU);
                 this.stmt.setInt(1, a.getId());
+                result += this.stmt.executeUpdate();
             } else if (a instanceof Primate) {
                 this.stmt = DBConnection.con.prepareStatement(DELETE_PRIMATE);
                 this.stmt.setInt(1, a.getId());
+                result += this.stmt.executeUpdate();
             } else if (a instanceof Reptile) {
                 this.stmt = DBConnection.con.prepareStatement(DELETE_REPTILE);
                 this.stmt.setInt(1, a.getId());
+                result += this.stmt.executeUpdate();
             }
-            result += this.stmt.executeUpdate();
         }
 
         return (result > 0);
