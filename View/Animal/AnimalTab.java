@@ -164,6 +164,7 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridx = 0;
         gbcRight.gridy = 1;
 
+        // JPanel pour les boutons modifier, ajouter et supprimer
         JPanel jpBoutons = new JPanel();
 
         GridBagLayout gblDetAnimalButton = new GridBagLayout();
@@ -172,6 +173,7 @@ public class AnimalTab extends GenericWindow {
 
         JButton jbMod = new JButton("Modifier");
         JButton jbAdd = new JButton("Ajouter");
+        JButton jbDel = new JButton("Supprimer");
 
         jbMod.addActionListener(new ActionListener() {
             @Override
@@ -230,7 +232,20 @@ public class AnimalTab extends GenericWindow {
         });
         setButtonConfig(jbAdd);
 
-        gbcDetAnimalButton.insets = new Insets(5, 15, 5, 15);
+        jbDel.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                int n = JOptionPane.showConfirmDialog(jpMainPanel, "Voulez-vous vraiment supprimer cet animal ?",
+                        "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+                if (n == 0) {
+                    System.out.println(animauxDB.get(selectedRow).getId());
+                    //atAnimalController.delAnimal(animauxDB.get(selectedRow).getId());
+                }
+            }
+        });
+        setButtonConfig(jbDel);
+
+        gbcDetAnimalButton.insets = new Insets(5, 10, 5, 10);
         gbcDetAnimalButton.gridx = 0;
         gbcDetAnimalButton.gridy = 0;
         jpBoutons.add(jbMod, gbcDetAnimalButton);
@@ -239,8 +254,11 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.gridy = 0;
         jpBoutons.add(jbAdd, gbcDetAnimalButton);
 
-        jpRight.add(jpBoutons, gbcRight);
+        gbcDetAnimalButton.gridx = 2;
+        gbcDetAnimalButton.gridy = 0;
+        jpBoutons.add(jbDel, gbcDetAnimalButton);
 
+        jpRight.add(jpBoutons, gbcRight);
 
 
         gbcRight.gridx = 0;

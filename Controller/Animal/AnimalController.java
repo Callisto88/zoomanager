@@ -95,6 +95,26 @@ public class AnimalController {
         return vectAnimaux;
     }
 
+    public void delAnimal(int ID){
+        DBInteraction query = null;
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            query.delAnimal(ID);
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        query = null;
+    }
+
     public void refreshTest(){
 
     }
