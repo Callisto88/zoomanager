@@ -215,6 +215,7 @@ public class DBInteraction {
     private static final String DEL_EVENT_BY_ID = "DELETE FROM Evenement WHERE id = ?;";
 
     private static final String DEL_EVENT_TYPE = "DELETE FROM Evenement_Type WHERE type LIKE ?;";
+    private static final String INS_EVENT_TYPE = "INSERT INTO Evenement_Type VALUES (?);";
     private static final String SEL_EVENT_TYPES = "SELECT DISTINCT(type) FROM Evenement_Type;";
     private static final String SEL_EVENT_TYPE_FROM_EVENT_ID = "SELECT type FROM Evenement WHERE id = ? ;";
     private static final String SEL_EVENT_TYPE_FROM_EVENT_NAME = "SELECT type FROM Evenement WHERE description LIKE ? ;";
@@ -1322,6 +1323,19 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         return creerTableauAnimal(rs);
+    }
+
+    public boolean insEventType(String eventType) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(INS_EVENT_TYPE);
+        this.stmt.setString(1, eventType);
+
+        int result = stmt.executeUpdate();  // Throws an exception if eventType already exists
+        if (result == 0) {
+            throw new ExceptionDataBase("Impossible d'ajouter le type d'événement : " + eventType);
+        } else {
+            return true;
+        }
     }
 
     public boolean delEventType(String eventType) throws SQLException, ExceptionDataBase {
