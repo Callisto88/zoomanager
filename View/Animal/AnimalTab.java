@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 
 
+import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -22,7 +23,16 @@ import static Model.Tools.DateSQL.calculateAge;
  * Created by Andre on 10.03.2017.
  */
 public class AnimalTab extends GenericWindow {
-    private String[] columnName = {"Nom", "Race", "Sexe", "Age", "Enclos"};
+    private String[] columnName = {"Nom", "Nom commun", "Race", "Sexe", "Age", "Enclos"};
+
+    private static String S_DETANIMAL = "Détails d'un animal";
+    private static String S_MODANIMAL = "Modification d'un animal";
+    private static String S_ADDANIMAL = "Ajout d'un animal";
+
+
+    protected int mode = 0;
+
+    protected JPanel jpDetAnimal;
 
     public AnimalTab(AnimalController atAnimalController) {
         super("Animaux");
@@ -55,6 +65,12 @@ public class AnimalTab extends GenericWindow {
         jpLeft.add(jpButtonAnimal, gbcLeft);
 
         JButton jbPrint = new JButton("Imprimer");
+        jbPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                print();
+            }
+        });
         setButtonConfig(jbPrint);
 
 
@@ -74,16 +90,13 @@ public class AnimalTab extends GenericWindow {
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 10;
 
-
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setPreferredSize(new Dimension(820, 720));
-
 
         ArrayList<Animal> animauxDB = atAnimalController.getAllAnimal();
         ArrayList<Enclos> enclosDB = atAnimalController.getAllEnclos();
 
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
-
 
         JTable jtTable = new JTable(new MyModelTable(vAnimal, columnName));
 
@@ -91,9 +104,28 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
+        final int[] selectedRow = new int[1];
+
+        MouseListener tableMouseListener = new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Récupérer la ligne séléctionnée
+                int nbSelectedRows = jtTable.getSelectedRowCount();
+                if(nbSelectedRows == 1){
+                    selectedRow[0] = jtTable.getSelectedRow();
+                }
+                else if(nbSelectedRows > 1){
+                    selectedRow[0] = jtTable.getSelectedRows()[0];
+                }
+                else{
+                    selectedRow[0] = 0;
+                }
+            }
+        };
+        jtTable.addMouseListener(tableMouseListener);
+
         JScrollPane jspAnimal = new JScrollPane(jtTable);
         jspAnimal.setPreferredSize(new Dimension(820, 710));
-
 
         jpTableAnimal.add(jspAnimal);
         jpLeft.add(jpTableAnimal, gbcLeft);
@@ -113,7 +145,12 @@ public class AnimalTab extends GenericWindow {
 
         jpMainPanel.add(jpRight);
 
-        JLabel jlDetAnimal = new JLabel("Détail animal");
+
+        /****************************************
+         * Détails d'un animal
+         */
+        JLabel jlDetAnimal = new JLabel("Détail d'un animal");
+
         setTitleConfig(jlDetAnimal);
         jpRightTitle.add(jlDetAnimal);
 
@@ -127,20 +164,73 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridx = 0;
         gbcRight.gridy = 1;
 
-        JPanel jpDetAnimal = new JPanel();
+        jpDetAnimal = new JPanel();
         jpRight.add(jpDetAnimal, gbcRight);
-
-        JButton jbMod = new JButton("Modifier");
-        setButtonConfig(jbMod);
-
-        JButton jbAdd = new JButton("Ajouter");
-        setButtonConfig(jbAdd);
 
         GridBagLayout gblDetAnimalButton = new GridBagLayout();
         jpDetAnimal.setLayout(gblDetAnimalButton);
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
-        gbcDetAnimalButton.insets = new Insets(5, 20, 5, 20);
+        JButton jbMod = new JButton("Modifier");
+        JButton jbAdd = new JButton("Ajouter");
+
+        jbMod.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (mode) {
+                    case 0:
+                        jlDetAnimal.setText(S_MODANIMAL);
+                        jbMod.setText("Détails");
+                        mode = 1;
+                        //setModView();
+                        break;
+                    case 1:
+                        jlDetAnimal.setText(S_DETANIMAL);
+                        jbMod.setText("Modifier");
+                        mode = 0;
+                        //setDetView();
+                        break;
+                    case 2:
+                        jlDetAnimal.setText(S_MODANIMAL);
+                        jbMod.setText("Détails");
+                        jbAdd.setText("Ajouter");
+                        mode = 1;
+                        //setModView();
+                        break;
+                }
+            }
+        });
+        setButtonConfig(jbMod);
+
+        jbAdd.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                switch (mode) {
+                    case 0:
+                        jlDetAnimal.setText(S_ADDANIMAL);
+                        jbAdd.setText("Détails");
+                        mode = 2;
+                        //setAddView();
+                        break;
+                    case 1:
+                        jlDetAnimal.setText(S_ADDANIMAL);
+                        jbAdd.setText("Détails");
+                        jbMod.setText("Modifier");
+                        mode = 2;
+                        //setAddView();
+                        break;
+                    case 2:
+                        jlDetAnimal.setText(S_DETANIMAL);
+                        jbAdd.setText("Ajouter");
+                        mode = 0;
+                        //setDetView();
+                        break;
+                }
+            }
+        });
+        setButtonConfig(jbAdd);
+
+        gbcDetAnimalButton.insets = new Insets(5, 15, 5, 15);
         gbcDetAnimalButton.gridx = 0;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbMod, gbcDetAnimalButton);
@@ -148,6 +238,7 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 0;
         jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
+
 
 
         // 3 e ligne (et +) : formulaire avec les détails d'un animal
@@ -158,7 +249,7 @@ public class AnimalTab extends GenericWindow {
 
 
         String[] sEnclos = new String[enclosDB.size()];
-        for (int i = 0; i < enclosDB.size(); i++){
+        for (int i = 0; i < enclosDB.size(); i++) {
             sEnclos[i] = enclosDB.get(i).getNom();
         }
 
@@ -168,13 +259,49 @@ public class AnimalTab extends GenericWindow {
         //ac.setStrict(false);
         //jcEnclos.setSelectedIndex(2);
 
-
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 1;
         jpDetAnimal.add(jcEnclos, gbcDetAnimalButton);
 
 
+        //Icon addIcon = new ImageIcon(AnimalTab.class.getResource("/ajout.png"));
+        //JButton jbAddEnclos = new JButton(addIcon);
+        JButton jbAddEnclos = new JButton("+");
+        jbAddEnclos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                atAnimalController.refreshTest();
+            }
+        });
+        setButtonConfig(jbAddEnclos);
+        gbcDetAnimalButton.gridx = 2;
+        gbcDetAnimalButton.gridy = 1;
+        jpDetAnimal.add(jbAddEnclos, gbcDetAnimalButton);
+
+
         configFrame(getJfFrame(), this);
+    }
+
+    private void setDetView() {
+        jpDetAnimal.removeAll();
+
+        jpDetAnimal.updateUI();
+    }
+
+    private void setModView() {
+        jpDetAnimal.removeAll();
+
+        jpDetAnimal.updateUI();
+    }
+
+    private void setAddView() {
+        jpDetAnimal.removeAll();
+
+        jpDetAnimal.updateUI();
+    }
+
+    private void print() {
 
     }
+
 }

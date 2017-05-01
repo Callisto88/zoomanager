@@ -79,8 +79,8 @@ public class AnimalController {
         for (Animal animal : animalTab) {
             vectAnimaux.add(animal.toVector(1));
             age = calculateAge(animal.getAnneeNaissance());
-            ageL = animal.getAnneeNaissance().toString() + " : " + age;
-            vectAnimaux.lastElement().setElementAt(ageL ,3);
+            ageL = animal.getAnneeNaissance().toString() + " : " + age + " ans";
+            vectAnimaux.lastElement().setElementAt(ageL ,4);
             if (animal.getEnclos() != 0) {
                 for (Enclos enclos : enclosTab) {
                     if (enclos.getId() == animal.getEnclos()) {
@@ -93,6 +93,10 @@ public class AnimalController {
         }
 
         return vectAnimaux;
+    }
+
+    public void refreshTest(){
+
     }
 
 }

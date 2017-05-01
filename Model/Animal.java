@@ -215,6 +215,7 @@ public class Animal {
                 vAnimal.add(this.getId());
                 vAnimal.add(this.getNom());
                 vAnimal.add(this.getSexe());
+                vAnimal.add(this.getNomCommun());
                 vAnimal.add(this.getRace());
                 vAnimal.add(this.getAnneeNaissance());
                 vAnimal.add(this.getEnclos());
@@ -223,6 +224,7 @@ public class Animal {
                 break;
             case 1:
                 vAnimal.add(this.getNom());
+                vAnimal.add(this.getNomCommun());
                 vAnimal.add(this.getRace());
                 vAnimal.add(this.getSexe());
                 vAnimal.add(this.getAnneeNaissance());
@@ -241,6 +243,7 @@ public class Animal {
         vAnimal.add(this.getId());
         vAnimal.add(this.getNom());
         vAnimal.add(this.getSexe());
+        vAnimal.add(this.getNomCommun());
         vAnimal.add(this.getRace());
         vAnimal.add(this.getAnneeNaissance());
         vAnimal.add(this.getEnclos());
