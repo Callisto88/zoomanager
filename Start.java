@@ -80,16 +80,14 @@ public class Start {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }*/
-
+/*
         try {
-            ArrayList<Animal> result = query.selAnimalsByEventID(2);
-            for (Animal a : result) {
-                System.out.println(a.getNom());
-            }
+            boolean successful = query.insEventType("Animation Doriane");
+            System.out.println(successful);
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }/*
 
         /*
          *  INSERTION D'UN FELIN
@@ -134,6 +132,16 @@ public class Start {
         } catch (SQLException e) {
             e.printStackTrace();
         }*/
+
+        Animal a = new Animal(105);
+
+        try {
+            query.delAnimal(a);
+        } catch (ExceptionDataBase e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
         System.out.println("\n_> Programme terminé ... \n");
