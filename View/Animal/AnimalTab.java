@@ -238,8 +238,8 @@ public class AnimalTab extends GenericWindow {
                 int n = JOptionPane.showConfirmDialog(jpMainPanel, "Voulez-vous vraiment supprimer cet animal ?",
                         "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
                 if (n == 0) {
-                    System.out.println(animauxDB.get(selectedRow).getId());
-                    //atAnimalController.delAnimal(animauxDB.get(selectedRow).getId());
+                    //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
+                    atAnimalController.delAnimal(animauxDB.get(selectedRow));
                 }
             }
         });
