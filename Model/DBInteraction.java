@@ -1067,7 +1067,7 @@ public class DBInteraction {
          return data;
      }
 
-    public void delAnimal(Animal a) throws ExceptionDataBase, SQLException {
+    public boolean delAnimal(Animal a) throws ExceptionDataBase, SQLException {
 
         int numericId = a.getId();
         if (numericId != (int) numericId || !animalExists(numericId)) {
@@ -1092,8 +1092,10 @@ public class DBInteraction {
                 this.stmt = DBConnection.con.prepareStatement(DELETE_REPTILE);
                 this.stmt.setInt(1, a.getId());
             }
-            this.stmt.execute();
+            result += this.stmt.executeUpdate();
         }
+
+        return (result > 0);
     }
 
     private boolean animalExists(int idAnimal) throws SQLException {
