@@ -240,6 +240,8 @@ public class AnimalTab extends GenericWindow {
                 if (n == 0) {
                     //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
                     atAnimalController.delAnimal(animauxDB.get(selectedRow));
+                    jtTable.remove(selectedRow);
+                    jtTable.updateUI();
                 }
             }
         });
