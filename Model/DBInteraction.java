@@ -1068,26 +1068,41 @@ public class DBInteraction {
      }
 
     public void delAnimal(Animal a) throws ExceptionDataBase, SQLException {
-        this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
-        this.stmt.setInt(1, a.getId());
-        this.stmt.execute();
-        this.stmt = null;
 
-        if (a instanceof Felin) {
-            this.stmt = DBConnection.con.prepareStatement(DELETE_FAUVE);
-            this.stmt.setInt(1, a.getId());
-        } else if (a instanceof Oiseau) {
-            this.stmt = DBConnection.con.prepareStatement(DELETE_OISEAU);
-            this.stmt.setInt(1, a.getId());
-        } else if (a instanceof Primate) {
-            this.stmt = DBConnection.con.prepareStatement(DELETE_PRIMATE);
-            this.stmt.setInt(1, a.getId());
-        } else if (a instanceof Reptile) {
-            this.stmt = DBConnection.con.prepareStatement(DELETE_REPTILE);
-            this.stmt.setInt(1, a.getId());
+        int numericId = a.getId();
+        if (numericId != (int) numericId || !animalExists(numericId)) {
+            throw new ExceptionDataBase("Aucun animal portant l'ID : " + numericId + " n'a été trouvé");
         }
 
-        this.stmt.execute();
+        this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
+        this.stmt.setInt(1, a.getId());
+        int result = this.stmt.executeUpdate();
+        if (result > 0) {
+            this.stmt = null;
+            if (a instanceof Felin) {
+                this.stmt = DBConnection.con.prepareStatement(DELETE_FAUVE);
+                this.stmt.setInt(1, a.getId());
+            } else if (a instanceof Oiseau) {
+                this.stmt = DBConnection.con.prepareStatement(DELETE_OISEAU);
+                this.stmt.setInt(1, a.getId());
+            } else if (a instanceof Primate) {
+                this.stmt = DBConnection.con.prepareStatement(DELETE_PRIMATE);
+                this.stmt.setInt(1, a.getId());
+            } else if (a instanceof Reptile) {
+                this.stmt = DBConnection.con.prepareStatement(DELETE_REPTILE);
+                this.stmt.setInt(1, a.getId());
+            }
+            this.stmt.execute();
+        }
+    }
+
+    private boolean animalExists(int idAnimal) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL_ID);
+        this.stmt.setInt(1, idAnimal);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return rs.next();
     }
 
     private void insFelin(Felin f) throws SQLException {
