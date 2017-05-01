@@ -226,6 +226,10 @@ public class DBInteraction {
     private static final String SEL_EVENT_TYPE_FROM_EVENT_NAME = "SELECT type FROM Evenement WHERE description LIKE ? ;";
 
     private static final String SEL_ANIMALS_FROM_EVENT_ID = "SELECT * FROM Animal INNER JOIN Animal_Evenement ON Animal.id = Animal_Evenement.animal WHERE Animal_Evenement.evenement = ?;";
+    private static final String ADD_ANIMAL_TO_EVENT = "INSERT INTO Animal_Evenement VALUES(?,?,?);";
+    private static final String DEL_ANIMAL_FROM_EVENT = "DELETE FROM Animal_Evenement WHERE animal = ? AND evenement = ?;";
+    private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
+    private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
 
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
@@ -1351,6 +1355,43 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
+
+    public ArrayList<Personne> selPeopleByEventID(int eventID) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_PERSONNE_CONCERNED_IN_EVENT);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauPersonne(rs);
+    }
+
+    public int insAnimalEvent(int idAnimal, int idEvenement) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(ADD_ANIMAL_TO_EVENT, Statement.RETURN_GENERATED_KEYS);
+        this.stmt.setInt(1, idAnimal);
+        this.stmt.setInt(2, idEvenement);
+
+        // En premier lieu, on enregistre l'animal dans la DB
+        this.stmt.execute();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+        if (rs.next()) {    // On récupère l'ID de l'événement animal
+            rs.beforeFirst();   // On remet le curseur au début
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean delAnimalEvent(int idAnimal, int idEvenement) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(DEL_ANIMAL_FROM_EVENT);
+        this.stmt.setInt(1, idAnimal);
+        this.stmt.setInt(2, idEvenement);
+
+        int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
+
+        return (rowCount == 0) ? false : true;
+    }
 
     public ArrayList<Animal> selAnimalsByEventID(int eventID) throws SQLException, ExceptionDataBase {
 
