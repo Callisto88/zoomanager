@@ -249,7 +249,7 @@ public class AnimalTab extends GenericWindow {
                 if (n == 0) {
                     //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
                     if(atAnimalController.delAnimal(animauxDB.get(selectedRow))) {
-                        //jtTable.getModel().removeRow(selectedRow);
+                        dataTable.removeRow(selectedRow);
                         jtTable.clearSelection();
                         jtTable.updateUI();
                     }
