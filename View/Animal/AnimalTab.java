@@ -79,6 +79,16 @@ public class AnimalTab extends GenericWindow {
         setButtonConfig(jbPrint);
 
 
+        JButton jbFilter = new JButton("Filtrer");
+        jbPrint.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote("Mouse")));
+            }
+        });
+        setButtonConfig(jbFilter);
+
+
         GridBagLayout gblButtonAnimal = new GridBagLayout();
         jpButtonAnimal.setLayout(gblButtonAnimal);
         GridBagConstraints gbcButtonAnimal = new GridBagConstraints();
@@ -87,6 +97,10 @@ public class AnimalTab extends GenericWindow {
         gbcButtonAnimal.gridx = 0;
         gbcButtonAnimal.gridy = 0;
         jpButtonAnimal.add(jbPrint, gbcButtonAnimal);
+
+        gbcButtonAnimal.gridx = 1;
+        gbcButtonAnimal.gridy = 0;
+        jpButtonAnimal.add(jbFilter, gbcButtonAnimal);
 
 
         /**************************************************************/
@@ -107,7 +121,6 @@ public class AnimalTab extends GenericWindow {
         JTable jtTable = new JTable(dataTable);
 
         sorter = new TableRowSorter<>(dataTable);
-        //sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote("Mouse")));
         jtTable.setRowSorter(sorter);
 
         Dimension d = jtTable.getPreferredScrollableViewportSize();
@@ -192,7 +205,6 @@ public class AnimalTab extends GenericWindow {
                         jlDetAnimal.setText(S_MODANIMAL);
                         jbMod.setText("Détails");
                         mode = 1;
-                        System.out.println(selectedRow);
                         setModView();
                         break;
                     case 1:
