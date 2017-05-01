@@ -31,6 +31,15 @@ public class Oiseau extends Animal {
     }
 
     /**
+     * Constructeur à partir de l'ID de l'animal
+     *
+     * @param id
+     */
+    public Oiseau(int id) {
+        super(id);
+    }
+
+    /**
      * Constructeur avec tous les attributs
      *
      * @param id

@@ -111,6 +111,11 @@ public class DBInteraction {
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
     private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
+    private static final String DELETE_FAUVE = "DELETE FROM Animal_Fauve WHERE id = ?;";
+    private static final String DELETE_OISEAU = "DELETE FROM Animal_Oiseau WHERE id = ?;";
+    private static final String DELETE_PRIMATE = "DELETE FROM Animal_Primate WHERE id = ?;";
+    private static final String DELETE_REPTILE = "DELETE FROM Animal_Reptile WHERE id = ?;";
+
     private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
     // Récupérer uniquement ces 5 paramètress de l'animal
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
@@ -1062,15 +1067,26 @@ public class DBInteraction {
          return data;
      }
 
-    public void delAnimal(int id) throws ExceptionDataBase, SQLException {
-
-        Animal a = new Animal(id);
-        if (a.getNom().length() == 0)
-            throw new ExceptionDataBase("L'animal n'existe pas dans la DB");
-
-        this.stmt = null;
+    public void delAnimal(Animal a) throws ExceptionDataBase, SQLException {
         this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
-        this.stmt.setInt(1, id);
+        this.stmt.setInt(1, a.getId());
+        this.stmt.execute();
+        this.stmt = null;
+
+        if (a instanceof Felin) {
+            this.stmt = DBConnection.con.prepareStatement(DELETE_FAUVE);
+            this.stmt.setInt(1, a.getId());
+        } else if (a instanceof Oiseau) {
+            this.stmt = DBConnection.con.prepareStatement(DELETE_OISEAU);
+            this.stmt.setInt(1, a.getId());
+        } else if (a instanceof Primate) {
+            this.stmt = DBConnection.con.prepareStatement(DELETE_PRIMATE);
+            this.stmt.setInt(1, a.getId());
+        } else if (a instanceof Reptile) {
+            this.stmt = DBConnection.con.prepareStatement(DELETE_REPTILE);
+            this.stmt.setInt(1, a.getId());
+        }
+
         this.stmt.execute();
     }
 
