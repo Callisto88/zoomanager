@@ -31,6 +31,7 @@ public class AnimalTab extends GenericWindow {
 
 
     protected int mode = 0;
+    protected int selectedRow;
 
     protected JPanel jpDetAnimal;
 
@@ -47,9 +48,9 @@ public class AnimalTab extends GenericWindow {
 
         jpMainPanel.add(jpLeft);
 
-        JLabel jlStock = new JLabel("Liste des animaux");
-        setTitleConfig(jlStock);
-        jpLeftTitle.add(jlStock);
+        JLabel jlAnimaux = new JLabel("Liste des animaux");
+        setTitleConfig(jlAnimaux);
+        jpLeftTitle.add(jlAnimaux);
 
         gbcLeft.fill = GridBagConstraints.CENTER;
         gbcLeft.gridx = 0;
@@ -104,7 +105,6 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
-        final int[] selectedRow = new int[1];
 
         MouseListener tableMouseListener = new MouseAdapter() {
             @Override
@@ -112,13 +112,13 @@ public class AnimalTab extends GenericWindow {
                 // Récupérer la ligne séléctionnée
                 int nbSelectedRows = jtTable.getSelectedRowCount();
                 if(nbSelectedRows == 1){
-                    selectedRow[0] = jtTable.getSelectedRow();
+                    selectedRow = jtTable.getSelectedRow();
                 }
                 else if(nbSelectedRows > 1){
-                    selectedRow[0] = jtTable.getSelectedRows()[0];
+                    selectedRow = jtTable.getSelectedRows()[0];
                 }
                 else{
-                    selectedRow[0] = 0;
+                    selectedRow = 0;
                 }
             }
         };
@@ -142,7 +142,6 @@ public class AnimalTab extends GenericWindow {
         jpRight.setLayout(gblRight);
 
         JPanel jpRightTitle = new JPanel();
-
         jpMainPanel.add(jpRight);
 
 
@@ -158,17 +157,17 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridx = 0;
         gbcRight.anchor = GridBagConstraints.NORTH;
         gbcRight.gridy = 0;
+
         jpRight.add(jpRightTitle, gbcRight);
 
         // deuxième ligne qui contient les boutons modifier et ajouter
         gbcRight.gridx = 0;
         gbcRight.gridy = 1;
 
-        jpDetAnimal = new JPanel();
-        jpRight.add(jpDetAnimal, gbcRight);
+        JPanel jpBoutons = new JPanel();
 
         GridBagLayout gblDetAnimalButton = new GridBagLayout();
-        jpDetAnimal.setLayout(gblDetAnimalButton);
+        jpBoutons.setLayout(gblDetAnimalButton);
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
         JButton jbMod = new JButton("Modifier");
@@ -182,20 +181,21 @@ public class AnimalTab extends GenericWindow {
                         jlDetAnimal.setText(S_MODANIMAL);
                         jbMod.setText("Détails");
                         mode = 1;
-                        //setModView();
+                        System.out.println(selectedRow);
+                        setModView();
                         break;
                     case 1:
                         jlDetAnimal.setText(S_DETANIMAL);
                         jbMod.setText("Modifier");
                         mode = 0;
-                        //setDetView();
+                        setDetView();
                         break;
                     case 2:
                         jlDetAnimal.setText(S_MODANIMAL);
                         jbMod.setText("Détails");
                         jbAdd.setText("Ajouter");
                         mode = 1;
-                        //setModView();
+                        setModView();
                         break;
                 }
             }
@@ -210,20 +210,20 @@ public class AnimalTab extends GenericWindow {
                         jlDetAnimal.setText(S_ADDANIMAL);
                         jbAdd.setText("Détails");
                         mode = 2;
-                        //setAddView();
+                        setAddView();
                         break;
                     case 1:
                         jlDetAnimal.setText(S_ADDANIMAL);
                         jbAdd.setText("Détails");
                         jbMod.setText("Modifier");
                         mode = 2;
-                        //setAddView();
+                        setAddView();
                         break;
                     case 2:
                         jlDetAnimal.setText(S_DETANIMAL);
                         jbAdd.setText("Ajouter");
                         mode = 0;
-                        //setDetView();
+                        setDetView();
                         break;
                 }
             }
@@ -233,19 +233,31 @@ public class AnimalTab extends GenericWindow {
         gbcDetAnimalButton.insets = new Insets(5, 15, 5, 15);
         gbcDetAnimalButton.gridx = 0;
         gbcDetAnimalButton.gridy = 0;
-        jpDetAnimal.add(jbMod, gbcDetAnimalButton);
+        jpBoutons.add(jbMod, gbcDetAnimalButton);
 
         gbcDetAnimalButton.gridx = 1;
         gbcDetAnimalButton.gridy = 0;
-        jpDetAnimal.add(jbAdd, gbcDetAnimalButton);
+        jpBoutons.add(jbAdd, gbcDetAnimalButton);
 
+        jpRight.add(jpBoutons, gbcRight);
+
+
+
+        gbcRight.gridx = 0;
+        gbcRight.gridy = 1;
+
+        jpDetAnimal = new JPanel();
+
+        GridBagLayout gblAnimalForm = new GridBagLayout();
+        jpDetAnimal.setLayout(gblAnimalForm);
+        GridBagConstraints gbcAnimalForm = new GridBagConstraints();
 
 
         // 3 e ligne (et +) : formulaire avec les détails d'un animal
         JLabel jlEnclos = new JLabel("Enclos :");
-        gbcDetAnimalButton.gridx = 0;
-        gbcDetAnimalButton.gridy = 1;
-        jpDetAnimal.add(jlEnclos, gbcDetAnimalButton);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 0;
+        jpDetAnimal.add(jlEnclos, gbcAnimalForm);
 
 
         String[] sEnclos = new String[enclosDB.size()];
@@ -259,9 +271,9 @@ public class AnimalTab extends GenericWindow {
         //ac.setStrict(false);
         //jcEnclos.setSelectedIndex(2);
 
-        gbcDetAnimalButton.gridx = 1;
-        gbcDetAnimalButton.gridy = 1;
-        jpDetAnimal.add(jcEnclos, gbcDetAnimalButton);
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 0;
+        jpDetAnimal.add(jcEnclos, gbcAnimalForm);
 
 
         //Icon addIcon = new ImageIcon(AnimalTab.class.getResource("/ajout.png"));
@@ -274,9 +286,11 @@ public class AnimalTab extends GenericWindow {
             }
         });
         setButtonConfig(jbAddEnclos);
-        gbcDetAnimalButton.gridx = 2;
-        gbcDetAnimalButton.gridy = 1;
-        jpDetAnimal.add(jbAddEnclos, gbcDetAnimalButton);
+        gbcAnimalForm.gridx = 2;
+        gbcAnimalForm.gridy = 0;
+        jpDetAnimal.add(jbAddEnclos, gbcAnimalForm);
+
+        jpRight.add(jpDetAnimal, gbcRight);
 
 
         configFrame(getJfFrame(), this);
