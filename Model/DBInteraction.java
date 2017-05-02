@@ -104,6 +104,25 @@ public class DBInteraction {
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
     private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
     // -----------------------------------------------------------------------------------------------------------------
+    // INTERVENANT :
+    // Selectionne tous les intervenants
+    private static final String SELECT_INTERVENANT = "SELECT * FROM Intervenant;";
+    // Supprime un intervenant de la DB, pour garder les "traces" on passe uniquement son "statut" à 1
+    private static final String DELETE_INTERVENANT = "UPDATE Intervenant " +
+            "SET statut = 1 " +
+            "WHERE id = ? ;";
+    // Modifie les données d'un intervenant externe
+    private static final String UPDATE_INTERVENANT =
+            "UPDATE Intervenant " +
+            "SET entreprise = ? , " +
+            "  prenom = ? , " +
+            "  nom = ? , " +
+            "  adresse = ? , " +
+            "  email = ? , " +
+            "  telephone = ? , " +
+            "  statut = ? " +
+            "WHERE id = ? ;";
+    // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
@@ -191,7 +210,6 @@ public class DBInteraction {
     private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
     // -----------------------------------------------------------------------------------------------------------------
     // ENCLOS :
-
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
     // -----------------------------------------------------------------------------------------------------------------
@@ -202,18 +220,28 @@ public class DBInteraction {
     private static final String SEL_ALL_EVENEMENT_WHITOUT_EMPLOYEE = "SELECT * " +
             "FROM Evenement " +
             "WHERE (id) NOT IN " +
-            "(SELECT evenement FROM Personne_Evenement);";
+            "(SELECT DISTINCT evenement FROM Personne_Evenement);";
+
+
+    // Liste de tous les événements qui n'ont pas d'intervenant attribué
+    private static final String SEL_ALL_EVENEMENT_WHITOUT_INTERVENANT =
+            "SELECT * " +
+            "FROM Evenement " +
+                    "WHERE id NOT IN " +
+                    "(SELECT DISTINCT evenement " +
+                    "FROM Intervenant_Evenement);";
+
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
     // Insertion d'un événement dans la DB
-    private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (?, ?, ?, ?);";
+    private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
     // Assigner un événement à un personne
-    private static final String ASSIGNER_EVENEMENT_PERSONNE = "SELECT * FROM Personne_Evenement (?, ?, ?);";
+    private static final String ASSIGNER_EVENEMENT_PERSONNE = "INSERT INTO Personne_Evenement VALUES (null , ? , ? );";
     // Assigner un événement à un animal
-    private static final String ASSIGNER_EVENEMENT_ANIMAL = "SELECT * FROM Animal_Evenement VALUES (?, ?, ?);";
+    private static final String ASSIGNER_EVENEMENT_ANIMAL = "INSERT INTO Animal_Evenement VALUES (null , ? , ? );";
     // Assigner un événement à un animal
-    private static final String ASSIGNER_EVENEMENT_INTERVENANT = "SELECT * FROM Intervenant_Evenement VALUES (?, ?, ?);";
+    private static final String ASSIGNER_EVENEMENT_INTERVENANT = "INSERT INTO Intervenant_Evenement VALUES (null, ? , ? );";
     // Assigner un événement à un animal
-    private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "SELECT * FROM Infrastructure_Evenement VALUES (?, ?, ?);";
+    private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "INSERT INTO Infrastructure_Evenement VALUES (null , ? , ? );";
 
     // Selectionner le nom du type d'un événement en fonction de son ID
     private static final String SEL_EVENT_BY_ID = "SELECT * FROM Evenement WHERE id = ?;";
@@ -276,6 +304,96 @@ public class DBInteraction {
         this.db.init();
         this.stmt = null;
     }
+    // -----------------------------------------------------------------------------------------------------------------
+    // -----------------------------------------------------------------------------------------------------------------
+    // Partie pour la gestion des INTERVENANT dans la DB
+
+    /**
+     * Selectionne tous les intervenant de la DB
+     *
+     * @return ArrayList<Intervenant>
+     *
+     */
+    public ArrayList<Intervenant> selIntervenant () throws SQLException, ExceptionDataBase {
+        ArrayList<Personne> listEmployes;
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EMPLOYES);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabIntervenant(rs);
+    }
+
+    /**
+     * Permet de "supprimer" un intervenant de la DB
+     * En faite, son statut passe simplement à 1
+     *
+     * @param id(int)
+     *
+     */
+    public void delIntervenant (int id) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
+        this.stmt.setInt(1, id);
+        this.stmt.executeUpdate();
+
+    }
+
+    /**
+     * Permet de "supprimer" un intervenant de la DB
+     * En faite, son statut passe simplement à 1
+     *
+     * @param intervenant(Intervenant)
+     *
+     */
+    public void delIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
+        this.stmt.setInt(1, intervenant.getId());
+        this.stmt.executeUpdate();
+
+    }
+
+    /**
+     * Permet de modifier un intervenant dans la DB
+     *
+     * @param intervenant(Intervenant)
+     *
+     */
+    public void updateIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_INTERVENANT);
+        this.stmt.setString(1, intervenant.getEntreprise());
+        this.stmt.setString(2, intervenant.getPrenom());
+        this.stmt.setString(3, intervenant.getNom());
+        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setString(5, intervenant.getEmail());
+        this.stmt.setString(6, intervenant.getTelephone());
+        this.stmt.setString(7, intervenant.getStatut());
+        this.stmt.setInt(8, intervenant.getId());
+        this.stmt.executeUpdate();
+
+    }
+
+    /**
+     * Permet de créer une ArrayList d'intervenant à partir de Resultset passé en paramètre
+     *
+     * @param rs(ResultSet)
+     *
+     * @return ArrayList<Intervenant>
+     */
+    private ArrayList<Intervenant> createTabIntervenant (ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Intervenant> data = new ArrayList<Intervenant>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun Intervenant n'est présent dans la base de données.");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Intervenant(rs.getInt("id"), rs.getString("entreprise"),
+                        rs.getString("prenom"), rs.getString("nom"),
+                        rs.getInt("adresse"), rs.getString("email"),
+                        rs.getString("telephone"), rs.getString("statut")));
+            }
+        }
+
+        return data;
+    }
+
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des ADRESSES dans la DB
@@ -1459,7 +1577,7 @@ public class DBInteraction {
     }
 
     /**
-     * Permet de récupérer tous les événements qui n'ont aucune personne assignée à ce dernier
+     * Permet de récupérer tous les événements qui n'ont aucune personne assignée
      *
      * @return ArrayList<Evenement>
      */
@@ -1470,6 +1588,20 @@ public class DBInteraction {
 
         return creerTableauEvenement(rs);
     }
+
+    /**
+     * Permet de récupérer tous les événements qui n'ont aucun INTERVENANT assignée
+     *
+     * @return ArrayList<Evenement>
+     */
+    public ArrayList<Evenement> getAllUnassignedTaskIntervenant() throws ExceptionDataBase, SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EVENEMENT_WHITOUT_INTERVENANT);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauEvenement(rs);
+    }
+
 
     public String SelEventTypeFromEventId(int eventID) throws ExceptionDataBase, SQLException {
         String res = null;
@@ -1547,10 +1679,9 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setString(2, evenement.getDescription());
-        this.stmt.setTimestamp(3, evenement.getDate());
-        this.stmt.setString(4, evenement.getType());
+        this.stmt.setString(1, evenement.getDescription());
+        this.stmt.setTimestamp(2, evenement.getDate());
+        this.stmt.setString(3, evenement.getType());
 
         this.stmt.executeUpdate();
     }
@@ -1569,10 +1700,9 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setString(2, description);
-        this.stmt.setDate(3, date);
-        this.stmt.setInt(4, type);
+        this.stmt.setString(1, description);
+        this.stmt.setDate(2, date);
+        this.stmt.setInt(3, type);
 
         this.stmt.executeUpdate();
     }
@@ -1592,9 +1722,8 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setInt(2, numAVS_employe);
-        this.stmt.setInt(3, id_evenement);
+        this.stmt.setInt(1, numAVS_employe);
+        this.stmt.setInt(2, id_evenement);
 
         this.stmt.executeUpdate();
 
@@ -1617,9 +1746,8 @@ public class DBInteraction {
 
                 this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
-                this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, numAVS_employe);
-                this.stmt.setInt(3, evenements.get(i).getId());
+                this.stmt.setInt(1, numAVS_employe);
+                this.stmt.setInt(2, evenements.get(i).getId());
 
                 this.stmt.executeUpdate();
             }
@@ -1642,9 +1770,8 @@ public class DBInteraction {
             for (Personne aTabEmploye : tabEmploye) {
                 this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
-                this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, aTabEmploye.getIdPersonne());
-                this.stmt.setInt(3, id_evenement);
+                this.stmt.setInt(1, aTabEmploye.getIdPersonne());
+                this.stmt.setInt(2, id_evenement);
 
                 this.stmt.executeUpdate();
             }
@@ -1665,9 +1792,8 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setInt(2, id_animal);
-        this.stmt.setInt(3, id_evenement);
+        this.stmt.setInt(1, id_animal);
+        this.stmt.setInt(2, id_evenement);
 
         this.stmt.executeUpdate();
 
@@ -1688,9 +1814,8 @@ public class DBInteraction {
             for (Animal aTabAnimal : tabAnimal) {
                 this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_ANIMAL);
 
-                this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, aTabAnimal.getId());
-                this.stmt.setInt(3, id_evenement);
+                this.stmt.setInt(1, aTabAnimal.getId());
+                this.stmt.setInt(2, id_evenement);
 
                 this.stmt.executeUpdate();
             }
@@ -1711,9 +1836,8 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setInt(2, id_intervenant);
-        this.stmt.setInt(3, id_evenement);
+        this.stmt.setInt(1, id_intervenant);
+        this.stmt.setInt(2, id_evenement);
 
         this.stmt.executeUpdate();
 
@@ -1734,9 +1858,8 @@ public class DBInteraction {
             for (Intervenant aTabIntervenant : tabIntervenant) {
                 this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
 
-                this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, aTabIntervenant.getId());
-                this.stmt.setInt(3, id_evenement);
+                this.stmt.setInt(1, aTabIntervenant.getId());
+                this.stmt.setInt(2, id_evenement);
 
                 this.stmt.executeUpdate();
             }
@@ -1757,9 +1880,8 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
 
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setInt(2, id_infrastructure);
-        this.stmt.setInt(3, id_evenement);
+        this.stmt.setInt(1, id_infrastructure);
+        this.stmt.setInt(2, id_evenement);
         this.stmt.executeUpdate();
 
     }
@@ -1779,14 +1901,38 @@ public class DBInteraction {
             for (Infrastructure aTabInfrastructure : tabInfrastructure) {
                 this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INFRASTRUCTURE);
 
-                this.stmt.setNull(1, Types.NULL);
-                this.stmt.setInt(2, aTabInfrastructure.getId());
-                this.stmt.setInt(3, id_evenement);
+                this.stmt.setInt(1, aTabInfrastructure.getId());
+                this.stmt.setInt(2, id_evenement);
 
                 this.stmt.executeUpdate();
             }
         }
     }
+
+
+
+    /**
+     * Permet d'assigner un événement à une personne
+     *
+     * @param evenement(Evenement)
+     * @param intervenant(Intervenant)
+     *
+     * @return void
+     */
+    public void assignEvenementEmploye (Evenement evenement, Intervenant intervenant) throws SQLException {
+        int id_intervenant = intervenant.getId();
+        int id_evenement = evenement.getId();
+
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
+
+        this.stmt.setInt(1, id_intervenant);
+        this.stmt.setInt(2, id_evenement);
+
+        this.stmt.executeUpdate();
+
+    }
+
+
 
     /**
      * Permet de créer une ArrayList d'evenement à partir de Resultset passé en paramètre

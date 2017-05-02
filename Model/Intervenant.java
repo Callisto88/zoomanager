@@ -26,9 +26,34 @@ public class Intervenant {
     private int adresse;
     private String email;
     private String telephone;
+    private String statut;
 
     /**
-     * Constructeur d'un intervenant avec les paramètres principaux
+     * Constructeur d'un intervenant avec les paramètres
+     *
+     * @param id
+     * @param entreprise nom de l'entreprise
+     * @param nom nom de l'intervenant
+     * @param prenom prénom de l'intervenant
+     * @param adresse adresse de l'entreprise
+     * @param email email de l'intervenant
+     * @param telephone télephone de l'intervenant
+     * @param statut
+     */
+    public Intervenant(int id, String entreprise, String prenom, String nom, int adresse,
+                       String email, String telephone, String statut) {
+        this.id = id;
+        this.entreprise = entreprise;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.email = email;
+        this.telephone = telephone;
+        this.statut = statut;
+    }
+
+    /**
+     * Constructeur d'un intervenant avec les paramètres principaux sauf ID
      * @param entreprise nom de l'entreprise
      * @param nom nom de l'intervenant
      * @param prenom prénom de l'intervenant
@@ -99,6 +124,14 @@ public class Intervenant {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getStatut() {
+        return statut;
+    }
+
+    public void setStatut(String statut) {
+        this.statut = statut;
     }
 
     public Vector<Object> toVector() {
