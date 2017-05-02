@@ -419,7 +419,7 @@ public class DBInteraction {
 
         System.out.println("La ville : " + ville.getCp() + " " + (villeExists(ville, pays) ? "existe" : "n'existe pas dans le pays " + pays.getPays()));
         // La ville n'existe pas dans le pays donné
-        if (!this.villeExists(ville, pays)) {
+        /*if (!this.villeExists(ville, pays)) {
             ville.setPays(pays);
             this.insVille(ville);
         }
@@ -427,7 +427,7 @@ public class DBInteraction {
         System.out.println("L'adresse : " + adresse.getAdresse() + " " + (adresseExists(adresse, ville) ? "existe" : "n'existe pas"));
         if (!this.addressIsInDB(adresse)) {
             addressID = this.insAdresse(adresse);
-        }
+        }*/
 
         return addressID;
     }
