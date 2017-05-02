@@ -51,7 +51,7 @@ public class DBInteraction {
     private static final String INSERT_VILLE = "INSERT INTO Ville VALUES ( ? , ? , ? );";
 
     // Insérer une nouvelle Adresse dans la DB
-    private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (?, ? , ? );";
+    private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (null, ? , ? );";
 
     // Récupérer le paysId d'une ville "String"
     private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays LIKE ? ;";
@@ -122,6 +122,8 @@ public class DBInteraction {
             "  telephone = ? , " +
             "  statut = ? " +
             "WHERE id = ? ;";
+    // Insertion d'un nouvel intervenant
+    private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null , ? , ? , ? , ? , ? , ? , ?);";
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -309,6 +311,26 @@ public class DBInteraction {
     // Partie pour la gestion des INTERVENANT dans la DB
 
     /**
+     * Insere un intervenant dans la DB
+     *
+     * @param intervenant(Intervenant)
+     *
+     */
+    public void insertIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT);
+        this.stmt.setString(1, intervenant.getEntreprise());
+        this.stmt.setString(2, intervenant.getPrenom());
+        this.stmt.setString(3, intervenant.getNom());
+        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setString(5, intervenant.getEmail());
+        this.stmt.setString(6, intervenant.getTelephone());
+        this.stmt.setString(7, intervenant.getTelephone());
+
+        ResultSet rs = this.stmt.executeQuery();
+    }
+
+
+    /**
      * Selectionne tous les intervenant de la DB
      *
      * @return ArrayList<Intervenant>
@@ -404,29 +426,29 @@ public class DBInteraction {
      * @param ville String
      * @param pays Pays
      */
-    public int insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
-
-        int addressID = adresse.getId();
-        System.out.println("Le pays : " + pays.getPays() + " " + (countryIsInDB(pays) ? "existe" : "n'existe pas"));
-
+    public void insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
+        // Check si le pays est déjà dans la DB
+        // l'insère si non
         if (!this.countryIsInDB(pays)) {
             this.insPays(pays);
         }
 
-        System.out.println("La ville : " + ville.getCp() + " " + (cpIsInDB(ville.getCp()) ? "existe" : "n'existe pas"));
         // Check si la ville est déjà dans la DB
         // l'insère si non
         if (!this.cpIsInDB(ville.getCp())) {
-            ville.setPays(pays);
             this.insVille(ville);
         }
 
-        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (addressIsInDB(adresse) ? "existe" : "n'existe pas"));
-        if (!this.addressIsInDB(adresse)) {
-            addressID = this.insAdresse(adresse);
+        // Check si l'adresse en fonction de la ville est déjà dans la DB
+        // l'insère si non
+        int cpVille = this.getCodePostalParVille(ville.getVille());
+        if (cpVille == 0) {
+            throw new ExceptionDataBase("Aucun code postal trouvé pour cette adresse : " + adresse);
         }
 
-        return addressID;
+        if (!this.addressIsInDB(adresse)) {
+            this.insAdresse(adresse);
+        }
     }
 
     private int getCodePostalParVille(String ville) throws SQLException {
@@ -447,21 +469,11 @@ public class DBInteraction {
      *
      * @param adresse Adresse
      */
-    private int insAdresse(Adresse adresse) throws SQLException {
-
-        this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE, PreparedStatement.RETURN_GENERATED_KEYS);
-        this.stmt.setNull(1, Types.NULL);
+    private void insAdresse(Adresse adresse) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_ADRESSE);
         this.stmt.setString(2, adresse.getAdresse());
         this.stmt.setInt(3, adresse.getVille().getCp());
-        this.stmt.execute();
-
-        ResultSet rs = this.stmt.getGeneratedKeys();
-        if (rs.next()) {        // On récupère l'ID de la nouvelle adresse
-            rs.beforeFirst();   // On remet le curseur au début
-            return rs.getInt(1);
-        } else {
-            return 0;
-        }
+        this.stmt.executeUpdate();
     }
 
 
@@ -1052,6 +1064,7 @@ public class DBInteraction {
         this.stmt.setInt(7, animal.getRace());
         this.stmt.setInt(8, animal.getId());
         this.stmt.executeUpdate();
+
 
         // Definition du type de l'animal
         if (animal instanceof Oiseau)
