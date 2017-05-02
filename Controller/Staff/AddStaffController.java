@@ -142,9 +142,7 @@ public class AddStaffController {
             add.setCountryError("Le champ pays non conforme");
         }
 
-        /*
-
-        ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
+        // ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
         // Permet de convertir en int le npa
 
         int cp = 0;
@@ -157,12 +155,12 @@ public class AddStaffController {
                 exception.printStackTrace();
                 ecError = new ErrorController("Erreur conversion NPA " + exception.toString());
             }
-        }*/
+        }
 
         // Permet d'insérer l'adresse dans la db
         dbConnection();
         boolean bAddAddress = true;
-        if(bNPA && bCity && bCountry) {
+        if (bNPA && bChange && bCity && bCountry) {
             try {
 
                 Pays pays = new Pays();
@@ -170,6 +168,7 @@ public class AddStaffController {
 
                 Ville ville = new Ville();
                 ville.setVille(city);
+                ville.setCp(cp);
                 ville.setPays(pays);
 
                 Adresse adresse = new Adresse();
