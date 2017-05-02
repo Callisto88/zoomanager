@@ -87,7 +87,7 @@ public class DBInteraction {
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / salaire / dateDebut	TypeContrat /
     private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (null, ?, ? , ? , ? , ? , ? , ? , ? , ? ," +
-            " ? , ? , ? ); ";
+            " NOW() , ? , ? ); ";
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
@@ -123,6 +123,8 @@ public class DBInteraction {
             "  telephone = ? , " +
             "  statut = ? " +
             "WHERE id = ? ;";
+    // Insertion d'un nouvel intervenant
+    private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null , ? , ? , ? , ? , ? , ? , ?);";
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -260,9 +262,6 @@ public class DBInteraction {
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
 
-    private static final String SEL_CITY_IN_COUNTRY = "SELECT * FROM Ville WHERE ville LIKE ? AND paysId = ?";
-    // private static final String SEL_ADDRESS_IN_CITY = "SELECT "
-
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
             "UPDATE Stock " +
@@ -313,6 +312,26 @@ public class DBInteraction {
     // Partie pour la gestion des INTERVENANT dans la DB
 
     /**
+     * Insere un intervenant dans la DB
+     *
+     * @param intervenant(Intervenant)
+     *
+     */
+    public void insertIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT);
+        this.stmt.setString(1, intervenant.getEntreprise());
+        this.stmt.setString(2, intervenant.getPrenom());
+        this.stmt.setString(3, intervenant.getNom());
+        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setString(5, intervenant.getEmail());
+        this.stmt.setString(6, intervenant.getTelephone());
+        this.stmt.setString(7, intervenant.getTelephone());
+
+        ResultSet rs = this.stmt.executeQuery();
+    }
+
+
+    /**
      * Selectionne tous les intervenant de la DB
      *
      * @return ArrayList<Intervenant>
@@ -320,7 +339,7 @@ public class DBInteraction {
      */
     public ArrayList<Intervenant> selIntervenant () throws SQLException, ExceptionDataBase {
         ArrayList<Personne> listEmployes;
-        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EMPLOYES);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_INTERVENANT);
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabIntervenant(rs);
