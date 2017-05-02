@@ -37,10 +37,31 @@ public class AnimalTab extends GenericWindow {
     protected JPanel jpDetAnimal;
 
     protected MyModelTable dataTable;
+
+    protected ArrayList<Enclos> enclosDB;
+    protected ArrayList<Animal> animauxDB;
+
     private static TableRowSorter<MyModelTable> sorter;
 
     public AnimalTab(AnimalController atAnimalController) {
         super("Animaux");
+
+        animauxDB = atAnimalController.getAllAnimal();
+        enclosDB = atAnimalController.getAllEnclos();
+
+        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
+
+        dataTable = new MyModelTable(vAnimal, columnName);
+        JTable jtTable = new JTable(dataTable);
+
+        sorter = new TableRowSorter<>(dataTable);
+        jtTable.setRowSorter(sorter);
+
+        Dimension d = jtTable.getPreferredScrollableViewportSize();
+        d.width = jtTable.getPreferredSize().width;
+        jtTable.setPreferredScrollableViewportSize(d);
+
+
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft = new GridBagConstraints();
@@ -69,6 +90,11 @@ public class AnimalTab extends GenericWindow {
         JPanel jpButtonAnimal = new JPanel();
         jpLeft.add(jpButtonAnimal, gbcLeft);
 
+        JTextField jtFilter = new JTextField();
+        jtFilter.setPreferredSize(new Dimension(90, 30));
+        jtFilter.setToolTipText("Recherche");
+
+
         JButton jbPrint = new JButton("Imprimer");
         jbPrint.addActionListener(new ActionListener() {
             @Override
@@ -80,10 +106,10 @@ public class AnimalTab extends GenericWindow {
 
 
         JButton jbFilter = new JButton("Filtrer");
-        jbPrint.addActionListener(new ActionListener() {
+        jbFilter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote("Mouse")));
+                sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
             }
         });
         setButtonConfig(jbFilter);
@@ -100,6 +126,10 @@ public class AnimalTab extends GenericWindow {
 
         gbcButtonAnimal.gridx = 1;
         gbcButtonAnimal.gridy = 0;
+        jpButtonAnimal.add(jtFilter, gbcButtonAnimal);
+
+        gbcButtonAnimal.gridx = 2;
+        gbcButtonAnimal.gridy = 0;
         jpButtonAnimal.add(jbFilter, gbcButtonAnimal);
 
 
@@ -111,21 +141,6 @@ public class AnimalTab extends GenericWindow {
 
         JPanel jpTableAnimal = new JPanel();
         jpTableAnimal.setPreferredSize(new Dimension(820, 720));
-
-        ArrayList<Animal> animauxDB = atAnimalController.getAllAnimal();
-        ArrayList<Enclos> enclosDB = atAnimalController.getAllEnclos();
-
-        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
-
-        dataTable = new MyModelTable(vAnimal, columnName);
-        JTable jtTable = new JTable(dataTable);
-
-        sorter = new TableRowSorter<>(dataTable);
-        jtTable.setRowSorter(sorter);
-
-        Dimension d = jtTable.getPreferredScrollableViewportSize();
-        d.width = jtTable.getPreferredSize().width;
-        jtTable.setPreferredScrollableViewportSize(d);
 
 
         MouseListener tableMouseListener = new MouseAdapter() {
@@ -142,6 +157,7 @@ public class AnimalTab extends GenericWindow {
                 else{
                     selectedRow = 0;
                 }
+                jpMainPanel.updateUI();
             }
         };
         jtTable.addMouseListener(tableMouseListener);
@@ -262,8 +278,9 @@ public class AnimalTab extends GenericWindow {
                     //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
                     if(atAnimalController.delAnimal(animauxDB.get(selectedRow))) {
                         dataTable.removeRow(selectedRow);
+                        animauxDB.remove(selectedRow);
                         jtTable.clearSelection();
-                        jtTable.updateUI();
+                        //jtTable.updateUI();
                     }
                 }
             }
@@ -289,17 +306,57 @@ public class AnimalTab extends GenericWindow {
         gbcRight.gridx = 0;
         gbcRight.gridy = 2;
 
+        //Formulaire/détails
         jpDetAnimal = new JPanel();
+        setDetView();
+        jpRight.add(jpDetAnimal, gbcRight);
+
+        configFrame(getJfFrame(), this);
+    }
+
+    private void setDetView() {
+        jpDetAnimal.removeAll();
+
+
+
+        jpDetAnimal.updateUI();
+    }
+
+    private void setModView() {
+        jpDetAnimal.removeAll();
+
+        Dimension defaultFormSize = new Dimension(90, 30);
+
+        Animal selectedAnimal = animauxDB.get(selectedRow);
 
         GridBagLayout gblAnimalForm = new GridBagLayout();
         jpDetAnimal.setLayout(gblAnimalForm);
         GridBagConstraints gbcAnimalForm = new GridBagConstraints();
 
+        gbcAnimalForm.anchor = GridBagConstraints.WEST;
 
-        // 3 e ligne (et +) : formulaire avec les détails d'un animal
-        JLabel jlEnclos = new JLabel("Enclos :");
+
+        // Xe ligne : nom
+        JLabel jlNomAnimal = new JLabel("Nom : ");
+        jlNomAnimal.setPreferredSize(defaultFormSize);
+        JTextField jtNomAnimal = new JTextField(selectedAnimal.getNom());
+        jtNomAnimal.setPreferredSize(defaultFormSize);
+
         gbcAnimalForm.gridx = 0;
         gbcAnimalForm.gridy = 0;
+        jpDetAnimal.add(jlNomAnimal, gbcAnimalForm);
+
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 0;
+        jpDetAnimal.add(jtNomAnimal, gbcAnimalForm);
+
+
+
+        // Xe ligne : Ligne Enclos
+        JLabel jlEnclos = new JLabel("Enclos :");
+        jlEnclos.setPreferredSize(defaultFormSize);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 1;
         jpDetAnimal.add(jlEnclos, gbcAnimalForm);
 
 
@@ -312,10 +369,10 @@ public class AnimalTab extends GenericWindow {
         //jcEnclos.setEditable(true);
         AutoCompletion ac = new AutoCompletion(jcEnclos);
         //ac.setStrict(false);
-        //jcEnclos.setSelectedIndex(2);
+        jcEnclos.setSelectedIndex(selectedAnimal.getEnclos() - 1);
 
         gbcAnimalForm.gridx = 1;
-        gbcAnimalForm.gridy = 0;
+        gbcAnimalForm.gridy = 1;
         jpDetAnimal.add(jcEnclos, gbcAnimalForm);
 
 
@@ -325,28 +382,49 @@ public class AnimalTab extends GenericWindow {
         jbAddEnclos.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                atAnimalController.refreshTest();
+                //
             }
         });
         setButtonConfig(jbAddEnclos);
         gbcAnimalForm.gridx = 2;
-        gbcAnimalForm.gridy = 0;
+        gbcAnimalForm.gridy = 1;
         jpDetAnimal.add(jbAddEnclos, gbcAnimalForm);
 
-        jpRight.add(jpDetAnimal, gbcRight);
 
 
-        configFrame(getJfFrame(), this);
-    }
+        // Xe ligne Nom Commun
+        selectedAnimal.getNomCommun();
 
-    private void setDetView() {
-        jpDetAnimal.removeAll();
+        // Xe ligne Race
+        selectedAnimal.getRace();
 
-        jpDetAnimal.updateUI();
-    }
+        // Xe ligne Sexe
+        selectedAnimal.getSexe();
 
-    private void setModView() {
-        jpDetAnimal.removeAll();
+        // Xe ligne Origine
+        selectedAnimal.getOrigine();
+
+        // Xe ligne DateNaissance
+        selectedAnimal.getDateNaissance();
+
+        // Xe ligne DateDeces
+        selectedAnimal.getDateDeces();
+
+        // Le reste dans une JTable (Poids)
+        if(selectedAnimal instanceof Felin){
+            double poids = ((Felin) selectedAnimal).getPoids();
+        }
+        else if(selectedAnimal instanceof Oiseau){
+            String bague = ((Oiseau) selectedAnimal).getBague();
+            double envergure = ((Oiseau) selectedAnimal).getEnvergure();
+        }
+        else if(selectedAnimal instanceof Reptile){
+            double temperature = ((Reptile) selectedAnimal).getTemperature();
+        }
+        else if(selectedAnimal instanceof Primate){
+            double temperature = ((Primate) selectedAnimal).getTemperature();
+        }
+
 
         jpDetAnimal.updateUI();
     }
