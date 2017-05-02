@@ -86,7 +86,7 @@ public class DBInteraction {
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / salaire / dateDebut	TypeContrat /
     private static final String INSERT_EMPLOYE = "INSERT INTO Personne VALUES (null, ?, ? , ? , ? , ? , ? , ? , ? , ? ," +
-            " ? , ? , ? ); ";
+            " NOW() , ? , ? ); ";
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
@@ -316,7 +316,7 @@ public class DBInteraction {
      */
     public ArrayList<Intervenant> selIntervenant () throws SQLException, ExceptionDataBase {
         ArrayList<Personne> listEmployes;
-        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_EMPLOYES);
+        this.stmt = DBConnection.con.prepareStatement(SELECT_INTERVENANT);
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabIntervenant(rs);
