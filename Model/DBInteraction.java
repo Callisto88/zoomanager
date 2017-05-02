@@ -1,6 +1,7 @@
 package Model;
 
 import jdk.nashorn.internal.runtime.ECMAException;
+import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
 
 import java.sql.*;
 import java.util.*;
@@ -259,6 +260,9 @@ public class DBInteraction {
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
 
+    private static final String SEL_CITY_IN_COUNTRY = "SELECT * FROM Ville WHERE ville LIKE ? AND paysId = ?";
+    private static final String SEL_ADDRESS_IN_CITY = "SELECT "
+
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
             "UPDATE Stock " +
@@ -413,20 +417,39 @@ public class DBInteraction {
             this.insPays(pays);
         }
 
-        System.out.println("La ville : " + ville.getCp() + " " + (cpIsInDB(ville.getCp()) ? "existe" : "n'existe pas"));
-        // Check si la ville est déjà dans la DB
-        // l'insère si non
-        if (!this.cpIsInDB(ville.getCp())) {
+        System.out.println("La ville : " + ville.getCp() + " " + (villeExists(ville, pays) ? "existe" : "n'existe pas dans le pays " + pays.getPays()));
+        // La ville n'existe pas dans le pays donné
+        if (!this.villeExists(ville, pays)) {
             ville.setPays(pays);
             this.insVille(ville);
         }
 
-        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (addressIsInDB(adresse) ? "existe" : "n'existe pas"));
+        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (adresseExists(adresse, ville) ? "existe" : "n'existe pas"));
         if (!this.addressIsInDB(adresse)) {
             addressID = this.insAdresse(adresse);
         }
 
         return addressID;
+    }
+
+    private boolean adresseExists(Adresse adresse, Ville ville) {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_CITY_IN_COUNTRY);
+        this.stmt.setString(1, ville.getVille());
+        this.stmt.setInt(2, pays.getPaysId());
+        ResultSet rs = this.stmt.executeQuery();
+
+        return rs.next();
+    }
+
+    private boolean villeExists(Ville ville, Pays pays) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_CITY_IN_COUNTRY);
+        this.stmt.setString(1, ville.getVille());
+        this.stmt.setInt(2, pays.getPaysId());
+        ResultSet rs = this.stmt.executeQuery();
+
+        return rs.next();
     }
 
     private int getCodePostalParVille(String ville) throws SQLException {
@@ -565,6 +588,7 @@ public class DBInteraction {
      * @return int
      */
     public boolean countryIsInDB(Pays pays) throws SQLException {
+
         this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_PAR_NOM);
         this.stmt.setString(1, pays.getPays());
         ResultSet rs = this.stmt.executeQuery();
