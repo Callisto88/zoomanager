@@ -66,6 +66,7 @@ public class MyModelTable extends AbstractTableModel {
 
     public void removeRow(int row) {
         vData.removeElementAt(row);
+        fireTableDataChanged();
     }
 
     @Override
