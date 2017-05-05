@@ -102,12 +102,17 @@ public class DBInteraction {
             "FROM Personne;";
     // Permet de modifier les informations relatives à une Personne
     private static final String UPDATE_PERSONNE = "UPDATE Personne " +
-            "SET prenom = ?, " +
+            "SET noAVS = ?, " +
+            "prenom = ?, " +
             "nom = ?, " +
             "adresse = ?, " +
             "email = ?, " +
             "telephone = ?, " +
+            "dateNaissance = ?, " +
             "responsable = ? " +
+            "statut = ?, " +
+            "dateDebut = ?, " +
+            "typeContrat = ?, " +
             "WHERE idPersonne = ?;";
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
@@ -721,13 +726,17 @@ public class DBInteraction {
     public void updatePersonne (Personne personne) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_PERSONNE);
 
-        this.stmt.setString(1, personne.getPrenom());
-        this.stmt.setString(2, personne.getNom());
-        this.stmt.setInt(3, personne.getAdresse());
-        this.stmt.setString(4, personne.getEmail());
-        this.stmt.setString(5, personne.getTelephone());
-        this.stmt.setInt(6, personne.getResponsable());
-        this.stmt.setInt(7, personne.getIdPersonne());
+        this.stmt.setString(1, personne.getNoAVS());
+        this.stmt.setString(2, personne.getPrenom());
+        this.stmt.setString(3, personne.getNom());
+        this.stmt.setInt(4, personne.getAdresse());
+        this.stmt.setString(5, personne.getEmail());
+        this.stmt.setString(6, personne.getTelephone());
+        this.stmt.setDate(7, personne.getDateNaissance());
+        this.stmt.setInt(8, personne.getResponsable());
+        this.stmt.setString(9, personne.getStatut());
+        this.stmt.setDate(10, personne.getDateDebut());
+        this.stmt.setInt(11, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
     }
