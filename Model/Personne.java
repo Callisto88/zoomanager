@@ -2,6 +2,8 @@ package Model;
 
 import java.util.Vector;
 
+// TODO: refactor adresse type to Adresse object
+
 /**
  *
  * Cette classe contient la conception de la table Personne de la base de données

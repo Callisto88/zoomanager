@@ -49,7 +49,7 @@ public class DBInteraction {
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
 
     // Insérer une nouvelle Ville dans la DB
-    private static final String INSERT_VILLE = "INSERT INTO Ville VALUES ( ? , ? , ? );";
+    private static final String INSERT_VILLE = "INSERT INTO Ville(codePostal, ville, paysId) VALUES (?, ?, ?);";
 
     // Insérer une nouvelle Adresse dans la DB
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse VALUES (?, ? , ? );";
@@ -65,6 +65,14 @@ public class DBInteraction {
 
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_ID_PAR_CP = "SELECT ville FROM Ville WHERE codePostal = ? ;";
+
+    private static final String SEL_CITY_IN_COUNTRY = "SELECT * FROM `Ville`\n" +
+            "INNER JOIN `Pays`\n" +
+            "    ON `Ville`.`paysId` = `Pays`.`paysId`\n" +
+            "WHERE `ville` LIKE ?\n" +
+            "AND `Pays`.`paysId` = ?;";
+
+    private static final String SEL_ADRESSE_IN_CITY = "SELECT * FROM `Adresse` INNER JOIN `Ville` ON `Adresse`.`codePostal` = `Ville`.`codePostal` WHERE `Adresse`.`adresse` LIKE ? AND `Ville`.`codePostal` = ?;";
 
     // Récupérer les informations sur une adresse et la ville en relation
     private static final String SEL_ADRESSE_PAR_CP_ET_ADRESSE =
@@ -262,6 +270,8 @@ public class DBInteraction {
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
 
+    private static final String SEL_RESPONSABLES = "SELECT * FROM Personne WHERE statut LIKE 'responsable'";
+
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
             "UPDATE Stock " +
@@ -420,6 +430,29 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des ADRESSES dans la DB
+
+    private ArrayList<Pays> creerTableauPays(ResultSet rs) throws ExceptionDataBase, SQLException {
+        ArrayList<Pays> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                data.add(new Pays(rs.getInt(1), rs.getString(2)));
+            }
+        }
+
+        return data;
+    }
+
+    public ArrayList<Pays> selCountries() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_PAYS);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return creerTableauPays(rs);
+    }
+
     /**
      * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
      *
@@ -430,36 +463,37 @@ public class DBInteraction {
     public int insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
 
         int addressID = adresse.getId();
-        System.out.println("Le pays : " + pays.getPays() + " " + (countryIsInDB(pays) ? "existe" : "n'existe pas"));
 
         if (!this.countryIsInDB(pays)) {
             this.insPays(pays);
         }
 
-        System.out.println("La ville : " + ville.getCp() + " " + (villeExists(ville, pays) ? "existe" : "n'existe pas dans le pays " + pays.getPays()));
         // La ville n'existe pas dans le pays donné
-        /*if (!this.villeExists(ville, pays)) {
+        if (!this.villeExists(ville, pays)) {
             ville.setPays(pays);
             this.insVille(ville);
         }
 
-        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (adresseExists(adresse, ville) ? "existe" : "n'existe pas"));
-        if (!this.addressIsInDB(adresse)) {
+        if (!this.adresseExists(adresse, ville)) {
+            adresse.setVille(ville);
             addressID = this.insAdresse(adresse);
-        }*/
+        }
 
         return addressID;
     }
 
-    /*private boolean adresseExists(Adresse adresse, Ville ville) {
+    private boolean adresseExists(Adresse adresse, Ville ville) throws SQLException {
 
-        this.stmt = DBConnection.con.prepareStatement(SEL_CITY_IN_COUNTRY);
-        this.stmt.setString(1, ville.getVille());
-        this.stmt.setInt(2, pays.getPaysId());
+        this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_IN_CITY);
+        this.stmt.setString(1, adresse.getAdresse());
+        this.stmt.setInt(2, ville.getCp());
         ResultSet rs = this.stmt.executeQuery();
 
-        return rs.next();
-    }*/
+        boolean exists = rs.next();
+        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (exists ? "existe" : "n'existe pas"));
+
+        return exists;
+    }
 
     private boolean villeExists(Ville ville, Pays pays) throws SQLException {
 
@@ -468,7 +502,10 @@ public class DBInteraction {
         this.stmt.setInt(2, pays.getPaysId());
         ResultSet rs = this.stmt.executeQuery();
 
-        return rs.next();
+        boolean exists = rs.next();
+        System.out.println("La ville : " + ville.getCp() + " " + (exists ? "existe" : "n'existe pas dans le pays " + pays.getPays()));
+
+        return exists;
     }
 
     private int getCodePostalParVille(String ville) throws SQLException {
@@ -523,7 +560,13 @@ public class DBInteraction {
      *
      * @param ville String
      */
-    private void insVille(Ville ville) throws SQLException {
+    private void insVille(Ville ville) throws SQLException, ExceptionDataBase {
+
+        // Basic checks
+        if (ville.getCp() == 0 || !(ville.getCp() == (int) ville.getCp())) {
+            throw new ExceptionDataBase("Le code postal doit être renseigné et être de type numérique");
+        }
+
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
         this.stmt.setInt(1, ville.getCp());
         this.stmt.setString(2, ville.getVille());
@@ -612,7 +655,10 @@ public class DBInteraction {
         this.stmt.setString(1, pays.getPays());
         ResultSet rs = this.stmt.executeQuery();
 
-        return rs.next();
+        boolean exists = rs.next();
+        System.out.println("Le pays : " + pays.getPays() + " " + (exists ? "existe" : "n'existe pas"));
+
+        return exists;
     }
 
     /**
@@ -633,6 +679,13 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des PERSONNE dans la DB
+
+    public ArrayList<Personne> selResponsables() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_RESPONSABLES);
+        ResultSet rs = this.stmt.executeQuery();
+        return creerTableauPersonne(rs);
+    }
 
     /**
      * Permet de modifier les informations d'un employé
@@ -671,25 +724,6 @@ public class DBInteraction {
         }
         return listStatuts;
     }
-
-
-    public ArrayList<String> getAllDifferentStatus() throws SQLException, ExceptionDataBase {
-
-        this.stmt = DBConnection.con.prepareStatement(SEL_TYPE_CONTRAT);
-        ResultSet rs = this.stmt.executeQuery();
-
-        ArrayList<String> listTypeContrat = new ArrayList<>();
-        if (!rs.next()) {
-            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
-        } else {
-            rs.beforeFirst();
-            while (rs.next()) {
-                listTypeContrat.add(rs.getString("typeContrat"));
-            }
-        }
-        return listTypeContrat;
-    }
-
 
     public ArrayList<String> selAllContractType() throws SQLException, ExceptionDataBase {
 
@@ -1960,8 +1994,6 @@ public class DBInteraction {
             }
         }
     }
-
-
 
     /**
      * Permet d'assigner un événement à une personne
