@@ -133,7 +133,7 @@ public class Start {
             e.printStackTrace();
         }*/
 
-        Animal a = new Animal(105);
+        /*Animal a = new Animal(105);
 
         try {
             query.delAnimal(a);
@@ -141,8 +141,30 @@ public class Start {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
+        Pays nPays = new Pays();
+        nPays.setPays("Arabie Saoudite");
+
+        Ville nVille = new Ville();
+        nVille.setPays(nPays);
+        nVille.setVille("Macau");
+        nVille.setCp(9281);
+
+        Adresse nAdresse = new Adresse();
+        nAdresse.setVille(nVille);
+        nAdresse.setAdresse("Rue de Médine");
+
+        try {
+            int newAdresseID = query.insAddress(nAdresse, nVille, nPays);
+
+            System.out.println(newAdresseID);
+
+        } catch (ExceptionDataBase e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         System.out.println("\n_> Programme terminé ... \n");
     }

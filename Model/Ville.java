@@ -18,19 +18,19 @@ package Model;
  *
  */
 public class Ville {
+
     /**
      * Membres privés
      */
+    private int id;
     private int cp;
     private String ville;
     private Pays pays;
-
     /**
      * Constructeur par défaut
      */
     public Ville() {
     }
-
     /**
      * Constructeur à partir du nom de la ville
      */
@@ -48,6 +48,29 @@ public class Ville {
         this.ville = ville;
         this.cp = cp;
         this.pays = pays;
+    }
+
+    /**
+     * Constructeur avec tous les membres
+     *
+     * @param id
+     * @param cp
+     * @param ville
+     * @param pays
+     */
+    public Ville(int id, int cp, String ville, Pays pays) {
+        this.id = id;
+        this.cp = cp;
+        this.ville = ville;
+        this.pays = pays;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     /**
