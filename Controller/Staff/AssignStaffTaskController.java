@@ -25,8 +25,6 @@ public class AssignStaffTaskController {
      * @param personne personne à qui l'on souhaite attribuer des tâches
      */
     public AssignStaffTaskController(Personne personne) {
-        //JFrame panel = new JFrame("Assignation de tâches");
-        //panel.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         ArrayList<Evenement> tasks = null;
 
         dbConnection();
@@ -37,9 +35,11 @@ public class AssignStaffTaskController {
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
         }
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
+            ecError = new ErrorController(exceptionsql.toString());
         }
 
 /***********************************************************/
@@ -53,7 +53,6 @@ public class AssignStaffTaskController {
         tasks.add(e3);
 /************************************************************/
         task = new TaskStaffPanel(this, personne, tasks);
-        //panel.getContentPane().add(task);
     }
 
     /**

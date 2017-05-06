@@ -17,7 +17,7 @@ import java.util.ArrayList;
  */
 public class AssignExternalTaskController {
 
-    ErrorController ecError = null;
+    private ErrorController ecError = null;
     private DBInteraction querry = null;
     private TaskExternalPanel tepExternal = null;
 
@@ -26,25 +26,22 @@ public class AssignExternalTaskController {
      * @param external
      */
     public AssignExternalTaskController(Intervenant external){
-        ArrayList<Evenement> tasks = null;
+        ArrayList<Evenement> tasks = new ArrayList<>();
 
         dbConnection();
 
-/**************** Problème méthodes non présente pour récupérer les taches non assignées des intervenant ***************/
-        /*
         try{
-            tasks = querry.getExternalUnassignedTaskEmployee();
+            tasks = querry.getAllUnassignedTaskIntervenant();
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
         }
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
+            ecError = new ErrorController(exceptionsql.toString());
         }
-        */
 
-/***********************************************************/
-        tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(
                 02, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(
@@ -55,7 +52,7 @@ public class AssignExternalTaskController {
         tasks.add(e1);
         tasks.add(e2);
         tasks.add(e3);
-/************************************************************/
+
         tepExternal = new TaskExternalPanel(this, external, tasks);
     }
 

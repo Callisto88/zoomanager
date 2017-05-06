@@ -5,6 +5,7 @@ import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.StaffAddPanel.AddStaff;
 
+import java.lang.reflect.Executable;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,68 +17,16 @@ import java.util.ArrayList;
 public class AddStaffController {
     private AddStaff add = null;
 
-    private ArrayList<String> status = null;
-    private ArrayList<String> contract = null;
-
     private ErrorController ecError = null;
     private DBInteraction querry = null;
 
     /**
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
      */
-    public AddStaffController() {
-        dbConnection();
-        getStatus();
-        getContract();
-        add = new AddStaff(this, status, contract);
+    public AddStaffController(ArrayList<String> statuts,ArrayList<String> contract,
+                              ArrayList<Personne> supervisor, ArrayList<Pays> countries) {
+        add = new AddStaff(this, statuts, contract, supervisor, countries);
         add.disableError();
-    }
-
-    /**
-     * Méthode permettant d'établir la connection avec la DB
-     */
-    private void dbConnection(){
-        try {
-            querry = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDB) {
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
-        }
-    }
-
-    /**
-     * Méthode permettant d'obtenir le listing des différents statuts présent dans la DB
-     */
-    private void getStatus(){
-        try{
-            status = querry.getAllStatuts();
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur récup statut " + exceptionDB.toString());
-        } catch (SQLException exceptionsql){
-            exceptionsql.printStackTrace();
-            ecError = new ErrorController("Erreur récup statut " + exceptionsql.toString());
-        }
-    }
-
-    /**
-     * Méthode permettant d'obtenir le listing des différents contrats présent dans la DB
-     */
-    private void getContract(){
-        try{
-            contract = querry.selAllContractType();
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur récup contrat " + exceptionDB.toString());
-        } catch (SQLException exceptionsql){
-            exceptionsql.printStackTrace();
-            ecError = new ErrorController("Erreur récup contrat " + exceptionsql.toString());
-        }
-    }
-
-    // permet d'obtenir la liste des superviseur actuels
-    private void getSupervisors(){
-
     }
 
     /**
@@ -160,6 +109,7 @@ public class AddStaffController {
         // Permet d'insérer l'adresse dans la db
         dbConnection();
         boolean bAddAddress = true;
+        int cityID = 0;
         if (bNPA && bChange && bCity && bCountry) {
             try {
 
@@ -175,9 +125,10 @@ public class AddStaffController {
                 adresse.setAdresse(address);
                 adresse.setVille(ville);
 
-                querry.insAddress(adresse, ville, pays);
+                cityID = querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
+                bAddAddress = false;
             } catch (SQLException sqlException) {
                 bAddAddress = false;
                 sqlException.printStackTrace();
@@ -189,10 +140,10 @@ public class AddStaffController {
         if(!bPhone){
             add.setPhoneError("Champ télephone non conforme");
         }
-        if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bCity && bCountry && bAddAddress && bPhone) {
+        if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
-/***************** Problème pour récupérer l'id d'une adresse pour l'insertion ainsi que l'id d'un responsable **********************/
-            Personne personne = new Personne(avs, firstName, lastName, 1,email, phone, new Date(year, month, day),2,status,new Date(1,1,1),contract);
+/***************** Problème pour récupérer l'id d'un responsable **********************/
+            Personne personne = new Personne(avs, firstName, lastName, cityID,email, phone, new Date(year, month, day),2,status,null,contract);
             insertPersonne(personne);
         }
     }
@@ -210,4 +161,17 @@ public class AddStaffController {
         }
     }
 
+    /**
+     * Méthode permettant d'établir la connection avec la DB
+     */
+    private void dbConnection(){
+        try {
+            querry = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDB) {
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        }
+
+        ArrayList<Personne> personnel = null;
+    }
 }

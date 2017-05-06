@@ -19,14 +19,26 @@ public class TaskExternalPanel extends GenericWindow {
     private Intervenant external = null;
     private AssignExternalTaskController aetcAssignTaskController = null;
 
+    private GridBagConstraints gbcConstraint = new GridBagConstraints();
+    private int y = 0;
+
     public TaskExternalPanel(AssignExternalTaskController aetcAssignTaskController, Intervenant external, ArrayList<Evenement> tasks){
         super("Tâches Intervenant");
         aleTasks = tasks;
         this.external = external;
         this.aetcAssignTaskController = aetcAssignTaskController;
-        jpMainPanel.setLayout(new GridLayout(tasks.size(), 1));
+        JLabel jlTitre = new JLabel("Détails tâches Intervenant");
+        setTitleConfig(jlTitre);
+        gbcConstraint.gridx = 0;
+        gbcConstraint.gridy = y;
+        ++y;
+        jpMainPanel.add(jlTitre, gbcConstraint);
+        jpMainPanel.setLayout(new GridBagLayout());
         JLabel jlPersonne = new JLabel(external.getPrenom() + " " + external.getNom());
-        jpMainPanel.add(jlPersonne);
+        gbcConstraint.gridy = y;
+        ++y;
+        gbcConstraint.insets = new Insets(10,10,10,10);
+        jpMainPanel.add(jlPersonne, gbcConstraint);
 
         // Boucle permettant de crée les boutons correspondant au tâches non-assignés, et les efface
         // en attribuant la tache sélectionné (cliqué) à la personne
@@ -51,7 +63,15 @@ public class TaskExternalPanel extends GenericWindow {
 
         // Permet d'ajouter chaque bouttons au pannel
         for(int i = 0; i < buttons.size(); ++i){
-            jpMainPanel.add(buttons.get(i));
+            if(i % 2 == 0) {
+                gbcConstraint.gridx = 0;
+                gbcConstraint.gridy = y;
+                ++y;
+            }
+            else{
+                gbcConstraint.gridx = 1;
+            }
+            jpMainPanel.add(buttons.get(i), gbcConstraint);
             System.out.println(buttons.get(i).getName());
         }
 

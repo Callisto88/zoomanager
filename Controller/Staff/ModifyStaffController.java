@@ -5,6 +5,7 @@ import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.ModifyPanel.ModifyStaffPanel;
 
+import java.sql.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -21,16 +22,19 @@ public class ModifyStaffController {
     /**
      * Constructeur du controlleur
      */
-    public ModifyStaffController(Personne personne) {
-        mspModifyStaff = new ModifyStaffPanel(this,personne);
+    public ModifyStaffController(Personne personne, ArrayList<String> contract, ArrayList<String> status,
+                                 ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
         this.personne = personne;
+        mspModifyStaff = new ModifyStaffPanel(this ,personne , contract, status, countries, supervisor);
+
     }
 
     /**
      * Méthode permettant de modifier la personne
      */
     public void checkModifyStaff(String sFirstName, String sLastName, String sSupervisor, String sEMail, String sAddress,
-                                 String sNPA, String sCity, String sCountry, String sPhone) {
+                                 String sNPA, String sCity, String sCountry, String sPhone,
+                                 String sContract, String sStatut) {
 
         boolean bLastName = Validate.isAlphabetic(sLastName);
         if(!bLastName){
@@ -53,10 +57,6 @@ public class ModifyStaffController {
         if(!bCity){
             mspModifyStaff.setCityError("Le champ ville non conforme");
         }
-        boolean bCountry = Validate.isAlphabetic(sCountry);
-        if(!bCountry){
-            mspModifyStaff.setCountryError("Le champ pays non conforme");
-        }
         int cp = 0;
         boolean bChange = true;
         try{
@@ -68,6 +68,7 @@ public class ModifyStaffController {
         }
         dbConnection();
         boolean bAddAddress = true;
+        int cityID = 0;
         try{
             Pays pays = new Pays();
             pays.setPays(sCountry);
@@ -81,7 +82,7 @@ public class ModifyStaffController {
             adresse.setAdresse(sAddress);
             adresse.setVille(ville);
 
-            querry.insAddress(adresse, ville, pays);
+            cityID = querry.insAddress(adresse, ville, pays);
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
@@ -90,8 +91,11 @@ public class ModifyStaffController {
             exceptionDataBase.printStackTrace();
         }
         boolean bPhone = Validate.isPhoneNumber(sPhone);
+        if(!bPhone){
+            mspModifyStaff.setPhoneError("Le champ téléphone est incorrect");
+        }
 
-        if(bFirstName && bLastName && bEmail && bCity && bNPA && bCountry && bChange && bAddAddress && bPhone){
+        if(bFirstName && bLastName && bEmail && bCity && bNPA && bChange && bAddAddress && bPhone){
             personne.setEmail(sEMail);
             personne.setPrenom(sFirstName);
             personne.setNom(sLastName);
@@ -126,4 +130,5 @@ public class ModifyStaffController {
             ecError = new ErrorController(exceptionDB.toString());
         }
     }
+
 }

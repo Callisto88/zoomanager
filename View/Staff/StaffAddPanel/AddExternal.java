@@ -1,21 +1,24 @@
 package View.Staff.StaffAddPanel;
 
 import Controller.Staff.AddExternalController;
-import Model.Adresse;
 import Model.Pays;
-import Model.Ville;
 import View.GenericWindow;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 /**
  * Created by Bureau on 23.04.2017.
  */
 public class AddExternal extends GenericWindow{
     private AddExternalController aecController = null;
+
+    private GridBagConstraints gbcConstraint = new GridBagConstraints();
+    private Dimension dLabel = new Dimension(90, 30);
+    private Dimension dInput = new Dimension(150, 30);
 
     // String permettant de récupérer les champs de saisie
     private String sLastName;
@@ -35,140 +38,127 @@ public class AddExternal extends GenericWindow{
     private JTextField jtfAddress;
     private JTextField jtfCity;
     private JTextField jtfNPA;
-    private JTextField jtfCountry;
+    private JComboBox jcbCountry;
     private JTextField jtfPhone;
 
-    private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlFirstNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlBirthdayError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlCompagnyError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlEmailError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlAddressError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlCityError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlNPAError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlCountryError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlPhoneError = new JLabel("*", JLabel.CENTER);
 
-
-    public AddExternal(AddExternalController controller){
+    public AddExternal(AddExternalController controller, ArrayList<Pays> countries){
         super("Ajout d'intervenant");
         aecController = controller;
-        jpMainPanel.setLayout(new GridLayout(13,1));
+        jpMainPanel.setLayout(new GridBagLayout());
 
 
         // Ajout des champs utiles pour le nom
         JPanel jpLastNamePanel = new JPanel();
         JLabel jlLastNameLabel = new JLabel("Nom : ");
-        jpLastNamePanel.add(jlLastNameLabel, JPanel.LEFT_ALIGNMENT);
-        jtfLastNameInput = new JTextField("last", 7);
+        jlLastNameLabel.setPreferredSize(dLabel);
+        jpLastNamePanel.add(jlLastNameLabel);
+        jtfLastNameInput = new JTextField("last");
         jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jpLastNamePanel.add(jtfLastNameInput, JPanel.CENTER_ALIGNMENT);
-        jlLastNameError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlLastNameError.setForeground(Color.RED);
-        jlLastNameError.setHorizontalAlignment(JLabel.CENTER);
-        jpLastNamePanel.add(jlLastNameError, JPanel.RIGHT_ALIGNMENT);
-        jpMainPanel.add(jpLastNamePanel);
+        jtfLastNameInput.setPreferredSize(dInput);
+        jpLastNamePanel.add(jtfLastNameInput);
+        gbcConstraint.gridx = 0;
+        gbcConstraint.gridy = 0;
+        gbcConstraint.insets = new Insets(10,5,10,5);
+        gbcConstraint.anchor = GridBagConstraints.WEST;
+        jpMainPanel.add(jpLastNamePanel, gbcConstraint);
 
         // Ajout des champs utiles pour le prénom
         JPanel jpFirstNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Prénom : ");
-        jpFirstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
-        jtfFirstNameInput = new JTextField("first", 7);
+        lastNameLabel.setPreferredSize(dLabel);
+        jpFirstNamePanel.add(lastNameLabel);
+        jtfFirstNameInput = new JTextField("first");
         jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jpFirstNamePanel.add(jtfFirstNameInput, JPanel.CENTER_ALIGNMENT);
-        jlFirstNameError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlFirstNameError.setForeground(Color.RED);
-        jlFirstNameError.setHorizontalAlignment(JLabel.CENTER);
-        jpFirstNamePanel.add(jlFirstNameError,JPanel.RIGHT_ALIGNMENT);
-        jpMainPanel.add(jpFirstNamePanel);
+        jtfFirstNameInput.setPreferredSize(dInput);
+        jpFirstNamePanel.add(jtfFirstNameInput);
+        gbcConstraint.gridy = 1;
+        jpMainPanel.add(jpFirstNamePanel, gbcConstraint);
 
         // Ajout des champs utiles pour l'entreprise
         JPanel jpCompagny = new JPanel();
         JLabel jlCompagny = new JLabel("Entreprise : ");
+        jlCompagny.setPreferredSize(dLabel);
         jpCompagny.add(jlCompagny);
-        jtfCompagnyInput = new JTextField("Entreprise", 7);
+        jtfCompagnyInput = new JTextField("Entreprise");
+        jtfCompagnyInput.setPreferredSize(dInput);
         jpCompagny.add(jtfCompagnyInput);
-        jlCompagnyError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlCompagnyError.setForeground(Color.RED);
-        jlCompagnyError.setHorizontalAlignment(JLabel.CENTER);
-        jpCompagny.add(jlCompagnyError);
-        jpMainPanel.add(jpCompagny);
+        gbcConstraint.gridy = 2;
+        jpMainPanel.add(jpCompagny, gbcConstraint);
 
         // Ajout des champs utiles pour l'adresse
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
+        jlAddress.setPreferredSize(dLabel);
         jpAddress.add(jlAddress);
-        jtfAddress = new JTextField("adresse", 7);
+        jtfAddress = new JTextField("adresse");
+        jtfAddress.setPreferredSize(dInput);
         jpAddress.add(jtfAddress);
-        jlAddressError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlAddressError.setForeground(Color.RED);
-        jlAddressError.setHorizontalAlignment(JLabel.CENTER);
-        jpAddress.add(jlAddressError);
-        jpMainPanel.add(jpAddress);
+        gbcConstraint.gridy = 3;
+        jpMainPanel.add(jpAddress, gbcConstraint);
 
         // Ajout des champs utiles pour la ville
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
+        jlCity.setPreferredSize(dLabel);
         jpCity.add(jlCity);
-        jtfCity = new JTextField("ville", 7);
+        jtfCity = new JTextField("Ville");
+        jtfCity.setPreferredSize(dInput);
         jpCity.add(jtfCity);
-        jlCityError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlCityError.setForeground(Color.RED);
-        jlCityError.setHorizontalAlignment(JLabel.CENTER);
-        jpCity.add(jlCityError);
-        jpMainPanel.add(jpCity);
+        gbcConstraint.gridy = 4;
+        jpMainPanel.add(jpCity, gbcConstraint);
 
         // Ajout des champs utiles pour le NPA
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
+        jlNPA.setPreferredSize(dLabel);
         jpNPA.add(jlNPA);
-        jtfNPA = new JTextField("npa", 7);
+        jtfNPA = new JTextField("npa");
+        jtfNPA.setPreferredSize(dInput);
         jpNPA.add(jtfNPA);
-        jlNPAError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlNPAError.setForeground(Color.RED);
-        jlNPAError.setHorizontalAlignment(JLabel.CENTER);
-        jpNPA.add(jlNPAError);
-        jpMainPanel.add(jpNPA);
+        gbcConstraint.gridy = 5;
+        jpMainPanel.add(jpNPA, gbcConstraint);
 
         // Ajout des champs utiles pour le Pays
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
+        jlCountry.setPreferredSize(dLabel);
         jpCountry.add(jlCountry);
-        jtfCountry = new JTextField("pays", 7);
-        jpCountry.add(jtfCountry);
-        jlCountryError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlCountryError.setForeground(Color.RED);
-        jlCountryError.setHorizontalAlignment(JLabel.CENTER);
-        jpCountry.add(jlCountryError);
-        jpMainPanel.add(jpCountry);
+        jcbCountry = new JComboBox();
+        for(int i = 0; i < countries.size(); ++i){
+            jcbCountry.addItem(countries.get(i).getPays());
+        }
+        jcbCountry.setPreferredSize(dInput);
+        jpCountry.add(jcbCountry);
+        gbcConstraint.gridy = 6;
+        jpMainPanel.add(jpCountry, gbcConstraint);
 
         // Ajout des champs utiles pour l'e-mail
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-mail : ");
+        jlEmail.setPreferredSize(dLabel);
         jpEmail.add(jlEmail);
-        jtfEmail = new JTextField("e-mail", 7);
+        jtfEmail = new JTextField("e-mail");
+        jtfEmail.setPreferredSize(dInput);
         jpEmail.add(jtfEmail);
-        jlEmailError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlEmailError.setForeground(Color.RED);
-        jlEmailError.setHorizontalAlignment(JLabel.CENTER);
-        jpEmail.add(jlEmailError);
-        jpMainPanel.add(jpEmail);
+        gbcConstraint.gridy = 7;
+        jpMainPanel.add(jpEmail, gbcConstraint);
 
         // Ajout des champs utiles pour le télephone
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
+        jlPhone.setPreferredSize(dLabel);
         jpPhone.add(jlPhone);
-        jtfPhone = new JTextField("téléphone", 7);
+        jtfPhone = new JTextField("téléphone");
+        jtfPhone.setPreferredSize(dInput);
         jpPhone.add(jtfPhone);
-        jlPhoneError.setFont(new Font("Serif", Font.BOLD, 32));
-        jlPhoneError.setForeground(Color.RED);
-        jlPhoneError.setHorizontalAlignment(JLabel.CENTER);
-        jpPhone.add(jlPhoneError);
-        jpMainPanel.add(jpPhone);
+        gbcConstraint.gridy = 8;
+        jpMainPanel.add(jpPhone, gbcConstraint);
 
         JButton add = new JButton("Ajouter");
         setButtonConfig(add);
-        jpMainPanel.add(add);
+        gbcConstraint.gridy = 9;
+        jpMainPanel.add(add, gbcConstraint);
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
         add.addActionListener(new ActionListener() {
@@ -182,8 +172,8 @@ public class AddExternal extends GenericWindow{
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
-                sCity = jtfCity.getText();
-                sCountry = jtfCountry.getText();
+                sCity = jcbCountry.getSelectedItem().toString();
+                sCountry = jcbCountry.getSelectedItem().toString();
                 sPhone = jtfPhone.getText();
                 controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
             }
@@ -195,15 +185,14 @@ public class AddExternal extends GenericWindow{
      * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jlLastNameError.setVisible(false);
-        jlFirstNameError.setVisible(false);
-        jlCompagnyError.setVisible(false);
-        jlAddressError.setVisible(false);
-        jlCityError.setVisible(false);
-        jlNPAError.setVisible(false);
-        jlCountryError.setVisible(false);
-        jlEmailError.setVisible(false);
-        jlPhoneError.setVisible(false);
+        jtfLastNameInput.setBackground(Color.WHITE);
+        jtfFirstNameInput.setBackground(Color.WHITE);
+        jtfCompagnyInput.setBackground(Color.WHITE);
+        jtfAddress.setBackground(Color.WHITE);
+        jtfNPA.setBackground(Color.WHITE);
+        jtfCity.setBackground(Color.WHITE);
+        jtfEmail.setBackground(Color.WHITE);
+        jtfPhone.setBackground(Color.WHITE);
     }
 
     /**
@@ -211,8 +200,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setFirstNameError(String error) {
-        jlFirstNameError.setVisible(true);
-        jlFirstNameError.setToolTipText(error);
+        jtfFirstNameInput.setToolTipText(error);
         jtfFirstNameInput.setBackground(Color.RED);
     }
 
@@ -221,8 +209,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setLastNameError(String error) {
-        jlLastNameError.setVisible(true);
-        jlLastNameError.setToolTipText(error);
+        jtfLastNameInput.setToolTipText(error);
         jtfLastNameInput.setBackground(Color.RED);
     }
 
@@ -231,8 +218,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setCompagnyError(String error) {
-        jlCompagnyError.setVisible(true);
-        jlCompagnyError.setToolTipText(error);
+        jtfCompagnyInput.setToolTipText(error);
         jtfCompagnyInput.setBackground(Color.RED);
     }
 
@@ -241,8 +227,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setEmailError(String error) {
-        jlEmailError.setVisible(true);
-        jlEmailError.setToolTipText(error);
+        jtfEmail.setToolTipText(error);
         jtfEmail.setBackground(Color.RED);
     }
 
@@ -251,19 +236,8 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setAddressError(String error) {
-        jlAddressError.setVisible(true);
-        jlAddressError.setToolTipText(error);
+        jtfAddress.setToolTipText(error);
         jtfAddress.setBackground(Color.RED);
-    }
-
-    /**
-     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
-     * @param error message indiquant plus précisément l'erreur
-     */
-    public void setCityError(String error) {
-        jlCityError.setVisible(true);
-        jlCityError.setToolTipText(error);
-        jtfCity.setBackground(Color.RED);
     }
 
     /**
@@ -271,8 +245,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setNPAError(String error) {
-        jlNPAError.setVisible(true);
-        jlNPAError.setToolTipText(error);
+        jtfNPA.setToolTipText(error);
         jtfNPA.setBackground(Color.RED);
     }
 
@@ -280,10 +253,9 @@ public class AddExternal extends GenericWindow{
      * Méthode permettant de signaler une erreur sur le champ de saisie du pays
      * @param error message indiquant plus précisément l'erreur
      */
-    public void setCountryError(String error){
-        jlCountryError.setVisible(true);
-        jlCountryError.setToolTipText(error);
-        jtfCountry.setBackground(Color.RED);
+    public void setCityError(String error){
+        jtfCity.setToolTipText(error);
+        jtfCity.setBackground(Color.RED);
     }
 
     /**
@@ -291,8 +263,7 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setPhoneError(String error) {
-        jlPhoneError.setVisible(true);
-        jlPhoneError.setToolTipText(error);
+        jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
     }
 }

@@ -6,6 +6,7 @@ import Model.*;
 import View.Staff.StaffAddPanel.AddExternal;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  * Created by André on 23.04.2017.
@@ -16,11 +17,12 @@ public class AddExternalController {
     private DBInteraction querry = null;
     private ErrorController ecError = null;
 
+
     /**
      * Constructeur du controlleur d'ajout d'intervenant
      */
-    public AddExternalController(){
-        aeExternal = new AddExternal(this);
+    public AddExternalController(ArrayList<Pays> countries){
+        aeExternal = new AddExternal(this, countries);
         aeExternal.disableError();
     }
 
@@ -77,39 +79,32 @@ public class AddExternalController {
         if(!bNPA){
             aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
         }
-        // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city);
-        if(!bCity){
-            aeExternal.setCityError("Le champ ville non conforme");
-        }
         // Permet de checker le pays
         boolean bCountry = Validate.isAlphabetic(country);
         if(!bCountry){
-            aeExternal.setCountryError("Le champ pays non conforme");
+            aeExternal.setCityError("Le champ pays non conforme");
         }
 
-        /*
-
-        ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
+        //! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
 
         // permet de convertir le npa en int
         int cp = 0;
         boolean bChange = true;
         if(bNPA) {
             try {
-                cp = Integer.parseInt(city.getCp());
+                cp = Integer.parseInt(npa);
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
                 ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
             }
         }
-        */
 
         // Permet d'insérer une adresse
         dbConnection();
         boolean bAddAddress = true;
-        if(bNPA && bCity && bCountry) {
+        int cityID = 0;
+        if(bNPA && bChange && bCountry) {
             try {
 
                 Pays pays = new Pays();
@@ -123,7 +118,7 @@ public class AddExternalController {
                 adresse.setAdresse(address);
                 adresse.setVille(ville);
 
-                querry.insAddress(adresse, ville, pays);
+                cityID = querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
             } catch (SQLException sqlException) {
@@ -140,10 +135,10 @@ public class AddExternalController {
         }
 
         // Si tout est ok, on lance l'insertion
-        if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bCity && bCountry && bAddAddress && bPhone) {
+        if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bChange && bCountry && bAddAddress && bPhone) {
             dbConnection();
 /***************** Problème pour récupérer l'id d'une adresse pour l'insertion ************************/
-            Intervenant external = new Intervenant(compagny, lastName, firstName, 1,email, phone);
+            Intervenant external = new Intervenant(compagny, lastName, firstName, cityID,email, phone);
             insertExternal(external);
         }
     }
@@ -154,9 +149,9 @@ public class AddExternalController {
      */
     public void insertExternal(Intervenant external){
 /***************************** Problème méthode non présente dans la DB *************************************/
-        /*
+
         try{
-            querry.insertExternal(external);
+            querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
@@ -164,8 +159,9 @@ public class AddExternalController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController("Erreur insertion externe " + exceptionsql.toString());
         }
-        */
+
         System.out.println("Intervenant externe inséré");
 
     }
+
 }

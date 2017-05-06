@@ -1,7 +1,6 @@
 package View.Staff.ModifyPanel;
 
 import Controller.Staff.ModifyExternalController;
-import Model.ExceptionDataBase;
 import Model.Intervenant;
 import View.GenericWindow;
 
@@ -18,9 +17,20 @@ public class ModifyExternalPanel extends GenericWindow {
     private Intervenant external = null;
     private  ModifyExternalController mecExternalController = null;
 
+    // variable pour permettre l'ajout dynamique des champs avec le bouton en position finale
+    private JPanel jpModifyPanel = new JPanel();
+    private GridBagConstraints gbcConstraint = new GridBagConstraints();
+    private int x = 0;
+    private int y = 0;
+    private int NUMBER_OF_ROW = 11;
+
     // Champs de saisie pour la modification
     private JTextField jtfLastNameInput;
     private JTextField jtfFirstNameInput;
+    private JTextField jtfAddress;
+    private JTextField jtfNPA;
+    private JTextField jtfCity;
+    private JTextField jtfCountry;
     private JTextField jtfEmail;
     private JTextField jtfPhone;
 
@@ -29,12 +39,10 @@ public class ModifyExternalPanel extends GenericWindow {
     private String sFirstName;
     private String sEMail;
     private String sPhone;
-
-    // Label signalant une erreur
-    private JLabel jlLastNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlFirstNameError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlEmailError = new JLabel("*", JLabel.CENTER);
-    private JLabel jlPhoneError = new JLabel("*", JLabel.CENTER);
+    private String sAddress;
+    private String sNPA;
+    private String sCity;
+    private String sCountry;
 
     // Booléens pour savoir si les camps on été demandé
     private boolean bFirstName = false;
@@ -48,7 +56,15 @@ public class ModifyExternalPanel extends GenericWindow {
         super("Modification Intervenant");
         this.external = external;
         this.mecExternalController = mecExternalController;
-        jpMainPanel.setLayout(new GridLayout(8,1));
+        sLastName = external.getNom();
+        sFirstName = external.getPrenom();
+        sEMail = external.getEmail();
+        sPhone = external.getTelephone();
+        // TODO: adresses!!
+        Dimension defaultFormSize = new Dimension(350, 550);
+        jpModifyPanel.setPreferredSize(defaultFormSize);
+        GridBagLayout gblModify = new GridBagLayout();
+        jpModifyPanel.setLayout(gblModify);
         /**
          * Liste déroulante pour séléctionner les champs que l'on souhaite modifier
          */
@@ -59,21 +75,26 @@ public class ModifyExternalPanel extends GenericWindow {
         boxChoiceLabel.addItem("Prénom");
         boxChoiceLabel.addItem("E-Mail");
         boxChoiceLabel.addItem("Téléphone");
+        boxChoiceLabel.addItem("Adresse");
         modification.add(boxChoiceLabel);
         /*****************************************************************************************/
-        GridBagConstraints gbcStockBouton = new GridBagConstraints();
-        gbcStockBouton.insets = new Insets(0,15,0,15);
+        // contraintes permettant d'insérer les panels en incrémmentant y
+        gbcConstraint.gridx = x;
+        gbcConstraint.gridy = y;
+        // Permet de crée des marges autour des panels lorsqu'on les inserera
+        gbcConstraint.insets = new Insets(5, 5, 10, 10);
+        gbcConstraint.anchor = GridBagConstraints.NORTH;
+        ++y;
+        jpModifyPanel.add(modification, gbcConstraint);
 
-        jpMainPanel.add(modification);
-        //jpMainPanel.add(boxChoiceLabel);
+        // Bouton pour demander l'ajout de champ à modifier
 
-        /**
-         * Bouton pour demander l'ajout de champ à modifier
-         */
         JPanel modifyLabel = new JPanel();
         JButton newLabel = new JButton("Ajouter un nouveau champ");
         modifyLabel.add(newLabel);
-        jpMainPanel.add(modifyLabel);
+        gbcConstraint.gridy = y;
+        ++y;
+        jpModifyPanel.add(modifyLabel, gbcConstraint);
 
         /**
          * Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
@@ -94,7 +115,7 @@ public class ModifyExternalPanel extends GenericWindow {
                     addEMail();
                     addModifyButton();
                 }
-                if(boxChoiceLabel.getSelectedItem().equals("Ville")){
+                if(boxChoiceLabel.getSelectedItem().equals("Adresse")){
                     addAddress();
                     addModifyButton();
                 }
@@ -113,8 +134,10 @@ public class ModifyExternalPanel extends GenericWindow {
                 }
             }
         });
-
         this.setVisible(true);
+        gbcConstraint.weighty = 1.0;
+        jpModifyPanel.add(new JPanel(), gbcConstraint);
+        jpMainPanel.add(jpModifyPanel, gbcConstraint);
         configFrame(getJfFrame(), this);
         this.setMinimumSize(new Dimension(200,400));
     }
@@ -130,7 +153,10 @@ public class ModifyExternalPanel extends GenericWindow {
             lastNamePanel.add(lastNameLabel);
             jtfLastNameInput = new JTextField(external.getNom(), 20);
             lastNamePanel.add(jtfLastNameInput);
-            jpMainPanel.add(lastNamePanel);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(lastNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
             System.out.println("modif Nom");
         }
@@ -147,7 +173,10 @@ public class ModifyExternalPanel extends GenericWindow {
             firstNamePanel.add(firstNameLabel);
             jtfFirstNameInput = new JTextField(external.getPrenom(), 20);
             firstNamePanel.add(jtfFirstNameInput);
-            jpMainPanel.add(firstNamePanel);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(firstNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
             System.out.println("modif Prénom");
         }
@@ -160,11 +189,14 @@ public class ModifyExternalPanel extends GenericWindow {
         if (!bEMail) {
             bEMail = true;
             JPanel emailPanel = new JPanel();
-            JLabel emailLabel = new JLabel("Ville E-Mail : ");
+            JLabel emailLabel = new JLabel("E-Mail : ");
             emailPanel.add(emailLabel);
             jtfEmail = new JTextField(external.getEmail(), 20);
             emailPanel.add(jtfEmail);
-            jpMainPanel.add(emailPanel);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(emailPanel, gbcConstraint);
             jpMainPanel.revalidate();
             System.out.println("modif E-Mail");
         }
@@ -176,13 +208,56 @@ public class ModifyExternalPanel extends GenericWindow {
     private void addAddress() {
         if (!bAddress) {
             bAddress = true;
+            // Pour ajouter l'adresse
             JPanel addressPanel = new JPanel();
             JLabel addressLabel = new JLabel("Adresse : ");
             addressPanel.add(addressLabel);
-            addressPanel.add(new JTextField(/*personne.getAdresse()*/"adresse", 20));
-            jpMainPanel.add(addressPanel);
+            // TODO: Récupération de l'adresse
+            jtfAddress = new JTextField("adresse", 20);
+            addressPanel.add(jtfAddress);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(addressPanel, gbcConstraint);
+
+            // Pour ajouter le npa
+            JPanel jpNPA = new JPanel();
+            JLabel jlNPA = new JLabel("NPA : ");
+            jpNPA.add(jlNPA);
+            // TODO: récupération du npa
+            jtfNPA = new JTextField("NPA", 20);
+            jpNPA.add(jtfNPA);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(jpNPA, gbcConstraint);
+
+            // Pour ajouter la ville
+            JPanel jpCity = new JPanel();
+            JLabel jlCity = new JLabel("Ville : ");
+            jpCity.add(jlCity);
+            // TODO: Récupération de la ville
+            jtfCity = new JTextField("Ville", 20);
+            jpCity.add(jtfCity);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(jpCity, gbcConstraint);
+
+            //Pour ajouter le pays
+            JPanel jpCountry = new JPanel();
+            JLabel jlCountry = new JLabel("Pays : ");
+            jpCountry.add(jlCountry);
+            // TODO: Récupération du Pays
+            jtfCountry = new JTextField("Pays", 20);
+            jpCountry.add(jtfCountry);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(jpCountry, gbcConstraint);
+
             jpMainPanel.revalidate();
-            System.out.println("modif Ville");
+            System.out.println("modif Adresse");
         }
     }
 
@@ -197,7 +272,10 @@ public class ModifyExternalPanel extends GenericWindow {
             telephonePanel.add(telephoneLabel);
             jtfPhone = new JTextField(external.getTelephone(), 20);
             telephonePanel.add(jtfPhone);
-            jpMainPanel.add(telephonePanel);
+            gbcConstraint.anchor = GridBagConstraints.WEST;
+            gbcConstraint.gridy = y;
+            ++y;
+            jpModifyPanel.add(telephonePanel, gbcConstraint);
             jpMainPanel.revalidate();
             System.out.println("modif Téléphone");
         }
@@ -210,14 +288,26 @@ public class ModifyExternalPanel extends GenericWindow {
         if (!bButton) {
             bButton = true;
             JButton jbModify = new JButton("Modifier");
-            jpMainPanel.add(jbModify);
+            gbcConstraint.gridy = NUMBER_OF_ROW;
+            gbcConstraint.anchor = GridBagConstraints.CENTER;
+            jpModifyPanel.add(jbModify, gbcConstraint);
             jbModify.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    sFirstName = jtfFirstNameInput.getText();
-                    sLastName = jtfLastNameInput.getText();
-                    sEMail = jtfEmail.getText();
-                    sPhone = jtfPhone.getText();
+                    // A CHECKER SI LE CHAMP A ETE SELECTIONER!!!
+                    disableError();
+                    if(bFirstName) {
+                        sFirstName = jtfFirstNameInput.getText();
+                    }
+                    if(bLastName) {
+                        sLastName = jtfLastNameInput.getText();
+                    }
+                    if(bEMail) {
+                        sEMail = jtfEmail.getText();
+                    }
+                    if(bPhone) {
+                        sPhone = jtfPhone.getText();
+                    }
                     mecExternalController.checkModifyExternal(sFirstName, sLastName, sEMail, sPhone);
                 }
             });
@@ -228,10 +318,14 @@ public class ModifyExternalPanel extends GenericWindow {
      * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jlLastNameError.setVisible(false);
-        jlFirstNameError.setVisible(false);
-        jlEmailError.setVisible(false);
-        jlPhoneError.setVisible(false);
+        jtfLastNameInput.setBackground(Color.WHITE);
+        jtfLastNameInput.setToolTipText(null);
+        jtfFirstNameInput.setBackground(Color.WHITE);
+        jtfFirstNameInput.setToolTipText(null);
+        jtfEmail.setBackground(Color.WHITE);
+        jtfEmail.setToolTipText(null);
+        jtfPhone.setBackground(Color.WHITE);
+        jtfPhone.setToolTipText(null);
     }
 
     /**
@@ -239,8 +333,7 @@ public class ModifyExternalPanel extends GenericWindow {
      * @param error message indiquant plus précisément l'erreur
      */
     public void setFirstNameError(String error) {
-        jlFirstNameError.setVisible(true);
-        jlFirstNameError.setToolTipText(error);
+        jtfFirstNameInput.setToolTipText(error);
         jtfFirstNameInput.setBackground(Color.RED);
     }
 
@@ -249,8 +342,7 @@ public class ModifyExternalPanel extends GenericWindow {
      * @param error message indiquant plus précisément l'erreur
      */
     public void setLastNameError(String error) {
-        jlLastNameError.setVisible(true);
-        jlLastNameError.setToolTipText(error);
+        jtfLastNameInput.setToolTipText(error);
         jtfLastNameInput.setBackground(Color.RED);
     }
 
@@ -259,8 +351,7 @@ public class ModifyExternalPanel extends GenericWindow {
      * @param error message indiquant plus précisément l'erreur
      */
     public void setEmailError(String error) {
-        jlEmailError.setVisible(true);
-        jlEmailError.setToolTipText(error);
+        jtfEmail.setToolTipText(error);
         jtfEmail.setBackground(Color.RED);
     }
 
@@ -269,8 +360,7 @@ public class ModifyExternalPanel extends GenericWindow {
      * @param error message indiquant plus précisément l'erreur
      */
     public void setPhoneError(String error) {
-        jlPhoneError.setVisible(true);
-        jlPhoneError.setToolTipText(error);
+        jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
     }
 }

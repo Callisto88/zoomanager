@@ -1,10 +1,7 @@
 package Controller.Staff;
 
 import Controller.Error.ErrorController;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Intervenant;
-import Model.Personne;
+import Model.*;
 import View.Staff.StaffMainPanel.StaffView;
 
 import javax.swing.*;
@@ -71,7 +68,7 @@ public class StaffController {
             ecError = new ErrorController(exceptionsql.toString());
         }
         /******************* Permet de tester hors ligne **************************/
-        /*
+/*
         alpPersonnel = new ArrayList<>();
         Personne p1 = new Personne("123.1234.1234.12", "Lara", "Gut", 2, "Lara.gut@swisscom.ch",
                 "00415678923", new Date(1988, 02, 28),1, "Aide",
@@ -94,11 +91,10 @@ public class StaffController {
      * @return un ArrayList avec le personnel présent dans la base de donnée
      */
     public ArrayList<Intervenant> getExternal(){
-        ArrayList<Intervenant> aliExternal = null;
-        aliExternal = new ArrayList<>();
-        /*
+        ArrayList<Intervenant> aliExternal = new ArrayList<>();
+
         try{
-            aliExternal = querry.getAllExternal;
+            aliExternal = querry.selIntervenant();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
@@ -106,7 +102,7 @@ public class StaffController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController(exceptionsql.toString());
         }
-        */
+
         Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
         Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
         Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
@@ -116,25 +112,88 @@ public class StaffController {
         return aliExternal;
     }
 
+    private ArrayList<Pays> getCountries(){
+        dbConnection();
+        ArrayList<Pays> alp = null;
+        try {
+            alp = querry.selCountries();
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        return alp;
+    }
+
     /**
-     * Méthode permettant de réafficher la fenêtre du alpPersonnel
+     * Méthode permettant de récupérer les responsables de l'entreprise
      */
-    public void revalidateView() {
-        mainPanel.setVisible(true);
+    private ArrayList<Personne> getResponsable(){
+        dbConnection();
+        ArrayList<Personne> alp = null;
+        try {
+            alp = querry.selResponsables();
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        return alp;
+    }
+
+
+    /**
+     * Méthode permettant d'obtenir le listing des différents statuts présent dans la DB
+     */
+    private ArrayList<String> getStatus(){
+        dbConnection();
+        ArrayList<String> als = null;
+        try{
+            als = querry.getAllStatuts();
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController("Erreur récup statut " + exceptionDB.toString());
+        } catch (SQLException exceptionsql){
+            exceptionsql.printStackTrace();
+            ecError = new ErrorController("Erreur récup statut " + exceptionsql.toString());
+        }
+        return als;
+    }
+
+    /**
+     * Méthode permettant d'obtenir le listing des différents contrats présent dans la DB
+     */
+    private ArrayList<String> getContract(){
+        dbConnection();
+        ArrayList<String> als = null;
+        try{
+            als = querry.selAllContractType();
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController("Erreur récup contrat " + exceptionDB.toString());
+        } catch (SQLException exceptionsql){
+            exceptionsql.printStackTrace();
+            ecError = new ErrorController("Erreur récup contrat " + exceptionsql.toString());
+        }
+        return als;
     }
 
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
     public void addStaffView() {
-        addController = new AddStaffController();
+        addController = new AddStaffController(getStatus(), getContract(), getResponsable(), getCountries());
     }
 
     /**
      * Méthode permettant l'ajout d'intervenant
      */
     public void addExternalView(){
-        aecAddExternal = new AddExternalController();
+        aecAddExternal = new AddExternalController(getCountries());
     }
 
     /**
@@ -157,7 +216,7 @@ public class StaffController {
      * Méthode pour instancier la fenêtre de modification d'une personne
      */
     public void modifyStaffView(Personne personne) {
-        modifyStaffController = new ModifyStaffController(personne);
+        modifyStaffController = new ModifyStaffController(personne,getContract(), getStatus(), getCountries(), getResponsable());
     }
 
     public void modifyExternalView(Intervenant external){
@@ -193,13 +252,16 @@ public class StaffController {
      */
     public void deleteExternal(Intervenant external){
         dbConnection();
-        /*
+
         try{
             querry.delIntervenant(external.getId());
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
         }
-        */
+
     }
 }

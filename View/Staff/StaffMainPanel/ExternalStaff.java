@@ -21,6 +21,9 @@ import java.util.ArrayList;
  */
 public class ExternalStaff extends JPanel{
 
+    private GridBagConstraints gbcDetailsStaff = new GridBagConstraints();
+    private int x = 0;
+    private int y = 0;
 
     /**
      * Constructeur de la class pour afficher les détails

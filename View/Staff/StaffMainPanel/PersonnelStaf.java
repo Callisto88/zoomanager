@@ -16,6 +16,14 @@ import java.util.ArrayList;
  * Class permettant d'afficher les détail du personnel dans une fenêtre
  */
 public class PersonnelStaf extends JPanel{
+
+    private GridBagConstraints gbcDetailsStaff = new GridBagConstraints();
+    private int x = 0;
+    private int y = 0;
+
+    private Dimension dLabel = new Dimension(100,25);
+    private Dimension dDetail = new Dimension(120, 25);
+
     /**
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
@@ -23,152 +31,197 @@ public class PersonnelStaf extends JPanel{
      */
     public PersonnelStaf(StaffController controller, Personne personne){
 
-        this.setLayout(new GridLayout(2,1));
+        this.setLayout(new GridBagLayout());
+        gbcDetailsStaff.gridx = x;
+        gbcDetailsStaff.gridy = y;
         JPanel jpLeft = new JPanel();
-        jpLeft.setLayout(new GridLayout(14,1));
+        jpLeft.setLayout(new GridBagLayout());
 
         // Ajout du champ de détails pour le nom
         JPanel jpLastName = new JPanel();
         JLabel jlLastName = new JLabel("Nom : ");
+        jlLastName.setPreferredSize(dLabel);
         JLabel jlLastNameInfo = new JLabel(personne.getNom());
+        jlLastNameInfo.setPreferredSize(dDetail);
         jpLastName.add(jlLastName);
-        jpLastName.add(Box.createHorizontalStrut(50));
         jpLastName.add(jlLastNameInfo);
-        //this.add(jpLastName);
-        jpLeft.add(jpLastName);
+        this.add(jpLastName, gbcDetailsStaff);
+        //jpLeft.add(jpLastName, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le prénom
         JPanel jpFirstName = new JPanel();
         JLabel jlFirstName = new JLabel("Prénom : ");
         JLabel jlFirstNameInfo = new JLabel(personne.getPrenom());
+        jlFirstName.setPreferredSize(dLabel);
         jpFirstName.add(jlFirstName);
-        jpFirstName.add(Box.createHorizontalStrut(50));
+        jlFirstNameInfo.setPreferredSize(dDetail);
         jpFirstName.add(jlFirstNameInfo);
-        //this.add(jpFirstName);
-        jpLeft.add(jpFirstName);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpFirstName, gbcDetailsStaff);
+        //jpLeft.add(jpFirstName, gbcDetailsStaff);
 
         // Ajout du champ de détails pour la date de naissance
         JPanel jpBirthday = new JPanel();
         JLabel jlBirthday = new JLabel("Date de naissance : ");
+        jlBirthday.setPreferredSize(dLabel);
         JLabel jlBirthdayInfo = new JLabel(personne.getDateNaissance().toString());
         jpBirthday.add(jlBirthday);
-        jpBirthday.add(Box.createHorizontalStrut(50));
+        jlBirthdayInfo.setPreferredSize(dDetail);
         jpBirthday.add(jlBirthdayInfo);
-        //this.add(jpBirthday);
-        jpLeft.add(jpBirthday);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpBirthday, gbcDetailsStaff);
+        //jpLeft.add(jpBirthday, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le numéro AVS
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
         JLabel jlAVSInfo = new JLabel(personne.getNoAVS());
+        jlAVS.setPreferredSize(dLabel);
         jpAVS.add(jlAVS);
-        jpAVS.add(Box.createHorizontalStrut(50));
+        jlAVSInfo.setPreferredSize(dDetail);
         jpAVS.add(jlAVSInfo);
-        //this.add(jpAVS);
-        jpLeft.add(jpAVS);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpAVS, gbcDetailsStaff);
+        //jpLeft.add(jpAVS, gbcDetailsStaff);
 
         // Ajout du champ de détails pour l'email
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-Mail : ");
+        jlEmail.setPreferredSize(dLabel);
         JLabel jlEmailInfo = new JLabel(personne.getEmail());
         jpEmail.add(jlEmail);
-        jpEmail.add(Box.createHorizontalStrut(50));
+        jlEmailInfo.setPreferredSize(dDetail);
         jpEmail.add(jlEmailInfo);
-        //this.add(jpEmail);
-        jpLeft.add(jpEmail);
-
-        // Ajout du champ de détails pour l'adresse
-        JPanel jpAddress = new JPanel();
-        JLabel jlAddress = new JLabel("Adresse : ");
-        JLabel jlAddressInfo = new JLabel(/*personne.getAdresse()*/ "Adresse TODO");
-        jpAddress.add(jlAddress);
-        jpAddress.add(Box.createHorizontalStrut(50));
-        jpAddress.add(jlAddressInfo);
-        //this.add(jpAddress);
-        jpLeft.add(jpAddress);
-
-        // Ajout du champ de détails pour la ville
-        JPanel jpCity = new JPanel();
-        JLabel jlCity = new JLabel("Ville : ");
-        JLabel jlCityInfo = new JLabel(/*personne.getAdresse()*/);
-        jpCity.add(jlCity);
-        jpCity.add(Box.createHorizontalStrut(50));
-        jpCity.add(jlCityInfo);
-        //this.add(jpCity);
-        jpLeft.add(jpCity);
-
-        // Ajout du champ de détails pour le npa
-        JPanel jpNPA = new JPanel();
-        JLabel jlNPA = new JLabel("NPA : ");
-        JLabel jlNPAInfo = new JLabel(/*personne.getAdresse()*/);
-        jpNPA.add(jlNPA);
-        jpNPA.add(Box.createHorizontalStrut(50));
-        jpNPA.add(jlNPAInfo);
-        //this.add(jpNPA);
-        jpLeft.add(jpNPA);
-
-        // Ajout du champ de détails pour le pays
-        JPanel jpCountry = new JPanel();
-        JLabel jlCountry = new JLabel("Pays : ");
-        JLabel jlCountryInfo = new JLabel("pays");
-        jpCountry.add(jlCountry);
-        jpCountry.add(Box.createHorizontalStrut(50));
-        jpCountry.add(jlCountryInfo);
-        jpLeft.add(jpCountry);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpEmail, gbcDetailsStaff);
+        //jpLeft.add(jpEmail, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le numéro de téléphone
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
+        jlPhone.setPreferredSize(dLabel);
         JLabel jlPhoneInfo = new JLabel(personne.getTelephone());
         jpPhone.add(jlPhone);
-        jpPhone.add(Box.createHorizontalStrut(50));
+        jlPhoneInfo.setPreferredSize(dDetail);
         jpPhone.add(jlPhoneInfo);
-        //this.add(jpPhone);
-        jpLeft.add(jpPhone);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpPhone, gbcDetailsStaff);
+        //jpLeft.add(jpPhone, gbcDetailsStaff);
 
         // Ajout du champ de détails pour la date de début
         JPanel jpBeginingDate = new JPanel();
-        JLabel jlBeginingDate = new JLabel("E-Mail : ");
-        JLabel jlBeginingDateInfo = new JLabel(personne.getEmail());
+        JLabel jlBeginingDate = new JLabel("Engagement : ");
+        jlBeginingDate.setPreferredSize(dLabel);
+        JLabel jlBeginingDateInfo = new JLabel(personne.getDateDebut().toString());
         jpBeginingDate.add(jlBeginingDate);
-        jpBeginingDate.add(Box.createHorizontalStrut(50));
+        jlBeginingDateInfo.setPreferredSize(dDetail);
         jpBeginingDate.add(jlBeginingDateInfo);
-        //this.add(jpBeginingDate);
-        jpLeft.add(jpBeginingDate);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpBeginingDate, gbcDetailsStaff);
+        //jpLeft.add(jpBeginingDate, gbcDetailsStaff);
+
+        // Ajout du champ de détails pour l'adresse
+        JPanel jpAddress = new JPanel();
+        JLabel jlAddress = new JLabel("Adresse : ");
+        jlAddress.setPreferredSize(dLabel);
+        JLabel jlAddressInfo = new JLabel(/*personne.getAdresse()*/ "Adresse TODO");
+        jlAddressInfo.setPreferredSize(dDetail);
+        jpAddress.add(jlAddress);
+        jpAddress.add(jlAddressInfo);
+        ++x;
+        y = 0;
+        gbcDetailsStaff.gridy = y;
+        gbcDetailsStaff.gridx = x;
+        this.add(jpAddress, gbcDetailsStaff);
+        //jpLeft.add(jpAddress, gbcDetailsStaff);
+
+        // Ajout du champ de détails pour la ville
+        JPanel jpCity = new JPanel();
+        JLabel jlCity = new JLabel("Ville : ");
+        jlCity.setPreferredSize(dLabel);
+        JLabel jlCityInfo = new JLabel(/*personne.getAdresse()*/);
+        jpCity.add(jlCity);
+        jlCityInfo.setPreferredSize(dDetail);
+        jpCity.add(jlCityInfo);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpCity, gbcDetailsStaff);
+        //jpLeft.add(jpCity, gbcDetailsStaff);
+
+        // Ajout du champ de détails pour le npa
+        JPanel jpNPA = new JPanel();
+        JLabel jlNPA = new JLabel("NPA : ");
+        jlNPA.setPreferredSize(dLabel);
+        JLabel jlNPAInfo = new JLabel(/*personne.getAdresse()*/);
+        jpNPA.add(jlNPA);
+        jlNPAInfo.setPreferredSize(dDetail);
+        jpNPA.add(jlNPAInfo);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpNPA, gbcDetailsStaff);
+        //jpLeft.add(jpNPA, gbcDetailsStaff);
+
+        // Ajout du champ de détails pour le pays
+        JPanel jpCountry = new JPanel();
+        JLabel jlCountry = new JLabel("Pays : ");
+        jlCountry.setPreferredSize(dLabel);
+        JLabel jlCountryInfo = new JLabel("pays");
+        jpCountry.add(jlCountry);
+        jlCountryInfo.setPreferredSize(dDetail);
+        jpCountry.add(jlCountryInfo);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpCountry, gbcDetailsStaff);
+        //jpLeft.add(jpCountry, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le responsable
         JPanel jpAdvisor = new JPanel();
         JLabel jlAdvisor = new JLabel("Responsable : ");
+        jlAdvisor.setPreferredSize(dLabel);
         JLabel jlAdvisorInfo = new JLabel(/*personne.getResponsable()*/ "Responsable");
         jpAdvisor.add(jlAdvisor);
-        jpAdvisor.add(Box.createHorizontalStrut(50));
+        jlAdvisorInfo.setPreferredSize(dDetail);
         jpAdvisor.add(jlAdvisorInfo);
-        //this.add(jpAdvisor);
-        jpLeft.add(jpAdvisor);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpAdvisor, gbcDetailsStaff);
+        //jpLeft.add(jpAdvisor, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le statut
         JPanel jpStatut = new JPanel();
         JLabel jlStatut = new JLabel("Statut : ");
+        jlStatut.setPreferredSize(dLabel);
         JLabel jlStatutInfo = new JLabel(personne.getStatut());
         jpStatut.add(jlStatut);
-        jpStatut.add(Box.createHorizontalStrut(50));
+        jlStatutInfo.setPreferredSize(dDetail);
         jpStatut.add(jlStatutInfo);
-        //this.add(jpStatut);
-        jpLeft.add(jpStatut);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpStatut, gbcDetailsStaff);
+        //jpLeft.add(jpStatut, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le type de contrat
         JPanel jpContract = new JPanel();
         JLabel jlContract = new JLabel("Contrat : ");
+        jlContract.setPreferredSize(dLabel);
         JLabel jlContractInfo = new JLabel(personne.getTypeContrat());
         jpContract.add(jlContract);
-        jpContract.add(Box.createHorizontalStrut(50));
+        jlContractInfo.setPreferredSize(dDetail);
         jpContract.add(jlContractInfo);
-        //this.add(jpContract);
-        jpLeft.add(jpContract);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpContract, gbcDetailsStaff);
+        //jpLeft.add(jpContract, gbcDetailsStaff);
 
         JPanel fusion = new JPanel();
-        fusion.setLayout(new GridLayout(1,2));
-        fusion.add(jpLeft);
+        fusion.setLayout(new GridBagLayout());
+        //fusion.add(jpLeft);
 
         ArrayList<Evenement> tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
@@ -179,9 +232,16 @@ public class PersonnelStaf extends JPanel{
         tasks.add(e2);
         tasks.add(e3);
 
-        fusion.add(new StaffTask(tasks));
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        x = 0;
+        gbcDetailsStaff.gridx = x;
+        gbcDetailsStaff.gridwidth = 2;
+        gbcDetailsStaff.insets = new Insets(15,5,5,15);
+        //fusion.add(new StaffTask(tasks), gbcDetailsStaff);
 
-        this.add(fusion);
+        //this.add(fusion);
+        this.add(new StaffTask(tasks), gbcDetailsStaff);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
         JPanel jpButtons = new JPanel();
@@ -224,7 +284,9 @@ public class PersonnelStaf extends JPanel{
         });
 
         // Ajout des bouttons dans le panel
-        this.add(jpButtons);
+        ++y;
+        gbcDetailsStaff.gridy = y;
+        this.add(jpButtons, gbcDetailsStaff);
 
     }
 }

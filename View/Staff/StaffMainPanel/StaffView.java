@@ -100,6 +100,8 @@ public class StaffView extends GenericWindow {
             }
         });
 
+        GridBagConstraints gbcRight = new GridBagConstraints();
+
         JButton jbSwitchexernalInternalStaff = new JButton("Afficher les externes");
         //setButtonConfig(jbSwitchexernalInternalStaff);
 
@@ -155,8 +157,8 @@ public class StaffView extends GenericWindow {
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 20;
 
-        JPanel jpTableStock = new JPanel();
-        jpTableStock.setPreferredSize(new Dimension(800, 500));
+        JPanel jpTableStaff = new JPanel();
+        jpTableStaff.setPreferredSize(new Dimension(800, 500));
 
         // Permet de mettre à jour le tableau pour les employées
         createEmployeeTab();
@@ -174,13 +176,17 @@ public class StaffView extends GenericWindow {
                     System.out.println(jbSwitchexernalInternalStaff.getText());
                     //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
                     PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(jtTable.getSelectedRow()));
-                    jpRight.add(psDetail);
+                    gbcRight.gridy = 1;
+                    gbcRight.gridx = 0;
+                    jpRight.add(psDetail, gbcRight);
                     jpRight.revalidate();
                     jpRight.repaint();
                 }
                 else{
                     ExternalStaff external = new ExternalStaff(controller, alExternal.get(jtTable.getSelectedRow()));
-                    jpRight.add(external);
+                    gbcRight.gridy = 1;
+                    gbcRight.gridx = 0;
+                    jpRight.add(external, gbcRight);
                     jpRight.revalidate();
                     jpRight.repaint();
                 }
@@ -212,29 +218,29 @@ public class StaffView extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
-        JScrollPane jspStock = new JScrollPane(jtTable);
-        jspStock.setPreferredSize(new Dimension(700, 450));
+        JScrollPane jspStaff = new JScrollPane(jtTable);
+        jspStaff.setPreferredSize(new Dimension(700, 450));
 
         // permet d'ajouter le tableau pour obtenir une liste déroulante (!!!!pas sur)
-        jpTableStock.add(jspStock);
-        jpLeft.add(jpTableStock, gbcLeft);
+        jpTableStaff.add(jspStaff);
+        jpLeft.add(jpTableStaff, gbcLeft);
 
+
+        gbcRight.gridx = 0;
+        gbcRight.gridy = 0;
 
         jpRight = new JPanel();
         jpRight.setLayout(new BoxLayout(jpRight, BoxLayout.Y_AXIS));
 
         jpMainPanel.add(jpRight);
 
-        JLabel jlLowStock = new JLabel("Détails du personnel");
-        jlLowStock.setBorder(new EmptyBorder(10,0,0,0));
-
-        jlLowStock.setHorizontalAlignment(SwingConstants.CENTER);
-        setTitleConfig(jlLowStock);
-        jpRight.add(jlLowStock, BorderLayout.NORTH);
+        JLabel jlDetails = new JLabel("Détails du personnel");
+        setTitleConfig(jlDetails);
+        jpRight.add(jlDetails, gbcRight);
 
 
-        JLabel test1 = new JLabel("Test");
-        jpRight.add(test1, BorderLayout.CENTER);
+        //JLabel test1 = new JLabel("Test");
+        //jpRight.add(test1, BorderLayout.CENTER);
 
         configFrame(getJfFrame(), this);
     }
@@ -254,7 +260,5 @@ public class StaffView extends GenericWindow {
             tableau.add(alExternal.get(i).toVector());
         }
     }
-
-
 
 }
