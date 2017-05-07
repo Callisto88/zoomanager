@@ -148,7 +148,7 @@ public class AddStaffController {
 /***************** Problème pour récupérer l'id d'un responsable **********************/
 
 // Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
-
+            System.out.println(firstName + " " + lastName);
             Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day),
                                     getPersonne(supervisor).getIdPersonne(), status, new Date(year, month, day), contract);
             insertPersonne(personne);

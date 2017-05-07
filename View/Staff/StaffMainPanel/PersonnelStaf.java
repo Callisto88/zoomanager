@@ -132,7 +132,8 @@ public class PersonnelStaf extends JPanel{
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel(personne.getAdresse().toString());
+        JLabel jlAddressInfo = new JLabel(personne.getAdresse().getAdresse());
+        System.out.println(personne.getAdresse().toString());
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddress);
         jpAddress.add(jlAddressInfo);
@@ -147,6 +148,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
+        System.out.println(personne.getAdresse().getVille().getVille());
         JLabel jlCityInfo = new JLabel(personne.getAdresse().getVille().getVille());
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
