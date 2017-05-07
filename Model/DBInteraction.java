@@ -62,6 +62,7 @@ public class DBInteraction {
 
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE villeId = ? ;";
+    private static final String SEL_VILLE_FROM_VILLE_ID = "SELECT * FROM Ville WHERE villeId = ? ;";
 
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_ID_PAR_CP = "SELECT villeId FROM Ville WHERE codePostal = ? ;";
@@ -81,7 +82,7 @@ public class DBInteraction {
     // PERSONNE :
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
     private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
-    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE noAVS = ? ;";
+    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE idPersonne = ? ;";
     private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
             "FROM Personne " +
             "WHERE Personne.nom = ? " +
@@ -333,6 +334,7 @@ public class DBInteraction {
      *
      */
     public void insertIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+
         this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT);
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
@@ -604,6 +606,7 @@ public class DBInteraction {
         this.stmt.executeUpdate();
     }
 
+
     /**
      * Permet de récupérer l'id d'un Pays
      *
@@ -618,6 +621,24 @@ public class DBInteraction {
         rs.next();
 
         return rs.getInt("paysId");
+    }
+
+    public Ville getVilleFromVilleID(int villeId) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_FROM_VILLE_ID);
+        this.stmt.setInt(1, villeId);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (rs.next()) {
+            rs.beforeFirst();
+            Ville result = new Ville(
+                    rs.getInt("villeId"),
+                    rs.getInt("codePostal"),
+                    rs.getString("ville")
+            );
+
+            getPaysID()
+        }
     }
 
     /**
@@ -796,16 +817,16 @@ public class DBInteraction {
     }
 
     /**
-     * Permet de selectionner un évenement en fonction de son ID
+     * Retourne tous les détails d'une personne en fonction de son ID
      *
-     * @param noAVS         valeur en int
+     * @param idPersonne         valeur en int
      *
      * @return Personne
      */
-    public Personne selEmployeDetails (int noAVS) throws ExceptionDataBase, SQLException {
+    public Personne selEmployeDetails(int idPersonne) throws ExceptionDataBase, SQLException {
         Personne p = new Personne();
         this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_DETAILS);
-        this.stmt.setInt(1, noAVS);
+        this.stmt.setInt(1, idPersonne);
         ResultSet rs = this.stmt.executeQuery();
         ArrayList<Personne>  pers = creerTableauPersonne(rs);
 
