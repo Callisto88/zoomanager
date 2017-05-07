@@ -54,7 +54,7 @@ public class AnimalTab extends GenericWindow {
         originesDB = atAnimalController.getAllOrigines();
 
 
-        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
+        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB, racesDB);
 
         dataTable = new MyModelTable(vAnimal, columnName);
         JTable jtTable = new JTable(dataTable);
@@ -416,11 +416,18 @@ public class AnimalTab extends GenericWindow {
 
 
 
-        JLabel jlNomCommun = new JLabel("Nom commun");
+        JLabel jlNomCommun = new JLabel("Nom commun:");
         setLabelConfig(jlNomCommun);
         gbcAnimalForm.gridx = 0;
         gbcAnimalForm.gridy = 2;
         jpDetAnimal.add(jlNomCommun, gbcAnimalForm);
+
+        JTextField jtNomCommun = new JTextField();
+        jtNomCommun.setText(selectedAnimal.getNomCommun());
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 2;
+        jtNomCommun.setPreferredSize(defaultFormSize);
+        jpDetAnimal.add(jtNomCommun, gbcAnimalForm);
 
 
         // Xe ligne Nom Commun
