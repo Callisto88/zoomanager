@@ -65,6 +65,17 @@ public class Ville {
         this.pays = pays;
     }
 
+    public Ville(int villeId, int codePostal) {
+        this.id = villeId;
+        this.cp = codePostal;
+    }
+
+    public Ville(int villeId, int codePostal, String ville) {
+        this.id = villeId;
+        this.cp = codePostal;
+        this.ville = ville;
+    }
+
     public int getId() {
         return id;
     }
