@@ -132,7 +132,7 @@ public class AddExternalController {
         // Si tout est ok, on lance l'insertion
         if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bChange && bCountry && bAddAddress && bPhone) {
             dbConnection();
-            Intervenant external = new Intervenant(compagny, lastName, firstName, cityID,email, phone);
+            Intervenant external = new Intervenant(compagny, lastName, firstName, adresse, email, phone);
             insertExternal(external);
         }
     }

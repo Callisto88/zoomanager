@@ -103,9 +103,9 @@ public class StaffController {
             ecError = new ErrorController(exceptionsql.toString());
         }
 
-        Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", 1, "Bob.dylan@test.ch", "+417845123698");
-        Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", 4, "zgdf.hfasd@ter.ch", "+4171236547998");
-        Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", 5, "pouz.fds@HJZRT.jr", "+417126873698");
+        Intervenant i1 = new Intervenant("Test", "Bob", "Dylan", new Adresse(1), "Bob.dylan@test.ch", "+417845123698");
+        Intervenant i2 = new Intervenant("ghfad", "gfasd", "ztwr", new Adresse(2), "zgdf.hfasd@ter.ch", "+4171236547998");
+        Intervenant i3 = new Intervenant("poiurz", "ikuuzr", "errew ", new Adresse(5), "pouz.fds@HJZRT.jr", "+417126873698");
         aliExternal.add(i1);
         aliExternal.add(i2);
         aliExternal.add(i3);

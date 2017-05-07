@@ -62,7 +62,7 @@ public class ModifyExternalPanel extends GenericWindow {
         sEMail = external.getEmail();
         sPhone = external.getTelephone();
         // TODO méthode non présente
-        Adresse aExternal = mecExternalController.getAddressByID(external.getAdresse());
+        Adresse aExternal = mecExternalController.getAddressByID(external.getAdresse().getId());
         sAddress = aExternal.getAdresse();
         sCity = aExternal.getVille().toString();
         sNPA = "" + aExternal.getVille().getCp();

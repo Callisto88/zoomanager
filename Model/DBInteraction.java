@@ -340,7 +340,7 @@ public class DBInteraction {
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
         this.stmt.setString(3, intervenant.getNom());
-        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
         this.stmt.setString(7, intervenant.getTelephone());
@@ -402,7 +402,7 @@ public class DBInteraction {
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
         this.stmt.setString(3, intervenant.getNom());
-        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
         this.stmt.setString(7, intervenant.getStatut());
@@ -427,7 +427,7 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Intervenant(rs.getInt("id"), rs.getString("entreprise"),
                         rs.getString("prenom"), rs.getString("nom"),
-                        rs.getInt("adresse"), rs.getString("email"),
+                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
                         rs.getString("telephone"), rs.getString("statut")));
             }
         }
@@ -944,7 +944,7 @@ public class DBInteraction {
         this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
         this.stmt.setString(3, nom);
-        this.stmt.setInt(4, adresse);
+        this.stmt.setInt(4, adresse.getId());
         this.stmt.setString(5, email);
         this.stmt.setString(6, telephone);
         this.stmt.setDate(7, dateNaissance);
