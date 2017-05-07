@@ -37,7 +37,7 @@ public class DBInteraction {
     private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
 
     // Récupérer toutes les informations sur les pays
-    private static final String SEL_ALL_PAYS = "SELECT * FROM Pays;";
+    private static final String SEL_ALL_PAYS = "SELECT * FROM Pays ORDER BY pays ASC;";
 
     // Récupère un pays en particulier d'après son nom
     private static final String SEL_PAYS_PAR_NOM = "SELECT * FROM Pays WHERE pays LIKE ?;";
@@ -469,30 +469,34 @@ public class DBInteraction {
      */
     public int insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
 
-        int addressID = adresse.getId();
-        int villeID = getVilleIDParCP(ville.getCp());
-        int paysID = getPaysID(pays.getPays());
+        // Pays
+        int paysID;
+        if (!this.countryIsInDB(pays)) {
+            paysID = this.insPays(pays);
+        } else {
+            paysID = getPaysID(pays.getPays());
+        }
 
         pays.setPaysId(paysID);
-
-        if (!this.countryIsInDB(pays)) {
-            this.insPays(pays);
-        }
-
         ville.setPays(pays);
-        ville.setId(villeID);
 
-        // La ville n'existe pas dans le pays donné
+        // Ville
+        int villeID;
         if (!this.villeExists(ville, pays)) {
-            this.insVille(ville);
+            villeID = this.insVille(ville);
+        } else {
+            villeID = getVilleIDParCP(ville.getCp());
         }
-
+        ville.setId(villeID);
         adresse.setVille(ville);
 
-        System.out.println("==============ADRESSE INFO==============");
-        System.out.println(adresse.getId());
-        System.out.println(adresse.getAdresse());
-        System.out.println(adresse.getVille().getVille());
+        // Adresse
+        int addressID;
+        if (!this.adresseExists(adresse, ville)) {
+            addressID = this.insAdresse(adresse);
+        } else {
+            addressID = adresse.getId();
+        }
 
         System.out.println("==============VILLE INFO==============");
         System.out.println(ville.getId());
@@ -500,10 +504,10 @@ public class DBInteraction {
         System.out.println(ville.getPays().getPays());
         System.out.println(ville.getVille());
 
-        if (!this.adresseExists(adresse, ville)) {
-            addressID = this.insAdresse(adresse);
-        }
-
+        System.out.println("==============ADRESSE INFO==============");
+        System.out.println(adresse.getId());
+        System.out.println(adresse.getAdresse());
+        System.out.println(adresse.getVille().getVille());
         System.out.println(addressID);
 
         return addressID;
@@ -580,10 +584,17 @@ public class DBInteraction {
      *
      * @param pays String
      */
-    private void insPays(Pays pays) throws SQLException {
-        this.stmt = DBConnection.con.prepareStatement(INSERT_PAYS);
+    private int insPays(Pays pays) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(INSERT_PAYS, Statement.RETURN_GENERATED_KEYS);
         this.stmt.setString(1, pays.getPays());
-        this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle adresse
+            // rs.beforeFirst();   // On remet le curseur au début
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -591,19 +602,22 @@ public class DBInteraction {
      *
      * @param ville String
      */
-    private void insVille(Ville ville) throws SQLException, ExceptionDataBase {
+    private int insVille(Ville ville) throws SQLException, ExceptionDataBase {
 
         // Basic checks
         if (ville.getCp() == 0 || !(ville.getCp() == (int) ville.getCp())) {
             throw new ExceptionDataBase("Le code postal doit être renseigné et être de type numérique");
         }
 
-        this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE, Statement.RETURN_GENERATED_KEYS);
         this.stmt.setNull(1, Types.NULL);
         this.stmt.setInt(2, ville.getCp());
         this.stmt.setString(3, ville.getVille());
         this.stmt.setInt(4, ville.getPays().getPaysId());   // paysId as foreign key
         this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        return rs.getInt(1);
     }
 
 
@@ -623,7 +637,7 @@ public class DBInteraction {
         return rs.getInt("paysId");
     }
 
-    public Ville getVilleFromVilleID(int villeId) throws SQLException {
+    /*public Ville getVilleFromVilleID(int villeId) throws SQLException {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_FROM_VILLE_ID);
         this.stmt.setInt(1, villeId);
@@ -637,10 +651,9 @@ public class DBInteraction {
                     rs.getString("ville")
             );
 
-            //getPaysID();
+            getPaysID()
         }
-        return new Ville();
-    }
+    }*/
 
     /**
      * Permet de récupérer le nom d'une ville en fonction d'un code postal passé en paramètre
@@ -669,9 +682,13 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
-        rs.next();
 
-        return rs.getInt("villeId");
+        if (rs.next()) {
+            rs.beforeFirst();
+            return rs.getInt("villeId");
+        } else {
+            return 0;
+        }
     }
 
 
