@@ -64,7 +64,7 @@ public class AddStaffController {
             add.setFirstNameError("Champ prénom contenant des caractères innaproprié");
         }
         // Permet de checker la date de naissance
-        boolean bBirthday = Validate.isDate(day, month, year);
+        boolean bBirthday = Validate.isDate(year, month, day);
         if(!bBirthday){
             add.setBirthdayError("Champs date inaproprié");
         }

@@ -158,6 +158,7 @@ public class AddExternal extends GenericWindow{
         JButton add = new JButton("Ajouter");
         setButtonConfig(add);
         gbcConstraint.gridy = 9;
+        gbcConstraint.anchor = GridBagConstraints.CENTER;
         jpMainPanel.add(add, gbcConstraint);
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
