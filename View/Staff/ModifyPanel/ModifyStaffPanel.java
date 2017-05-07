@@ -1,6 +1,7 @@
 package View.Staff.ModifyPanel;
 
 import Controller.Staff.ModifyStaffController;
+import Model.Adresse;
 import Model.Pays;
 import Model.Personne;
 import View.GenericWindow;
@@ -80,9 +81,21 @@ public class ModifyStaffPanel extends GenericWindow {
         alpCountries = countries;
         this.personne = personne;
         this.mscController = mscController;
-        /**
-         * Liste déroulante pour séléctionner les champs que l'on souhaite modifier
-         */
+
+        // TODO: finir de récupérer toutes les informations dont l'adresse
+        sFirstName = personne.getPrenom();
+        sLastName = personne.getNom();
+        sEMail = personne.getEmail();
+        Adresse aStaff = mscController.getAddressByID(personne.getAdresse());
+        sAddress = aStaff.getAdresse();
+        sCity = aStaff.getVille().toString();
+        sNPA = "" + aStaff.getVille().getCp();
+        sCountry = aStaff.getVille().getPays().toString();
+        sStatut = personne.getStatut();
+        sContract = personne.getTypeContrat();
+        sSupervisor = mscController.getSupervisor(personne.getResponsable());
+
+        // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
         JPanel modification = new JPanel();
         boxChoiceLabel = new JComboBox();
         boxChoiceLabel.addItem("Tous les champs");
@@ -209,7 +222,7 @@ public class ModifyStaffPanel extends GenericWindow {
             JLabel firstNameLabel = new JLabel("Prénom : ");
             firstNameLabel.setPreferredSize(dLabel);
             firstNamePanel.add(firstNameLabel);
-            jtfFirstNameInput = new JTextField(personne.getPrenom());
+            jtfFirstNameInput = new JTextField(sFirstName);
             jtfFirstNameInput.setPreferredSize(dInput);
             firstNamePanel.add(jtfFirstNameInput);
             gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -231,7 +244,7 @@ public class ModifyStaffPanel extends GenericWindow {
             JLabel emailLabel = new JLabel("Adresse E-Mail : ");
             emailLabel.setPreferredSize(dLabel);
             emailPanel.add(emailLabel);
-            jtfEmail = new JTextField(personne.getEmail());
+            jtfEmail = new JTextField(sEMail);
             jtfEmail.setPreferredSize(dInput);
             emailPanel.add(jtfEmail);
             gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -255,7 +268,7 @@ public class ModifyStaffPanel extends GenericWindow {
         addressLabel.setPreferredSize(dLabel);
         addressPanel.add(addressLabel);
         // Récupération de l'adresse
-        jtfAddress = new JTextField("adresse");
+        jtfAddress = new JTextField(sAddress);
         jtfAddress.setPreferredSize(dInput);
         addressPanel.add(jtfAddress);
         gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -269,7 +282,7 @@ public class ModifyStaffPanel extends GenericWindow {
         jlNPA.setPreferredSize(dLabel);
         jpNPA.add(jlNPA);
         // récupération du npa
-        jtfNPA = new JTextField("NPA");
+        jtfNPA = new JTextField(sNPA);
         jtfNPA.setPreferredSize(dInput);
         jpNPA.add(jtfNPA);
         gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -283,7 +296,7 @@ public class ModifyStaffPanel extends GenericWindow {
         jlCity.setPreferredSize(dLabel);
         jpCity.add(jlCity);
         // Récupération de la ville
-        jtfCity = new JTextField("Ville");
+        jtfCity = new JTextField(sCity);
         jtfCity.setPreferredSize(dInput);
         jpCity.add(jtfCity);
         gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -323,7 +336,7 @@ public class ModifyStaffPanel extends GenericWindow {
             JLabel jlPhone = new JLabel("Téléphone : ");
             jlPhone.setPreferredSize(dLabel);
             jpPhone.add(jlPhone);
-            jtfPhone = new JTextField(personne.getTelephone());
+            jtfPhone = new JTextField(sPhone);
             jtfPhone.setPreferredSize(dInput);
             jpPhone.add(jtfPhone);
             gbcConstraint.anchor = GridBagConstraints.WEST;

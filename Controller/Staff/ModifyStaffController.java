@@ -21,6 +21,11 @@ public class ModifyStaffController {
 
     /**
      * Constructeur du controlleur
+     * @param personne personne à modifier
+     * @param contract liste des contract actuels
+     * @param status liste des statut actuels
+     * @param countries liste de pays présent dans la DB
+     * @param supervisor liste des superviseur présent dans la db
      */
     public ModifyStaffController(Personne personne, ArrayList<String> contract, ArrayList<String> status,
                                  ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
@@ -30,7 +35,18 @@ public class ModifyStaffController {
     }
 
     /**
-     * Méthode permettant de modifier la personne
+     * Méthode permettant de vérifier les champs de la personne
+     * @param sFirstName String contenant le prénom
+     * @param sLastName String contenant le nom
+     * @param sSupervisor String contenant le responsable
+     * @param sEMail String contenant l'E-Mail
+     * @param sAddress String contenant l'adresse
+     * @param sNPA String contenant le NPA
+     * @param sCity String contenant la ville
+     * @param sCountry String ontenant le pays
+     * @param sPhone String contenant le télephone
+     * @param sContract String contenant le contrat
+     * @param sStatut String contenant le statut
      */
     public void checkModifyStaff(String sFirstName, String sLastName, String sSupervisor, String sEMail, String sAddress,
                                  String sNPA, String sCity, String sCountry, String sPhone,
@@ -48,7 +64,6 @@ public class ModifyStaffController {
         if(!bEmail){
             mspModifyStaff.setEmailError("Champ Email non conforme");
         }
-        //boolean bAddress = Validate.isAlphabetic(address);
         boolean bNPA = Validate.isNumeric(sNPA);
         if(!bNPA){
             mspModifyStaff.setNPAError("Le champ NPA ne contient pas que des chiffres");
@@ -68,7 +83,7 @@ public class ModifyStaffController {
         }
         dbConnection();
         boolean bAddAddress = true;
-        int cityID = 0;
+        int addressID = 0;
         try{
             Pays pays = new Pays();
             pays.setPays(sCountry);
@@ -82,13 +97,14 @@ public class ModifyStaffController {
             adresse.setAdresse(sAddress);
             adresse.setVille(ville);
 
-            cityID = querry.insAddress(adresse, ville, pays);
+            addressID = querry.insAddress(adresse, ville, pays);
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            ecError = new ErrorController(exceptionDataBase.toString());
         }
         boolean bPhone = Validate.isPhoneNumber(sPhone);
         if(!bPhone){
@@ -99,11 +115,14 @@ public class ModifyStaffController {
             personne.setEmail(sEMail);
             personne.setPrenom(sFirstName);
             personne.setNom(sLastName);
-/**************** problème, pas possible de récupérer le numéro d'une adresse ainsi que pour le responsable ***************/
             modifyStaff(personne);
         }
     }
 
+    /**
+     * Méthode permettant de modifier la personne
+     * @param personne Personne modifié à réinséré
+     */
     private void modifyStaff(Personne personne){
         dbConnection();
         // Permet d'insérer la personne modifié
@@ -121,6 +140,9 @@ public class ModifyStaffController {
 
     }
 
+    /**
+     * Méthode pour permettre la connection à la DB
+     */
     private void dbConnection(){
         // Permet de joindre la BD
         try {
@@ -129,6 +151,44 @@ public class ModifyStaffController {
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
         }
+    }
+
+    /**
+     * Méthode permettant de récupérer l'adresse au complet avec son ID
+     * @param addressID id de l'adresse désiré
+     * @return Adresse contenant tout pour pouvoir récupérer tout les champs
+     */
+    public Adresse getAddressByID(int addressID){
+        dbConnection();
+        Adresse address = null;
+        /*
+        try{
+        // TODO : Méthode non présente dans DBInteraction
+            address = querry.getAddress(idAddress);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        */
+        return address;
+    }
+
+    public String getSupervisor(int supervisorID){
+        dbConnection();
+        Personne supervisor = null;
+        try {
+            supervisor = querry.selEmployeDetails(supervisorID);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        return (supervisor.getNom() + supervisor.getPrenom());
     }
 
 }

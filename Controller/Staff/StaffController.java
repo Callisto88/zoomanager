@@ -182,6 +182,17 @@ public class StaffController {
         return als;
     }
 
+    public void getAssignedTask(){
+        dbConnection();
+        /*
+        TODO : non présent dans les méthodes
+        try {
+            querry.
+        }
+        */
+
+    }
+
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
