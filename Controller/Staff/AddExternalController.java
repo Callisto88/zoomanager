@@ -108,6 +108,7 @@ public class AddExternalController {
 
         Ville ville = new Ville();
         ville.setVille(city);
+        ville.setCp(cp);
         ville.setPays(pays);
 
         Adresse adresse = new Adresse();

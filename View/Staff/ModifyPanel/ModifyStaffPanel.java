@@ -197,7 +197,7 @@ public class ModifyStaffPanel extends GenericWindow {
             JLabel lastNameLabel = new JLabel("Nom : ");
             lastNameLabel.setPreferredSize(dLabel);
             lastNamePanel.add(lastNameLabel);
-            jtfLastNameInput = new JTextField(personne.getNom());
+            jtfLastNameInput = new JTextField(sLastName);
             jtfLastNameInput.setPreferredSize(dInput);
             lastNamePanel.add(jtfLastNameInput);
             gbcConstraint.anchor = GridBagConstraints.WEST;
