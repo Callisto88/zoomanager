@@ -23,7 +23,7 @@ public class Intervenant {
     private String entreprise;
     private String prenom;
     private String nom;
-    private int adresse;
+    private Adresse adresse;
     private String email;
     private String telephone;
     private String statut;
@@ -40,7 +40,7 @@ public class Intervenant {
      * @param telephone télephone de l'intervenant
      * @param statut
      */
-    public Intervenant(int id, String entreprise, String prenom, String nom, int adresse,
+    public Intervenant(int id, String entreprise, String prenom, String nom, Adresse adresse,
                        String email, String telephone, String statut) {
         this.id = id;
         this.entreprise = entreprise;
@@ -61,7 +61,7 @@ public class Intervenant {
      * @param email email de l'intervenant
      * @param telephone télephone de l'intervenant
      */
-    public Intervenant(String entreprise, String nom, String prenom, int adresse, String email, String telephone){
+    public Intervenant(String entreprise, String nom, String prenom, Adresse adresse, String email, String telephone) {
         this.entreprise = entreprise;
         this.nom = nom;
         this.prenom = prenom;
@@ -102,11 +102,11 @@ public class Intervenant {
         this.nom = nom;
     }
 
-    public int getAdresse() {
+    public Adresse getAdresse() {
         return adresse;
     }
 
-    public void setAdresse(int adresse) {
+    public void setAdresse(Adresse adresse) {
         this.adresse = adresse;
     }
 

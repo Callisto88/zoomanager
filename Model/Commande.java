@@ -42,6 +42,12 @@ public class Commande {
         this.id = id;
     }
 
+    public Commande(int id, Date orderDate, String statut) {
+        this.id = id;
+        this.date = orderDate;
+        this.statut = Statut.valueOf(String.valueOf(statut));
+    }
+
     /**
      * Retourne l'id de la commande courante
      *

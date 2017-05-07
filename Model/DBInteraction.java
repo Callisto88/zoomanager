@@ -4,6 +4,8 @@ import jdk.nashorn.internal.runtime.ECMAException;
 //import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
 
 import java.sql.*;
+import java.sql.Date;
+import java.time.Month;
 import java.util.*;
 
 /**
@@ -275,6 +277,8 @@ public class DBInteraction {
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
     private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
+
+    // En cours
     private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
 
     private static final String SEL_RESPONSABLES = "SELECT * FROM Personne WHERE statut LIKE 'responsable'";
@@ -291,11 +295,16 @@ public class DBInteraction {
                     "WHERE id = ?;";
     // -----------------------------------------------------------------------------------------------------------------
     // STOCK :
+    private static final String INS_COMMANDE = "INSERT INTO Commande (id, dateHeure, statut) VALUES(null, NOW(), 'CREEE');";
+    private static final String INS_CONTENU_COMMANDE = "INSERT INTO Commande_Contenu (idCommande, quantite, refArticle) VALUES(?, ?, ?);";
+
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
     private static final String SEL_ALL_STOCK = "SELECT * FROM Stock;";
 
     // Récupérer toutes les commandes qui ont été faites (id, date et statut)
     private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
+
+    private static final String SEL_ORDER = "SELECT * FROM Commande WHERE id = ?";
 
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
@@ -340,7 +349,7 @@ public class DBInteraction {
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
         this.stmt.setString(3, intervenant.getNom());
-        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
         this.stmt.setString(7, intervenant.getTelephone());
@@ -402,7 +411,7 @@ public class DBInteraction {
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
         this.stmt.setString(3, intervenant.getNom());
-        this.stmt.setInt(4, intervenant.getAdresse());
+        this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
         this.stmt.setString(7, intervenant.getStatut());
@@ -427,7 +436,7 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Intervenant(rs.getInt("id"), rs.getString("entreprise"),
                         rs.getString("prenom"), rs.getString("nom"),
-                        rs.getInt("adresse"), rs.getString("email"),
+                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
                         rs.getString("telephone"), rs.getString("statut")));
             }
         }
@@ -933,9 +942,9 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insertPersonne(String noAVS, String prenom, String nom, int adresse, String email,
-                            String telephone, java.sql.Date dateNaissance, int responsable, String statut,
-                            double salaire, java.sql.Date dateDebut, String typeContrat)
+    public void insertPersonne(String noAVS, String prenom, String nom, Adresse adresse, String email,
+                               String telephone, java.sql.Date dateNaissance, int responsable, String statut,
+                               double salaire, java.sql.Date dateDebut, String typeContrat)
             throws SQLException {
 
         // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
@@ -944,7 +953,7 @@ public class DBInteraction {
         this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
         this.stmt.setString(3, nom);
-        this.stmt.setInt(4, adresse);
+        this.stmt.setInt(4, adresse.getId());
         this.stmt.setString(5, email);
         this.stmt.setString(6, telephone);
         this.stmt.setDate(7, dateNaissance);
@@ -2227,6 +2236,41 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabCommande(rs);
+    }
+
+    public int creerCommande() throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(INS_COMMANDE, Statement.RETURN_GENERATED_KEYS);
+        this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle commande
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+    }
+
+    public Commande selCommande(int orderID) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ORDER);
+        this.stmt.setInt(1, orderID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (rs.next()) {
+            Timestamp timestamp = rs.getTimestamp("dateHeure");
+            java.sql.Date orderDate = null;
+            if (timestamp != null)
+                orderDate = new java.sql.Date(timestamp.getTime());
+
+            Commande order = new Commande(
+                    rs.getInt("id"),
+                    orderDate,
+                    rs.getString("statut"));
+            return order;
+        } else {
+            throw new ExceptionDataBase("No such order in database");
+        }
     }
 
     /**
