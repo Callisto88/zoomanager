@@ -933,9 +933,9 @@ public class DBInteraction {
      * @param dateDebut         Nouveau dateDebut AVS de la personne
      * @param typeContrat       Nouveau typeContrat AVS de la personne
      */
-    public void insertPersonne(String noAVS, String prenom, String nom, int adresse, String email,
-                            String telephone, java.sql.Date dateNaissance, int responsable, String statut,
-                            double salaire, java.sql.Date dateDebut, String typeContrat)
+    public void insertPersonne(String noAVS, String prenom, String nom, Adresse adresse, String email,
+                               String telephone, java.sql.Date dateNaissance, int responsable, String statut,
+                               double salaire, java.sql.Date dateDebut, String typeContrat)
             throws SQLException {
 
         // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
