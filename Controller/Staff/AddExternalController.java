@@ -73,7 +73,6 @@ public class AddExternalController {
             aeExternal.setEmailError("Champ email non conforme");
         }
 
-/************************* A checker les adresses ******************************/
         // Permet de checker le NPA
         boolean bNPA = Validate.isNumeric(npa);
         if(!bNPA){
@@ -84,8 +83,6 @@ public class AddExternalController {
         if(!bCountry){
             aeExternal.setCityError("Le champ pays non conforme");
         }
-
-        //! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
 
         // permet de convertir le npa en int
         int cp = 0;
@@ -133,11 +130,9 @@ public class AddExternalController {
         if(!bPhone){
             aeExternal.setPhoneError("Champ télephone non conforme");
         }
-
         // Si tout est ok, on lance l'insertion
         if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bChange && bCountry && bAddAddress && bPhone) {
             dbConnection();
-/***************** Problème pour récupérer l'id d'une adresse pour l'insertion ************************/
             Intervenant external = new Intervenant(compagny, lastName, firstName, cityID,email, phone);
             insertExternal(external);
         }
@@ -148,8 +143,6 @@ public class AddExternalController {
      * @param external personne à insérer dans la DB
      */
     public void insertExternal(Intervenant external){
-/***************************** Problème méthode non présente dans la DB *************************************/
-
         try{
             querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
@@ -159,9 +152,7 @@ public class AddExternalController {
             exceptionsql.printStackTrace();
             ecError = new ErrorController("Erreur insertion externe " + exceptionsql.toString());
         }
-
         System.out.println("Intervenant externe inséré");
-
     }
 
 }

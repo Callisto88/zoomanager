@@ -1,6 +1,7 @@
 package View.Staff.ModifyPanel;
 
 import Controller.Staff.ModifyExternalController;
+import Model.Adresse;
 import Model.Intervenant;
 import View.GenericWindow;
 
@@ -60,7 +61,12 @@ public class ModifyExternalPanel extends GenericWindow {
         sFirstName = external.getPrenom();
         sEMail = external.getEmail();
         sPhone = external.getTelephone();
-        // TODO: adresses!!
+        // TODO méthode non présente
+        Adresse aExternal = mecExternalController.getAddressByID(external.getAdresse());
+        sAddress = aExternal.getAdresse();
+        sCity = aExternal.getVille().toString();
+        sNPA = "" + aExternal.getVille().getCp();
+        sCountry = aExternal.getVille().getPays().toString();
         Dimension defaultFormSize = new Dimension(350, 550);
         jpModifyPanel.setPreferredSize(defaultFormSize);
         GridBagLayout gblModify = new GridBagLayout();
@@ -151,7 +157,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel lastNamePanel = new JPanel();
             JLabel lastNameLabel = new JLabel("Nom : ");
             lastNamePanel.add(lastNameLabel);
-            jtfLastNameInput = new JTextField(external.getNom(), 20);
+            jtfLastNameInput = new JTextField(sLastName);
             lastNamePanel.add(jtfLastNameInput);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -171,7 +177,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel firstNamePanel = new JPanel();
             JLabel firstNameLabel = new JLabel("Prénom : ");
             firstNamePanel.add(firstNameLabel);
-            jtfFirstNameInput = new JTextField(external.getPrenom(), 20);
+            jtfFirstNameInput = new JTextField(sFirstName);
             firstNamePanel.add(jtfFirstNameInput);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -191,7 +197,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel emailPanel = new JPanel();
             JLabel emailLabel = new JLabel("E-Mail : ");
             emailPanel.add(emailLabel);
-            jtfEmail = new JTextField(external.getEmail(), 20);
+            jtfEmail = new JTextField(sEMail);
             emailPanel.add(jtfEmail);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -212,8 +218,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel addressPanel = new JPanel();
             JLabel addressLabel = new JLabel("Adresse : ");
             addressPanel.add(addressLabel);
-            // TODO: Récupération de l'adresse
-            jtfAddress = new JTextField("adresse", 20);
+            jtfAddress = new JTextField(sAddress);
             addressPanel.add(jtfAddress);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -224,8 +229,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel jpNPA = new JPanel();
             JLabel jlNPA = new JLabel("NPA : ");
             jpNPA.add(jlNPA);
-            // TODO: récupération du npa
-            jtfNPA = new JTextField("NPA", 20);
+            jtfNPA = new JTextField(sNPA);
             jpNPA.add(jtfNPA);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -236,8 +240,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel jpCity = new JPanel();
             JLabel jlCity = new JLabel("Ville : ");
             jpCity.add(jlCity);
-            // TODO: Récupération de la ville
-            jtfCity = new JTextField("Ville", 20);
+            jtfCity = new JTextField(sCity);
             jpCity.add(jtfCity);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -248,8 +251,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel jpCountry = new JPanel();
             JLabel jlCountry = new JLabel("Pays : ");
             jpCountry.add(jlCountry);
-            // TODO: Récupération du Pays
-            jtfCountry = new JTextField("Pays", 20);
+            jtfCountry = new JTextField(sCountry);
             jpCountry.add(jtfCountry);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
@@ -270,7 +272,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JPanel telephonePanel = new JPanel();
             JLabel telephoneLabel = new JLabel("Téléphone : ");
             telephonePanel.add(telephoneLabel);
-            jtfPhone = new JTextField(external.getTelephone(), 20);
+            jtfPhone = new JTextField(sPhone);
             telephonePanel.add(jtfPhone);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;

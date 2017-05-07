@@ -22,6 +22,10 @@ public class AddStaffController {
 
     /**
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
+     * @param statuts liste des statuts actuels
+     * @param contract liste des contract actuels
+     * @param supervisor liste des responsables actuels
+     * @param countries liste des pays actuels
      */
     public AddStaffController(ArrayList<String> statuts,ArrayList<String> contract,
                               ArrayList<Personne> supervisor, ArrayList<Pays> countries) {
@@ -171,7 +175,5 @@ public class AddStaffController {
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
         }
-
-        ArrayList<Personne> personnel = null;
     }
 }

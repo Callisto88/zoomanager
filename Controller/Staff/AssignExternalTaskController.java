@@ -71,11 +71,6 @@ public class AssignExternalTaskController {
         }
     }
 
-    public void getAssignedTask(){
-        dbConnection();
-
-    }
-
     /**
      * Méthode permettant d'établir la connection avec la DB
      */
