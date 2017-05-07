@@ -58,7 +58,7 @@ public class DBInteraction {
     private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays LIKE ? ;";
 
     // Récupère le code postal d'après le nom de la ville
-    private static final String SEL_CP_PAR_VILLE = "SELECT villeId FROM Ville WHERE ville LIKE ?;";
+    private static final String SEL_VILLEID_FROM_CITY_NAME = "SELECT villeId FROM Ville WHERE ville LIKE ?;";
 
     // Récupérer la ville en fonction d'un code postal
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE villeId = ? ;";
@@ -485,7 +485,7 @@ public class DBInteraction {
         if (!this.villeExists(ville, pays)) {
             villeID = this.insVille(ville);
         } else {
-            villeID = getVilleIDParCP(ville.getCp());
+            villeID = getVilleIDFromVilleName(ville.getVille());
         }
         ville.setId(villeID);
         adresse.setVille(ville);
@@ -513,6 +513,20 @@ public class DBInteraction {
         return addressID;
     }
 
+    private int getVilleIDFromVilleName(String villeName) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLEID_FROM_CITY_NAME);
+        this.stmt.setString(1, villeName);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (rs.next()) {
+            // rs.beforeFirst();
+            return rs.getInt("villeId");
+        } else {
+            return 0;
+        }
+    }
+
     private boolean adresseExists(Adresse adresse, Ville ville) throws SQLException {
 
         System.out.println("Check if address exists");
@@ -538,22 +552,9 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         boolean exists = rs.next();
-        System.out.println("La ville : " + ville.getVille() + " " + (exists ? "existe" : "n'existe pas en " + pays.getPays()));
+        System.out.println("La ville '" + ville.getVille() + "' " + (exists ? "existe en " + pays.getPays() : "n'existe pas en " + pays.getPays()));
 
         return exists;
-    }
-
-    private int getCodePostalParVille(String ville) throws SQLException {
-        this.stmt = DBConnection.con.prepareStatement(SEL_CP_PAR_VILLE);
-        this.stmt.setString(1, ville);
-        ResultSet rs = this.stmt.executeQuery();
-
-        if (rs.next()) {
-            rs.beforeFirst();
-            return rs.getInt("villeId");
-        } else {
-            return 0;
-        }
     }
 
     /**
@@ -679,6 +680,7 @@ public class DBInteraction {
      * @return int
      */
     public int getVilleIDParCP(int cp) throws SQLException {
+
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
