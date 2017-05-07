@@ -497,6 +497,7 @@ public class DBInteraction {
         } else {
             addressID = adresse.getId();
         }
+        adresse.setId(addressID);
 
         System.out.println("==============VILLE INFO==============");
         System.out.println(ville.getId());
