@@ -37,7 +37,7 @@ public class DBInteraction {
     private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
 
     // Récupérer toutes les informations sur les pays
-    private static final String SEL_ALL_PAYS = "SELECT * FROM Pays ORDER BY pays ASC;";
+    private static final String SEL_ALL_PAYS = "SELECT * FROM Pays;";
 
     // Récupère un pays en particulier d'après son nom
     private static final String SEL_PAYS_PAR_NOM = "SELECT * FROM Pays WHERE pays LIKE ?;";
@@ -623,7 +623,7 @@ public class DBInteraction {
         return rs.getInt("paysId");
     }
 
-    /*public Ville getVilleFromVilleID(int villeId) throws SQLException {
+    public Ville getVilleFromVilleID(int villeId) throws SQLException {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_FROM_VILLE_ID);
         this.stmt.setInt(1, villeId);
@@ -637,9 +637,10 @@ public class DBInteraction {
                     rs.getString("ville")
             );
 
-            getPaysID()
+            //getPaysID();
         }
-    }*/
+        return new Ville();
+    }
 
     /**
      * Permet de récupérer le nom d'une ville en fonction d'un code postal passé en paramètre
@@ -668,13 +669,9 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_ID_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
+        rs.next();
 
-        if (rs.next()) {
-            rs.beforeFirst();
-            return rs.getInt("villeId");
-        } else {
-            return 0;
-        }
+        return rs.getInt("villeId");
     }
 
 
