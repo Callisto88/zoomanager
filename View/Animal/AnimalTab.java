@@ -58,6 +58,10 @@ public class AnimalTab extends GenericWindow {
 
         dataTable = new MyModelTable(vAnimal, columnName);
         JTable jtTable = new JTable(dataTable);
+        jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jtTable.setColumnSelectionAllowed(false);
+        jtTable.setCellSelectionEnabled(false);
+        jtTable.setRowSelectionAllowed(true);
 
         sorter = new TableRowSorter<>(dataTable);
         jtTable.setRowSorter(sorter);
@@ -65,7 +69,6 @@ public class AnimalTab extends GenericWindow {
         Dimension d = jtTable.getPreferredScrollableViewportSize();
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
-
 
 
         GridBagLayout gblLeft = new GridBagLayout();
@@ -156,8 +159,8 @@ public class AnimalTab extends GenericWindow {
 
         jtTable.addMouseListener(new MouseAdapter() {
             @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
+            public void mousePressed(MouseEvent e) {
+                super.mousePressed(e);
                 // Récupérer la ligne séléctionnée
                 int nbSelectedRows = jtTable.getSelectedRowCount();
                 if(nbSelectedRows == 1){
@@ -230,7 +233,6 @@ public class AnimalTab extends GenericWindow {
         GridBagLayout gblDetAnimalButton = new GridBagLayout();
         jpBoutons.setLayout(gblDetAnimalButton);
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
-
 
 
 
@@ -346,7 +348,7 @@ public class AnimalTab extends GenericWindow {
     private void setModView() {
         jpDetAnimal.removeAll();
 
-        Dimension defaultFormSize = new Dimension(90, 30);
+        Dimension defaultFormSize = new Dimension(120, 30);
 
         Animal selectedAnimal = animauxDB.get(selectedRow);
 
@@ -414,6 +416,13 @@ public class AnimalTab extends GenericWindow {
 
 
 
+        JLabel jlNomCommun = new JLabel("Nom commun");
+        setLabelConfig(jlNomCommun);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 2;
+        jpDetAnimal.add(jlNomCommun, gbcAnimalForm);
+
+
         // Xe ligne Nom Commun
         selectedAnimal.getNomCommun();
 
@@ -446,6 +455,19 @@ public class AnimalTab extends GenericWindow {
         else if(selectedAnimal instanceof Primate){
             double temperature = ((Primate) selectedAnimal).getTemperature();
         }
+
+
+
+        JButton jbConfirm = new JButton("Appliquer");
+        setButtonConfig(jbConfirm);
+        jbConfirm.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                //Check des valeurs du formulaire avant de demander confirmation
+
+                //selectedAnimal.setAnneeNaissance();
+            }
+        });
 
 
         jpDetAnimal.updateUI();
