@@ -40,6 +40,8 @@ public class AnimalTab extends GenericWindow {
 
     protected ArrayList<Enclos> enclosDB;
     protected ArrayList<Animal> animauxDB;
+    protected ArrayList<Race> racesDB;
+    protected ArrayList<Pays> originesDB;
 
     private static TableRowSorter<MyModelTable> sorter;
 
@@ -48,6 +50,9 @@ public class AnimalTab extends GenericWindow {
 
         animauxDB = atAnimalController.getAllAnimal();
         enclosDB = atAnimalController.getAllEnclos();
+        racesDB = atAnimalController.getAllRaces();
+        originesDB = atAnimalController.getAllOrigines();
+
 
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB);
 

@@ -70,6 +70,55 @@ public class AnimalController {
         return enclosDB;
     }
 
+
+    public ArrayList<Race> getAllRaces() {
+        DBInteraction query = null;
+        ArrayList<Race> racesDB = new ArrayList<>();
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            racesDB = query.getAllRaceAnimal();
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        query = null;
+
+        return racesDB;
+    }
+
+    public ArrayList<Pays> getAllOrigines() {
+        DBInteraction query = null;
+        ArrayList<Pays> originesDB = new ArrayList<>();
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            originesDB = query.selCountries();
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        query = null;
+
+        return originesDB;
+    }
+
+
+
     public Vector<Vector<Object>> animauxToVector(ArrayList<Animal> animalTab, ArrayList<Enclos> enclosTab){
         Vector<Vector<Object>> vectAnimaux = new Vector<>();
 
