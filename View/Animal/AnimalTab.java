@@ -1,20 +1,26 @@
 package View.Animal;
 
 import Model.*;
+import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
 import Controller.Animal.*;
 import com.jidesoft.swing.AutoCompletion;
+import org.jdatepicker.impl.JDatePanelImpl;
+import org.jdatepicker.impl.JDatePickerImpl;
+import org.jdatepicker.impl.SqlDateModel;
 
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
+import javax.swing.text.html.ListView;
 import java.awt.*;
 
 
 import java.awt.event.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Properties;
 import java.util.Vector;
 import java.util.regex.Pattern;
 
@@ -348,7 +354,7 @@ public class AnimalTab extends GenericWindow {
     private void setModView() {
         jpDetAnimal.removeAll();
 
-        Dimension defaultFormSize = new Dimension(120, 30);
+        Dimension defaultFormSize = new Dimension(140, 30);
 
         Animal selectedAnimal = animauxDB.get(selectedRow);
 
@@ -376,7 +382,8 @@ public class AnimalTab extends GenericWindow {
 
 
 
-        // Xe ligne : Ligne Enclos
+        // Xe ligne : enclos
+        int maxLength = 200;
         JLabel jlEnclos = new JLabel("Enclos :");
         jlEnclos.setPreferredSize(defaultFormSize);
         gbcAnimalForm.gridx = 0;
@@ -387,13 +394,18 @@ public class AnimalTab extends GenericWindow {
         String[] sEnclos = new String[enclosDB.size()];
         for (int i = 0; i < enclosDB.size(); i++) {
             sEnclos[i] = enclosDB.get(i).getNom();
+            if(sEnclos[i].length() > maxLength){
+                maxLength = sEnclos[i].length();
+            }
         }
 
-        JComboBox jcEnclos = new JComboBox(sEnclos);
+        WideComboBox jcEnclos = new WideComboBox(sEnclos);
         //jcEnclos.setEditable(true);
-        AutoCompletion ac = new AutoCompletion(jcEnclos);
+        AutoCompletion acEnclos = new AutoCompletion(jcEnclos);
         //ac.setStrict(false);
         jcEnclos.setSelectedIndex(selectedAnimal.getEnclos() - 1);
+        jcEnclos.setMaximumSize(new Dimension(maxLength + 5, 30));
+        jcEnclos.setPreferredSize(defaultFormSize);
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = 1;
@@ -416,7 +428,8 @@ public class AnimalTab extends GenericWindow {
 
 
 
-        JLabel jlNomCommun = new JLabel("Nom commun:");
+        // Xe ligne : Nom Commun
+        JLabel jlNomCommun = new JLabel("Nom commun :");
         setLabelConfig(jlNomCommun);
         gbcAnimalForm.gridx = 0;
         gbcAnimalForm.gridy = 2;
@@ -430,20 +443,103 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jtNomCommun, gbcAnimalForm);
 
 
-        // Xe ligne Nom Commun
-        selectedAnimal.getNomCommun();
+        // Xe ligne : Race
+        maxLength = 300;
+        JLabel jlRace = new JLabel("Race :");
+        jlRace.setPreferredSize(defaultFormSize);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 3;
+        jpDetAnimal.add(jlRace, gbcAnimalForm);
 
-        // Xe ligne Race
-        selectedAnimal.getRace();
+        String[] sRaces = new String[racesDB.size()];
+        for (int i = 0; i < racesDB.size(); i++) {
+            sRaces[i] = racesDB.get(i).getNom();
+            if(sRaces[i].length() > maxLength){
+                maxLength = sRaces[i].length();
+            }
+        }
+
+        WideComboBox jcRaces = new WideComboBox(sRaces);
+        //jcEnclos.setEditable(true);
+        AutoCompletion acRaces = new AutoCompletion(jcRaces);
+        //ac.setStrict(false);
+        jcRaces.setSelectedIndex(selectedAnimal.getRace() - 1);
+        jcRaces.setMaximumSize(new Dimension(maxLength + 4, 30));
+        jcRaces.setPreferredSize(defaultFormSize);
+
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 3;
+        jpDetAnimal.add(jcRaces, gbcAnimalForm);
+
 
         // Xe ligne Sexe
-        selectedAnimal.getSexe();
+        JLabel jlSexe = new JLabel("Sexe :");
+        setLabelConfig(jlSexe);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 4;
+        jpDetAnimal.add(jlSexe, gbcAnimalForm);
+
+        JTextField jtSexe = new JTextField(selectedAnimal.getSexe());
+        jtSexe.setPreferredSize(defaultFormSize);
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 4;
+        jpDetAnimal.add(jtSexe, gbcAnimalForm);
+
 
         // Xe ligne Origine
-        selectedAnimal.getOrigine();
+        maxLength = 200;
+        JLabel jlOrigine = new JLabel("Origine :");
+        setLabelConfig(jlOrigine);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 5;
+        jpDetAnimal.add(jlOrigine, gbcAnimalForm);
+
+        String[] sOrigines = new String[originesDB.size()];
+        for (int i = 0; i < originesDB.size(); i++) {
+            sOrigines[i] = originesDB.get(i).getPays();
+            if(sOrigines[i].length() > maxLength){
+                maxLength = sOrigines[i].length();
+            }
+        }
+        System.out.println(originesDB.size());
+
+        WideComboBox jcOrigines = new WideComboBox(sRaces);
+        //jcEnclos.setEditable(true);
+        AutoCompletion acOrigines = new AutoCompletion(jcOrigines);
+        //ac.setStrict(false);
+        jcOrigines.setSelectedIndex(selectedAnimal.getOrigine() - 1);
+        System.out.println(selectedAnimal.getOrigine() - 1);
+        jcOrigines.setMaximumSize(new Dimension(maxLength + 4, 30));
+        jcOrigines.setPreferredSize(defaultFormSize);
+
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 5;
+        jpDetAnimal.add(jcOrigines, gbcAnimalForm);
+
 
         // Xe ligne DateNaissance
-        selectedAnimal.getDateNaissance();
+        JLabel jlDateNaissance = new JLabel("Date de naissance :");
+        setLabelConfig(jlDateNaissance);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 6;
+        jpDetAnimal.add(jlDateNaissance, gbcAnimalForm);
+
+        JDatePickerImpl jdpriStartDatePicker = null;
+        Properties pStartProperties = new Properties();
+        pStartProperties.put("text.today", "Aujourd'hui");
+        pStartProperties.put("text.month", "Mois");
+        pStartProperties.put("text.year", "Année");
+        SqlDateModel sdmModel1 = new SqlDateModel();
+        sdmModel1.setDate(selectedAnimal.getDateNaissance().getYear(), selectedAnimal.getDateNaissance().getMonth(), selectedAnimal.getDateNaissance().getDay());
+        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+        jdpliStartDatePanel.setPreferredSize(new Dimension(220, 220));
+        jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+
+        //System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay());
+        gbcAnimalForm.gridx = 1;
+        gbcAnimalForm.gridy = 6;
+        jpDetAnimal.add(jdpriStartDatePicker, gbcAnimalForm);
+
 
         // Xe ligne DateDeces
         selectedAnimal.getDateDeces();
@@ -488,6 +584,43 @@ public class AnimalTab extends GenericWindow {
 
     private void print() {
 
+    }
+
+    public class WideComboBox extends JComboBox{
+
+        public WideComboBox() {
+        }
+
+        public WideComboBox(final Object items[]){
+            super(items);
+        }
+
+        public WideComboBox(Vector items) {
+            super(items);
+        }
+
+        public WideComboBox(ComboBoxModel aModel) {
+            super(aModel);
+        }
+
+        private boolean layingOut = false;
+
+        public void doLayout(){
+            try{
+                layingOut = true;
+                super.doLayout();
+            }finally{
+                layingOut = false;
+            }
+        }
+
+        public Dimension getSize(){
+            Dimension dim = super.getMaximumSize();
+            if(!layingOut) {
+                dim.width = Math.max(dim.width, getPreferredSize().width);
+            }
+            return dim;
+        }
     }
 
 }

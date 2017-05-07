@@ -47,7 +47,7 @@ abstract public class GenericWindow extends JPanel {
     private Font fErrorMessageFont = new Font(FONT_ERROR_MESSAGE, Font.PLAIN, ERROR_MESSAGE_FONT_SIZE);
     private Font fCheckboxFont = new Font(FONT_CHECKBOX_NAME, Font.PLAIN, CHECKBOX_FONT_SIZE);
 
-    static protected Dimension defaultFormSize = new Dimension(120, 30);
+    static protected Dimension defaultFormSize = new Dimension(140, 30);
 
     public GenericWindow(String windowTitle){
         this.windowTitle = windowTitle;
