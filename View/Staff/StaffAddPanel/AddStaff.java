@@ -375,7 +375,9 @@ public class AddStaff extends GenericWindow {
         jtfPhone.setBackground(Color.RED);
     }
 
+    /*
     private void setLabelConfig(JLabel jlLabel){
         jlLabel.setPreferredSize(new Dimension(150 - jlLabel.getText().length(),30));
     }
+    */
 }

@@ -31,7 +31,7 @@ public class AnimalTab extends GenericWindow {
     private static String S_MODANIMAL = "Modification d'un animal";
     private static String S_ADDANIMAL = "Ajout d'un animal";
 
-    protected int mode = 0;
+    protected int mode = 0;             // 0 pour détails, 1 pour modifier, 2 pour ajout
     protected int selectedRow;
 
     protected JPanel jpDetAnimal;
@@ -135,6 +135,12 @@ public class AnimalTab extends GenericWindow {
 
         /**************************************************************/
 
+        JLabel jlDetAnimal = new JLabel("Détail d'un animal");
+
+        JButton jbMod = new JButton("Modifier");
+        JButton jbAdd = new JButton("Ajouter");
+        JButton jbDel = new JButton("Supprimer");
+
         gbcLeft.gridx = 0;
         gbcLeft.gridy = 2;
         gbcLeft.weighty = 10;
@@ -143,9 +149,10 @@ public class AnimalTab extends GenericWindow {
         jpTableAnimal.setPreferredSize(new Dimension(820, 720));
 
 
-        MouseListener tableMouseListener = new MouseAdapter() {
+        jtTable.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
                 // Récupérer la ligne séléctionnée
                 int nbSelectedRows = jtTable.getSelectedRowCount();
                 if(nbSelectedRows == 1){
@@ -158,9 +165,20 @@ public class AnimalTab extends GenericWindow {
                     selectedRow = 0;
                 }
                 jpMainPanel.updateUI();
+
+                switch (mode) {
+                    case 0:
+                        setDetView();
+                        break;
+                    case 1:
+                        setModView();
+                        break;
+                    case 2:
+                        setAddView();
+                        break;
+                }
             }
-        };
-        jtTable.addMouseListener(tableMouseListener);
+        });
 
         JScrollPane jspAnimal = new JScrollPane(jtTable);
         jspAnimal.setPreferredSize(new Dimension(820, 710));
@@ -186,7 +204,6 @@ public class AnimalTab extends GenericWindow {
         /****************************************
          * Détails d'un animal
          */
-        JLabel jlDetAnimal = new JLabel("Détail d'un animal");
 
         setTitleConfig(jlDetAnimal);
         jpRightTitle.add(jlDetAnimal);
@@ -209,9 +226,8 @@ public class AnimalTab extends GenericWindow {
         jpBoutons.setLayout(gblDetAnimalButton);
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
-        JButton jbMod = new JButton("Modifier");
-        JButton jbAdd = new JButton("Ajouter");
-        JButton jbDel = new JButton("Supprimer");
+
+
 
         jbMod.addActionListener(new ActionListener() {
             @Override
@@ -338,7 +354,8 @@ public class AnimalTab extends GenericWindow {
 
         // Xe ligne : nom
         JLabel jlNomAnimal = new JLabel("Nom : ");
-        jlNomAnimal.setPreferredSize(defaultFormSize);
+        //jlNomAnimal.setPreferredSize(defaultFormSize);
+        setLabelConfig(jlNomAnimal);
         JTextField jtNomAnimal = new JTextField(selectedAnimal.getNom());
         jtNomAnimal.setPreferredSize(defaultFormSize);
 
