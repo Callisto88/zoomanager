@@ -17,6 +17,10 @@ public class Adresse {
      */
     public Adresse() {}
 
+    public Adresse(int id) {
+        this.id = id;
+    }
+
     /**
      * Constructeur avec tous les attributs sauf l'ID
      * @param adresse

@@ -101,20 +101,19 @@ public class AddExternalController {
         dbConnection();
         boolean bAddAddress = true;
         int cityID = 0;
-        if(bNPA && bChange && bCountry) {
+        Pays pays = new Pays();
+        pays.setPays(country);
+
+        Ville ville = new Ville();
+        ville.setVille(city);
+        ville.setPays(pays);
+
+        Adresse adresse = new Adresse();
+        adresse.setAdresse(address);
+        adresse.setVille(ville);
+
+        if (bNPA && bChange && bCountry) {
             try {
-
-                Pays pays = new Pays();
-                pays.setPays(country);
-
-                Ville ville = new Ville();
-                ville.setVille(city);
-                ville.setPays(pays);
-
-                Adresse adresse = new Adresse();
-                adresse.setAdresse(address);
-                adresse.setVille(ville);
-
                 cityID = querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();

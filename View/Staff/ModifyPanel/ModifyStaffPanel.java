@@ -86,7 +86,7 @@ public class ModifyStaffPanel extends GenericWindow {
         sFirstName = personne.getPrenom();
         sLastName = personne.getNom();
         sEMail = personne.getEmail();
-        Adresse aStaff = mscController.getAddressByID(personne.getAdresse());
+        Adresse aStaff = mscController.getAddressByID(personne.getAdresse().getId());
         sAddress = aStaff.getAdresse();
         sCity = aStaff.getVille().toString();
         sNPA = "" + aStaff.getVille().getCp();

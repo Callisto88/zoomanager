@@ -95,7 +95,7 @@ public class DBInteraction {
     // 12 Paramètres Dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / salaire / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?); ";
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
@@ -776,7 +776,7 @@ public class DBInteraction {
         this.stmt.setString(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
         this.stmt.setString(3, personne.getNom());
-        this.stmt.setInt(4, personne.getAdresse());
+        this.stmt.setInt(4, personne.getAdresse().getId());
         this.stmt.setString(5, personne.getEmail());
         this.stmt.setString(6, personne.getTelephone());
         this.stmt.setDate(7, personne.getDateNaissance());
@@ -937,6 +937,9 @@ public class DBInteraction {
                             String telephone, java.sql.Date dateNaissance, int responsable, String statut,
                             double salaire, java.sql.Date dateDebut, String typeContrat)
             throws SQLException {
+
+        // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
+
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setString(1, noAVS);
         this.stmt.setString(2, prenom);
@@ -958,18 +961,21 @@ public class DBInteraction {
      * @param personne(Personne)
      */
     public void insertPersonne(Personne personne) throws SQLException {
+
+        // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
-        this.stmt.setString(1, personne.getNoAVS());
-        this.stmt.setString(2, personne.getPrenom());
-        this.stmt.setString(3, personne.getNom());
-        this.stmt.setInt(4, personne.getAdresse());
-        this.stmt.setString(5, personne.getEmail());
-        this.stmt.setString(6, personne.getTelephone());
-        this.stmt.setDate(7, personne.getDateNaissance());
-        this.stmt.setInt(8, personne.getResponsable());
-        this.stmt.setString(9, personne.getStatut());
-        this.stmt.setDate(10, personne.getDateDebut());
-        this.stmt.setString(11, personne.getTypeContrat());
+        this.stmt.setNull(1, Types.NULL);
+        this.stmt.setString(2, personne.getNoAVS());
+        this.stmt.setString(3, personne.getPrenom());
+        this.stmt.setString(4, personne.getNom());
+        this.stmt.setInt(5, personne.getAdresse().getId());
+        this.stmt.setString(6, personne.getEmail());
+        this.stmt.setString(7, personne.getTelephone());
+        this.stmt.setDate(8, personne.getDateNaissance());
+        this.stmt.setInt(9, personne.getResponsable());
+        this.stmt.setString(10, personne.getStatut());
+        this.stmt.setDate(11, personne.getDateDebut());
+        this.stmt.setString(12, personne.getTypeContrat());
         this.stmt.executeUpdate();
     }
 
@@ -1004,7 +1010,7 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Personne(rs.getInt("idPersonne") , rs.getString("noAVS"),
                         rs.getString("prenom"), rs.getString("nom"),
-                        rs.getInt("adresse"), rs.getString("email"),
+                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
                         rs.getString("telephone"), rs.getDate("dateNaissance"),
                         rs.getInt("responsable"), rs.getString("statut"),
                         rs.getDate("dateDebut"), rs.getString("typeContrat")));

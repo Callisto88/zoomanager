@@ -114,21 +114,20 @@ public class AddStaffController {
         dbConnection();
         boolean bAddAddress = true;
         int cityID = 0;
+        Pays pays = new Pays();
+        pays.setPays(country);
+
+        Ville ville = new Ville();
+        ville.setVille(city);
+        ville.setCp(cp);
+        ville.setPays(pays);
+
+        Adresse adresse = new Adresse();
+        adresse.setAdresse(address);
+        adresse.setVille(ville);
+
         if (bNPA && bChange && bCity && bCountry) {
             try {
-
-                Pays pays = new Pays();
-                pays.setPays(country);
-
-                Ville ville = new Ville();
-                ville.setVille(city);
-                ville.setCp(cp);
-                ville.setPays(pays);
-
-                Adresse adresse = new Adresse();
-                adresse.setAdresse(address);
-                adresse.setVille(ville);
-
                 cityID = querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
@@ -147,7 +146,10 @@ public class AddStaffController {
         if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
 /***************** Problème pour récupérer l'id d'un responsable **********************/
-            Personne personne = new Personne(avs, firstName, lastName, cityID,email, phone, new Date(year, month, day),2,status,null,contract);
+
+// Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
+
+            Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day), 2, status, new Date(year, month, day), contract);
             insertPersonne(personne);
         }
     }
