@@ -119,7 +119,7 @@ public class AnimalController {
 
 
 
-    public Vector<Vector<Object>> animauxToVector(ArrayList<Animal> animalTab, ArrayList<Enclos> enclosTab){
+    public Vector<Vector<Object>> animauxToVector(ArrayList<Animal> animalTab, ArrayList<Enclos> enclosTab, ArrayList<Race> racesDB){
         Vector<Vector<Object>> vectAnimaux = new Vector<>();
 
         short age;
@@ -138,6 +138,15 @@ public class AnimalController {
                 }
             } else {
                 vectAnimaux.lastElement().add("");
+            }
+            if (animal.getRace() != 0) {
+                for (Race race : racesDB) {
+                    if (race.getId() == animal.getRace()) {
+                        vectAnimaux.lastElement().setElementAt(race.getNom(), 2);
+                    }
+                }
+            } else {
+                vectAnimaux.lastElement().setElementAt("", 2);
             }
         }
 
