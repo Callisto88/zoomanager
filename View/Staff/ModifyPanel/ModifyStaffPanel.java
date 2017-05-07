@@ -81,16 +81,13 @@ public class ModifyStaffPanel extends GenericWindow {
         alpCountries = countries;
         this.personne = personne;
         this.mscController = mscController;
-
-        // TODO: finir de récupérer toutes les informations dont l'adresse
         sFirstName = personne.getPrenom();
         sLastName = personne.getNom();
         sEMail = personne.getEmail();
-        Adresse aStaff = mscController.getAddressByID(personne.getAdresse().getId());
-        sAddress = aStaff.getAdresse();
-        sCity = aStaff.getVille().toString();
-        sNPA = "" + aStaff.getVille().getCp();
-        sCountry = aStaff.getVille().getPays().toString();
+        sAddress = personne.getAdresse().toString();
+        sCity = personne.getAdresse().getVille().toString();
+        sNPA = "" + personne.getAdresse().getVille().getCp();
+        sCountry = personne.getAdresse().getVille().getPays().toString();
         sStatut = personne.getStatut();
         sContract = personne.getTypeContrat();
         sSupervisor = mscController.getSupervisor(personne.getResponsable());

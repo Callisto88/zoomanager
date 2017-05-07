@@ -61,12 +61,10 @@ public class ModifyExternalPanel extends GenericWindow {
         sFirstName = external.getPrenom();
         sEMail = external.getEmail();
         sPhone = external.getTelephone();
-        // TODO méthode non présente
-        Adresse aExternal = mecExternalController.getAddressByID(external.getAdresse().getId());
-        sAddress = aExternal.getAdresse();
-        sCity = aExternal.getVille().toString();
-        sNPA = "" + aExternal.getVille().getCp();
-        sCountry = aExternal.getVille().getPays().toString();
+        sAddress = external.getAdresse().toString();
+        sCity = external.getAdresse().getVille().toString();
+        sNPA = "" + external.getAdresse().getVille().getCp();
+        sCountry = external.getAdresse().getVille().getPays().toString();
         Dimension defaultFormSize = new Dimension(350, 550);
         jpModifyPanel.setPreferredSize(defaultFormSize);
         GridBagLayout gblModify = new GridBagLayout();

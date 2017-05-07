@@ -246,14 +246,17 @@ public class StaffController {
      * @param personne personne à supprimer
      **************  Renvoyer un booleen?
      */
-    public void deleteStaff(Personne personne){
+    public boolean deleteStaff(Personne personne){
         dbConnection();
+        boolean insert = true;
         try {
             querry.delPersonne(personne.getIdPersonne());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
+            insert = false;
         }
+        return insert;
     }
 
     /**
@@ -261,18 +264,28 @@ public class StaffController {
      * @param external intervenant à supprimer
      **************  Renvoyer un booleen?
      */
-    public void deleteExternal(Intervenant external){
+    public boolean deleteExternal(Intervenant external){
         dbConnection();
-
+        boolean insert = true;
         try{
             querry.delIntervenant(external.getId());
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
+            insert = false;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
+            insert = false;
         }
+        return insert;
+    }
+
+    public void deleteExternalRow(int line){
+
+    }
+
+    public void deleteStaffRow(int line){
 
     }
 }

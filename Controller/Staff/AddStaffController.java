@@ -149,7 +149,8 @@ public class AddStaffController {
 
 // Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
 
-            Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day), 2, status, new Date(year, month, day), contract);
+            Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day),
+                                    getPersonne(supervisor).getIdPersonne(), status, new Date(year, month, day), contract);
             insertPersonne(personne);
         }
     }
@@ -177,5 +178,26 @@ public class AddStaffController {
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
         }
+    }
+
+    private Personne getPersonne(String name){
+        dbConnection();
+        ArrayList<Personne> personnes = null;
+        String lastName = name.substring(0, name.indexOf(" "));
+        String firstName = name.substring(name.indexOf(" ") + 1, name.length());
+        try {
+            personnes = querry.selEmployeeParPrenomNom(firstName, lastName);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        Personne supervisor = null;
+        for(Personne p : personnes){
+            supervisor = p;
+        }
+        return supervisor;
     }
 }

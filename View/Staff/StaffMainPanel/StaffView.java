@@ -175,7 +175,7 @@ public class StaffView extends GenericWindow {
                     System.out.println(tableau.get(jtTable.getSelectedRow()));
                     System.out.println(jbSwitchexernalInternalStaff.getText());
                     //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
-                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(jtTable.getSelectedRow()));
+                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(jtTable.getSelectedRow()), jtTable.getSelectedRow());
                     gbcRight.gridy = 1;
                     gbcRight.gridx = 0;
                     jpRight.add(psDetail, gbcRight);
@@ -183,7 +183,7 @@ public class StaffView extends GenericWindow {
                     jpRight.repaint();
                 }
                 else{
-                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(jtTable.getSelectedRow()));
+                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(jtTable.getSelectedRow()), jtTable.getSelectedRow());
                     gbcRight.gridy = 1;
                     gbcRight.gridx = 0;
                     jpRight.add(external, gbcRight);
@@ -259,6 +259,14 @@ public class StaffView extends GenericWindow {
         for(int i = 0; i < alExternal.size(); ++i){
             tableau.add(alExternal.get(i).toVector());
         }
+    }
+
+    public void eraseStaffRow(int line){
+        jtTable.remove(line);
+    }
+
+    public void eraseExternalRow(int line){
+        jtTable.remove(line);
     }
 
 }

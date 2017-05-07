@@ -20,6 +20,7 @@ public class AddExternalController {
 
     /**
      * Constructeur du controlleur d'ajout d'intervenant
+     * @param countries permet d'avoir touts les pays présent dans la DB
      */
     public AddExternalController(ArrayList<Pays> countries){
         aeExternal = new AddExternal(this, countries);
@@ -42,11 +43,12 @@ public class AddExternalController {
      * Méthode permettant de checker qu'un intervenant est OK avant de l'insérer
      * @param lastName Nom de l'intervenant
      * @param firstName Prénom de l'intervenant
-     * @param compagny Numéro AVS de l'intervenant
+     * @param compagny nom de l'entreprise de l'intervenant
      * @param email EMail de l'intervenant
-     * @param address Adresse de l'intervenant
-     * @param city Ville de l'intervenant ( inclus le nom de la ville et le NPA )
-     * @param country Pays de l'intervenant
+     * @param address Adresse de l'entreprise de l'intervenant
+     * @param npa npa de l'entreprise de l'intervenant
+     * @param city Ville de l'entreprise de l'intervenant
+     * @param country Pays de l'entreprise de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
     public void checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,

@@ -20,6 +20,7 @@ public class ExternalStaff extends JPanel{
     private GridBagConstraints gbcDetailsExternal = new GridBagConstraints();
     private int x = 0;
     private int y = 0;
+    private int line;
 
     private Dimension dLabel = new Dimension(100,25);
     private Dimension dDetail = new Dimension(120, 25);
@@ -29,9 +30,10 @@ public class ExternalStaff extends JPanel{
      * @param controller controlleur StaffController permettant de faire remonter les informations
      * @param external intervenant pour lequel on souhaite afficher les détails
      */
-    public ExternalStaff(StaffController controller, Intervenant external){
+    public ExternalStaff(StaffController controller, Intervenant external, int line){
 
         this.setLayout(new GridBagLayout());
+        this.line = line;
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridy = y;
         JPanel jpLeft = new JPanel();
@@ -110,7 +112,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel("adresse TODO");
+        JLabel jlAddressInfo = new JLabel(external.getAdresse().toString());
         jpAddress.add(jlAddress);
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddressInfo);
@@ -123,7 +125,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        JLabel jlCityInfo = new JLabel(/*personne.getAdresse()*/);
+        JLabel jlCityInfo = new JLabel(external.getAdresse().getVille().toString());
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
         jpCity.add(jlCityInfo);
@@ -136,7 +138,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        JLabel jlNPAInfo = new JLabel(/*personne.getAdresse()*/);
+        JLabel jlNPAInfo = new JLabel("" + external.getAdresse().getVille().getCp());
         jpNPA.add(jlNPA);
         jlNPAInfo.setPreferredSize(dDetail);
         jpNPA.add(jlNPAInfo);
@@ -149,7 +151,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        JLabel jlCountryInfo = new JLabel("pays");
+        JLabel jlCountryInfo = new JLabel(external.getAdresse().getVille().getPays().toString());
         jpCountry.add(jlCountry);
         jlCountryInfo.setPreferredSize(dDetail);
         ++y;
@@ -201,7 +203,9 @@ public class ExternalStaff extends JPanel{
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Suppression de l'intervenant");
                 controller.erreurPopup("Voulez vous réelement supprimer " + external.getPrenom() + " " + external.getNom());
-                controller.deleteExternal(external);
+                if(controller.deleteExternal(external)){
+                    controller.deleteExternalRow(line);
+                }
             }
         });
 
