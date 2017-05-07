@@ -275,6 +275,8 @@ public class DBInteraction {
     private static final String DEL_ANIMAL_FROM_EVENT = "DELETE FROM Animal_Evenement WHERE animal = ? AND evenement = ?;";
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
+    private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
+    private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
 
     private static final String SEL_RESPONSABLES = "SELECT * FROM Personne WHERE statut LIKE 'responsable'";
 
@@ -1869,6 +1871,27 @@ public class DBInteraction {
         this.stmt.executeUpdate();
     }
 
+    /*public ArrayList<Intervenant> selPeopleConcernedByEventID(int eventID) throws SQLException {
+
+        ArrayList<Intervenant> result;
+        this.stmt = DBConnection.con.prepareStatement(SEL_PERSONNE_CONCERNED_BY_EVENT);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        while (rs.next()) {
+            result.add(new Intervenant())
+        }
+    }*/
+
+    public boolean delPersonneEvenement(int personneID, int eventID) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(DEL_PERSONNE_IN_EVENT);
+        this.stmt.setInt(1, eventID);
+        this.stmt.setInt(2, personneID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return rs.next();
+    }
 
      /**
      * Permet d'assigner un événement à une personne
@@ -1879,16 +1902,15 @@ public class DBInteraction {
      * @return void
      */
     public void assignEvenementEmploye (Evenement evenement, Personne employe) throws SQLException {
-        int numAVS_employe = employe.getIdPersonne();
-        int id_evenement = evenement.getId();
+        int personneID = employe.getIdPersonne();
+        int eventID = evenement.getId();
 
         this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_PERSONNE);
 
-        this.stmt.setInt(1, numAVS_employe);
-        this.stmt.setInt(2, id_evenement);
+        this.stmt.setInt(1, personneID);
+        this.stmt.setInt(2, eventID);
 
         this.stmt.executeUpdate();
-
     }
 
 
