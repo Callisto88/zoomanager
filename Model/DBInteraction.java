@@ -33,55 +33,63 @@ public class DBInteraction {
     /**
      * Ci-dessous, Liste de toutes les requêtes possibles dans le programme !
      */
+
     // -----------------------------------------------------------------------------------------------------------------
-    // ADRESSE :
-    // Récupérer toutes les informations sur les villes
+    // REQUETES RELATIVES AUX PAYS, VILLES, ADRESSES
+    // -----------------------------------------------------------------------------------------------------------------
+
+    // Récupére la liste de toutes les villes
     private static final String SEL_ALL_VILLE = "SELECT * FROM Ville;";
 
-    // Récupérer toutes les informations sur les pays
+    // Récupére la liste de tous les pays
     private static final String SEL_ALL_PAYS = "SELECT * FROM Pays ORDER BY pays ASC;";
 
-    // Récupère un pays en particulier d'après son nom
+    // Récupère un pays d'après son nom
     private static final String SEL_PAYS_PAR_NOM = "SELECT * FROM Pays WHERE pays LIKE ?;";
 
     // Récupère une ville d'après son nom
     private static final String SEL_VILLE_PAR_NOM = "SELECT * FROM Ville WHERE ville LIKE ?;";
 
-    // Insérer un nouveau Pays dans la DB
+    // Insère un nouveau pays
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
 
-    // Insérer une nouvelle Ville dans la DB
+    // Insère une nouvelle ville
     private static final String INSERT_VILLE = "INSERT INTO Ville(villeId, codePostal, ville, paysId) VALUES (?, ?, ?, ?);";
 
-    // Insérer une nouvelle Adresse dans la DB
+    // Insère une nouvelle adresse
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse(id, adresse, villeId) VALUES (?, ?, ?);";
 
-    // Récupérer le paysId d'une ville "String"
+    // Récupère l'identifiant d'un pays d'après son nom
     private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays LIKE ? ;";
 
-    // Récupère le code postal d'après le nom de la ville
+    // Récupère l'identifiant d'une ville d'après son nom
     private static final String SEL_VILLEID_FROM_CITY_NAME = "SELECT villeId FROM Ville WHERE ville LIKE ?;";
 
-    // Récupérer la ville en fonction d'un code postal
+    // Récupère le nom de la ville d'après son identifiant
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE villeId = ? ;";
-    private static final String SEL_VILLE_FROM_VILLE_ID = "SELECT * FROM Ville WHERE villeId = ? ;";
 
-    // Récupérer la ville en fonction d'un code postal
+    // Récupère une ville en fonction d'un code postal
     private static final String SEL_VILLE_ID_PAR_CP = "SELECT villeId FROM Ville WHERE codePostal = ? ;";
 
+    // Récupère les infos d'une ville dans un pays donné
     private static final String SEL_CITY_IN_COUNTRY = "SELECT * FROM `Ville`\n" +
             "INNER JOIN `Pays`\n" +
             "    ON `Ville`.`paysId` = `Pays`.`paysId`\n" +
             "WHERE `ville` LIKE ?\n" +
             "AND `Pays`.`paysId` = ?;";
 
+    // Récupère les infos d'une adresse dans une ville donnée
     private static final String SEL_ADRESSE_IN_CITY = "SELECT * FROM `Adresse` INNER JOIN `Ville` ON `Adresse`.`villeId` = `Ville`.`villeId` WHERE `Adresse`.`adresse` LIKE ? AND `Ville`.`villeId` = ?;";
 
-    // Récupérer les informations sur une adresse et la ville en relation
+    // Récupère les infos d'une adresse en fonction de l'adresse et de l'identifiant de la ville dans laquelle elle se trouve
     private static final String SEL_ADRESSE_PAR_CP_ET_ADRESSE =
             "SELECT * FROM Adresse WHERE adresse LIKE ? AND villeId = ? ;";
+
+
     // -----------------------------------------------------------------------------------------------------------------
-    // PERSONNE :
+    // REQUETES RELATIVES AUX PERSONNES, EMPLOYES, INTERVENANTS
+    // -----------------------------------------------------------------------------------------------------------------
+
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
     private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
     private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE idPersonne = ? ;";
@@ -305,6 +313,8 @@ public class DBInteraction {
     private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
 
     private static final String SEL_ORDER = "SELECT * FROM Commande WHERE id = ?";
+
+    private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ?;";
 
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
@@ -2271,6 +2281,13 @@ public class DBInteraction {
         } else {
             throw new ExceptionDataBase("No such order in database");
         }
+    }
+
+    public void updateCommande(Commande commande) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(UPDATE_ORDER);
+        this.stmt.setString(1, String.valueOf(commande.getStatut()));
+        this.stmt.execute();
     }
 
     /**

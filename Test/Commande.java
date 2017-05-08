@@ -2,11 +2,12 @@ package Test;
 
 import Model.*;
 
+import javax.jws.WebParam;
 import java.sql.SQLException;
 
 public class Commande {
 
-    public static void main(String arg[]) {
+    public static void main(String arg[]) throws SQLException {
 
         DBInteraction query = null;
         try {
@@ -24,8 +25,9 @@ public class Commande {
         }
 
         // Récupération des infos d'une commande d'après son ID
+        Model.Commande order;
         try {
-            Model.Commande order = query.selCommande(501);
+            order = query.selCommande(501);
 
             System.out.println("======= INFOS COMMANDE =======");
             System.out.println("ORDER ID : " + order.getId());
@@ -36,6 +38,19 @@ public class Commande {
             exceptionDataBase.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+
+        try {
+            Model.Commande order2 = query.selCommande(506);
+            System.out.println("======= UPDATE COMMANDE =======");
+            System.out.println("Current statut : " + String.valueOf(order2.getStatut()));
+            order2.setStatut(Statut.ANNULEE);
+            query.updateCommande(order2);
+            System.out.println("New statut : " + String.valueOf(order2.getStatut()));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
         }
 
         System.out.println("\n_> Programme terminé ... \n");
