@@ -304,7 +304,7 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // STOCK :
     private static final String INS_COMMANDE = "INSERT INTO Commande (id, dateHeure, statut) VALUES(null, NOW(), 'CREEE');";
-    private static final String INS_CONTENU_COMMANDE = "INSERT INTO Commande_Contenu (idCommande, quantite, refArticle) VALUES(?, ?, ?);";
+    private static final String INS_CONTENU_COMMANDE = "INSERT INTO Commande_Contenu (id, idCommande, quantite, refArticle) VALUES(null, ?, ?, ?);";
     private static final String SEL_STOCK_BY_REF = "SELECT * FROM Stock WHERE id = ?;";
 
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
@@ -312,10 +312,11 @@ public class DBInteraction {
 
     // Récupérer toutes les commandes qui ont été faites (id, date et statut)
     private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
+    private static final String SEL_ORDERS_BY_STATUS = "SELECT * FROM Commande WHERE Statut LIKE ?";
 
     private static final String SEL_ORDER = "SELECT * FROM Commande WHERE id = ?";
 
-    private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ?;";
+    private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ? WHERE id = ?;";
 
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
@@ -2231,6 +2232,15 @@ public class DBInteraction {
         return this.createTabCommande(rs);
     }
 
+    public ArrayList<Commande> selOrdersByStatut(Statut state) throws SQLException, ExceptionDataBase {
+        ArrayList<Commande> data = new ArrayList<>();
+        this.stmt = DBConnection.con.prepareStatement(SEL_ORDERS_BY_STATUS);
+        this.stmt.setString(1, String.valueOf(state));
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabCommande(rs);
+    }
+
     /**
      * Permet de récupérer les commandes qui ont été faites entre deux dates passées en paramètre
      *
@@ -2262,6 +2272,38 @@ public class DBInteraction {
         }
     }
 
+    public int creerCommande(ArrayList<Contenu_Commande> orderContent) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(INS_COMMANDE, Statement.RETURN_GENERATED_KEYS);
+        this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle commande
+            int orderID = rs.getInt(1);
+
+            // Assignation de l'ID de commande aux contenus
+            for (int i = 0; i < orderContent.size(); ++i) {
+                Contenu_Commande orderItem = orderContent.get(i);
+                orderItem.setOrderID(orderID);
+                insertOrderContent(orderItem);
+            }
+
+            return orderID;
+        } else {
+            return 0;
+        }
+    }
+
+    private void insertOrderContent(Contenu_Commande c) throws SQLException {
+
+        // id, idCommande, quantite, refArticle
+        this.stmt = DBConnection.con.prepareStatement(INS_CONTENU_COMMANDE);
+        this.stmt.setInt(1, c.getOrderID());
+        this.stmt.setDouble(2, c.getQuantite());
+        this.stmt.setInt(3, c.getRefArticle());
+        this.stmt.execute();
+    }
+
     public Commande selCommande(int orderID) throws SQLException, ExceptionDataBase {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_ORDER);
@@ -2288,6 +2330,7 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ORDER);
         this.stmt.setString(1, String.valueOf(commande.getStatut()));
+        this.stmt.setInt(2, commande.getId());
         this.stmt.execute();
     }
 
@@ -2397,7 +2440,7 @@ public class DBInteraction {
             while (rs.next()) {
                 data.add(new Commande(
                                 rs.getInt("id"),
-                                rs.getDate("date"),
+                        rs.getDate("dateHeure"),
                                 Statut.valueOf(rs.getString("statut"))
                         )
                 );

@@ -25,12 +25,18 @@ public class Stock {
      * Membres privés
      */
     private int id;
+
     private String nom;
+
     private double quantite;
     //private double ordered;
     private double quantiteMin;
     private String unite;
     private double commande;
+
+    public Stock(int id) {
+        this.id = id;
+    }
 
     /**
      * Constructeur par défaut

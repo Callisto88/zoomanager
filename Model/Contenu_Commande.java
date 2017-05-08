@@ -27,6 +27,17 @@ public class Contenu_Commande {
     private int refArticle;
     private double quantite;
 
+    public Contenu_Commande(int refArticle, double quantite) {
+        this.refArticle = refArticle;
+        this.quantite = quantite;
+    }
+
+    public Contenu_Commande(int orderID, int refArticle, double quantite) {
+        this.orderID = orderID;
+        this.refArticle = refArticle;
+        this.quantite = quantite;
+    }
+
     public Contenu_Commande(int id, int orderID, int refArticle, double quantite) {
         this.id = id;
         this.orderID = orderID;
