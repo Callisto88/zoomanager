@@ -64,7 +64,7 @@ public class Commande {
             for (Contenu_Commande c : orderContent) {
 
                 Stock article = query.selArticleByRef(c.getRefArticle());
-                String descriptionArticle = article.getNom();
+                String descriptionArticle = article.getDescription();
 
                 System.out.println("====================");
                 System.out.println("Réf. Article : " + descriptionArticle);

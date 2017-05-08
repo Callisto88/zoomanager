@@ -1,6 +1,7 @@
 package Controller;
 
 import Controller.Staff.StaffController;
+import Controller.Stock.StockTabController;
 import Controller.Animal.*;
 import View.ManagerDashboard.ManagerDashboard;
 import View.Stock.StockTab;
@@ -58,7 +59,7 @@ public class ManagerDashboardController {
     }
 
     public void StockView() {
-        // stStock = new StockTab();
+        StockTabController stcStockTabController = new StockTabController();
     }
 
     public void AnimalView() {

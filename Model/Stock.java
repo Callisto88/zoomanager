@@ -28,6 +28,7 @@ public class Stock {
 
     private String nom;
 
+    private String description;
     private double quantite;
     //private double ordered;
     private double quantiteMin;
@@ -46,28 +47,35 @@ public class Stock {
     /**
      * Constructeur avec tous les membres
      * @param id
-     * @param nom
+     * @param description
      * @param quantite
      * @param quantiteMin
      * @param unite
      */
-    public Stock(int id, String nom, double quantite, double quantiteMin, String unite) {
+    public Stock(int id, String description, double quantite, String unite, double quantiteMin) {
         this.id = id;
-        this.nom = nom;
+        this.description = description;
         this.quantite = quantite;
         this.quantiteMin = quantiteMin;
         this.unite = unite;
+
+        double temp = quantiteMin - quantite;
+        if(temp > 0){
+            this.commande = temp;
+        }else{
+            this.commande = 0;
+        }
     }
 
     /**
      * Constructeur avec tous les membres sauf l'ID. AUTO_INCREMENT
-     * @param nom
+     * @param description
      * @param quantite
      * @param quantiteMin
      * @param unite
      */
-    public Stock(String nom, double quantite, double quantiteMin, String unite) {
-        this.nom = nom;
+    public Stock(String description, double quantite, double quantiteMin, String unite) {
+        this.description = description;
         this.quantite = quantite;
         this.quantiteMin = quantiteMin;
         this.unite = unite;
@@ -98,19 +106,19 @@ public class Stock {
     }
 
     /**
-     * Getter nom
+     * Getter description
      * @return String nom
      */
-    public String getNom() {
-        return nom;
+    public String getDescription() {
+        return description;
     }
 
     /**
      * Setter nom
-     * @param nom une String
+     * @param description une String
      */
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /**
@@ -168,13 +176,27 @@ public class Stock {
 
     public Vector<Object> toVector(){
         Vector<Object> vStock = new Vector<Object>();
-        vStock.add(getNom());
+        vStock.add(getId());
+        vStock.add(getDescription());
         vStock.add(getQuantite());
         vStock.add(getQuantiteMin());
         vStock.add(getUnite());
         vStock.add(getCommande());
 
         return vStock;
+    }
+
+    public Vector<Object> toVectorAddDel(){
+        Vector<Object> vStock = new Vector<Object>();
+        vStock.add(getDescription());
+        vStock.add(new Double(0.0));
+        vStock.add(getUnite());
+
+        return vStock;
+    }
+
+    public void addToStock(double quantity){
+        this.quantite += quantity;
     }
 
 }

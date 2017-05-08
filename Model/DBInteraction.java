@@ -2343,7 +2343,7 @@ public class DBInteraction {
 
         if (rs.next()) {
             s.setId(rs.getInt("id"));
-            s.setNom(rs.getString("description"));
+            s.setDescription(rs.getString("description"));
             s.setQuantite(rs.getDouble("quantite"));
             s.setUnite(rs.getString("unite"));
         } else {
