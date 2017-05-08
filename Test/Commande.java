@@ -4,6 +4,7 @@ import Model.*;
 
 import javax.jws.WebParam;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Commande {
 
@@ -52,6 +53,29 @@ public class Commande {
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
+
+        try {
+            // Model.Commande order3 = query.selCommande(102);
+            int orderID = 477;
+            ArrayList<Contenu_Commande> orderContent = query.selAllContenuCommandeParID(orderID);
+            System.out.println("\nContenu de la commande ID " + orderID);
+            System.out.println("La commande contient : " + orderContent.size() + " éléments");
+
+            for (Contenu_Commande c : orderContent) {
+
+                Stock article = query.selArticleByRef(c.getRefArticle());
+                String descriptionArticle = article.getNom();
+
+                System.out.println("====================");
+                System.out.println("Réf. Article : " + descriptionArticle);
+                System.out.println("Quantité : " + c.getQuantite() + " " + article.getUnite());
+                System.out.println("Quantité min. : " + article.getQuantiteMin());
+            }
+
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
 
         System.out.println("\n_> Programme terminé ... \n");
     }

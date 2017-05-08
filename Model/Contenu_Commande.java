@@ -23,22 +23,14 @@ package Model;
 public class Contenu_Commande {
 
     private int id;
-    private String nom;
+    private int orderID;
+    private int refArticle;
     private double quantite;
-    private int commande;
 
-    public Contenu_Commande(int id, String nom, double quantite, int commande) {
+    public Contenu_Commande(int id, int orderID, int refArticle, double quantite) {
         this.id = id;
-        this.nom = nom;
-        this.quantite = quantite;
-        this.commande = commande;
-    }
-
-    public double getQuantite() {
-        return quantite;
-    }
-
-    public void setQuantite(double quantite) {
+        this.orderID = orderID;
+        this.refArticle = refArticle;
         this.quantite = quantite;
     }
 
@@ -50,19 +42,28 @@ public class Contenu_Commande {
         this.id = id;
     }
 
-    public String getNom() {
-        return nom;
+    public int getOrderID() {
+        return orderID;
     }
 
-    public void setNom(String nom) {
-        this.nom = nom;
+    public void setOrderID(int orderID) {
+        this.orderID = orderID;
     }
 
-    public int getCommande() {
-        return commande;
+    public int getRefArticle() {
+        return refArticle;
     }
 
-    public void setCommande(int commande) {
-        this.commande = commande;
+    public void setRefArticle(int refArticle) {
+        this.refArticle = refArticle;
     }
+
+    public double getQuantite() {
+        return quantite;
+    }
+
+    public void setQuantite(double quantite) {
+        this.quantite = quantite;
+    }
+
 }

@@ -305,6 +305,7 @@ public class DBInteraction {
     // STOCK :
     private static final String INS_COMMANDE = "INSERT INTO Commande (id, dateHeure, statut) VALUES(null, NOW(), 'CREEE');";
     private static final String INS_CONTENU_COMMANDE = "INSERT INTO Commande_Contenu (idCommande, quantite, refArticle) VALUES(?, ?, ?);";
+    private static final String SEL_STOCK_BY_REF = "SELECT * FROM Stock WHERE id = ?;";
 
     // Récupérer l'état de tout le stock (nom, quantite, unite, quantiteMin
     private static final String SEL_ALL_STOCK = "SELECT * FROM Stock;";
@@ -2290,6 +2291,25 @@ public class DBInteraction {
         this.stmt.execute();
     }
 
+    public Stock selArticleByRef(int refArticle) throws SQLException, ExceptionDataBase {
+
+        Stock s = new Stock();
+        this.stmt = DBConnection.con.prepareStatement(SEL_STOCK_BY_REF);
+        this.stmt.setInt(1, refArticle);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (rs.next()) {
+            s.setId(rs.getInt("id"));
+            s.setNom(rs.getString("description"));
+            s.setQuantite(rs.getDouble("quantite"));
+            s.setUnite(rs.getString("unite"));
+        } else {
+            throw new ExceptionDataBase("Aucun article ne correspondant à l'ID : " + refArticle);
+        }
+
+        return s;
+    }
+
     /**
      * Permet de récupérer le contenu d'une commande en fonction de son id passé en paramètre
      *
@@ -2402,8 +2422,14 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Contenu_Commande(rs.getInt("id"), rs.getString("nom"),
-                        rs.getDouble("quantite"), rs.getInt("commande")));
+                data.add(
+                        new Contenu_Commande(
+                                rs.getInt("id"),
+                                rs.getInt("idCommande"),
+                                rs.getInt("refArticle"),
+                                rs.getDouble("quantite")
+                        )
+                );
             }
         }
         this.stmt.close();
