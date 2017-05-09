@@ -30,15 +30,15 @@ abstract public class GenericWindow extends JPanel {
     static private int TITLE_FONT_SIZE = 30;
     static private int WINDOW_TITLE_FONT_SIZE = 15;
     static private int TABLE_FONT_SIZE = 15;
-    static private int ERROR_MESSAGE_FONT_SIZE = 15;
+    static private int ERROR_MESSAGE_FONT_SIZE = 10;
     static private int CHECKBOX_FONT_SIZE = 15;
-    static private int MIN_WIDTH = 1440;
-    static private int MIN_HEIGHT = 900;
+    static private int MIN_WIDTH;
+    static private int MIN_HEIGHT;
     protected JPanel jpMainPanel;
     protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
     private Dimension dim;
     private String windowTitle;
-    private JLabel jlErrorMessage = new JLabel();
+    protected JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
     private Font fButtonFont = new Font(BUTTON_FONT_NAME, Font.PLAIN, BUTTON_FONT_SIZE);
     private Font fTitleFont = new Font(FONT_TITLE, Font.PLAIN, TITLE_FONT_SIZE);
@@ -46,10 +46,11 @@ abstract public class GenericWindow extends JPanel {
     private Font fTableFont = new Font(FONT_TABLE, Font.PLAIN, TABLE_FONT_SIZE);
     private Font fErrorMessageFont = new Font(FONT_ERROR_MESSAGE, Font.PLAIN, ERROR_MESSAGE_FONT_SIZE);
     private Font fCheckboxFont = new Font(FONT_CHECKBOX_NAME, Font.PLAIN, CHECKBOX_FONT_SIZE);
-
     static protected Dimension defaultFormSize = new Dimension(140, 30);
 
     public GenericWindow(String windowTitle){
+        MIN_WIDTH = 1440;
+        MIN_HEIGHT = 900;
         this.windowTitle = windowTitle;
         jfFrame = new JFrame(getWindowTitle());
         jfFrame.setLayout(new BorderLayout());
@@ -58,7 +59,21 @@ abstract public class GenericWindow extends JPanel {
         jlErrorMessage.setForeground(Color.RED);
 
         //gbcMainPanel.weighty = 1;
-       //gbcMainPanel.anchor = PAGE_
+        //gbcMainPanel.anchor = PAGE_
+    }
+
+    public GenericWindow(String windowTitle, int width, int height){
+        MIN_WIDTH = width;
+        MIN_HEIGHT = height;
+        this.windowTitle = windowTitle;
+        jfFrame = new JFrame(getWindowTitle());
+        jfFrame.setLayout(new BorderLayout());
+        jpMainPanel = new JPanel(new GridBagLayout());
+        dim = Toolkit.getDefaultToolkit().getScreenSize();
+        jlErrorMessage.setForeground(Color.RED);
+
+        //gbcMainPanel.weighty = 1;
+        //gbcMainPanel.anchor = PAGE_
     }
 
     public static int getMinWidth() {
@@ -90,6 +105,10 @@ abstract public class GenericWindow extends JPanel {
         jbButton.setPreferredSize(new Dimension(100, 30));
     }
 
+    protected void setButtonConfigMedium(JButton jbButton){
+        jbButton.setPreferredSize(new Dimension(200,30));
+    }
+
     protected void setButtonLabelConfig(JLabel jlLabel){
         jlLabel.setFont(fButtonFont);
     }
@@ -108,6 +127,7 @@ abstract public class GenericWindow extends JPanel {
 
     protected void setErrorMessageConfig(JLabel jlLabel){
         jlLabel.setFont(fErrorMessageFont);
+        jlLabel.setForeground(Color.RED);
     }
 
     protected void setCheckboxConfig(Checkbox cCheckbox){

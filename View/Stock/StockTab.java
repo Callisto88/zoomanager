@@ -1,10 +1,10 @@
 package View.Stock;
 
-import Controller.Stock.AddStockController;
-import Controller.Stock.StockTabController;
+import Controller.Stock.*;
 import Model.Commande;
 import Model.Stock;
 //import View.Stock;
+//import View.ButtonShowRenderer;
 import View.DateLabelFormatter;
 import View.GenericWindow;
 import View.MyModelTable;
@@ -16,11 +16,12 @@ import org.jdatepicker.impl.UtilDateModel;
 //import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumnModel;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,10 +45,10 @@ import java.util.Vector;
  */
 
 public class StockTab extends GenericWindow {
-    private static String[] COLUMN_STOCK_NAME = {"Aliment", "Quantité", "Quantité Minimum", "Unite", "Commande"};
-    private static boolean[] COLUMN_STOCK_EDITABLE = {false, false, false, false, true};
-
-    private static String[] COLUMN_HISTORY_NAME = {"ID", "Date"};
+    private final String[] COLUMN_STOCK_NAME = {"ID", "Description", "Quantité", "Quantité Minimum", "Unite", "Commande"};
+    private final boolean[] COLUMN_STOCK_EDITABLE = {false, false, false, false, false, true};
+    private final String[] COLUMN_HISTORY_NAME = {"ID", "Date", "Statut"};
+    private final String[] ORDER_STATUS = {"Tous les statuts", "CREEE", "EN_COURS", "TERMINEE", "ANNULEE", "REMBOURSEE"};
 
     public StockTab(StockTabController stcStockTabController){
         super("Stock");
@@ -138,7 +139,8 @@ public class StockTab extends GenericWindow {
             vStock.add(sStock.toVector());
         }
 
-        JTable jtTableStock = new JTable(new MyModelTable(vStock, COLUMN_STOCK_NAME, COLUMN_STOCK_EDITABLE));
+        MyModelTable mtStock = new MyModelTable(vStock, COLUMN_STOCK_NAME, COLUMN_STOCK_EDITABLE);
+        JTable jtTableStock = new JTable(mtStock);
         //setTableConfig(jtTableStock);
 
         Dimension d = jtTableStock.getPreferredScrollableViewportSize();
@@ -182,11 +184,8 @@ public class StockTab extends GenericWindow {
         JPanel jpHistoryOrder = new JPanel();
         jpRight.add(jpHistoryOrder, gbcRight);
 
-        JButton jbHistory = new JButton("Recherche");
-        setButtonConfig(jbHistory);
-
-        Checkbox cWaiting = new Checkbox("En cours");
-        setCheckboxConfig(cWaiting);
+        JButton jbSearch = new JButton("Recherche");
+        setButtonConfig(jbSearch);
 
 
         Properties pStartProperties = new Properties();
@@ -217,11 +216,10 @@ public class StockTab extends GenericWindow {
         jpHistoryOrder.setLayout(gblOrderBoutton);
         GridBagConstraints gbcOrderBouton = new GridBagConstraints();
 
-        gbcOrderBouton.insets = new Insets(15, 30, 15, 30);
+        gbcOrderBouton.insets = new Insets(15, 10, 15, 10);
         gbcOrderBouton.gridx = 0;
         gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jbHistory, gbcOrderBouton);
-
+        jpHistoryOrder.add(jbSearch, gbcOrderBouton);
 
         gbcOrderBouton.gridx = 1;
         gbcOrderBouton.gridy = 0;
@@ -239,6 +237,11 @@ public class StockTab extends GenericWindow {
         gbcOrderBouton.gridy = 0;
         jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderBouton);
 
+        JComboBox jcbOrderStatus = new JComboBox(ORDER_STATUS);
+        gbcOrderBouton.gridx = 5;
+        gbcOrderBouton.gridy = 0;
+        jpHistoryOrder.add(jcbOrderStatus, gbcOrderBouton);
+
 
         /**************************************************************/
 
@@ -255,10 +258,46 @@ public class StockTab extends GenericWindow {
         Vector<Vector<Object>> vCommandeHistory = new Vector<>();
 
         for(Commande cHistory : alCommandeHistory){
-            // vCommandeHistory.add(cHistory.toVector());
+            vCommandeHistory.add(cHistory.toVector());
         }
 
-        JTable jtTableCommandeHistory = new JTable(new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME));
+        for(int i = 0; i < vCommandeHistory.size(); ++i){
+            for(int j = 0; j < vCommandeHistory.elementAt(i).size(); ++j){
+                System.out.println(vCommandeHistory.elementAt(i).elementAt(j));
+            }
+        }
+        MyModelTable mtCommandeHistory = new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME);
+        JTable jtTableCommandeHistory = new JTable(mtCommandeHistory);
+
+        jtTableCommandeHistory.addMouseListener(new MouseListener() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() == 2){
+                    new OrderContentController((int)jtTableCommandeHistory.getValueAt(jtTableCommandeHistory.getSelectedRow(),0));
+                }
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+
+            }
+        });
+
 
         Dimension d1 = jtTableCommandeHistory.getPreferredScrollableViewportSize();
         d1.width = jtTableCommandeHistory.getPreferredSize().width;
@@ -281,53 +320,61 @@ public class StockTab extends GenericWindow {
         jbOrder.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Vector<Stock> sOrder = new Vector<Stock>();
-                int column = 4;
+                Vector<Vector<Object>> vOrder = new Vector<>();
+                final int COLUMN_QUANTITY = 5;
+
                 for(int i = 0; i < jtTableStock.getRowCount(); ++i){
-                    if((double)jtTableStock.getValueAt(i, column) > 0){}
-
-
+                    if((double)jtTableStock.getValueAt(i, COLUMN_QUANTITY) > 0){
+                        Stock sStock = new Stock(alStock.get(i));
+                        sStock.setCommande((double)jtTableStock.getValueAt(i, COLUMN_QUANTITY));
+                        vOrder.add(sStock.toVectorForOrder());
+                    }
                 }
+
+                new NewOrderController(vOrder, mtCommandeHistory);
             }
         });
 
         jbAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new AddStockController();
+                Vector<Vector<Object>> vAdd = new Vector<>();
+
+                for(Stock sStock : alStock){
+                    System.out.println(sStock.getId() + " " + sStock.getQuantite());
+                    vAdd.add(sStock.toVectorAddDel());
+                }
+
+                new AddStockController(vAdd, jtTableStock);
             }
         });
 
         jbDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Vector<Vector<Object>> vDelete = new Vector<>();
 
+                for(Stock sStock : alStock){
+                    vDelete.add(sStock.toVectorAddDel());
+                }
+
+                new DeleteStockController(vDelete, jtTableStock);
             }
         });
-
-        /*
-        cWaiting.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
-        });
-        */
 
         jbReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int column = 4;
+                int column = 5;
                 for(int i = 0; i < jtTableStock.getRowCount(); ++i){
                     jtTableStock.setValueAt(new Double(0), i, column);
                 }
             }
         });
 
-
         /**************************/
 
-        jbHistory.addActionListener(new ActionListener() {
+        jbSearch.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
@@ -335,7 +382,6 @@ public class StockTab extends GenericWindow {
         });
 
         configFrame(getJfFrame(), this);
-
 
     }
 

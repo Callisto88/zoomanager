@@ -12,9 +12,9 @@ import java.util.Vector;
 
 /**
  *
- * Cette classe est le contrôleur de l'interface principale du Stock.
+ * Cette classes est le contrôleur de l'interface principale du Stock.
  *
- * Il vérifie que les valeurs rentrées par l'utilisateur sont corrects
+ * Elle vérifie que les valeurs rentrées par l'utilisateur sont corrects
  *
  * Il fait aussi le lien entre l'interface et le modèle:
  *   - méthodes pour demander au modèle de faire les requêtes dans la base de données

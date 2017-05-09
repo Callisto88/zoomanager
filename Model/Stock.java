@@ -35,14 +35,26 @@ public class Stock {
     private String unite;
     private double commande;
 
-    public Stock(int id) {
-        this.id = id;
-    }
+
 
     /**
      * Constructeur par défaut
      */
     public Stock() {}
+
+    public Stock(int id) {
+        this.id = id;
+    }
+
+    public Stock(Stock sStock){
+        this.id = sStock.id;
+        this.description = sStock.description;
+        this.quantite = sStock.quantite;
+        this.quantiteMin = sStock.quantiteMin;
+        this.unite = sStock.unite;
+        this.commande = sStock.commande;
+
+    }
 
     /**
      * Constructeur avec tous les membres
@@ -174,6 +186,10 @@ public class Stock {
         return commande;
     }
 
+    public void setCommande(double commande){
+        this.commande = commande;
+    }
+
     public Vector<Object> toVector(){
         Vector<Object> vStock = new Vector<Object>();
         vStock.add(getId());
@@ -188,8 +204,19 @@ public class Stock {
 
     public Vector<Object> toVectorAddDel(){
         Vector<Object> vStock = new Vector<Object>();
+        vStock.add(getId());
         vStock.add(getDescription());
         vStock.add(new Double(0.0));
+        vStock.add(getUnite());
+
+        return vStock;
+    }
+
+    public Vector<Object> toVectorForOrder(){
+        Vector<Object> vStock = new Vector<>();
+        vStock.add(getId());
+        vStock.add(getDescription());
+        vStock.add(getCommande());
         vStock.add(getUnite());
 
         return vStock;

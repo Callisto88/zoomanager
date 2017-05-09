@@ -138,14 +138,14 @@ public class DBInteraction {
     // Modifie les données d'un intervenant externe
     private static final String UPDATE_INTERVENANT =
             "UPDATE Intervenant " +
-            "SET entreprise = ? , " +
-            "  prenom = ? , " +
-            "  nom = ? , " +
-            "  adresse = ? , " +
-            "  email = ? , " +
-            "  telephone = ? , " +
-            "  statut = ? " +
-            "WHERE id = ? ;";
+                    "SET entreprise = ? , " +
+                    "  prenom = ? , " +
+                    "  nom = ? , " +
+                    "  adresse = ? , " +
+                    "  email = ? , " +
+                    "  telephone = ? , " +
+                    "  statut = ? " +
+                    "WHERE id = ? ;";
     // Insertion d'un nouvel intervenant
     private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null , ? , ? , ? , ? , ? , ? , ?);";
     // -----------------------------------------------------------------------------------------------------------------
@@ -252,7 +252,7 @@ public class DBInteraction {
     // Liste de tous les événements qui n'ont pas d'intervenant attribué
     private static final String SEL_ALL_EVENEMENT_WHITOUT_INTERVENANT =
             "SELECT * " +
-            "FROM Evenement " +
+                    "FROM Evenement " +
                     "WHERE id NOT IN " +
                     "(SELECT DISTINCT evenement " +
                     "FROM Intervenant_Evenement);";
@@ -1385,14 +1385,14 @@ public class DBInteraction {
      * @return ArrayList<String>
      */
     public ArrayList<String> selAllRaceAnimal() throws SQLException {
-         ArrayList<String> data = new ArrayList<>();
+        ArrayList<String> data = new ArrayList<>();
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_RACE_ANIMAL);
-         ResultSet rs = this.stmt.executeQuery();
-         while (rs.next()) {
-             data.add(rs.getString("nom"));
-         }
-         return data;
-     }
+        ResultSet rs = this.stmt.executeQuery();
+        while (rs.next()) {
+            data.add(rs.getString("nom"));
+        }
+        return data;
+    }
 
     public boolean delAnimal(Animal a) throws ExceptionDataBase, SQLException {
 
@@ -1629,7 +1629,7 @@ public class DBInteraction {
     private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Primate> data = new ArrayList<>();
         if (!rs.next()) {
-                throw new ExceptionDataBase(17);
+            throw new ExceptionDataBase(17);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1940,7 +1940,7 @@ public class DBInteraction {
         return rs.next();
     }
 
-     /**
+    /**
      * Permet d'assigner un événement à une personne
      *
      * @param evenement(Evenement)
@@ -2267,7 +2267,6 @@ public class DBInteraction {
         return dataEvenement;
     }
 
-
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion STOCK  dans la DB
@@ -2280,8 +2279,8 @@ public class DBInteraction {
      */
     public void addQuantity (int id, double quantity) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ADD_QUANTITE_OF_DESCRIPTION);
-        this.stmt.setInt(1, id);
-        this.stmt.setDouble(2, quantity);
+        this.stmt.setInt(2, id);
+        this.stmt.setDouble(1, quantity);
 
         this.stmt.executeUpdate();
     }
@@ -2294,12 +2293,11 @@ public class DBInteraction {
      */
     public void delQuantity (int id, double quantity) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_DELETE_QUANTITE_OF_DESCRIPTION);
-        this.stmt.setInt(1, id);
-        this.stmt.setDouble(2, quantity);
+        this.stmt.setInt(2, id);
+        this.stmt.setDouble(1, quantity);
 
         this.stmt.executeUpdate();
     }
-
 
     /**
      * Permet de récupérer l'entierté du stock avec tous ses paramètres
@@ -2307,7 +2305,7 @@ public class DBInteraction {
      * @return ArrayList<Stock>
      */
     public ArrayList<Stock> selAllStock () throws SQLException, ExceptionDataBase {
-        ArrayList<Stock> data = new ArrayList<>();
+        ArrayList<Stock> data = new ArrayList<Stock>();
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_STOCK);
 
         ResultSet rs = this.stmt.executeQuery();
@@ -2322,8 +2320,8 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Commande> selAllCommande () throws SQLException, ExceptionDataBase {
-        ArrayList<Commande> data = new ArrayList<>();
-        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_COMMANDE);
+        ArrayList<Commande> data = new ArrayList<Commande>();
+        this.stmt = db.con.prepareStatement(SEL_ALL_COMMANDE);
 
         ResultSet rs = this.stmt.executeQuery();
 
@@ -2349,7 +2347,7 @@ public class DBInteraction {
      */
     public ArrayList<Commande> selAllCommandeParDate (java.sql.Date dateDebut, java.sql.Date dateFin)
             throws SQLException, ExceptionDataBase {
-        ArrayList<Commande> data = new ArrayList<>();
+        ArrayList<Commande> data = new ArrayList<Commande>();
         this.stmt = DBConnection.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
 
         ResultSet rs = this.stmt.executeQuery();
@@ -2420,7 +2418,7 @@ public class DBInteraction {
                     rs.getString("statut"));
             return order;
         } else {
-            throw new ExceptionDataBase(29, orderID);
+            throw new ExceptionDataBase("No such order in database");
         }
     }
 
@@ -2459,7 +2457,7 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Contenu_Commande> selAllContenuCommandeParID (int id_commande) throws SQLException, ExceptionDataBase {
-        this.stmt = DBConnection.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
+        this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
         this.stmt.setInt(1, id_commande);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -2468,14 +2466,14 @@ public class DBInteraction {
 
     public String selCommandeEnCours(int idRefArticle) throws SQLException, ExceptionDataBase {
 
-        this.stmt = DBConnection.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
+        this.stmt = db.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
         this.stmt.setInt(1, idRefArticle);
         ResultSet rs = this.stmt.executeQuery();
         ResultSetMetaData md = rs.getMetaData();
         String result = "";
 
         if (!rs.next()) {
-            throw new ExceptionDataBase(20);
+            throw new ExceptionDataBase("Aucune commande en cours pour cette article");
         } else {
             rs.beforeFirst();
             rs.next();
@@ -2509,12 +2507,12 @@ public class DBInteraction {
     private ArrayList<Stock> createTabStock (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Stock> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase(21);
+            throw new ExceptionDataBase("Le stock est vide.");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Stock(rs.getString("nom"), rs.getDouble("quantite"),
-                        rs.getDouble("quantiteMin"), rs.getString("unite")));
+                data.add(new Stock(rs.getInt("id"), rs.getString("description"), rs.getDouble("quantite"),
+                        rs.getString("unite"), rs.getDouble("quantiteMin")));
             }
         }
         this.stmt.close();
@@ -2532,13 +2530,13 @@ public class DBInteraction {
     private ArrayList<Commande> createTabCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Commande> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase(22);
+            throw new ExceptionDataBase("Le stock est vide.");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Commande(
                                 rs.getInt("id"),
-                        rs.getDate("dateHeure"),
+                                rs.getDate("dateHeure"),
                                 Statut.valueOf(rs.getString("statut"))
                         )
                 );
@@ -2559,7 +2557,7 @@ public class DBInteraction {
     private ArrayList<Contenu_Commande> createTabContenuCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Contenu_Commande> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase(23);
+            throw new ExceptionDataBase("Aucun produit n'est contenu dans la commande avec cet ID");
         } else {
             rs.beforeFirst();
             while (rs.next()) {

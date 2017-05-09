@@ -1,7 +1,10 @@
 package View;
 
 
+import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableCellRenderer;
+import java.awt.*;
 import java.util.Vector;
 
 /**
@@ -21,11 +24,12 @@ import java.util.Vector;
  *
  */
 
-public class MyModelTable extends AbstractTableModel {
+public class MyModelTable extends AbstractTableModel{
 
     private String[] columnNames;
     private boolean[] columnEditable; // false par défaut
     private Vector<Vector<Object>> vData;
+    //private JButton jbTest = new JButton("Show");
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames){
         super();
@@ -69,9 +73,18 @@ public class MyModelTable extends AbstractTableModel {
         fireTableDataChanged();
     }
 
+    public void addRow(Vector<Object> vElement){
+        vData.addElement(vElement);
+        fireTableDataChanged();
+    }
+
     @Override
     public Object getValueAt(int rowIndex, int columnIndex) {
         return vData.elementAt(rowIndex).elementAt(columnIndex);
+    }
+
+    public Vector<Object> getValueAtRow(int rowIndex){
+        return vData.elementAt(rowIndex);
     }
 
     public void setValueAt(Object val, int rowIndex, int columnIndex) {
@@ -80,7 +93,8 @@ public class MyModelTable extends AbstractTableModel {
     }
 
     public boolean isCellEditable(int row, int column){
-            return columnEditable[column];
+        return columnEditable[column];
     }
+
 
 }
