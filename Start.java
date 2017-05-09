@@ -4,13 +4,14 @@ import Test.Test;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 
 public class Start {
 
     public static void main(String arg[]) {
 
-
-        //Test.testAdresse();
+        /*
+                //Test.testAdresse();
 
         // Test.testClassValidate();
         DBInteraction query = null;
@@ -141,7 +142,7 @@ public class Start {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
 
         Pays nPays = new Pays();
         nPays.setPays("Arabie Saoudite");
@@ -166,6 +167,7 @@ public class Start {
             e.printStackTrace();
         }
 
+        */
         System.out.println("\n_> Programme terminé ... \n");
     }
 

@@ -18,7 +18,10 @@ import java.awt.*;
 
 
 import java.awt.event.*;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
@@ -530,7 +533,11 @@ public class AnimalTab extends GenericWindow {
         pStartProperties.put("text.month", "Mois");
         pStartProperties.put("text.year", "Année");
         SqlDateModel sdmModel1 = new SqlDateModel();
-        sdmModel1.setDate(selectedAnimal.getDateNaissance().getYear(), selectedAnimal.getDateNaissance().getMonth(), selectedAnimal.getDateNaissance().getDay());
+        LocalDate localDate = selectedAnimal.getDateNaissance().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int year  = localDate.getYear();
+        int month = localDate.getMonthValue();
+        int day   = localDate.getDayOfMonth();
+        sdmModel1.setDate(year, month, day);
         JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
         jdpliStartDatePanel.setPreferredSize(new Dimension(220, 220));
         jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
@@ -618,6 +625,9 @@ public class AnimalTab extends GenericWindow {
             Dimension dim = super.getMaximumSize();
             if(!layingOut) {
                 dim.width = Math.max(dim.width, getPreferredSize().width);
+            }
+            if(dim.width > 500){
+                dim.width = 500;
             }
             return dim;
         }

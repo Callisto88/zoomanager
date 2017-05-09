@@ -286,6 +286,20 @@ public class DBInteraction {
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
     private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
 
+    private static final String SEL_EVENTS = "SELECT * FROM Evenement;";
+
+    // Selectionne les événements auxquels participe un intervenant externe. Intervenant externe par ID
+    private static final String SEL_ASSIGN_EVENEMENT_INTERVENANT =
+            "SELECT evenement " +
+                    "FROM Intervenant_Evenement " +
+                    "WHERE intervenant = ? ;";
+    // Selectionne les événements auxquels participe une personne interne. Personne interne par ID
+    private static final String SEL_ASSIGN_EVENEMENT_PERSON =
+            "SELECT evenement " +
+                    "FROM Personne_Evenement " +
+                    "WHERE personne = ? ;";
+
+
     // En cours
     private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
 
@@ -442,7 +456,7 @@ public class DBInteraction {
     private ArrayList<Intervenant> createTabIntervenant (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Intervenant> data = new ArrayList<Intervenant>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Intervenant n'est présent dans la base de données.");
+            throw new ExceptionDataBase(10);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -452,7 +466,6 @@ public class DBInteraction {
                         rs.getString("telephone"), rs.getString("statut")));
             }
         }
-
         return data;
     }
 
@@ -463,14 +476,13 @@ public class DBInteraction {
     private ArrayList<Pays> creerTableauPays(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Pays> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+            throw new ExceptionDataBase(24);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Pays(rs.getInt(1), rs.getString(2)));
             }
         }
-
         return data;
     }
 
@@ -490,7 +502,6 @@ public class DBInteraction {
      * @param pays Pays
      */
     public int insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
-
         // Pays
         int paysID;
         if (!this.countryIsInDB(pays)) {
@@ -630,7 +641,7 @@ public class DBInteraction {
 
         // Basic checks
         if (ville.getCp() == 0 || !(ville.getCp() == (int) ville.getCp())) {
-            throw new ExceptionDataBase("Le code postal doit être renseigné et être de type numérique");
+            throw new ExceptionDataBase(4);
         }
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE, Statement.RETURN_GENERATED_KEYS);
@@ -817,7 +828,7 @@ public class DBInteraction {
 
         ArrayList<String> listStatuts = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
+            throw new ExceptionDataBase(30);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -834,7 +845,7 @@ public class DBInteraction {
 
         ArrayList<String> listTypeContrat = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Cette requête n'a retourné aucun résultat");
+            throw new ExceptionDataBase(31);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1025,7 +1036,7 @@ public class DBInteraction {
     private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+            throw new ExceptionDataBase(11);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1248,7 +1259,7 @@ public class DBInteraction {
         else if (animal instanceof Primate)
             updateAnimalPrimate((Primate) animal);
         else
-            throw new ExceptionDataBase("L'animal passé en paramètre n'est pas Compatible avec la base de données");
+            throw new ExceptionDataBase(2);
     }
 
     /**
@@ -1329,7 +1340,7 @@ public class DBInteraction {
     private ArrayList<Animal> creerTableauAnimal (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Animal> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Animal ne correspond aux infos rentrées ");
+            throw new ExceptionDataBase(12);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1354,7 +1365,7 @@ public class DBInteraction {
     private ArrayList<Enclos> creerTableauEnclos(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Enclos> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun enclos correspondants");
+            throw new ExceptionDataBase(13);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1387,7 +1398,7 @@ public class DBInteraction {
 
         int numericId = a.getId();
         if (numericId != (int) numericId || !animalExists(numericId)) {
-            throw new ExceptionDataBase("Aucun animal portant l'ID : " + numericId + " n'a été trouvé");
+            throw new ExceptionDataBase(20, numericId);
         }
 
         this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
@@ -1502,7 +1513,7 @@ public class DBInteraction {
         Enclos data = null;
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun enclos correspondants");
+            throw new ExceptionDataBase(13);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1523,7 +1534,7 @@ public class DBInteraction {
         ArrayList<Enclos> data = new ArrayList<>();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun enclos correspondants");
+            throw new ExceptionDataBase(13);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1545,7 +1556,7 @@ public class DBInteraction {
     private ArrayList<Felin> createTabFelin (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Felin> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun FELIN n'existe avec cet ID");
+            throw new ExceptionDataBase(14);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1570,7 +1581,7 @@ public class DBInteraction {
     private ArrayList<Oiseau> createTabOiseau (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Oiseau> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Oiseau n'existe avec cet ID");
+            throw new ExceptionDataBase(15);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1594,7 +1605,7 @@ public class DBInteraction {
     private ArrayList<Reptile> createTabReptile (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Reptile> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
+            throw new ExceptionDataBase(16);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1618,7 +1629,7 @@ public class DBInteraction {
     private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Primate> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Reptile n'existe avec cet ID");
+                throw new ExceptionDataBase(17);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1645,7 +1656,7 @@ public class DBInteraction {
     private ArrayList<Race> createTabAnimalRace(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Race> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun Enclos n'existe dans la base de données");
+            throw new ExceptionDataBase(18);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1667,6 +1678,12 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
+
+    public ArrayList<Evenement> selAllEvents() throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENTS);
+        ResultSet rs = this.stmt.executeQuery();
+        return creerTableauEvenement(rs);
+    }
 
     public ArrayList<Personne> selPeopleByEventID(int eventID) throws SQLException, ExceptionDataBase {
 
@@ -1721,7 +1738,7 @@ public class DBInteraction {
 
         int result = stmt.executeUpdate();  // Throws an exception if eventType already exists
         if (result == 0) {
-            throw new ExceptionDataBase("Impossible d'ajouter le type d'événement : " + eventType);
+            throw new ExceptionDataBase(26, eventType);
         } else {
             return true;
         }
@@ -1751,7 +1768,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement dans la base de données");
+            throw new ExceptionDataBase(19);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -1804,7 +1821,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun événement correspondant à l'ID " + eventID + " n'a été trouvé");
+            throw new ExceptionDataBase( 27, eventID);
         } else {
             // Previous check has forwarded the pointer, just put it back at the start
             rs.beforeFirst();
@@ -1829,7 +1846,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond à l'ID " + type);
+            throw new ExceptionDataBase(28, type);
         } else {
             // Previous check has forwarded the pointer, just put it back at the start
             rs.beforeFirst();
@@ -2156,7 +2173,7 @@ public class DBInteraction {
     private ArrayList<Evenement> creerTableauEvenement (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Evenement> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun type d'événement ne correspond aux infos rentrées ");
+            throw new ExceptionDataBase(19);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -2169,6 +2186,87 @@ public class DBInteraction {
 
         return data;
     }
+
+    /**
+     * Permet de récupérer les événements assignés à un intervenant externe par son ID
+     *
+     * @param id_intervenant(int)
+     *
+     * @return ArrayList<Evenement>
+     */
+    public ArrayList<Evenement> getEvenementAssignToIntervenantByID (int id_intervenant) throws SQLException, ExceptionDataBase {
+        // Faire la requête
+        this.stmt = DBConnection.con.prepareStatement(SEL_ASSIGN_EVENEMENT_INTERVENANT);
+        this.stmt.setInt(1, id_intervenant);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Integer> dataID = new ArrayList<Integer>();
+        // Récupérer tous les id d'évenement dans un tableau
+        if (!rs.next()) {
+            throw new ExceptionDataBase(32, id_intervenant);
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                dataID.add(new Integer(rs.getInt("evenement")));
+            }
+        }
+
+        return createTabEvenemnt(dataID);
+    }
+
+
+    /**
+     * Permet de récupérer les événements assignés à personne interne par son ID
+     *
+     * @param idPersonne(int)
+     *
+     * @return ArrayList<Evenement>
+     */
+    public ArrayList<Evenement> getEvenementAssignToPersonByID (int idPersonne) throws SQLException, ExceptionDataBase {
+        // Faire la requête
+        this.stmt = DBConnection.con.prepareStatement(SEL_ASSIGN_EVENEMENT_PERSON);
+        this.stmt.setInt(1, idPersonne);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Integer> dataID = new ArrayList<Integer>();
+        // Récupérer tous les id d'évenement dans un tableau
+        if (!rs.next()) {
+            throw new ExceptionDataBase(33, idPersonne);
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                dataID.add(new Integer(rs.getInt("evenement")));
+            }
+        }
+        return createTabEvenemnt(dataID);
+    }
+
+    /**
+     * Permet de créer un tableau d'EVENEMENT à partir d'un tableau d'événement_id
+     *
+     * @param idEvenement(ArrayList<Integer>)
+     *
+     * @return ArrayList<Evenement>
+     */
+    private ArrayList<Evenement> createTabEvenemnt (ArrayList<Integer> idEvenement) throws SQLException {
+        ArrayList<Evenement> dataEvenement = new ArrayList<Evenement>();
+        int id_evenement;
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_BY_ID);
+
+        for (int i = 0; i < idEvenement.size(); i++) {
+            id_evenement = idEvenement.get(0);
+            this.stmt.setInt(1, id_evenement);
+            ResultSet rs2 = this.stmt.executeQuery();
+
+            while (rs2.next()) {
+                dataEvenement.add(new Evenement(rs2.getInt("id"), rs2.getString("description"),
+                        rs2.getTimestamp("date"), rs2.getString("type")));
+            }
+        }
+
+        return dataEvenement;
+    }
+
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
@@ -2322,7 +2420,7 @@ public class DBInteraction {
                     rs.getString("statut"));
             return order;
         } else {
-            throw new ExceptionDataBase("No such order in database");
+            throw new ExceptionDataBase(29, orderID);
         }
     }
 
@@ -2377,7 +2475,7 @@ public class DBInteraction {
         String result = "";
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucune commande en cours pour cette article");
+            throw new ExceptionDataBase(20);
         } else {
             rs.beforeFirst();
             rs.next();
@@ -2411,7 +2509,7 @@ public class DBInteraction {
     private ArrayList<Stock> createTabStock (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Stock> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Le stock est vide.");
+            throw new ExceptionDataBase(21);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -2434,7 +2532,7 @@ public class DBInteraction {
     private ArrayList<Commande> createTabCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Commande> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Le stock est vide.");
+            throw new ExceptionDataBase(22);
         } else {
             rs.beforeFirst();
             while (rs.next()) {
@@ -2461,7 +2559,7 @@ public class DBInteraction {
     private ArrayList<Contenu_Commande> createTabContenuCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Contenu_Commande> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucun produit n'est contenu dans la commande avec cet ID");
+            throw new ExceptionDataBase(23);
         } else {
             rs.beforeFirst();
             while (rs.next()) {

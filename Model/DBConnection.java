@@ -38,7 +38,7 @@ public class DBConnection {
         if (this.connect()) {
             return;
         } else {
-            throw new ExceptionDataBase("Erreur, impossible de se connecter à la base de données !");
+            throw new ExceptionDataBase(0);
         }
     }
 
