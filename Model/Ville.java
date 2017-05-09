@@ -134,4 +134,9 @@ public class Ville {
     public void setPays(Pays pays) {
         this.pays = pays;
     }
+
+    @Override
+    public String toString() {
+        return ville;
+    }
 }

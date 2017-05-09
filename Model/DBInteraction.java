@@ -466,10 +466,24 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Intervenant(rs.getInt("id"), rs.getString("entreprise"),
-                        rs.getString("prenom"), rs.getString("nom"),
-                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
-                        rs.getString("telephone"), rs.getString("statut")));
+                Intervenant i = new Intervenant(
+                        rs.getInt("id"),
+                        rs.getString("entreprise"),
+                        rs.getString("prenom"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        rs.getString("telephone"), rs.getString("statut")
+                );
+
+                Adresse a = null;
+                int adresseID = rs.getInt("adresse");
+                if (adresseID > 0) {
+                    a = this.selAdresseFromID(adresseID);
+                    if (a != null) {
+                        i.setAdresse(a);
+                    }
+                }
+                data.add(i);
             }
         }
         return data;

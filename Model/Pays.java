@@ -69,4 +69,9 @@ public class Pays {
     public void setPays(String pays) {
         this.pays = pays;
     }
+
+    @Override
+    public String toString() {
+        return pays;
+    }
 }
