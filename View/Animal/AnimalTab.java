@@ -619,6 +619,9 @@ public class AnimalTab extends GenericWindow {
             if(!layingOut) {
                 dim.width = Math.max(dim.width, getPreferredSize().width);
             }
+            if(dim.width > 500){
+                dim.width = 500;
+            }
             return dim;
         }
     }
