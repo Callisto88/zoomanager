@@ -75,6 +75,10 @@ public class Ville {
         this.ville = ville;
     }
 
+    public Ville(int villeId) {
+        this.id = villeId;
+    }
+
     public int getId() {
         return id;
     }
