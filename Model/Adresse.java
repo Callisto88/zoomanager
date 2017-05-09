@@ -27,7 +27,6 @@ public class Adresse {
      * @param ville
      */
     public Adresse(String adresse, Ville ville) {
-        this.id = id;
         this.adresse = adresse;
         this.ville = ville;
     }
@@ -69,5 +68,14 @@ public class Adresse {
 
     public void setVille(Ville ville) {
         this.ville = ville;
+    }
+
+    @Override
+    public String toString() {
+        return "Adresse{" +
+                "id=" + id +
+                ", adresse='" + adresse + '\'' +
+                ", ville=" + ville.getVille() +
+                '}';
     }
 }
