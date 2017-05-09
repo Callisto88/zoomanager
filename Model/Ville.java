@@ -14,11 +14,10 @@ package Model;
  *
  * @date    22.04.2017 (Création)
  * @date    22.04.2017 (Finalisation v1.0)
- * @date 28.04.2017 (Référence à un objet Pays plutôt qu'à son id)
+ * @date    28.04.2017 (Référence à un objet Pays plutôt qu'à son id)
  *
  */
 public class Ville {
-
     /**
      * Membres privés
      */
