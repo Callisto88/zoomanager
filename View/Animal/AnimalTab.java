@@ -107,9 +107,27 @@ public class AnimalTab extends GenericWindow {
         JPanel jpButtonAnimal = new JPanel();
         jpLeft.add(jpButtonAnimal, gbcLeft);
 
+        JLabel jlFiltrer = new JLabel("Recherche/Filtre");
+
         JTextField jtFilter = new JTextField();
         jtFilter.setPreferredSize(new Dimension(90, 30));
         jtFilter.setToolTipText("Recherche");
+        jtFilter.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                //sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                sorter.setRowFilter(RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+
+            }
+        });
 
 
         JButton jbPrint = new JButton("Imprimer");
@@ -120,16 +138,6 @@ public class AnimalTab extends GenericWindow {
             }
         });
         setButtonConfig(jbPrint);
-
-
-        JButton jbFilter = new JButton("Filtrer");
-        jbFilter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
-            }
-        });
-        setButtonConfig(jbFilter);
 
 
         GridBagLayout gblButtonAnimal = new GridBagLayout();
@@ -143,11 +151,11 @@ public class AnimalTab extends GenericWindow {
 
         gbcButtonAnimal.gridx = 1;
         gbcButtonAnimal.gridy = 0;
-        jpButtonAnimal.add(jtFilter, gbcButtonAnimal);
+        jpButtonAnimal.add(jlFiltrer, gbcButtonAnimal);
 
         gbcButtonAnimal.gridx = 2;
         gbcButtonAnimal.gridy = 0;
-        jpButtonAnimal.add(jbFilter, gbcButtonAnimal);
+        jpButtonAnimal.add(jtFilter, gbcButtonAnimal);
 
 
         /**************************************************************/
@@ -312,7 +320,7 @@ public class AnimalTab extends GenericWindow {
                         dataTable.removeRow(selectedRow);
                         animauxDB.remove(selectedRow);
                         jtTable.clearSelection();
-                        //jtTable.updateUI();
+                        jtTable.updateUI();
                     }
                 }
             }
@@ -430,7 +438,6 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jbAddEnclos, gbcAnimalForm);
 
 
-
         // Xe ligne : Nom Commun
         JLabel jlNomCommun = new JLabel("Nom commun :");
         setLabelConfig(jlNomCommun);
@@ -498,8 +505,10 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jlOrigine, gbcAnimalForm);
 
         String[] sOrigines = new String[originesDB.size()];
+        int[] iOrigines = new int[originesDB.size()];
         for (int i = 0; i < originesDB.size(); i++) {
             sOrigines[i] = originesDB.get(i).getPays();
+            iOrigines[i] = originesDB.get(i).getPaysId();
             if(sOrigines[i].length() > maxLength){
                 maxLength = sOrigines[i].length();
             }
@@ -550,6 +559,10 @@ public class AnimalTab extends GenericWindow {
 
         // Xe ligne DateDeces
         selectedAnimal.getDateDeces();
+
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 7;
+
 
         // Le reste dans une JTable (Poids)
         if(selectedAnimal instanceof Felin){
