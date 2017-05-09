@@ -409,7 +409,7 @@ public class View extends javax.swing.JPanel {
 
                 List<Personne> listP2 = null;
                 try {
-                    listP2 = query.selEmployeesByEventID(finalList.get(row).getId());
+                    listP2 = query.selPeopleByEventID(finalList.get(row).getId());
                 } catch (ExceptionDataBase exceptionDataBase) {
                     exceptionDataBase.printStackTrace();
                 } catch (SQLException e1) {
@@ -510,12 +510,10 @@ public class View extends javax.swing.JPanel {
                         int personSelected = pan.getPersonAll().getSelectedIndex();
                         Personne an = finalListP1.get(personSelected);
                         try {
-                            if(query.delPersonEvent(an.getIdPersonne(), finalList.get(row).getId())){
+                            if (query.delPersonneEvenement(an.getIdPersonne(), finalList.get(row).getId())) {
                              pan.getPersons().removeItem(an.getNom()+"-"+an.getNom());
                              initValue();
                             }
-                        } catch (ExceptionDataBase exceptionDataBase) {
-                            exceptionDataBase.printStackTrace();
                         } catch (SQLException e1) {
                             e1.printStackTrace();
                         }

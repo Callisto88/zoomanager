@@ -286,6 +286,8 @@ public class DBInteraction {
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
     private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
 
+    private static final String SEL_EVENTS = "SELECT * FROM Evenement;";
+
     // Selectionne les événements auxquels participe un intervenant externe. Intervenant externe par ID
     private static final String SEL_ASSIGN_EVENEMENT_INTERVENANT =
             "SELECT evenement " +
@@ -1676,6 +1678,12 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
+
+    public ArrayList<Evenement> selAllEvents() throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENTS);
+        ResultSet rs = this.stmt.executeQuery();
+        return creerTableauEvenement(rs);
+    }
 
     public ArrayList<Personne> selPeopleByEventID(int eventID) throws SQLException, ExceptionDataBase {
 
