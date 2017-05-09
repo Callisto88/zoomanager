@@ -1085,6 +1085,8 @@ public class DBInteraction {
      */
     public void insertPersonne(Personne personne) throws SQLException {
 
+        System.out.println(personne.getAdresse().getId());
+
         // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setNull(1, Types.NULL);
