@@ -24,7 +24,9 @@ public class Adresse {
         v.setPays(p);
 
         Model.Adresse a = new Model.Adresse("Rue du Marché 10", v);
-        System.out.println(a.toString());
+        System.out.println("Testing adresse.toString : " + a.toString());
+        System.out.println("Testing ville.toString : " + v.toString());
+        System.out.println("Testing pays.toString : " + p.toString());
 
     }
 }

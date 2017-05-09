@@ -75,6 +75,10 @@ public class Ville {
         this.ville = ville;
     }
 
+    public Ville(int villeId) {
+        this.id = villeId;
+    }
+
     public int getId() {
         return id;
     }
@@ -129,5 +133,10 @@ public class Ville {
      */
     public void setPays(Pays pays) {
         this.pays = pays;
+    }
+
+    @Override
+    public String toString() {
+        return ville;
     }
 }

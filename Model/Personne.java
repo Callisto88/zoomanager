@@ -1,5 +1,6 @@
 package Model;
 
+import java.sql.Date;
 import java.util.Vector;
 
 // TODO: refactor adresse type to Adresse object
@@ -102,6 +103,20 @@ public class Personne {
     public Personne(String prenom, String nom) {
         this.prenom = prenom;
         this.nom = nom;
+    }
+
+    public Personne(int idPersonne, String noAVS, String prenom, String nom, String email, String telephone, Date dateNaissance, int responsable, String statut, Date dateDebut, String typeContrat) {
+        this.idPersonne = idPersonne;
+        this.noAVS = noAVS;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.telephone = telephone;
+        this.dateNaissance = dateNaissance;
+        this.responsable = responsable;
+        this.statut = statut;
+        this.dateDebut = dateDebut;
+        this.typeContrat = typeContrat;
     }
 
     public int getIdPersonne() {

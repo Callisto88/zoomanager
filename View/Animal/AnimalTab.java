@@ -107,9 +107,27 @@ public class AnimalTab extends GenericWindow {
         JPanel jpButtonAnimal = new JPanel();
         jpLeft.add(jpButtonAnimal, gbcLeft);
 
+        JLabel jlFiltrer = new JLabel("Recherche/Filtre");
+
         JTextField jtFilter = new JTextField();
         jtFilter.setPreferredSize(new Dimension(90, 30));
         jtFilter.setToolTipText("Recherche");
+        jtFilter.addKeyListener(new KeyListener() {
+            @Override
+            public void keyTyped(KeyEvent e) {
+                //sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+            }
+
+            @Override
+            public void keyPressed(KeyEvent e) {
+                //sorter.setRowFilter(RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+            }
+
+            @Override
+            public void keyReleased(KeyEvent e) {
+                sorter.setRowFilter(RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+            }
+        });
 
 
         JButton jbPrint = new JButton("Imprimer");
@@ -120,16 +138,6 @@ public class AnimalTab extends GenericWindow {
             }
         });
         setButtonConfig(jbPrint);
-
-
-        JButton jbFilter = new JButton("Filtrer");
-        jbFilter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                sorter.setRowFilter( RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
-            }
-        });
-        setButtonConfig(jbFilter);
 
 
         GridBagLayout gblButtonAnimal = new GridBagLayout();
@@ -143,11 +151,11 @@ public class AnimalTab extends GenericWindow {
 
         gbcButtonAnimal.gridx = 1;
         gbcButtonAnimal.gridy = 0;
-        jpButtonAnimal.add(jtFilter, gbcButtonAnimal);
+        jpButtonAnimal.add(jlFiltrer, gbcButtonAnimal);
 
         gbcButtonAnimal.gridx = 2;
         gbcButtonAnimal.gridy = 0;
-        jpButtonAnimal.add(jbFilter, gbcButtonAnimal);
+        jpButtonAnimal.add(jtFilter, gbcButtonAnimal);
 
 
         /**************************************************************/
@@ -180,6 +188,9 @@ public class AnimalTab extends GenericWindow {
                 }
                 else{
                     selectedRow = 0;
+                }
+                if (jtTable.getRowSorter() != null) {
+                    selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                 }
                 jpMainPanel.updateUI();
 
@@ -307,12 +318,11 @@ public class AnimalTab extends GenericWindow {
                 int n = JOptionPane.showConfirmDialog(jpMainPanel, "Voulez-vous vraiment supprimer cet animal ?",
                         "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
                 if (n == 0) {
-                    //System.out.println(animauxDB.get(selectedRow).getId() + animauxDB.get(selectedRow).getNom());
                     if(atAnimalController.delAnimal(animauxDB.get(selectedRow))) {
                         dataTable.removeRow(selectedRow);
                         animauxDB.remove(selectedRow);
                         jtTable.clearSelection();
-                        //jtTable.updateUI();
+                        jtTable.updateUI();
                     }
                 }
             }
@@ -430,7 +440,6 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jbAddEnclos, gbcAnimalForm);
 
 
-
         // Xe ligne : Nom Commun
         JLabel jlNomCommun = new JLabel("Nom commun :");
         setLabelConfig(jlNomCommun);
@@ -498,20 +507,22 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.add(jlOrigine, gbcAnimalForm);
 
         String[] sOrigines = new String[originesDB.size()];
+        int origineID = 0;
         for (int i = 0; i < originesDB.size(); i++) {
             sOrigines[i] = originesDB.get(i).getPays();
             if(sOrigines[i].length() > maxLength){
                 maxLength = sOrigines[i].length();
             }
+            if(selectedAnimal.getOrigine() == originesDB.get(i).getPaysId()){
+                origineID = i;
+            }
         }
-        System.out.println(originesDB.size());
 
-        WideComboBox jcOrigines = new WideComboBox(sRaces);
+        WideComboBox jcOrigines = new WideComboBox(sOrigines);
         //jcEnclos.setEditable(true);
         AutoCompletion acOrigines = new AutoCompletion(jcOrigines);
         //ac.setStrict(false);
-        jcOrigines.setSelectedIndex(selectedAnimal.getOrigine() - 1);
-        System.out.println(selectedAnimal.getOrigine() - 1);
+        jcOrigines.setSelectedIndex(origineID);
         jcOrigines.setMaximumSize(new Dimension(maxLength + 4, 30));
         jcOrigines.setPreferredSize(defaultFormSize);
 
@@ -527,22 +538,20 @@ public class AnimalTab extends GenericWindow {
         gbcAnimalForm.gridy = 6;
         jpDetAnimal.add(jlDateNaissance, gbcAnimalForm);
 
-        JDatePickerImpl jdpriStartDatePicker = null;
         Properties pStartProperties = new Properties();
         pStartProperties.put("text.today", "Aujourd'hui");
         pStartProperties.put("text.month", "Mois");
         pStartProperties.put("text.year", "Année");
         SqlDateModel sdmModel1 = new SqlDateModel();
-        LocalDate localDate = selectedAnimal.getDateNaissance().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        LocalDate localDate = selectedAnimal.getDateNaissance().toLocalDate();
         int year  = localDate.getYear();
-        int month = localDate.getMonthValue();
+        int month = localDate.getMonthValue() - 1;
         int day   = localDate.getDayOfMonth();
         sdmModel1.setDate(year, month, day);
         JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
         jdpliStartDatePanel.setPreferredSize(new Dimension(220, 220));
-        jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
 
-        //System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay());
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = 6;
         jpDetAnimal.add(jdpriStartDatePicker, gbcAnimalForm);
@@ -551,7 +560,11 @@ public class AnimalTab extends GenericWindow {
         // Xe ligne DateDeces
         selectedAnimal.getDateDeces();
 
-        // Le reste dans une JTable (Poids)
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = 7;
+
+
+        // Les autre éléments dépendants du type d'animal
         if(selectedAnimal instanceof Felin){
             double poids = ((Felin) selectedAnimal).getPoids();
         }
@@ -565,6 +578,9 @@ public class AnimalTab extends GenericWindow {
         else if(selectedAnimal instanceof Primate){
             double temperature = ((Primate) selectedAnimal).getTemperature();
         }
+
+
+        //JTable pour les événements
 
 
 

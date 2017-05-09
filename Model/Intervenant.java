@@ -70,6 +70,16 @@ public class Intervenant {
         this.telephone = telephone;
     }
 
+    public Intervenant(int id, String entreprise, String prenom, String nom, String email, String telephone, String statut) {
+        this.id = id;
+        this.entreprise = entreprise;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.email = email;
+        this.telephone = telephone;
+        this.statut = statut;
+    }
+
     public int getId() {
         return id;
     }

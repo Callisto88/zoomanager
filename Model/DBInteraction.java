@@ -62,8 +62,12 @@ public class DBInteraction {
     // Récupère l'identifiant d'un pays d'après son nom
     private static final String SEL_PAYS_ID = "SELECT paysId FROM Pays WHERE pays LIKE ? ;";
 
+    private static final String SEL_PAYS_FROM_ID = "SELECT * FROM Pays WHERE paysId = ?;";
+
     // Récupère l'identifiant d'une ville d'après son nom
     private static final String SEL_VILLEID_FROM_CITY_NAME = "SELECT villeId FROM Ville WHERE ville LIKE ?;";
+
+    private static final String SEL_VILLE_FROM_ID = "SELECT * FROM Ville WHERE villeId = ?;";
 
     // Récupère le nom de la ville d'après son identifiant
     private static final String SEL_VILLE_PAR_CP = "SELECT ville FROM Ville WHERE villeId = ? ;";
@@ -84,6 +88,8 @@ public class DBInteraction {
     // Récupère les infos d'une adresse en fonction de l'adresse et de l'identifiant de la ville dans laquelle elle se trouve
     private static final String SEL_ADRESSE_PAR_CP_ET_ADRESSE =
             "SELECT * FROM Adresse WHERE adresse LIKE ? AND villeId = ? ;";
+
+    private static final String SEL_ADRESSE_FROM_ID = "SELECT * FROM Adresse WHERE id = ?;";
 
 
     // -----------------------------------------------------------------------------------------------------------------
@@ -460,10 +466,24 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Intervenant(rs.getInt("id"), rs.getString("entreprise"),
-                        rs.getString("prenom"), rs.getString("nom"),
-                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
-                        rs.getString("telephone"), rs.getString("statut")));
+                Intervenant i = new Intervenant(
+                        rs.getInt("id"),
+                        rs.getString("entreprise"),
+                        rs.getString("prenom"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
+                        rs.getString("telephone"), rs.getString("statut")
+                );
+
+                Adresse a = null;
+                int adresseID = rs.getInt("adresse");
+                if (adresseID > 0) {
+                    a = this.selAdresseFromID(adresseID);
+                    if (a != null) {
+                        i.setAdresse(a);
+                    }
+                }
+                data.add(i);
             }
         }
         return data;
@@ -472,6 +492,78 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion des ADRESSES dans la DB
+
+    private Adresse selAdresseFromID(int addressID) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_FROM_ID);
+        this.stmt.setInt(1, addressID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        if (!rs.next()) {
+            return null;
+        }
+
+        Adresse a = new Adresse();
+        a.setId(rs.getInt("id"));
+        a.setAdresse(rs.getString("adresse"));
+
+        Ville v = this.selVilleFromID(rs.getInt("villeId"));
+        a.setVille(v);
+
+        return a;
+    }
+
+    private Ville selVilleFromID(int villeID) throws SQLException {
+
+        if (villeID == 0) {
+            return null;
+        }
+
+        // DB
+        this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_FROM_ID);
+        this.stmt.setInt(1, villeID);
+        ResultSet rs = this.stmt.executeQuery();
+        if (!rs.next()) {
+            return null;
+        }
+
+        /**
+         * Objet
+         */
+
+        // City
+        Ville v = new Ville(rs.getInt("villeId"));
+        v.setVille(rs.getString("ville"));
+        v.setCp(rs.getInt("codePostal"));
+
+        // Country
+        Pays p = this.selCountryFromID(rs.getInt("paysId"));
+        v.setPays(p);
+
+        return v;
+    }
+
+    private Pays selCountryFromID(int countryID) throws SQLException {
+
+        if (countryID == 0) {
+            return null;
+        }
+
+        // DB
+        this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_FROM_ID);
+        this.stmt.setInt(1, countryID);
+        ResultSet rs = this.stmt.executeQuery();
+        if (!rs.next()) {
+            return null;
+        }
+
+        // Objet
+        Pays p = new Pays();
+        p.setPaysId(rs.getInt("paysId"));
+        p.setPays(rs.getString("pays"));
+
+        return p;
+    }
 
     private ArrayList<Pays> creerTableauPays(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Pays> data = new ArrayList<>();
@@ -928,7 +1020,6 @@ public class DBInteraction {
     public ArrayList<Personne> selEmployeeParNom (String nom) throws ExceptionDataBase, SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
         this.stmt.setString(1, nom);
-
         ResultSet rs = this.stmt.executeQuery();
         return this.creerTableauPersonne(rs);
     }
@@ -1040,12 +1131,25 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Personne(rs.getInt("idPersonne") , rs.getString("noAVS"),
-                        rs.getString("prenom"), rs.getString("nom"),
-                        new Adresse(rs.getInt("adresse")), rs.getString("email"),
+                Personne p = new Personne(
+                        rs.getInt("idPersonne"),
+                        rs.getString("noAVS"),
+                        rs.getString("prenom"),
+                        rs.getString("nom"),
+                        rs.getString("email"),
                         rs.getString("telephone"), rs.getDate("dateNaissance"),
                         rs.getInt("responsable"), rs.getString("statut"),
-                        rs.getDate("dateDebut"), rs.getString("typeContrat")));
+                        rs.getDate("dateDebut"), rs.getString("typeContrat")
+                );
+                Adresse a = null;
+                int adresseID = rs.getInt("adresse");
+                if (adresseID > 0) {
+                    a = this.selAdresseFromID(adresseID);
+                    if (a != null) {
+                        p.setAdresse(a);
+                    }
+                }
+                data.add(p);
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
