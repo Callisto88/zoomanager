@@ -564,7 +564,7 @@ public class AnimalTab extends GenericWindow {
         gbcAnimalForm.gridy = 7;
 
 
-        // Le reste dans une JTable (Poids)
+        // Les autre éléments dépendants du type d'animal
         if(selectedAnimal instanceof Felin){
             double poids = ((Felin) selectedAnimal).getPoids();
         }
@@ -578,6 +578,9 @@ public class AnimalTab extends GenericWindow {
         else if(selectedAnimal instanceof Primate){
             double temperature = ((Primate) selectedAnimal).getTemperature();
         }
+
+
+        //JTable pour les événements
 
 
 
