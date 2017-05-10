@@ -29,7 +29,7 @@ public class ExternalStaff extends JPanel{
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
      * @param external intervenant pour lequel on souhaite afficher les détails
-     * @param line ligne correspondant à la ligne sélectionné de l'intervenant
+     * @param line ligne correspondant à la ligne sélectionné de l'intervenant TODO : ne marche pas très bien
      */
     public ExternalStaff(StaffController controller, Intervenant external, int line){
 
@@ -162,8 +162,9 @@ public class ExternalStaff extends JPanel{
         this.add(jpCountry, gbcDetailsExternal);
 
         /******************* Permet de tester offline **************************/
+        /*
         ArrayList<Evenement> tasks = new ArrayList<>();
-        tasks = controller.getExternalTask(external.getId());
+
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Représentation");
         Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Spectacle");
@@ -176,8 +177,9 @@ public class ExternalStaff extends JPanel{
         tasks.add(e3);
         tasks.add(e4);
         tasks.add(e5);
-        tasks.add(e6);
+        tasks.add(e6);+*/
 
+        ArrayList<Evenement> tasks = controller.getExternalTask(external.getId());
         ++y;
         gbcDetailsExternal.gridy = y;
         x = 0;

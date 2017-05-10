@@ -146,7 +146,7 @@ public class AddExternalController {
 
     /**
      * Méthode permettant d'interragir avec la DB pour insérer une personne
-     * @param external personne à insérer dans la DB
+     * @param external personne à insérer dans la DB TODO : problème avec les adresses
      */
     public boolean insertExternal(Intervenant external){
         try{

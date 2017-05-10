@@ -42,6 +42,7 @@ public class StaffView extends GenericWindow {
         super("Personnel");
         controller = persControl;
         personnes = tab;
+        jtTable = new JTable();
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
 
@@ -136,10 +137,10 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
                     // Permet de mettre à jour le tableau pour les externes
-                    createExternalTab();
+                    //createExternalTab();
                     // Permet de recrée une nouvelle table
-                    createTab(tableau, sColumnExternal);
-                    jtTable.setModel(new MyModelTable(tableau, sColumnExternal));
+                    //createTab(createExternalTab(), sColumnExternal);
+                    jtTable.setModel(new MyModelTable(createExternalTab(), sColumnExternal));
                     // nmhjtr55555555555555Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les employés");
                     jbAdd.setText("Ajouter un intervenant");
@@ -149,9 +150,10 @@ public class StaffView extends GenericWindow {
                 }
                 else{
                     // Permet de mettre à jour le tableau pour le personnel
-                    createEmployeeTab();
+                    //createEmployeeTab();
                     // Permet de recrée une nouvelle table
-                    jtTable.setModel(new MyModelTable(tableau, columnName));
+                    //createTab(createEmployeeTab(), sColumnExternal);
+                    jtTable.setModel(new MyModelTable(createEmployeeTab(), columnName));
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les externes");
                     jbAdd.setText("Ajouter un employé");
@@ -189,8 +191,9 @@ public class StaffView extends GenericWindow {
         jpTableStaff.setPreferredSize(new Dimension(800, 500));
 
         // Permet de mettre à jour le tableau pour les employées
-        createEmployeeTab();
+        createTab(createEmployeeTab(), columnName);
         // permet de crée le tableau de saisie qui peut-être triable
+        /*
         MyModelTable mmtListing = new MyModelTable(tableau, columnName);
         jtTable = new JTable(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -200,25 +203,26 @@ public class StaffView extends GenericWindow {
 
         TableRowSorter<MyModelTable> sorter = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorter);
-
+*/
         // Permet de capturer l'action du clic, et crée le panel de droite avec les détails des employées ou des externes
         jtTable.addMouseListener(new MouseListener() {
             public void mouseClicked(MouseEvent e) {
                 jpRight.removeAll();
                 // Permet de choisir si l'on affiche les détails d'un employée ou d'un externe
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
+                    selectedRow = jtTable.getSelectedRow();
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                    System.out.println(jtTable.getSelectedRow());
-                    System.out.println(tableau.get(jtTable.getSelectedRow()));
-                    System.out.println(jbSwitchexernalInternalStaff.getText());
                     //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
                     JLabel jlDetails = new JLabel("Détails du personnel");
                     setTitleConfig(jlDetails);
+                    gbcRight.gridwidth = 2;
+                    gbcRight.anchor = GridBagConstraints.CENTER;
+                    gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
                     jpRight.add(jlDetails, gbcRight);
-                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(jtTable.getSelectedRow()), jtTable.getSelectedRow());
+                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(selectedRow), jtTable.getSelectedRow());
                     gbcRight.gridy = 1;
                     gbcRight.gridx = 0;
                     jpRight.add(psDetail, gbcRight);
@@ -226,14 +230,17 @@ public class StaffView extends GenericWindow {
                     jpRight.repaint();
                 }
                 else{
+                    selectedRow = jtTable.getSelectedRow();
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(jtTable.getSelectedRow()), jtTable.getSelectedRow());
+                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(selectedRow), jtTable.getSelectedRow());
                     JLabel jlDetails = new JLabel("Détails des intervenants");
                     setTitleConfig(jlDetails);
                     gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
+                    gbcRight.anchor = GridBagConstraints.CENTER;
+                    gbcRight.gridwidth = 2;
                     jpRight.add(jlDetails, gbcRight);
                     gbcRight.gridy = 1;
                     jpRight.add(external, gbcRight);
@@ -294,27 +301,39 @@ public class StaffView extends GenericWindow {
     /**
      * Méthode permettant de crée le tableau avec les employées
      */
-    public void createEmployeeTab(){
+    public Vector<Vector<Object>> createEmployeeTab(){
         tableau = new Vector<>();
         personnes = controller.getPersonnel();
         for(int i = 0; i < personnes.size(); ++i){
             tableau.add(personnes.get(i).toVector());
         }
+        return tableau;
     }
 
     /**
      * Méthode permettant de crée le tableau avec les Intervenants
      */
-    public void createExternalTab(){
+    public Vector<Vector<Object>> createExternalTab(){
         tableau = new Vector<>();
         alExternal = controller.getExternal();
         for(int i = 0; i < alExternal.size(); ++i){
             tableau.add(alExternal.get(i).toVector());
         }
+        return tableau;
     }
 
     public void createTab(Vector<Vector<Object>> vObj, String[] column){
+        // permet de crée le tableau de saisie qui peut-être triable
+        MyModelTable mmtListing = new MyModelTable(vObj, column);
+        jtTable.setModel(mmtListing);
+        //jtTable = new JTable(mmtListing);
+        jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+        jtTable.setColumnSelectionAllowed(false);
+        jtTable.setCellSelectionEnabled(false);
+        jtTable.setRowSelectionAllowed(true);
 
+        TableRowSorter<MyModelTable> sorter = new TableRowSorter<>(mmtListing);
+        jtTable.setRowSorter(sorter);
     }
 
     /**
@@ -322,7 +341,7 @@ public class StaffView extends GenericWindow {
      * @param line numéro de ligne à supprimer
      */
     public void eraseStaffRow(int line){
-        jtTable.remove(line);
+       // jtTable.remove(line);
     }
 
     /**
@@ -330,7 +349,7 @@ public class StaffView extends GenericWindow {
      * @param line numéro de ligne à supprimé
      */
     public void eraseExternalRow(int line){
-        jtTable.remove(line);
+        //jtTable.remove(line);
     }
 
 }

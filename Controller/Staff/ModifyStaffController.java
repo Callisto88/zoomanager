@@ -83,7 +83,6 @@ public class ModifyStaffController {
         }
         dbConnection();
         boolean bAddAddress = true;
-        int addressID = 0;
         try{
             Pays pays = new Pays();
             pays.setPays(sCountry);
@@ -97,7 +96,7 @@ public class ModifyStaffController {
             adresse.setAdresse(sAddress);
             adresse.setVille(ville);
 
-            addressID = querry.insAddress(adresse, ville, pays);
+            querry.insAddress(adresse, ville, pays);
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
@@ -121,7 +120,7 @@ public class ModifyStaffController {
 
     /**
      * Méthode permettant de modifier la personne
-     * @param personne Personne modifié à réinséré
+     * @param personne Personne modifié à réinséré TODO : problème avec la DB
      */
     private void modifyStaff(Personne personne){
         dbConnection();
@@ -137,7 +136,6 @@ public class ModifyStaffController {
         if(!erreur){
             mspModifyStaff.getParent().hide();
         }
-
     }
 
     /**
@@ -153,29 +151,6 @@ public class ModifyStaffController {
         }
     }
 
-    /**
-     * Méthode permettant de récupérer l'adresse au complet avec son ID
-     * @param addressID id de l'adresse désiré
-     * @return Adresse contenant tout pour pouvoir récupérer tout les champs
-     */
-    public Adresse getAddressByID(int addressID){
-        dbConnection();
-        Adresse address = null;
-        /*
-        try{
-        // TODO : Méthode non présente dans DBInteraction
-            address = querry.getAddress(idAddress);
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
-        }
-        */
-        return address;
-    }
-
     public String getSupervisor(int supervisorID){
         dbConnection();
         Personne supervisor = null;
@@ -188,7 +163,7 @@ public class ModifyStaffController {
             sqlException.printStackTrace();
             ecError = new ErrorController(sqlException.toString());
         }
-        return (supervisor.getNom() + supervisor.getPrenom());
+        return (supervisor.getPrenom() + " " + supervisor.getNom());
     }
 
 }

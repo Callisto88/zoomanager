@@ -302,7 +302,7 @@ public class StaffController {
     /**
      * Méthode permettant de supprimer un Intervenant
      * @param external intervenant à supprimer
-     **************  Renvoyer un booleen?
+     **************  Renvoyer un booleen? TODO ne marche pas très bien
      */
     public boolean deleteExternal(Intervenant external){
         dbConnection();

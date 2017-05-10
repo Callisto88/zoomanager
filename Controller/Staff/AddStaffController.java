@@ -158,7 +158,7 @@ public class AddStaffController {
 
     /**
      * Méthode permettant d'interragir avec la DB pour insérer une personne
-     * @param personne personne à insérer dans la DB
+     * @param personne personne à insérer dans la DB TODO problème avec les adresse
      */
     public boolean insertPersonne (Personne personne){
         dbConnection();

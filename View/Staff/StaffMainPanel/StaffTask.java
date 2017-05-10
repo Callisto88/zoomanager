@@ -45,7 +45,6 @@ public class StaffTask extends JPanel {
         jtTable.setRowSorter(sorter);
 
         Dimension d = jtTable.getPreferredScrollableViewportSize();
-        //d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
         JScrollPane jspTask = new JScrollPane(jtTable);

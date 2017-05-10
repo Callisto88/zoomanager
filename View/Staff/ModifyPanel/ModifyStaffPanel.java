@@ -28,7 +28,7 @@ public class ModifyStaffPanel extends GenericWindow {
     private int NUMBER_OF_ROW = 13;
     private int y = 0;
 
-    private Dimension dLabel = new Dimension(90, 30);
+    private Dimension dLabel = new Dimension(120, 30);
     private Dimension dInput = new Dimension(150, 30);
 
     private GridBagConstraints gbcConstraint = new GridBagConstraints();
@@ -92,13 +92,19 @@ public class ModifyStaffPanel extends GenericWindow {
         sFirstName = personne.getPrenom();
         sLastName = personne.getNom();
         sEMail = personne.getEmail();
-        sAddress = personne.getAdresse().toString();
-        sCity = personne.getAdresse().getVille().toString();
-        sNPA = "" + personne.getAdresse().getVille().getCp();
-        sCountry = personne.getAdresse().getVille().getPays().toString();
+        if(personne.getAdresse() != null) {
+            sAddress = personne.getAdresse().toString();
+            sCity = personne.getAdresse().getVille().toString();
+            sNPA = "" + personne.getAdresse().getVille().getCp();
+            sCountry = personne.getAdresse().getVille().getPays().toString();
+        }
+        sPhone = personne.getTelephone();
         sStatut = personne.getStatut();
         sContract = personne.getTypeContrat();
-        sSupervisor = mscController.getSupervisor(personne.getResponsable());
+        if(personne.getResponsable() != 0) {
+            sSupervisor = mscController.getSupervisor(personne.getResponsable());
+            System.out.println(sSupervisor);
+        }
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
         JPanel modification = new JPanel();
@@ -211,7 +217,6 @@ public class ModifyStaffPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(lastNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Nom");
         }
     }
 
@@ -233,7 +238,6 @@ public class ModifyStaffPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(firstNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Prénom");
         }
     }
 
@@ -255,7 +259,6 @@ public class ModifyStaffPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(emailPanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif E-Mail");
         }
     }
 
@@ -314,9 +317,14 @@ public class ModifyStaffPanel extends GenericWindow {
         jpCountry.add(jlCountry);
         // Récupération du Pays
         jcbCountry = new JComboBox();
+        int index = 0;
         for(int i = 0; i < alpCountries.size(); ++i){
             jcbCountry.addItem(alpCountries.get(i).getPays());
+            if(personne.getAdresse() != null && alpCountries.get(i).getPays().toString().equals(personne.getAdresse().getVille().getPays().toString())){
+                index = i;
+            }
         }
+        jcbCountry.setSelectedIndex(index);
         jcbCountry.setPreferredSize(dInput);
         jpCountry.add(jcbCountry);
         gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -325,7 +333,6 @@ public class ModifyStaffPanel extends GenericWindow {
         jpModifyPanel.add(jpCountry, gbcConstraint);
 
         jpMainPanel.revalidate();
-        System.out.println("modif Adresse");
     }
 
 }
@@ -335,6 +342,7 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     private void addPhone() {
         if (!bPhone) {
+            bPhone = true;
             JPanel jpPhone = new JPanel();
             JLabel jlPhone = new JLabel("Téléphone : ");
             jlPhone.setPreferredSize(dLabel);
@@ -347,7 +355,6 @@ public class ModifyStaffPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(jpPhone, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Téléphone");
         }
     }
 
@@ -362,9 +369,16 @@ public class ModifyStaffPanel extends GenericWindow {
             jlSupervisor.setPreferredSize(dLabel);
             jpSupervisor.add(jlSupervisor);
             jcbSupervisor = new JComboBox();
+            int index = 0;
             for(int i = 0; i < alpSupervisor.size(); ++i){
                 jcbSupervisor.addItem(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
+                if(personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())){
+                    index = i;
+                }
+                System.out.println(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
+                System.out.println(sSupervisor);
             }
+            jcbSupervisor.setSelectedIndex(index);
             jcbSupervisor.setPreferredSize(dInput);
             jpSupervisor.add(jcbSupervisor);
             gbcConstraint.anchor = GridBagConstraints.WEST;
@@ -372,7 +386,6 @@ public class ModifyStaffPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(jpSupervisor, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Responsable");
         }
     }
 
@@ -384,18 +397,24 @@ public class ModifyStaffPanel extends GenericWindow {
             bStatut = true;
             JPanel jpStatut = new JPanel();
             JLabel jlStatut = new JLabel("Statut : ");
+            jlStatut.setPreferredSize(dLabel);
             jpStatut.add(jlStatut);
             jcbStatut = new JComboBox();
-            for(String statut : alsStatus) {
-                jcbStatut.addItem(statut);
+            int index = 0;
+            for(int i = 0; i < alsStatus.size(); ++i){
+                jcbStatut.addItem(alsStatus.get(i));
+                if(alsStatus.get(i).equals(personne.getStatut())){
+                    index = i;
+                }
             }
+            jcbStatut.setSelectedIndex(index);
+            jcbStatut.setPreferredSize(dInput);
             jpStatut.add(jcbStatut);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
             jpModifyPanel.add(jpStatut, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Statut");
         }
     }
 
@@ -407,18 +426,24 @@ public class ModifyStaffPanel extends GenericWindow {
             bContract = true;
             JPanel jpContract = new JPanel();
             JLabel jlContract = new JLabel("Contrat : ");
+            jlContract.setPreferredSize(dLabel);
             jpContract.add(jlContract);
             jcbContract = new JComboBox();
-            for(String contract : alsContract) {
-                jcbContract.addItem(contract);
+            int index = 0;
+            for(int i = 0; i < alsContract.size(); ++i){
+                jcbContract.addItem(alsContract.get(i));
+                if(alsContract.get(i).equals(personne.getTypeContrat())){
+                    index = i;
+                }
             }
+            jcbContract.setSelectedIndex(index);
+            jcbContract.setPreferredSize(dInput);
             jpContract.add(jcbContract);
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
             jpModifyPanel.add(jpContract, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Statut");
         }
     }
 
@@ -436,17 +461,33 @@ public class ModifyStaffPanel extends GenericWindow {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     disableError();
-                    sFirstName = jtfFirstNameInput.getText();
-                    sLastName = jtfLastNameInput.getText();
-                    sEMail = jtfEmail.getText();
-                    sAddress = jtfAddress.getText();
-                    sNPA = jtfNPA.getText();
-                    sCity = jtfCity.getText();
-                    sCountry = jcbCountry.getSelectedItem().toString();
-                    sPhone = jtfPhone.getText();
-                    sSupervisor = jcbSupervisor.getSelectedItem().toString();
-                    sContract = jcbContract.getSelectedItem().toString();
-                    sStatut = jcbStatut.getSelectedItem().toString();
+                    if(bFirstName) {
+                        sFirstName = jtfFirstNameInput.getText();
+                    }
+                    if(bLastName) {
+                        sLastName = jtfLastNameInput.getText();
+                    }
+                    if(bEMail) {
+                        sEMail = jtfEmail.getText();
+                    }
+                    if(bAddress) {
+                        sAddress = jtfAddress.getText();
+                        sNPA = jtfNPA.getText();
+                        sCity = jtfCity.getText();
+                        sCountry = jcbCountry.getSelectedItem().toString();
+                    }
+                    if(bPhone) {
+                        sPhone = jtfPhone.getText();
+                    }
+                    if(bSupervisor) {
+                        sSupervisor = jcbSupervisor.getSelectedItem().toString();
+                    }
+                    if(bContract) {
+                        sContract = jcbContract.getSelectedItem().toString();
+                    }
+                    if(bStatut) {
+                        sStatut = jcbStatut.getSelectedItem().toString();
+                    }
                     mscController.checkModifyStaff(sFirstName, sLastName, sSupervisor, sEMail, sAddress,
                             sNPA, sCity, sCountry, sPhone, sContract, sStatut);
                 }

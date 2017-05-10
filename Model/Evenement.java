@@ -3,6 +3,7 @@ package Model;
 import java.sql.Date;
 import java.sql.Time;
 import java.sql.Timestamp;
+import java.util.Vector;
 
 /**
  *
@@ -65,5 +66,13 @@ public class Evenement {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public Vector<Object> toVector(){
+        Vector<Object> vObject = new Vector<>();
+        vObject.add("" + date.getDay() + "/" + date.getMonth() + "/" + date.getYear());
+        vObject.add("" + date.getHours() + "H" + date.getMinutes());
+        vObject.add(description);
+        return vObject;
     }
 }
