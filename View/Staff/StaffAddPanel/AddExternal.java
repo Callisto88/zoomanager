@@ -8,9 +8,11 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
+ * Class permettant d'ajouter un intervenant
  * Created by Bureau on 23.04.2017.
  */
 public class AddExternal extends GenericWindow{
@@ -31,6 +33,7 @@ public class AddExternal extends GenericWindow{
     private String sCountry;
     private String sPhone;
 
+    // Champs ou choix permettant la récupérations des données de l'utilisateur
     private JTextField jtfLastNameInput;
     private JTextField jtfFirstNameInput;
     private JTextField jtfCompagnyInput;
@@ -41,7 +44,11 @@ public class AddExternal extends GenericWindow{
     private JComboBox jcbCountry;
     private JTextField jtfPhone;
 
-
+    /**
+     * Constructeur de la fenêtre d'ajout d'intervenants
+     * @param controller controlleur de la fenêtre d'ajout permettant de faire remonter les informations
+     * @param countries ArrayList contenant les différents pays actuellement présent
+     */
     public AddExternal(AddExternalController controller, ArrayList<Pays> countries){
         super("Ajout d'intervenant");
         aecController = controller;
@@ -176,7 +183,9 @@ public class AddExternal extends GenericWindow{
                 sCity = jcbCountry.getSelectedItem().toString();
                 sCountry = jcbCountry.getSelectedItem().toString();
                 sPhone = jtfPhone.getText();
-                controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
+                if(controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone)){
+                    getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(),WindowEvent.WINDOW_CLOSING));
+                }
             }
         });
         configFrame(getJfFrame(), this);
@@ -187,13 +196,21 @@ public class AddExternal extends GenericWindow{
      */
     public void disableError() {
         jtfLastNameInput.setBackground(Color.WHITE);
+        jtfLastNameInput.setToolTipText(null);
         jtfFirstNameInput.setBackground(Color.WHITE);
+        jtfFirstNameInput.setToolTipText(null);
         jtfCompagnyInput.setBackground(Color.WHITE);
+        jtfCompagnyInput.setToolTipText(null);
         jtfAddress.setBackground(Color.WHITE);
+        jtfAddress.setToolTipText(null);
         jtfNPA.setBackground(Color.WHITE);
+        jtfNPA.setToolTipText(null);
         jtfCity.setBackground(Color.WHITE);
+        jtfCity.setToolTipText(null);
         jtfEmail.setBackground(Color.WHITE);
+        jtfEmail.setToolTipText(null);
         jtfPhone.setBackground(Color.WHITE);
+        jtfPhone.setToolTipText(null);
     }
 
     /**

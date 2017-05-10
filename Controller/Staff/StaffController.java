@@ -25,6 +25,8 @@ public class StaffController {
     private AddExternalController aecAddExternal = null;
     private ModifyExternalController mecModifyExternal = null;
     private ErrorController ecError = null;
+
+    private StaffView svPersonnel = null;
     private DBInteraction querry = null;
 
     /**
@@ -34,7 +36,7 @@ public class StaffController {
         // établis la connection
         dbConnection();
 
-        StaffView svPersonnel = new StaffView(this, getPersonnel());
+        svPersonnel = new StaffView(this, getPersonnel());
     }
 
     /**
@@ -182,17 +184,6 @@ public class StaffController {
         return als;
     }
 
-    public void getAssignedTask(){
-        dbConnection();
-        /*
-        TODO : non présent dans les méthodes
-        try {
-            querry.
-        }
-        */
-
-    }
-
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
@@ -241,6 +232,55 @@ public class StaffController {
         ErrorController ecError = new ErrorController(error);
     }
 
+
+    public ArrayList<Evenement> getStaffTask(int IDStaff){
+        dbConnection();
+        ArrayList<Evenement> events = null;
+        try {
+            events = querry.getEvenementAssignToPersonByID(IDStaff);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+            return null;
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+            return null;
+        }
+            return events;
+
+    }
+
+    public String getSupervisor(int personneID){
+        dbConnection();
+        Personne supervisor = null;
+        try {
+            supervisor = querry.selEmployeDetails(personneID);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        return (supervisor.getNom() + " " + supervisor.getPrenom());
+    }
+
+    public ArrayList<Evenement> getExternalTask(int IDExternal){
+        dbConnection();
+        ArrayList<Evenement> events = null;
+        try {
+            events = querry.getEvenementAssignToIntervenantByID(IDExternal);
+        } catch (ExceptionDataBase exceptionDB){
+            exceptionDB.printStackTrace();
+            ecError = new ErrorController(exceptionDB.toString());
+        } catch (SQLException sqlException){
+            sqlException.printStackTrace();
+            ecError = new ErrorController(sqlException.toString());
+        }
+        return events;
+    }
+
     /**
      * Méthode permettant de supprimer un personnel
      * @param personne personne à supprimer
@@ -282,10 +322,10 @@ public class StaffController {
     }
 
     public void deleteExternalRow(int line){
-
+        svPersonnel.eraseExternalRow(line);
     }
 
     public void deleteStaffRow(int line){
-
+        svPersonnel.eraseStaffRow(line);
     }
 }

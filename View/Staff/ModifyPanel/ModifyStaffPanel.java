@@ -70,7 +70,15 @@ public class ModifyStaffPanel extends GenericWindow {
     private JComboBox jcbStatut;
     private JComboBox jcbContract;
 
-
+    /**
+     *
+     * @param mscController
+     * @param personne
+     * @param contract
+     * @param status
+     * @param countries
+     * @param supervisor
+     */
     public ModifyStaffPanel(ModifyStaffController mscController, Personne personne, ArrayList<String> contract,
                             ArrayList<String> status, ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
         super("Modificaion");
@@ -113,9 +121,7 @@ public class ModifyStaffPanel extends GenericWindow {
         ++y;
         jpModifyPanel.add(modification, gbcConstraint);
 
-        /**
-         * Bouton pour demander l'ajout de champ à modifier
-         */
+        // Bouton pour demander l'ajout de champ à modifier
         JPanel modifyLabel = new JPanel();
         JButton newLabel = new JButton("Ajouter un nouveau champ");
         modifyLabel.add(newLabel);
@@ -232,7 +238,7 @@ public class ModifyStaffPanel extends GenericWindow {
     }
 
     /**
-     * Méthode pour ajouter l'e-mail au panneaux de modification
+     * Méthode permettant d'ajouter le champ de l'E-Mail si celui ci n'est pas déjà présent
      */
     private void addEMail() {
         if (!bEMail) {
@@ -254,7 +260,7 @@ public class ModifyStaffPanel extends GenericWindow {
     }
 
     /**
-     * Méthode pour ajouter l'adresse au panneaux de modification
+     * Méthode permettant d'ajouter le champ adresse si celui ci n'est pas déjà présent
      */
     private void addAddress() {
         if(!bAddress){
@@ -325,7 +331,7 @@ public class ModifyStaffPanel extends GenericWindow {
 }
 
     /**
-     * Méthode pour ajouter le téléphone au panneaux de modification
+     * Méthode permettant d'ajouter le champ télephone si celui ci n'est pas déjà présent
      */
     private void addPhone() {
         if (!bPhone) {
@@ -346,7 +352,7 @@ public class ModifyStaffPanel extends GenericWindow {
     }
 
     /**
-     * Méthode pour ajouter le superviseur au panneaux de modification
+     * Méthode permettant d'ajouter le champ du superviseur si celui ci n'est pas déjà présent
      */
     private void addSupervisor() {
         if (!bSupervisor) {
@@ -370,6 +376,9 @@ public class ModifyStaffPanel extends GenericWindow {
         }
     }
 
+    /**
+     * Méthode permettant d'ajouter le champ de statut si celui ci n'est pas déjà présent
+     */
     private void addStatut(){
         if(!bStatut){
             bStatut = true;
@@ -390,6 +399,9 @@ public class ModifyStaffPanel extends GenericWindow {
         }
     }
 
+    /**
+     * Méthode permettant d'ajouter le champ de contrat si celui ci n'est pas déjà présent
+     */
     private void addContract(){
         if(!bContract){
             bContract = true;
@@ -411,7 +423,7 @@ public class ModifyStaffPanel extends GenericWindow {
     }
 
     /**
-     * Méthode pour ajouter le bouton de mise à jour
+     * Méthode permettant d'ajouter le bouton de mise à jour si celui ci n'est pas déjà présent
      */
     private void addModifyButton() {
         if (!bButton) {

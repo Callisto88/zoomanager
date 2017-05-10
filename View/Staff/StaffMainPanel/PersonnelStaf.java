@@ -29,6 +29,7 @@ public class PersonnelStaf extends JPanel{
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
      * @param personne personne pour lequel on souhaite afficher les détails
+     * @param line ligne correspondant à la ligne sélectionné de la personne
      */
     public PersonnelStaf(StaffController controller, Personne personne, int line){
 
@@ -48,7 +49,6 @@ public class PersonnelStaf extends JPanel{
         jpLastName.add(jlLastName);
         jpLastName.add(jlLastNameInfo);
         this.add(jpLastName, gbcDetailsStaff);
-        //jpLeft.add(jpLastName, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le prénom
         JPanel jpFirstName = new JPanel();
@@ -61,7 +61,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpFirstName, gbcDetailsStaff);
-        //jpLeft.add(jpFirstName, gbcDetailsStaff);
 
         // Ajout du champ de détails pour la date de naissance
         JPanel jpBirthday = new JPanel();
@@ -74,7 +73,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpBirthday, gbcDetailsStaff);
-        //jpLeft.add(jpBirthday, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le numéro AVS
         JPanel jpAVS = new JPanel();
@@ -87,7 +85,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpAVS, gbcDetailsStaff);
-        //jpLeft.add(jpAVS, gbcDetailsStaff);
 
         // Ajout du champ de détails pour l'email
         JPanel jpEmail = new JPanel();
@@ -100,7 +97,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpEmail, gbcDetailsStaff);
-        //jpLeft.add(jpEmail, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le numéro de téléphone
         JPanel jpPhone = new JPanel();
@@ -113,7 +109,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpPhone, gbcDetailsStaff);
-        //jpLeft.add(jpPhone, gbcDetailsStaff);
 
         // Ajout du champ de détails pour la date de début
         JPanel jpBeginingDate = new JPanel();
@@ -126,14 +121,23 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpBeginingDate, gbcDetailsStaff);
-        //jpLeft.add(jpBeginingDate, gbcDetailsStaff);
 
         // Ajout du champ de détails pour l'adresse
+        String sAddress = "";
+        String sCity = "";
+        String sNPA = "";
+        String sCountry = "";
+        if(personne.getAdresse() != null){
+            sAddress = personne.getAdresse().toString();
+            sCity = personne.getAdresse().toString();
+            sNPA = "" + personne.getAdresse().getVille().getCp();
+            sCountry = personne.getAdresse().getVille().getPays().toString();
+        }
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel(personne.getAdresse().getAdresse());
-        System.out.println(personne.getAdresse().toString());
+        JLabel jlAddressInfo = new JLabel(sAddress);
+        //System.out.println(personne.getAdresse().toString());
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddress);
         jpAddress.add(jlAddressInfo);
@@ -148,54 +152,53 @@ public class PersonnelStaf extends JPanel{
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        System.out.println(personne.getAdresse().getVille().getVille());
-        JLabel jlCityInfo = new JLabel(personne.getAdresse().getVille().getVille());
+        JLabel jlCityInfo = new JLabel(sCity);
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
         jpCity.add(jlCityInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpCity, gbcDetailsStaff);
-        //jpLeft.add(jpCity, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le npa
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        JLabel jlNPAInfo = new JLabel("" + personne.getAdresse().getVille().getCp());
+        JLabel jlNPAInfo = new JLabel(sNPA);
         jpNPA.add(jlNPA);
         jlNPAInfo.setPreferredSize(dDetail);
         jpNPA.add(jlNPAInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpNPA, gbcDetailsStaff);
-        //jpLeft.add(jpNPA, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le pays
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        JLabel jlCountryInfo = new JLabel(personne.getAdresse().getVille().getPays().toString());
+        JLabel jlCountryInfo = new JLabel(sCountry);
         jpCountry.add(jlCountry);
         jlCountryInfo.setPreferredSize(dDetail);
         jpCountry.add(jlCountryInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpCountry, gbcDetailsStaff);
-        //jpLeft.add(jpCountry, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le responsable
+        String sSupervisor = "";
+        if(personne.getResponsable() != 0){
+            sSupervisor = controller.getSupervisor(personne.getResponsable());
+        }
         JPanel jpAdvisor = new JPanel();
         JLabel jlAdvisor = new JLabel("Responsable : ");
         jlAdvisor.setPreferredSize(dLabel);
-        JLabel jlAdvisorInfo = new JLabel(/*personne.getResponsable()*/ "Responsable");
+        JLabel jlAdvisorInfo = new JLabel(sSupervisor);
         jpAdvisor.add(jlAdvisor);
         jlAdvisorInfo.setPreferredSize(dDetail);
         jpAdvisor.add(jlAdvisorInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpAdvisor, gbcDetailsStaff);
-        //jpLeft.add(jpAdvisor, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le statut
         JPanel jpStatut = new JPanel();
@@ -208,7 +211,6 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpStatut, gbcDetailsStaff);
-        //jpLeft.add(jpStatut, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le type de contrat
         JPanel jpContract = new JPanel();
@@ -221,13 +223,13 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpContract, gbcDetailsStaff);
-        //jpLeft.add(jpContract, gbcDetailsStaff);
 
         JPanel fusion = new JPanel();
         fusion.setLayout(new GridBagLayout());
-        //fusion.add(jpLeft);
 
         ArrayList<Evenement> tasks = new ArrayList<>();
+        tasks = controller.getStaffTask(personne.getIdPersonne());
+/*
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Spectacle");
         Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Représentation");
@@ -235,16 +237,14 @@ public class PersonnelStaf extends JPanel{
         tasks.add(e1);
         tasks.add(e2);
         tasks.add(e3);
-
+*/
         ++y;
         gbcDetailsStaff.gridy = y;
         x = 0;
         gbcDetailsStaff.gridx = x;
         gbcDetailsStaff.gridwidth = 2;
-        gbcDetailsStaff.insets = new Insets(15,5,5,15);
-        //fusion.add(new StaffTask(tasks), gbcDetailsStaff);
+        gbcDetailsStaff.insets = new Insets(5,5,5,5);
 
-        //this.add(fusion);
         this.add(new StaffTask(tasks), gbcDetailsStaff);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
@@ -257,10 +257,12 @@ public class PersonnelStaf extends JPanel{
         jbDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Suppression de personnel");
-                controller.erreurPopup("Voulez vous réelement supprimer " + personne.getPrenom() + " " + personne.getNom());
-                if(controller.deleteStaff(personne)){
-                    controller.deleteStaffRow(line);
+                int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous vraiment supprimer cette personne ?",
+                        "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+                if(n == 0) {
+                    if (controller.deleteStaff(personne)) {
+                        controller.deleteStaffRow(line);
+                    }
                 }
             }
         });

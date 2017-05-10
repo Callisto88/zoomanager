@@ -5,7 +5,6 @@ import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.StaffAddPanel.AddStaff;
 
-import java.lang.reflect.Executable;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -50,7 +49,7 @@ public class AddStaffController {
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
-    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address, String npa,
+    public boolean checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address, String npa,
                               String city, String country, String phone, String supervisor, String status, String contract) {
 
         // Permet de checker le nom
@@ -145,13 +144,15 @@ public class AddStaffController {
         }
         if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
-/***************** Problème pour récupérer l'id d'un responsable **********************/
 
 // Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
-            System.out.println(firstName + " " + lastName);
+
             Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day),
-                                    getPersonne(supervisor).getIdPersonne(), status, new Date(year, month, day), contract);
-            insertPersonne(personne);
+                                    getSupervisor(supervisor).getIdPersonne(), status, new Date(year, month, day), contract);
+            return insertPersonne(personne);
+        }
+        else{
+            return false;
         }
     }
 
@@ -159,13 +160,17 @@ public class AddStaffController {
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param personne personne à insérer dans la DB
      */
-    public void insertPersonne (Personne personne){
+    public boolean insertPersonne (Personne personne){
+        dbConnection();
+        personne.toString();
         try{
             querry.insertPersonne(personne);
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             ecError = new ErrorController("Erreur insertion personne " + exceptionsql.toString());
+            return false;
         }
+        return true;
     }
 
     /**
@@ -180,7 +185,7 @@ public class AddStaffController {
         }
     }
 
-    private Personne getPersonne(String name){
+    private Personne getSupervisor(String name){
         dbConnection();
         ArrayList<Personne> personnes = null;
         String lastName = name.substring(0, name.indexOf(" "));

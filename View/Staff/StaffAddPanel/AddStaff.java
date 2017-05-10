@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -68,6 +69,10 @@ public class AddStaff extends GenericWindow {
      * Constructeur de la fenêtre principale d'ajout de personnel.
      *
      * @param asc controlleur de la fenêtre pour permettre de lui remonter les information utiles.
+     * @param statut ArrayList contenant les différents statuts actuellement présent
+     * @param contract ArrayList contenant les différents type de contrat actuellement présent
+     * @param supervisor ArrayList contenant les différents responsables actuellement présent
+     * @param country ArrayList contenant les différents pays actuellement présent
      */
     public AddStaff(AddStaffController asc, ArrayList<String> statut, ArrayList<String> contract, ArrayList<Personne> supervisor, ArrayList<Pays> country) {
         super("Ajout");
@@ -97,7 +102,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpFirstNamePanel = new JPanel();
         JLabel lastNameLabel = new JLabel("Prénom : ");
         lastNameLabel.setPreferredSize(dLabel);
-        //setLabelConfig(lastNameLabel);
         jpFirstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
         jtfFirstNameInput = new JTextField("prénom");
         jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
@@ -128,15 +132,7 @@ public class AddStaff extends GenericWindow {
         gbcDate.gridx = 1;
         gbcDate.gridy = 0;
         jpBirthdayPanel.add(jdpriStartDatePicker, gbcDate);
-        // Permet d'obtenir un retour lors de la sélection d'une date dans le calendrier
-        jdpriStartDatePicker.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay());
-                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getMonth());
-                System.out.println(jdpriStartDatePicker.getJDateInstantPanel().getModel().getYear());
-            }
-        });
+
         gbcConstraint.gridy = 2;
         jpMainPanel.add(jpBirthdayPanel, gbcConstraint);
 
@@ -144,7 +140,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
         jlAVS.setPreferredSize(dLabel);
-        //setLabelConfig(jlAVS);
         jpAVS.add(jlAVS);
         jtfAVSInput = new JTextField("sAVS");
         jtfAVSInput.setPreferredSize(dInput);
@@ -156,7 +151,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        //setLabelConfig(jlAddress);
         jpAddress.add(jlAddress);
         jtfAddress = new JTextField("adresse");
         jtfAddress.setPreferredSize(dInput);
@@ -168,7 +162,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        //setLabelConfig(jlNPA);
         jpNPA.add(jlNPA);
         jtfNPA = new JTextField("npa");
         jtfNPA.setPreferredSize(dInput);
@@ -180,7 +173,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        //setLabelConfig(jlCity);
         jpCity.add(jlCity);
         jtfCity = new JTextField("ville");
         jtfCity.setPreferredSize(dInput);
@@ -192,7 +184,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        //setLabelConfig(jlCountry);
         jpCountry.add(jlCountry);
         jcbCountry = new JComboBox();
         for(int i = 0; i < country.size(); ++i){
@@ -207,7 +198,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-mail : ");
         jlEmail.setPreferredSize(dLabel);
-        //setLabelConfig(jlEmail);
         jpEmail.add(jlEmail);
         jtfEmail = new JTextField("e-mail");
         jtfEmail.setPreferredSize(dInput);
@@ -219,7 +209,6 @@ public class AddStaff extends GenericWindow {
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
         jlPhone.setPreferredSize(dLabel);
-        //setLabelConfig(jlPhone);
         jpPhone.add(jlPhone);
         jtfPhone = new JTextField("téléphone");
         jtfPhone.setPreferredSize(dInput);
@@ -231,11 +220,9 @@ public class AddStaff extends GenericWindow {
         JPanel jpSupervisor = new JPanel();
         JLabel jlSupervisor = new JLabel("Responsable : ");
         jlSupervisor.setPreferredSize(dLabel);
-        //setLabelConfig(jlSupervisor);
         jpSupervisor.add(jlSupervisor);
         jcbSupervisor = new JComboBox();
         for(int i = 0; i < supervisor.size(); ++i){
-            System.out.println(supervisor.get(i).getNom());
             jcbSupervisor.addItem(supervisor.get(i).getPrenom() + " " + supervisor.get(i).getNom());
         }
         jcbSupervisor.setPreferredSize(dInput);
@@ -247,11 +234,9 @@ public class AddStaff extends GenericWindow {
         JPanel jpStatus = new JPanel();
         JLabel jlStatus = new JLabel("Status : ");
         jlStatus.setPreferredSize(dLabel);
-        //setLabelConfig(jlStatus);
         jpStatus.add(jlStatus);
         jcbStatus = new JComboBox();
         for(int i = 0; i < statut.size(); ++i){
-            System.out.println(statut.get(i));
             jcbStatus.addItem(statut.get(i));
         }
         jcbStatus.setPreferredSize(dInput);
@@ -263,11 +248,9 @@ public class AddStaff extends GenericWindow {
         JPanel jpContract = new JPanel();
         JLabel jlContract = new JLabel("Contrat : ");
         jlContract.setPreferredSize(dLabel);
-        //setLabelConfig(jlContract);
         jpContract.add(jlContract);
         jcbContract = new JComboBox();
         for(int i = 0; i < contract.size(); ++i){
-            System.out.println(contract.get(i));
             jcbContract.addItem(contract.get(i));
         }
         jcbContract.setPreferredSize(dInput);
@@ -275,6 +258,7 @@ public class AddStaff extends GenericWindow {
         gbcConstraint.gridy = 12;
         jpMainPanel.add(jpContract, gbcConstraint);
 
+        // Ajout du bouton d'ajout du personnel
         JButton add = new JButton("Ajouter");
         setButtonConfig(add);
         gbcConstraint.gridy = 13;
@@ -303,7 +287,10 @@ public class AddStaff extends GenericWindow {
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
 
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity, sCountry, sPhone, sSupervisor, sStatus, sContract);
+                // Permet de fermer la fenêtre si tout s'est bien passé
+                if(controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity, sCountry, sPhone, sSupervisor, sStatus, sContract)){
+                    getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(),WindowEvent.WINDOW_CLOSING));
+                }
             }
         });
         configFrame(getJfFrame(), this);
@@ -314,70 +301,114 @@ public class AddStaff extends GenericWindow {
      */
     public void disableError() {
         jtfLastNameInput.setBackground(Color.WHITE);
+        jtfLastNameInput.setToolTipText(null);
         jtfFirstNameInput.setBackground(Color.WHITE);
+        jtfFirstNameInput.setToolTipText(null);
         jdpriStartDatePicker.setBackground(Color.WHITE);
+        jdpriStartDatePicker.setToolTipText(null);
         jtfAVSInput.setBackground(Color.WHITE);
+        jtfAVSInput.setToolTipText(null);
         jtfAddress.setBackground(Color.WHITE);
+        jtfAddress.setToolTipText(null);
         jtfCity.setBackground(Color.WHITE);
+        jtfCity.setToolTipText(null);
         jtfNPA.setBackground(Color.WHITE);
+        jtfNPA.setToolTipText(null);
         jcbCountry.setBackground(Color.WHITE);
+        jcbCountry.setToolTipText(null);
         jtfEmail.setBackground(Color.WHITE);
+        jtfEmail.setToolTipText(null);
         jtfPhone.setBackground(Color.WHITE);
+        jtfPhone.setToolTipText(null);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du prénom
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setFirstNameError(String error) {
         jtfFirstNameInput.setToolTipText(error);
         jtfFirstNameInput.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du nom
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setLastNameError(String error) {
         jtfLastNameInput.setToolTipText(error);
         jtfLastNameInput.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie de la date
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setBirthdayError(String error) {
         jdpriStartDatePicker.setToolTipText(error);
         jdpriStartDatePicker.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie de l'AVS
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setAVSError(String error) {
         jtfAVSInput.setToolTipText(error);
         jtfAVSInput.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du mail
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setEmailError(String error) {
         jtfEmail.setToolTipText(error);
         jtfEmail.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie de l'adresse
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setAddressError(String error) {
         jtfAddress.setToolTipText(error);
         jtfAddress.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie de la ville
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setCityError(String error) {
         jtfCity.setToolTipText(error);
         jtfCity.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du npa
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setNPAError(String error) {
         jtfNPA.setToolTipText(error);
         jtfNPA.setBackground(Color.RED);
     }
 
+    /** TODO: a checker en cas de levé d'exception!!
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du pays
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setCountryError(String error){
         jcbCountry.setToolTipText(error);
         jcbCountry.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du télephone
+     * @param error message d'erreur indiquant ce qui est autorisé
+     */
     public void setPhoneError(String error) {
         jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
     }
-
-    /*
-    private void setLabelConfig(JLabel jlLabel){
-        jlLabel.setPreferredSize(new Dimension(150 - jlLabel.getText().length(),30));
-    }
-    */
 }

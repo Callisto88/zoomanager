@@ -51,7 +51,7 @@ public class AddExternalController {
      * @param country Pays de l'entreprise de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
-    public void checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,
+    public boolean checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,
                               String city, String country, String phone) {
 
         // permet de checker le nom
@@ -136,7 +136,11 @@ public class AddExternalController {
         if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bChange && bCountry && bAddAddress && bPhone) {
             dbConnection();
             Intervenant external = new Intervenant(compagny, lastName, firstName, adresse, email, phone);
-            insertExternal(external);
+            return insertExternal(external);
+
+        }
+        else{
+            return false;
         }
     }
 
@@ -144,17 +148,20 @@ public class AddExternalController {
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param external personne à insérer dans la DB
      */
-    public void insertExternal(Intervenant external){
+    public boolean insertExternal(Intervenant external){
         try{
             querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             ecError = new ErrorController(exceptionDB.toString());
+            return false;
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             ecError = new ErrorController("Erreur insertion externe " + exceptionsql.toString());
+            return false;
         }
         System.out.println("Intervenant externe inséré");
+        return true;
     }
 
 }

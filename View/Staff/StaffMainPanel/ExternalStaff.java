@@ -29,6 +29,7 @@ public class ExternalStaff extends JPanel{
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
      * @param external intervenant pour lequel on souhaite afficher les détails
+     * @param line ligne correspondant à la ligne sélectionné de l'intervenant
      */
     public ExternalStaff(StaffController controller, Intervenant external, int line){
 
@@ -37,7 +38,6 @@ public class ExternalStaff extends JPanel{
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridy = y;
         JPanel jpLeft = new JPanel();
-        //this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
         jpLeft.setLayout(new GridBagLayout());
 
         // Ajout du champ de détails pour le nom
@@ -50,7 +50,6 @@ public class ExternalStaff extends JPanel{
         jpLastName.add(jlLastNameInfo);
         gbcDetailsExternal.gridy = y;
         this.add(jpLastName, gbcDetailsExternal);
-        //jpLeft.add(jpLastName);
 
         // Ajout du champ de détails pour le prénom
         JPanel jpFirstName = new JPanel();
@@ -64,7 +63,6 @@ public class ExternalStaff extends JPanel{
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpFirstName, gbcDetailsExternal);
-        //jpLeft.add(jpFirstName);
 
         // Ajout du champ de détails pour l'email
         JPanel jpEmail = new JPanel();
@@ -77,7 +75,6 @@ public class ExternalStaff extends JPanel{
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpEmail, gbcDetailsExternal);
-        //jpLeft.add(jpEmail);
 
         // Ajout du champ de détails pour le numéro de téléphone
         JPanel jpPhone = new JPanel();
@@ -90,7 +87,6 @@ public class ExternalStaff extends JPanel{
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpPhone, gbcDetailsExternal);
-        //jpLeft.add(jpPhone);
 
         // Ajout du champ de détails pour l'entreprise
         JPanel jpCompagny = new JPanel();
@@ -105,67 +101,69 @@ public class ExternalStaff extends JPanel{
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridy = y;
         this.add(jpCompagny, gbcDetailsExternal);
-        //jpLeft.add(jpCompagny);
 
 
         // Ajout du champ de détails pour l'adresse
+        String sAddress = "";
+        String sCity = "";
+        String sNPA = "";
+        String sCountry = "";
+        if(external.getAdresse() != null){
+            sAddress = external.getAdresse().toString();
+            sCity = external.getAdresse().toString();
+            sNPA = "" + external.getAdresse().getVille().getCp();
+            sCountry = external.getAdresse().getVille().getPays().toString();
+        }
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel(external.getAdresse().toString());
+        JLabel jlAddressInfo = new JLabel(sAddress);
         jpAddress.add(jlAddress);
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddressInfo);
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpAddress, gbcDetailsExternal);
-        //jpLeft.add(jpAddress);
 
         // Ajout du champ de détails pour la ville
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        JLabel jlCityInfo = new JLabel(external.getAdresse().getVille().toString());
+        JLabel jlCityInfo = new JLabel(sCity);
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
         jpCity.add(jlCityInfo);
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpCity, gbcDetailsExternal);
-        //jpLeft.add(jpCity);
 
         // Ajout du champ de détails pour le npa
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        JLabel jlNPAInfo = new JLabel("" + external.getAdresse().getVille().getCp());
+        JLabel jlNPAInfo = new JLabel(sNPA);
         jpNPA.add(jlNPA);
         jlNPAInfo.setPreferredSize(dDetail);
         jpNPA.add(jlNPAInfo);
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpNPA, gbcDetailsExternal);
-        //jpLeft.add(jpNPA);
 
         // Ajout du champ de détails pour le pays
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        JLabel jlCountryInfo = new JLabel(external.getAdresse().getVille().getPays().toString());
+        JLabel jlCountryInfo = new JLabel(sCountry);
         jpCountry.add(jlCountry);
         jlCountryInfo.setPreferredSize(dDetail);
         ++y;
         gbcDetailsExternal.gridy = y;
         jpCountry.add(jlCountryInfo);
         this.add(jpCountry, gbcDetailsExternal);
-        //jpLeft.add(jpCountry);
-
-        JPanel fusion = new JPanel();
-        fusion.setLayout(new GridLayout(1,2));
-        //fusion.add(jpLeft);
 
         /******************* Permet de tester offline **************************/
         ArrayList<Evenement> tasks = new ArrayList<>();
+        tasks = controller.getExternalTask(external.getId());
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Représentation");
         Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Spectacle");
@@ -180,16 +178,13 @@ public class ExternalStaff extends JPanel{
         tasks.add(e5);
         tasks.add(e6);
 
-        /********************** Méthode à changer pour récupérer les tâches d'un intervenant **********************/
-        //fusion.add(new StaffTask(tasks));
         ++y;
         gbcDetailsExternal.gridy = y;
         x = 0;
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridwidth = 2;
-        gbcDetailsExternal.insets = new Insets(15,5,5,15);
+        gbcDetailsExternal.insets = new Insets(5,5,5,5);
         this.add(new StaffTask(tasks), gbcDetailsExternal);
-        //this.add(fusion);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
         JPanel jpButtons = new JPanel();
@@ -201,10 +196,12 @@ public class ExternalStaff extends JPanel{
         jbDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Suppression de l'intervenant");
-                controller.erreurPopup("Voulez vous réelement supprimer " + external.getPrenom() + " " + external.getNom());
-                if(controller.deleteExternal(external)){
-                    controller.deleteExternalRow(line);
+                int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous vraiment supprimer cette personne ?",
+                        "Confirmer la suppression", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+                if(n == 0) {
+                    if (controller.deleteExternal(external)) {
+                        controller.deleteExternalRow(line);
+                    }
                 }
             }
         });
@@ -236,11 +233,6 @@ public class ExternalStaff extends JPanel{
         ++y;
         gbcDetailsExternal.gridy = y;
         this.add(jpButtons, gbcDetailsExternal);
-        //this.add(jpLeft);
-
-        JPanel jpRight = new JPanel();
-
-        //jpRight.add(new StaffTask())
 
     }
 
