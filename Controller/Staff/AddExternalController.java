@@ -5,6 +5,7 @@ import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.StaffAddPanel.AddExternal;
 
+import javax.swing.*;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -15,7 +16,6 @@ import java.util.ArrayList;
 public class AddExternalController {
     private AddExternal aeExternal = null;
     private DBInteraction querry = null;
-    private ErrorController ecError = null;
 
 
     /**
@@ -35,7 +35,7 @@ public class AddExternalController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
+            new ErrorController("Erreur dbCo " + exceptionDB.toString());
         }
     }
 
@@ -51,7 +51,7 @@ public class AddExternalController {
      * @param country Pays de l'entreprise de l'intervenant
      * @param phone Numéro de télephone de l'intervenant
      */
-    public boolean checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,
+    public void checkExternal(String lastName, String firstName, String compagny, String email, String address, String npa,
                               String city, String country, String phone) {
 
         // permet de checker le nom
@@ -75,6 +75,7 @@ public class AddExternalController {
             aeExternal.setEmailError("Champ email non conforme");
         }
 
+
         // Permet de checker le NPA
         boolean bNPA = Validate.isNumeric(npa);
         if(!bNPA){
@@ -95,11 +96,12 @@ public class AddExternalController {
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
-                ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
+                //ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
             }
         }
 
         // Permet d'insérer une adresse
+        // TODO : a voir si on teste d'abort que le cp est pas 0
         dbConnection();
         boolean bAddAddress = true;
         int cityID = 0;
@@ -117,13 +119,15 @@ public class AddExternalController {
 
         if (bNPA && bChange && bCountry) {
             try {
-                cityID = querry.insAddress(adresse, ville, pays);
+
+                querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
+                bAddAddress = false;
             } catch (SQLException sqlException) {
                 bAddAddress = false;
                 sqlException.printStackTrace();
-                ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
+                new ErrorController("Erreur insertion adresse " + sqlException.toString());
             }
         }
 
@@ -138,32 +142,32 @@ public class AddExternalController {
 
             int statut = 1; // Pour dire qu'il est actif ou non
             Intervenant external = new Intervenant(compagny, lastName, firstName, adresse, email, phone, statut);
-            return insertExternal(external);
+            insertExternal(external);
 
-        }
-        else{
-            return false;
         }
     }
 
-    /**
+    /** TODO : tester le retour d'erreur
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param external personne à insérer dans la DB
      */
-    public boolean insertExternal(Intervenant external){
+    public void insertExternal(Intervenant external){
+        dbConnection();
         try{
             querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
-            return false;
+            new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController("Erreur insertion externe " + exceptionsql.toString());
-            return false;
+            new ErrorController("Erreur insertion externe " + exceptionsql.toString());
+        }
+        int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
+                "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+        if(n == 1) {
+            aeExternal.getParent().hide();
         }
         System.out.println("Intervenant externe inséré");
-        return true;
     }
 
 }

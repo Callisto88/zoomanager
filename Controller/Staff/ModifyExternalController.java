@@ -14,11 +14,10 @@ import java.util.ArrayList;
  * Class permettant d'instancier et de controller tout ce qui concerne la modification des intervenant
  */
 public class ModifyExternalController {
-    private ErrorController ecError = null;
     private ModifyExternalPanel mepExternal = null;
     private Intervenant external = null;
 
-    DBInteraction querry = null;
+    private DBInteraction querry = null;
 
     /**
      * Constructeur du controlleur de la fenêtre de modification des intervenant
@@ -34,6 +33,10 @@ public class ModifyExternalController {
      * @param firstName prénom de l'intervenant
      * @param lastName nom de l'intervenant
      * @param eMail email de l'intervenant
+     * @param address adresse de l'entreprise
+     * @param NPA npa de l'entreprise
+     * @param city ville de l'entreprise
+     * @param country pays de l'entreprise
      * @param phone télephone de l'intervenant
      */
     public void checkModifyExternal(String firstName, String lastName, String eMail, String address, String NPA,
@@ -65,10 +68,11 @@ public class ModifyExternalController {
         } catch(Exception exception){
             bChange = false;
             exception.printStackTrace();
-            ecError = new ErrorController(exception.toString());
+            new ErrorController(exception.toString());
         }
         dbConnection();
         boolean bAddAddress = true;
+        Adresse adresse = new Adresse();
         try{
             Pays pays = new Pays();
             pays.setPays(country);
@@ -78,7 +82,6 @@ public class ModifyExternalController {
             ville.setVille(city);
             ville.setPays(pays);
 
-            Adresse adresse = new Adresse();
             adresse.setAdresse(address);
             adresse.setVille(ville);
 
@@ -86,10 +89,10 @@ public class ModifyExternalController {
         } catch(SQLException sqlException){
             bAddAddress = false;
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
-            ecError = new ErrorController(exceptionDataBase.toString());
+            new ErrorController(exceptionDataBase.toString());
         }
         boolean bPhone = Validate.isPhoneNumber(phone);
         if(!bPhone){
@@ -100,6 +103,7 @@ public class ModifyExternalController {
             external.setPrenom(firstName);
             external.setEmail(eMail);
             external.setTelephone(phone);
+            external.setAdresse(adresse);
             modifyExternal(external);
         }
     }
@@ -111,14 +115,20 @@ public class ModifyExternalController {
     private void modifyExternal (Intervenant external){
         dbConnection();
         // Permet d'insérer la personne modifié
+        boolean error = false;
         try {
             querry.updateIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
+            error = true;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
+            error = true;
+        }
+        if(!error){
+            mepExternal.getParent().hide();
         }
 
     }
@@ -130,10 +140,10 @@ public class ModifyExternalController {
             alp = querry.selCountries();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
         }
         return alp;
     }
@@ -147,7 +157,7 @@ public class ModifyExternalController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         }
     }
 

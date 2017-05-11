@@ -5,6 +5,7 @@ import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.StaffAddPanel.AddStaff;
 
+import javax.swing.*;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 public class AddStaffController {
     private AddStaff add = null;
 
-    private ErrorController ecError = null;
     private DBInteraction querry = null;
 
     /**
@@ -31,7 +31,7 @@ public class AddStaffController {
         add = new AddStaff(this, statuts, contract, supervisor, countries);
         add.disableError();
     }
-
+// TODO : LAISSER UNE CASE VIDE POUR LE PAYS!!!!
     /**
      * Méthode permettant de checker qu'une personne est OK avant de l'insérer
      * @param lastName Nom de la personne
@@ -49,8 +49,8 @@ public class AddStaffController {
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
-    public boolean checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address, String npa,
-                              String city, String country, String phone, String supervisor, String status, String contract) {
+    public void checkPersonne(String lastName, String firstName, int day, int month, int year, String avs, String email, String address, String npa,
+                              String city, String country, String phone, int supervisor, String status, String contract) {
 
         // Permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
@@ -94,7 +94,6 @@ public class AddStaffController {
             add.setCountryError("Le champ pays non conforme");
         }
 
-        // ! Plus nécessaire vu que le NPA est maintenant un attribut de type entier dans la classe Adresse
         // Permet de convertir en int le npa
 
         int cp = 0;
@@ -105,7 +104,7 @@ public class AddStaffController {
             } catch (Exception exception) {
                 bChange = false;
                 exception.printStackTrace();
-                ecError = new ErrorController("Erreur conversion NPA " + exception.toString());
+                new ErrorController("Erreur conversion NPA " + exception.toString());
             }
         }
 
@@ -127,14 +126,14 @@ public class AddStaffController {
 
         if (bNPA && bChange && bCity && bCountry) {
             try {
-                cityID = querry.insAddress(adresse, ville, pays);
+                querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
                 bAddAddress = false;
             } catch (SQLException sqlException) {
                 bAddAddress = false;
                 sqlException.printStackTrace();
-                ecError = new ErrorController("Erreur insertion adresse " + sqlException.toString());
+                new ErrorController("Erreur insertion adresse " + sqlException.toString());
             }
         }
         // Permet de checker le numéro de télephone
@@ -148,29 +147,30 @@ public class AddStaffController {
 // Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
 
             Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day),
-                                    getSupervisor(supervisor).getIdPersonne(), status, new Date(year, month, day), contract);
-            return insertPersonne(personne);
-        }
-        else{
-            return false;
+                                    supervisor, status, new Date(year, month, day), contract);
+            insertPersonne(personne);
         }
     }
 
-    /**
+    /** TODO : tester le retour d'erreur!!
      * Méthode permettant d'interragir avec la DB pour insérer une personne
-     * @param personne personne à insérer dans la DB TODO problème avec les adresse
+     * @param personne personne à insérer dans la DB
      */
-    public boolean insertPersonne (Personne personne){
+    public void insertPersonne (Personne personne){
         dbConnection();
         personne.toString();
         try{
             querry.insertPersonne(personne);
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController("Erreur insertion personne " + exceptionsql.toString());
-            return false;
+            new ErrorController("Erreur insertion personne " + exceptionsql.toString());
         }
-        return true;
+
+        int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
+                "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+        if(n == 1) {
+            add.getParent().hide();
+        }
     }
 
     /**
@@ -181,28 +181,7 @@ public class AddStaffController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         }
-    }
-
-    private Personne getSupervisor(String name){
-        dbConnection();
-        ArrayList<Personne> personnes = null;
-        String lastName = name.substring(0, name.indexOf(" "));
-        String firstName = name.substring(name.indexOf(" ") + 1, name.length());
-        try {
-            personnes = querry.selEmployeeParPrenomNom(firstName, lastName);
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
-        } catch (SQLException sqlException){
-            sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
-        }
-        Personne supervisor = null;
-        for(Personne p : personnes){
-            supervisor = p;
-        }
-        return supervisor;
     }
 }

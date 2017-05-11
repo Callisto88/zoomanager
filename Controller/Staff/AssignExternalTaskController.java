@@ -17,13 +17,12 @@ import java.util.ArrayList;
  */
 public class AssignExternalTaskController {
 
-    private ErrorController ecError = null;
     private DBInteraction querry = null;
     private TaskExternalPanel tepExternal = null;
 
     /**
      * Constructeur du controlleur
-     * @param external
+     * @param external permet d'avoir l'intervenant en référence pour lui ajouter des tâches.
      */
     public AssignExternalTaskController(Intervenant external){
         ArrayList<Evenement> tasks = new ArrayList<>();
@@ -35,11 +34,11 @@ public class AssignExternalTaskController {
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         }
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            new ErrorController(exceptionsql.toString());
         }
 
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(
@@ -67,7 +66,7 @@ public class AssignExternalTaskController {
             querry.assignEvenementIntervenant(event, external);
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
         }
     }
 
@@ -79,7 +78,7 @@ public class AssignExternalTaskController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
+            new ErrorController("Erreur dbCo " + exceptionDB.toString());
         }
     }
 

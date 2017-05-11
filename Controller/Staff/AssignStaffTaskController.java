@@ -18,7 +18,6 @@ import java.util.ArrayList;
 public class AssignStaffTaskController {
     private TaskStaffPanel task = null;
     private DBInteraction querry = null;
-    private ErrorController ecError = null;
 
     /**
      * Constructeur du controlleur de la fenêtre d'assignation de tâches pour le personnel
@@ -29,20 +28,18 @@ public class AssignStaffTaskController {
 
         dbConnection();
 
-/************************* Erreur de récupérations **********************************/
         try{
             tasks = querry.getAllUnassignedTaskEmployee();
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         }
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            ecError = new ErrorController(exceptionsql.toString());
+            new ErrorController(exceptionsql.toString());
         }
-
-/***********************************************************/
+/*
         tasks = new ArrayList<>();
         Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
         Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Spectacle");
@@ -51,7 +48,7 @@ public class AssignStaffTaskController {
         tasks.add(e1);
         tasks.add(e2);
         tasks.add(e3);
-/************************************************************/
+*/
         task = new TaskStaffPanel(this, personne, tasks);
     }
 
@@ -66,7 +63,7 @@ public class AssignStaffTaskController {
             querry.assignEvenementEmploye(event, personne);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
-            ecError = new ErrorController("Erreur assignation staff tache " + sqlException.toString());
+            new ErrorController("Erreur assignation staff tache " + sqlException.toString());
         }
     }
 
@@ -78,7 +75,7 @@ public class AssignStaffTaskController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController("Erreur dbCo " + exceptionDB.toString());
+            new ErrorController("Erreur dbCo " + exceptionDB.toString());
         }
     }
 }

@@ -14,11 +14,10 @@ import java.util.ArrayList;
  * Controlleur de la fenêtre de modification d'employée
  */
 public class ModifyStaffController {
-    private ErrorController ecError = null;
     private ModifyStaffPanel mspModifyStaff = null;
     private Personne personne = null;
     private DBInteraction querry = null;
-
+// TODO : LAISSER UNE CASE VIDE POUR LE PAYS!!!!
     /**
      * Constructeur du controlleur
      * @param personne personne à modifier
@@ -38,7 +37,7 @@ public class ModifyStaffController {
      * Méthode permettant de vérifier les champs de la personne
      * @param sFirstName String contenant le prénom
      * @param sLastName String contenant le nom
-     * @param sSupervisor String contenant le responsable
+     * @param iSupervisor ID du responsable
      * @param sEMail String contenant l'E-Mail
      * @param sAddress String contenant l'adresse
      * @param sNPA String contenant le NPA
@@ -48,62 +47,97 @@ public class ModifyStaffController {
      * @param sContract String contenant le contrat
      * @param sStatut String contenant le statut
      */
-    public void checkModifyStaff(String sFirstName, String sLastName, String sSupervisor, String sEMail, String sAddress,
+    public void checkModifyStaff(String sFirstName, String sLastName, int iSupervisor, String sEMail, String sAddress,
                                  String sNPA, String sCity, String sCountry, String sPhone,
                                  String sContract, String sStatut) {
 
+        // Permet de lancer une batterie de test sur les champs
         boolean bLastName = Validate.isAlphabetic(sLastName);
         if(!bLastName){
             mspModifyStaff.setLastNameError("Champ nom contenant des caractères innaproprié");
         }
+
         boolean bFirstName = Validate.isAlphabetic(sFirstName);
         if(!bFirstName){
             mspModifyStaff.setFirstNameError("Champ prénom contenant des caractères innaproprié");
         }
-        boolean bEmail = Validate.isEmail(sEMail);
-        if(!bEmail){
-            mspModifyStaff.setEmailError("Champ Email non conforme");
+
+        boolean bEmail = true;
+        if(!sEMail.isEmpty()) {
+            bEmail = Validate.isEmail(sEMail);
+            if (!bEmail) {
+                mspModifyStaff.setEmailError("Champ Email non conforme");
+            }
         }
-        boolean bNPA = Validate.isNumeric(sNPA);
-        if(!bNPA){
-            mspModifyStaff.setNPAError("Le champ NPA ne contient pas que des chiffres");
-        }
-        boolean bCity = Validate.isAlphabetic(sCity);
-        if(!bCity){
-            mspModifyStaff.setCityError("Le champ ville non conforme");
-        }
-        int cp = 0;
+        // TODO : check si un champ est null!!
+        boolean bNPA = true;
+        boolean bCity = true;
         boolean bChange = true;
-        try{
-            cp = Integer.parseInt(sNPA);
-        } catch(Exception exception){
-            bChange = false;
-            exception.printStackTrace();
-            ecError = new ErrorController(exception.toString());
-        }
-        dbConnection();
         boolean bAddAddress = true;
-        try{
-            Pays pays = new Pays();
-            pays.setPays(sCountry);
+        // TODO : new adresse ou null??
+        Adresse adresse = new Adresse();
+        boolean bEmptyAddress = sAddress.isEmpty();
+        boolean bEmptyNPA = sNPA.isEmpty();
+        boolean bEmptyCity = sCity.isEmpty();
+        boolean bEmptyCountry = sCountry.isEmpty();
+        if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
+            bNPA = Validate.isNumeric(sNPA);
+            if (!bNPA) {
+                mspModifyStaff.setNPAError("Le champ NPA ne contient pas que des chiffres");
+            }
+            bCity = Validate.isAlphabetic(sCity);
+            if (!bCity) {
+                mspModifyStaff.setCityError("Le champ ville non conforme");
+            }
+            int cp = 0;
+            try {
+                cp = Integer.parseInt(sNPA);
+            } catch (Exception exception) {
+                bChange = false;
+                exception.printStackTrace();
+                new ErrorController(exception.toString());
+            }
+            dbConnection();
+            try {
+                Pays pays = new Pays();
+                pays.setPays(sCountry);
 
-            Ville ville = new Ville();
-            ville.setCp(cp);
-            ville.setVille(sCity);
-            ville.setPays(pays);
+                Ville ville = new Ville();
+                ville.setCp(cp);
+                ville.setVille(sCity);
+                ville.setPays(pays);
 
-            Adresse adresse = new Adresse();
-            adresse.setAdresse(sAddress);
-            adresse.setVille(ville);
+                adresse = new Adresse();
+                adresse.setAdresse(sAddress);
+                adresse.setVille(ville);
 
-            querry.insAddress(adresse, ville, pays);
-        } catch(SQLException sqlException){
-            bAddAddress = false;
-            sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-            ecError = new ErrorController(exceptionDataBase.toString());
+                querry.insAddress(adresse, ville, pays);
+            } catch (SQLException sqlException) {
+                bAddAddress = false;
+                sqlException.printStackTrace();
+                new ErrorController(sqlException.toString());
+            } catch (ExceptionDataBase exceptionDataBase) {
+                bAddAddress = false;
+                exceptionDataBase.printStackTrace();
+                new ErrorController(exceptionDataBase.toString());
+            }
+        }
+        else if(!bEmptyAddress && bEmptyNPA && bEmptyCity && bEmptyCountry){
+            // TODO: comment faire si il en manque un??
+        }
+        else{
+            if(bEmptyAddress){
+                mspModifyStaff.setAddressError("Champ manquant");
+            }
+            if(bEmptyNPA){
+                mspModifyStaff.setNPAError("Champ manquant");
+            }
+            if(bEmptyCity){
+                mspModifyStaff.setCityError("Champ manquant");
+            }
+            if(bEmptyCountry){
+                mspModifyStaff.setCountryError("Champ manquant");
+            }
         }
         boolean bPhone = Validate.isPhoneNumber(sPhone);
         if(!bPhone){
@@ -114,26 +148,30 @@ public class ModifyStaffController {
             personne.setEmail(sEMail);
             personne.setPrenom(sFirstName);
             personne.setNom(sLastName);
+            personne.setAdresse(adresse);
+            personne.setResponsable(iSupervisor);
+            personne.setStatut(sStatut);
+            personne.setTypeContrat(sContract);
+            personne.setTelephone(sPhone);
             modifyStaff(personne);
         }
     }
 
     /**
      * Méthode permettant de modifier la personne
-     * @param personne Personne modifié à réinséré TODO : problème avec la DB
+     * @param personne Personne modifié à réinséré
      */
     private void modifyStaff(Personne personne){
         dbConnection();
         // Permet d'insérer la personne modifié
         boolean erreur = false;
         try {
-
             Personne.afficherPersonne(personne);
 
             querry.updatePersonne(personne);
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
             erreur = true;
         }
         if(!erreur){
@@ -150,7 +188,7 @@ public class ModifyStaffController {
             querry = new DBInteraction();
         } catch (ExceptionDataBase exceptionDB) {
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         }
     }
 
@@ -161,10 +199,10 @@ public class ModifyStaffController {
             supervisor = querry.selEmployeDetails(supervisorID);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            ecError = new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            ecError = new ErrorController(sqlException.toString());
+            new ErrorController(sqlException.toString());
         }
         return (supervisor.getPrenom() + " " + supervisor.getNom());
     }
