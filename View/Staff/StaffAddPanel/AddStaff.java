@@ -46,7 +46,7 @@ public class AddStaff extends GenericWindow {
     private String sCity;
     private String sCountry;
     private String sPhone;
-    private String sSupervisor;
+    private int iSupervisor;
     private String sStatus;
     private String sContract;
 
@@ -284,14 +284,13 @@ public class AddStaff extends GenericWindow {
                 sCity = jtfCity.getText();
                 sCountry = jcbCountry.getSelectedItem().toString();
                 sPhone = jtfPhone.getText();
-                sSupervisor = jcbSupervisor.getSelectedItem().toString();
+                iSupervisor = supervisor.get(jcbSupervisor.getSelectedIndex()).getIdPersonne();
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
 
                 // Permet de fermer la fenêtre si tout s'est bien passé
-                if(controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA, sCity, sCountry, sPhone, sSupervisor, sStatus, sContract)){
-                    getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(),WindowEvent.WINDOW_CLOSING));
-                }
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA,
+                                            sCity, sCountry, sPhone, iSupervisor, sStatus, sContract);
             }
         });
         configFrame(getJfFrame(), this);

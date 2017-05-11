@@ -105,7 +105,7 @@ public class StaffView extends GenericWindow {
 
             @Override
             public void keyReleased(KeyEvent e) {
-                sorter.setRowFilter(RowFilter.regexFilter(Pattern.quote(jtFilter.getText())));
+                sorter.setRowFilter(RowFilter.regexFilter("(?i)" + Pattern.quote(jtFilter.getText())));
             }
         });
 
@@ -139,8 +139,8 @@ public class StaffView extends GenericWindow {
                     // Permet de mettre à jour le tableau pour les externes
                     //createExternalTab();
                     // Permet de recrée une nouvelle table
-                    //createTab(createExternalTab(), sColumnExternal);
-                    jtTable.setModel(new MyModelTable(createExternalTab(), sColumnExternal));
+                    createTab(createExternalTab(), sColumnExternal);
+                    //jtTable.setModel(new MyModelTable(createExternalTab(), sColumnExternal));
                     // nmhjtr55555555555555Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les employés");
                     jbAdd.setText("Ajouter un intervenant");
@@ -152,8 +152,8 @@ public class StaffView extends GenericWindow {
                     // Permet de mettre à jour le tableau pour le personnel
                     //createEmployeeTab();
                     // Permet de recrée une nouvelle table
-                    //createTab(createEmployeeTab(), sColumnExternal);
-                    jtTable.setModel(new MyModelTable(createEmployeeTab(), columnName));
+                    createTab(createEmployeeTab(), sColumnExternal);
+                    //jtTable.setModel(new MyModelTable(createEmployeeTab(), columnName));
                     // Permet de renommer le bouton pour faire afficher les employées
                     ((JButton) e.getSource()).setText("Afficher les externes");
                     jbAdd.setText("Ajouter un employé");
@@ -332,7 +332,7 @@ public class StaffView extends GenericWindow {
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
 
-        TableRowSorter<MyModelTable> sorter = new TableRowSorter<>(mmtListing);
+        sorter = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorter);
     }
 

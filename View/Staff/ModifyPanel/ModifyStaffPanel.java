@@ -13,9 +13,11 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * Classe pour la modification d'un employé
  * Created by Andre on 09.04.2017.
  */
 public class ModifyStaffPanel extends GenericWindow {
+    // Permet d'avoir une référence sur des objets
     private Personne personne = null;
     private ModifyStaffController mscController = null;
     private ArrayList<Personne> alpSupervisor = null;
@@ -28,6 +30,7 @@ public class ModifyStaffPanel extends GenericWindow {
     private int NUMBER_OF_ROW = 13;
     private int y = 0;
 
+    // Permet d'avoir des dimensions identiques pour aligner les champs
     private Dimension dLabel = new Dimension(120, 30);
     private Dimension dInput = new Dimension(150, 30);
 
@@ -71,13 +74,13 @@ public class ModifyStaffPanel extends GenericWindow {
     private JComboBox jcbContract;
 
     /**
-     *
-     * @param mscController
-     * @param personne
-     * @param contract
-     * @param status
-     * @param countries
-     * @param supervisor
+     * Constructeur de la fenêtre de modification de personnel
+     * @param mscController controlleur de la fenêtre de modification d'employé
+     * @param personne personne que l'on souhaite modifier
+     * @param contract liste des contrats présents dans la BDD
+     * @param status liste des statut présents dans la BDD
+     * @param countries liste des pays présents dans la BDD
+     * @param supervisor Listes des personnes responsables dans la BDD
      */
     public ModifyStaffPanel(ModifyStaffController mscController, Personne personne, ArrayList<String> contract,
                             ArrayList<String> status, ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
@@ -320,7 +323,8 @@ public class ModifyStaffPanel extends GenericWindow {
         int index = 0;
         for(int i = 0; i < alpCountries.size(); ++i){
             jcbCountry.addItem(alpCountries.get(i).getPays());
-            if(personne.getAdresse() != null && alpCountries.get(i).getPays().toString().equals(personne.getAdresse().getVille().getPays().toString())){
+            if(personne.getAdresse() != null && alpCountries.get(i).getPays().toString().equals(
+                                                personne.getAdresse().getVille().getPays().toString())){
                 index = i;
             }
         }
@@ -372,7 +376,8 @@ public class ModifyStaffPanel extends GenericWindow {
             int index = 0;
             for(int i = 0; i < alpSupervisor.size(); ++i){
                 jcbSupervisor.addItem(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
-                if(personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())){
+                if(personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(
+                                        alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())){
                     index = i;
                 }
                 System.out.println(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
@@ -457,10 +462,12 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.gridy = NUMBER_OF_ROW;
             gbcConstraint.anchor = GridBagConstraints.CENTER;
             jpModifyPanel.add(jbModify, gbcConstraint);
+            // Permet de récupérer l'action d'appui sur le bouton
             jbModify.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     disableError();
+                    int iSupervisor = 0;
                     if(bFirstName) {
                         sFirstName = jtfFirstNameInput.getText();
                     }
@@ -480,7 +487,7 @@ public class ModifyStaffPanel extends GenericWindow {
                         sPhone = jtfPhone.getText();
                     }
                     if(bSupervisor) {
-                        sSupervisor = jcbSupervisor.getSelectedItem().toString();
+                        iSupervisor = alpSupervisor.get(jcbSupervisor.getSelectedIndex()).getIdPersonne();
                     }
                     if(bContract) {
                         sContract = jcbContract.getSelectedItem().toString();
@@ -488,7 +495,7 @@ public class ModifyStaffPanel extends GenericWindow {
                     if(bStatut) {
                         sStatut = jcbStatut.getSelectedItem().toString();
                     }
-                    mscController.checkModifyStaff(sFirstName, sLastName, sSupervisor, sEMail, sAddress,
+                    mscController.checkModifyStaff(sFirstName, sLastName, iSupervisor, sEMail, sAddress,
                             sNPA, sCity, sCountry, sPhone, sContract, sStatut);
                 }
             });
@@ -499,22 +506,38 @@ public class ModifyStaffPanel extends GenericWindow {
      * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jtfFirstNameInput.setBackground(Color.WHITE);
-        jtfFirstNameInput.setToolTipText(null);
-        jtfLastNameInput.setBackground(Color.WHITE);
-        jtfLastNameInput.setToolTipText(null);
-        jtfEmail.setBackground(Color.WHITE);
-        jtfEmail.setToolTipText(null);
-        jtfAddress.setBackground(Color.WHITE);
-        jtfAddress.setToolTipText(null);
-        jtfNPA.setBackground(Color.WHITE);
-        jtfNPA.setToolTipText(null);
-        jtfCity.setBackground(Color.WHITE);
-        jtfCity.setToolTipText(null);
-        jcbCountry.setBackground(Color.WHITE);
-        jcbCountry.setToolTipText(null);
-        jtfPhone.setBackground(Color.WHITE);
-        jtfPhone.setToolTipText(null);
+        if(jtfFirstNameInput != null) {
+            jtfFirstNameInput.setBackground(Color.WHITE);
+            jtfFirstNameInput.setToolTipText(null);
+        }
+        if(jtfLastNameInput != null) {
+            jtfLastNameInput.setBackground(Color.WHITE);
+            jtfLastNameInput.setToolTipText(null);
+        }
+        if(jtfEmail != null) {
+            jtfEmail.setBackground(Color.WHITE);
+            jtfEmail.setToolTipText(null);
+        }
+        if(jtfAddress != null) {
+            jtfAddress.setBackground(Color.WHITE);
+            jtfAddress.setToolTipText(null);
+        }
+        if(jtfNPA != null) {
+            jtfNPA.setBackground(Color.WHITE);
+            jtfNPA.setToolTipText(null);
+        }
+        if(jtfCity != null) {
+            jtfCity.setBackground(Color.WHITE);
+            jtfCity.setToolTipText(null);
+        }
+        if(jcbCountry != null) {
+            jcbCountry.setBackground(Color.WHITE);
+            jcbCountry.setToolTipText(null);
+        }
+        if(jtfPhone != null) {
+            jtfPhone.setBackground(Color.WHITE);
+            jtfPhone.setToolTipText(null);
+        }
     }
 
     /**
@@ -578,5 +601,14 @@ public class ModifyStaffPanel extends GenericWindow {
     public void setPhoneError(String error) {
         jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du télephone
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCountryError(String error) {
+        jcbCountry.setToolTipText(error);
+        jcbCountry.setBackground(Color.RED);
     }
 }

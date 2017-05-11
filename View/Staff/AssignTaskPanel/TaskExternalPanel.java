@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * Classe pour l'assignation de tâches à un intervenant
  * Created by André on 23.04.2017.§
  */
 public class TaskExternalPanel extends GenericWindow {
@@ -22,6 +23,12 @@ public class TaskExternalPanel extends GenericWindow {
     private GridBagConstraints gbcConstraint = new GridBagConstraints();
     private int y = 0;
 
+    /**
+     * Constructeur de la fenêtre d'assignation de tâches des intervenants
+     * @param aetcAssignTaskController controlleur de l'assignation de tâches des intervenants pour faire remonter les infos
+     * @param external intervenants à qui l'on souhaite attribuer une / des tâches
+     * @param tasks listes de tâches disponibles pour les intervenants
+     */
     public TaskExternalPanel(AssignExternalTaskController aetcAssignTaskController, Intervenant external, ArrayList<Evenement> tasks){
         super("Tâches Intervenant");
         aleTasks = tasks;
@@ -47,6 +54,7 @@ public class TaskExternalPanel extends GenericWindow {
             JButton task = new JButton(tasks.get(i).getDescription());
             buttons.add(task);
             System.out.println(tasks.get(i).getDescription());
+            // Permet de récupérer l'action du clic de la personne, et le supprimer
             task.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -78,6 +86,10 @@ public class TaskExternalPanel extends GenericWindow {
         configFrame(getJfFrame(), this);
     }
 
+    /** TODO : Vérifier si on ne pourrait pas faire mieux... (cf idresponsable)
+     * Méthode permettant de retrouver la tâche à assigner
+     * @param task tâche à retrouver
+     */
     private void checkTask(String task){
         for (Evenement event : aleTasks){
             if (event.getDescription().equals(task)){

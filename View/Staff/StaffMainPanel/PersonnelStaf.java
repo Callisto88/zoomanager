@@ -8,7 +8,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -187,7 +186,7 @@ public class PersonnelStaf extends JPanel{
         // Ajout du champ de détails pour le responsable
         String sSupervisor = "";
         if(personne.getResponsable() != 0){
-            sSupervisor = controller.getSupervisor(personne.getResponsable());
+            sSupervisor = controller.getNameStaff(personne.getResponsable());
         }
         JPanel jpAdvisor = new JPanel();
         JLabel jlAdvisor = new JLabel("Responsable : ");

@@ -13,6 +13,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * Classe pour la fenêtre de modification d'un intervenant
  * Created by Bureau on 23.04.2017.
  */
 public class ModifyExternalPanel extends GenericWindow {
@@ -20,6 +21,7 @@ public class ModifyExternalPanel extends GenericWindow {
     private Intervenant external = null;
     private  ModifyExternalController mecExternalController = null;
 
+    // Permet d'avoir la liste actuel des pays
     private ArrayList<Pays> alpCountries = null;
 
     // variable pour permettre l'ajout dynamique des champs avec le bouton en position finale
@@ -60,6 +62,12 @@ public class ModifyExternalPanel extends GenericWindow {
     private boolean bPhone = false;
     private boolean bButton = false;
 
+    /**
+     * Constructeur de la fenêtre de modification d'un intervenant
+     * @param mecExternalController controlleur de la fenêtre de modification d'intervenant pour faire remonter les informations
+     * @param external intervenant à modifier
+     * @param countries Array list de pays
+     */
     public ModifyExternalPanel(ModifyExternalController mecExternalController, Intervenant external, ArrayList<Pays> countries){
         super("Modification Intervenant");
         jpModifyPanel.setLayout(new GridBagLayout());
@@ -106,9 +114,7 @@ public class ModifyExternalPanel extends GenericWindow {
         ++y;
         jpModifyPanel.add(modifyLabel, gbcConstraint);
 
-        /**
-         * Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
-         */
+        // Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
         newLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -349,14 +355,22 @@ public class ModifyExternalPanel extends GenericWindow {
      * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jtfLastNameInput.setBackground(Color.WHITE);
-        jtfLastNameInput.setToolTipText(null);
-        jtfFirstNameInput.setBackground(Color.WHITE);
-        jtfFirstNameInput.setToolTipText(null);
-        jtfEmail.setBackground(Color.WHITE);
-        jtfEmail.setToolTipText(null);
-        jtfPhone.setBackground(Color.WHITE);
-        jtfPhone.setToolTipText(null);
+        if(jtfLastNameInput != null) {
+            jtfLastNameInput.setBackground(Color.WHITE);
+            jtfLastNameInput.setToolTipText(null);
+        }
+        if(jtfFirstNameInput != null) {
+            jtfFirstNameInput.setBackground(Color.WHITE);
+            jtfFirstNameInput.setToolTipText(null);
+        }
+        if(jtfEmail != null) {
+            jtfEmail.setBackground(Color.WHITE);
+            jtfEmail.setToolTipText(null);
+        }
+        if(jtfPhone != null) {
+            jtfPhone.setBackground(Color.WHITE);
+            jtfPhone.setToolTipText(null);
+        }
     }
 
     /**

@@ -184,10 +184,7 @@ public class AddExternal extends GenericWindow{
                 sCountry = jcbCountry.getSelectedItem().toString();
                 sPhone = jtfPhone.getText();
 
-                // sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone
-                if(controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone)){
-                    getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(),WindowEvent.WINDOW_CLOSING));
-                }
+                controller.checkExternal(sLastName, sFirstName, sCompagny, sEMail, sAddress, sNPA, sCity, sCountry, sPhone);
             }
         });
         configFrame(getJfFrame(), this);

@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 /**
+ * Classe pour l'assignation de tâches à un employé
  * Created by Andre on 28.03.2017.
  */
 public class TaskStaffPanel extends GenericWindow{
@@ -19,6 +20,12 @@ public class TaskStaffPanel extends GenericWindow{
     private AssignStaffTaskController astcController = null;
     private Personne personne = null;
 
+    /**
+     * Constructeur de la fenêtre d'assignation de tâche à un employé
+     * @param astcController controlleur de la fenêtre d'assignation de tache du personnel
+     * @param personne personne à qui l'on souhaite assigner une / des tâches
+     * @param tasks liste de tâches non assigné à un employé
+     */
     public TaskStaffPanel(AssignStaffTaskController astcController, Personne personne, ArrayList<Evenement> tasks){
         super("Tâches Staff");
         this.tasks = tasks;
@@ -58,6 +65,10 @@ public class TaskStaffPanel extends GenericWindow{
         configFrame(getJfFrame(), this);
     }
 
+    /** TODO : Vérifier si on ne pourrait pas faire mieux... (cf idresponsable)
+     * Méthode permettant de retrouver la tâche à assigner
+     * @param task tâche à retrouver
+     */
     private void checkTask(String task){
         for (Evenement event : tasks){
             if (event.getDescription().equals(task)){
