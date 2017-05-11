@@ -127,6 +127,9 @@ public class ModifyStaffController {
         // Permet d'insérer la personne modifié
         boolean erreur = false;
         try {
+
+            Personne.afficherPersonne(personne);
+
             querry.updatePersonne(personne);
         } catch (SQLException sqlException){
             sqlException.printStackTrace();

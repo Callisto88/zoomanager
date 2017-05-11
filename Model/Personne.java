@@ -119,6 +119,22 @@ public class Personne {
         this.typeContrat = typeContrat;
     }
 
+    public static void afficherPersonne(Personne p) {
+
+        System.out.println("ID Personne" + p.idPersonne);
+        System.out.println("noAVS : " + p.noAVS);
+        System.out.println("Pénom : " + p.prenom);
+        System.out.println("Nom : " + p.nom);
+        System.out.println("Adresse : " + p.adresse.getAdresse());
+        System.out.println("Email : " + p.email);
+        System.out.println("Téléphone : " + p.telephone);
+        System.out.println("Date de naissance : " + p.dateNaissance);
+        System.out.println("Responsable : " + p.responsable);
+        System.out.println("Statut : " + p.statut);
+        System.out.println("Date de début : " + p.dateDebut);
+        System.out.println("Type de contrat : " + p.typeContrat);
+    }
+
     public int getIdPersonne() {
         return idPersonne;
     }
@@ -128,6 +144,7 @@ public class Personne {
     }
 
     public String toString() {
+
         return this.prenom + " " + this.nom + "\n" + this.adresse + "\n" + this.dateNaissance;
     }
     public String getNoAVS() {

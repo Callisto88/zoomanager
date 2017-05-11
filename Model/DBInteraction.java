@@ -117,7 +117,9 @@ public class DBInteraction {
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
             "FROM Personne;";
+
     // Permet de modifier les informations relatives à une Personne
+    // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
     private static final String UPDATE_PERSONNE = "UPDATE Personne " +
             "SET noAVS = ?, " +
             "prenom = ?, " +
@@ -131,6 +133,7 @@ public class DBInteraction {
             "dateDebut = ?, " +
             "typeContrat = ?, " +
             "WHERE idPersonne = ?;";
+
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
     private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
@@ -903,7 +906,8 @@ public class DBInteraction {
 
     /**
      * Permet de modifier les informations d'un employé
-     * Seuls 6 paramètres sont modifiables : prénom / nom / adresse / email / telephone / responsable
+     *
+     * // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
      *
      * @return Personne
      */
