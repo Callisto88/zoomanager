@@ -80,6 +80,16 @@ public class Intervenant {
         this.statut = statut;
     }
 
+    public Intervenant(String entreprise, String prenom, String nom, Adresse adresse, String email, String telephone, String statut) {
+        this.entreprise = entreprise;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.email = email;
+        this.telephone = telephone;
+        this.statut = statut;
+    }
+
     public int getId() {
         return id;
     }

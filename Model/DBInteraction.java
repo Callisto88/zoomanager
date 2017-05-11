@@ -55,7 +55,7 @@ public class DBInteraction {
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
 
     // Insère une nouvelle ville
-    private static final String INSERT_VILLE = "INSERT INTO Ville(villeId, codePostal, ville, paysId) VALUES (?, ?, ?, ?);";
+    private static final String INSERT_VILLE = "INSERT INTO Ville(villeId, codePostal, ville, paysId) VALUES (null, ?, ?, ?);";
 
     // Insère une nouvelle adresse
     private static final String INSERT_ADRESSE = "INSERT INTO Adresse(id, adresse, villeId) VALUES (?, ?, ?);";
@@ -154,7 +154,8 @@ public class DBInteraction {
                     "  statut = ? " +
                     "WHERE id = ? ;";
     // Insertion d'un nouvel intervenant
-    private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null , ? , ? , ? , ? , ? , ? , ?);";
+    // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
+    private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null, ?, ?, ?, ?, ?, ?, ?);";
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -380,6 +381,7 @@ public class DBInteraction {
      */
     public void insertIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
 
+        // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
         this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT);
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
@@ -387,11 +389,10 @@ public class DBInteraction {
         this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
-        this.stmt.setString(7, intervenant.getTelephone());
+        this.stmt.setString(7, intervenant.getStatut());
 
         ResultSet rs = this.stmt.executeQuery();
     }
-
 
     /**
      * Selectionne tous les intervenant de la DB
@@ -609,13 +610,12 @@ public class DBInteraction {
         ville.setPays(pays);
 
         // Ville
-        int villeID;
-        if (!this.villeExists(ville, pays)) {
-            Ville v = this.selVilleFromID(ville.getId());
+        int villeID = this.villeExists(ville, pays);
+        if (villeID == 0) {
+            Ville v = new Ville(ville.getCp(), ville.getVille(), pays);
             villeID = this.insVille(v);
-        } else {
-            villeID = getVilleIDFromVilleName(ville.getVille());
         }
+
         ville.setId(villeID);
         adresse.setVille(ville);
 
@@ -675,17 +675,20 @@ public class DBInteraction {
         return exists;
     }
 
-    private boolean villeExists(Ville ville, Pays pays) throws SQLException {
+    private int villeExists(Ville ville, Pays pays) throws SQLException {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_CITY_IN_COUNTRY);
         this.stmt.setString(1, ville.getVille());
         this.stmt.setInt(2, pays.getPaysId());
         ResultSet rs = this.stmt.executeQuery();
+        int villeID = 0;
 
-        boolean exists = rs.next();
-        System.out.println("La ville '" + ville.getVille() + "' " + (exists ? "existe en " + pays.getPays() : "n'existe pas en " + pays.getPays()));
+        if (rs.next()) {
+            villeID = rs.getInt("villeId");
+        }
+        System.out.println("La ville '" + ville.getVille() + "' " + ((villeID > 0) ? "existe en " + pays.getPays() : "n'existe pas en " + pays.getPays()));
 
-        return exists;
+        return villeID;
     }
 
     /**
@@ -737,15 +740,18 @@ public class DBInteraction {
     private int insVille(Ville ville) throws SQLException, ExceptionDataBase {
 
         // Basic checks
-        if (ville.getCp() == 0 || !(ville.getCp() == (int) ville.getCp())) {
+        if (ville.getCp() == 0) {
             throw new ExceptionDataBase(4);
+
+            //if ( ! (ville.getCp() == (int) ville.getCp() ) ) {
+            //
+            //}
         }
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_VILLE, Statement.RETURN_GENERATED_KEYS);
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setInt(2, ville.getCp());
-        this.stmt.setString(3, ville.getVille());
-        this.stmt.setInt(4, ville.getPays().getPaysId());   // paysId as foreign key
+        this.stmt.setInt(1, ville.getCp());
+        this.stmt.setString(2, ville.getVille());
+        this.stmt.setInt(3, ville.getPays().getPaysId());   // paysId as foreign key
         this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
 
