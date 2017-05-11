@@ -3,6 +3,7 @@ package Model;
 import jdk.nashorn.internal.runtime.ECMAException;
 //import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
 
+import javax.jws.WebParam;
 import java.sql.*;
 import java.sql.Date;
 import java.time.Month;
@@ -339,7 +340,7 @@ public class DBInteraction {
     private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ? WHERE id = ?;";
 
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
-    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `date` BETWEEN ? AND ? ;";
+    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` BETWEEN ? AND ? ;";
 
     // Récupérer le contenu d'une commande en fonction de son ID
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
@@ -351,6 +352,8 @@ public class DBInteraction {
             "\tON Commande_Contenu.idCommande = Commande.id \n" +
             "WHERE refArticle = ?\n" +
             "AND Commande.statut = \"EN_COURS\";";
+
+    private static final String SEL_ORDERS_BY_STATE_AND_DATE = "SELECT * FROM Commande WHERE `statut` LIKE ? AND `dateHeure` BETWEEN ? AND ?;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
@@ -608,7 +611,8 @@ public class DBInteraction {
         // Ville
         int villeID;
         if (!this.villeExists(ville, pays)) {
-            villeID = this.insVille(ville);
+            Ville v = this.selVilleFromID(ville.getId());
+            villeID = this.insVille(v);
         } else {
             villeID = getVilleIDFromVilleName(ville.getVille());
         }
@@ -618,7 +622,8 @@ public class DBInteraction {
         // Adresse
         int addressID;
         if (!this.adresseExists(adresse, ville)) {
-            addressID = this.insAdresse(adresse);
+            Adresse a = this.selAdresseFromID(adresse.getId());
+            addressID = this.insAdresse(a);
         } else {
             addressID = adresse.getId();
         }
@@ -665,7 +670,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         boolean exists = rs.next();
-        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (exists ? "existe" : "n'existe pas"));
+        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (exists ? "existe à " + ville.getVille() + "" : "n'existe pas à " + ville.getVille() + ""));
 
         return exists;
     }
@@ -2455,10 +2460,28 @@ public class DBInteraction {
             throws SQLException, ExceptionDataBase {
         ArrayList<Commande> data = new ArrayList<Commande>();
         this.stmt = DBConnection.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
-
+        this.stmt.setDate(1, dateDebut);
+        this.stmt.setDate(2, dateFin);
         ResultSet rs = this.stmt.executeQuery();
 
         return this.createTabCommande(rs);
+    }
+
+    public ArrayList<Commande> selOrdersByStateAndDate(
+            Statut statut,
+            java.sql.Date startDate,
+            java.sql.Date endDate) throws SQLException, ExceptionDataBase {
+
+        System.out.println(startDate);
+        System.out.println(endDate);
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_ORDERS_BY_STATE_AND_DATE);
+        this.stmt.setString(1, String.valueOf(statut));
+        this.stmt.setDate(2, startDate);
+        this.stmt.setDate(3, endDate);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return createTabCommande(rs);
     }
 
     public int creerCommande() throws SQLException {
@@ -2636,7 +2659,7 @@ public class DBInteraction {
     private ArrayList<Commande> createTabCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Commande> data = new ArrayList<>();
         if (!rs.next()) {
-            throw new ExceptionDataBase("Le stock est vide.");
+            throw new ExceptionDataBase("La table Commande est vide.");
         } else {
             rs.beforeFirst();
             while (rs.next()) {
