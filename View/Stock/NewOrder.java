@@ -1,7 +1,7 @@
 package View.Stock;
 
 import Controller.Error.ErrorController;
-import Controller.Information.InformationController;
+// import Controller.Information.InformationController;
 import Controller.Stock.NewOrderController;
 import View.GenericWindow;
 import View.MyModelTable;
@@ -103,7 +103,7 @@ public class NewOrder extends GenericWindow{
             }
         });
 
-        jbConfirm.addActionListener(new ActionListener() {
+        /*jbConfirm.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try{
@@ -114,7 +114,7 @@ public class NewOrder extends GenericWindow{
                     new ErrorController(S_ERROR_MESSAGE);
                 }
             }
-        });
+        });*/
 
         jbCancel.addActionListener(new ActionListener() {
             @Override
