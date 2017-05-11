@@ -389,9 +389,9 @@ public class DBInteraction {
         this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
-        this.stmt.setString(7, intervenant.getStatut());
-
-        ResultSet rs = this.stmt.executeQuery();
+        this.stmt.setInt(7, intervenant.getStatut());
+        int row = this.stmt.executeUpdate();
+        System.out.println(row);
     }
 
     /**
@@ -450,7 +450,7 @@ public class DBInteraction {
         this.stmt.setInt(4, intervenant.getAdresse().getId());
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
-        this.stmt.setString(7, intervenant.getStatut());
+        this.stmt.setInt(7, intervenant.getStatut());
         this.stmt.setInt(8, intervenant.getId());
         this.stmt.executeUpdate();
 
@@ -476,7 +476,8 @@ public class DBInteraction {
                         rs.getString("prenom"),
                         rs.getString("nom"),
                         rs.getString("email"),
-                        rs.getString("telephone"), rs.getString("statut")
+                        rs.getString("telephone"),
+                        rs.getInt("statut")
                 );
 
                 Adresse a = null;
@@ -620,12 +621,10 @@ public class DBInteraction {
         adresse.setVille(ville);
 
         // Adresse
-        int addressID;
-        if (!this.adresseExists(adresse, ville)) {
-            Adresse a = this.selAdresseFromID(adresse.getId());
+        int addressID = this.adresseExists(adresse, ville);
+        if (addressID == 0) {
+            Adresse a = new Adresse(adresse.getAdresse(), ville);
             addressID = this.insAdresse(a);
-        } else {
-            addressID = adresse.getId();
         }
         adresse.setId(addressID);
 
@@ -658,7 +657,7 @@ public class DBInteraction {
         }
     }
 
-    private boolean adresseExists(Adresse adresse, Ville ville) throws SQLException {
+    private int adresseExists(Adresse adresse, Ville ville) throws SQLException {
 
         System.out.println("Check if address exists");
         System.out.println(adresse.getAdresse());
@@ -668,11 +667,14 @@ public class DBInteraction {
         this.stmt.setString(1, adresse.getAdresse());
         this.stmt.setInt(2, ville.getId());
         ResultSet rs = this.stmt.executeQuery();
+        int adresseID = 0;
 
-        boolean exists = rs.next();
-        System.out.println("L'adresse : " + adresse.getAdresse() + " " + (exists ? "existe à " + ville.getVille() + "" : "n'existe pas à " + ville.getVille() + ""));
+        if (rs.next()) {
+            adresseID = rs.getInt("id");
+        }
+        System.out.println("L'adresse : " + adresse.getAdresse() + " " + ((adresseID > 0) ? "existe à " + ville.getVille() + "" : "n'existe pas à " + ville.getVille() + ""));
 
-        return exists;
+        return adresseID;
     }
 
     private int villeExists(Ville ville, Pays pays) throws SQLException {

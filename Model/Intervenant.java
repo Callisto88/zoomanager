@@ -26,7 +26,7 @@ public class Intervenant {
     private Adresse adresse;
     private String email;
     private String telephone;
-    private String statut;
+    private int statut;
 
     /**
      * Constructeur d'un intervenant avec les paramètres
@@ -41,7 +41,7 @@ public class Intervenant {
      * @param statut
      */
     public Intervenant(int id, String entreprise, String prenom, String nom, Adresse adresse,
-                       String email, String telephone, String statut) {
+                       String email, String telephone, int statut) {
         this.id = id;
         this.entreprise = entreprise;
         this.prenom = prenom;
@@ -70,7 +70,7 @@ public class Intervenant {
         this.telephone = telephone;
     }
 
-    public Intervenant(int id, String entreprise, String prenom, String nom, String email, String telephone, String statut) {
+    public Intervenant(int id, String entreprise, String prenom, String nom, String email, String telephone, int statut) {
         this.id = id;
         this.entreprise = entreprise;
         this.prenom = prenom;
@@ -80,7 +80,7 @@ public class Intervenant {
         this.statut = statut;
     }
 
-    public Intervenant(String entreprise, String prenom, String nom, Adresse adresse, String email, String telephone, String statut) {
+    public Intervenant(String entreprise, String prenom, String nom, Adresse adresse, String email, String telephone, int statut) {
         this.entreprise = entreprise;
         this.prenom = prenom;
         this.nom = nom;
@@ -146,11 +146,11 @@ public class Intervenant {
         this.telephone = telephone;
     }
 
-    public String getStatut() {
+    public int getStatut() {
         return statut;
     }
 
-    public void setStatut(String statut) {
+    public void setStatut(int statut) {
         this.statut = statut;
     }
 
