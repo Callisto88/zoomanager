@@ -111,8 +111,8 @@ public class DBInteraction {
             "WHERE Personne.nom = ? ;";
     // 12 Paramètres Dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
-    // idResponsable / statut / salaire / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+    // idResponsable / statut / dateDebut	TypeContrat /
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
@@ -1061,64 +1061,23 @@ public class DBInteraction {
     /**
      * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
      *
-     * @param noAVS             Nouveau numéro AVS de la personne
-     * @param prenom            Nouveau prénom de la personne
-     * @param nom               Nouveau nom AVS de la personne
-     * @param adresse           Nouveau adresse AVS de la personne
-     * @param email             Nouveau email AVS de la personne
-     * @param telephone         Nouveau telephone AVS de la personne
-     * @param dateNaissance     Nouveau dateNaissance AVS de la personne
-     * @param responsable       Nouveau responsable AVS de la personne
-     * @param statut            Nouveau statut AVS de la personne
-     * @param salaire           Nouveau salaire AVS de la personne
-     * @param dateDebut         Nouveau dateDebut AVS de la personne
-     * @param typeContrat       Nouveau typeContrat AVS de la personne
-     */
-    public void insertPersonne(String noAVS, String prenom, String nom, Adresse adresse, String email,
-                               String telephone, java.sql.Date dateNaissance, int responsable, String statut,
-                               double salaire, java.sql.Date dateDebut, String typeContrat)
-            throws SQLException {
-
-        // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
-
-        this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
-        this.stmt.setString(1, noAVS);
-        this.stmt.setString(2, prenom);
-        this.stmt.setString(3, nom);
-        this.stmt.setInt(4, adresse.getId());
-        this.stmt.setString(5, email);
-        this.stmt.setString(6, telephone);
-        this.stmt.setDate(7, dateNaissance);
-        this.stmt.setInt(8, responsable);
-        this.stmt.setString(9, statut);
-        this.stmt.setDate(10, dateDebut);
-        this.stmt.setString(11, typeContrat);
-        this.stmt.executeUpdate();
-    }
-
-    /**
-     * Permet d'obtenir dans les noms et prenoms de tous les employés présents dans la base de données
-     *
      * @param personne(Personne)
      */
     public void insertPersonne(Personne personne) throws SQLException {
 
-        System.out.println(personne.getAdresse().getId());
-
-        // Expected : Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
+        // Expected : idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
-        this.stmt.setNull(1, Types.NULL);
-        this.stmt.setString(2, personne.getNoAVS());
-        this.stmt.setString(3, personne.getPrenom());
-        this.stmt.setString(4, personne.getNom());
-        this.stmt.setInt(5, personne.getAdresse().getId());
-        this.stmt.setString(6, personne.getEmail());
-        this.stmt.setString(7, personne.getTelephone());
-        this.stmt.setDate(8, personne.getDateNaissance());
-        this.stmt.setInt(9, personne.getResponsable());
-        this.stmt.setString(10, personne.getStatut());
-        this.stmt.setDate(11, personne.getDateDebut());
-        this.stmt.setString(12, personne.getTypeContrat());
+        this.stmt.setString(1, personne.getNoAVS());
+        this.stmt.setString(2, personne.getPrenom());
+        this.stmt.setString(3, personne.getNom());
+        this.stmt.setInt(4, personne.getAdresse().getId());
+        this.stmt.setString(5, personne.getEmail());
+        this.stmt.setString(6, personne.getTelephone());
+        this.stmt.setDate(7, personne.getDateNaissance());
+        this.stmt.setInt(8, personne.getResponsable());
+        this.stmt.setString(9, personne.getStatut());
+        this.stmt.setDate(10, personne.getDateDebut());
+        this.stmt.setString(10, personne.getTypeContrat());
         this.stmt.executeUpdate();
     }
 
