@@ -907,7 +907,7 @@ public class DBInteraction {
     /**
      * Permet de modifier les informations d'un employé
      *
-     * // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
+     * // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat, personneID
      *
      * @return Personne
      */
@@ -924,7 +924,8 @@ public class DBInteraction {
         this.stmt.setInt(8, personne.getResponsable());
         this.stmt.setString(9, personne.getStatut());
         this.stmt.setDate(10, personne.getDateDebut());
-        this.stmt.setInt(11, personne.getIdPersonne());
+        this.stmt.setString(11, personne.getStatut());
+        this.stmt.setInt(12, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
     }

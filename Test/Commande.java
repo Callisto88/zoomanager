@@ -36,7 +36,6 @@ public class Commande {
         int userChoice;
 
         do {
-            Scanner input = new Scanner(System.in);
             userChoice = menu();
 
             switch (userChoice) {
@@ -46,7 +45,10 @@ public class Commande {
                     break;
 
                 case 2:
-                    afficherCommande(502);
+                    System.out.println("Entrer l'ID de la commande que vous souhaitez afficher : ");
+                    Scanner input = new Scanner(System.in);
+                    int orderID = Integer.parseInt(input.next());
+                    afficherCommande(orderID);
                     break;
 
                 case 3:
