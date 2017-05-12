@@ -120,19 +120,7 @@ public class DBInteraction {
 
     // Permet de modifier les informations relatives à une Personne
     // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
-    private static final String UPDATE_PERSONNE = "UPDATE Personne " +
-            "SET noAVS = ?, " +
-            "prenom = ?, " +
-            "nom = ?, " +
-            "adresse = ?, " +
-            "email = ?, " +
-            "telephone = ?, " +
-            "dateNaissance = ?, " +
-            "responsable = ? " +
-            "statut = ?, " +
-            "dateDebut = ?, " +
-            "typeContrat = ?, " +
-            "WHERE idPersonne = ?;";
+    private static final String UPDATE_PERSONNE = "UPDATE Personne SET noAVS = ?, prenom = ?, nom = ?, adresse = ?, email = ?, telephone = ?, dateNaissance = ?, responsable = ?, statut = ?, dateDebut = ?, typeContrat = ? WHERE idPersonne = ?;";
 
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
@@ -1064,6 +1052,8 @@ public class DBInteraction {
      * @param personne(Personne)
      */
     public void insertPersonne(Personne personne) throws SQLException {
+
+        Personne.afficherPersonne(personne);
 
         // Expected : idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
