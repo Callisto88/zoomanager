@@ -13,7 +13,7 @@ import javax.swing.JToggleButton;
 
 /**
  *
- * @author doriane kaffo
+ * @author doriane kaffo 
  */
 public class DialogUpdateAnimation extends javax.swing.JPanel {
 
