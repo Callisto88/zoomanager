@@ -72,6 +72,10 @@ public class Adresse {
 
     @Override
     public String toString() {
-        return adresse;
+        return "Adresse{" +
+                "id=" + id +
+                ", adresse='" + adresse + '\'' +
+                ", ville=" + ville.toString() +
+                '}';
     }
 }

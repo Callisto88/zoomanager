@@ -154,7 +154,7 @@ public class AddExternalController {
     public void insertExternal(Intervenant external){
         dbConnection();
         try{
-            querry.insertIntervenant(external);
+            int newIntervenantID = querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             new ErrorController(exceptionDB.toString());

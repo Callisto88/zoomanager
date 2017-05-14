@@ -72,6 +72,9 @@ public class Pays {
 
     @Override
     public String toString() {
-        return pays;
+        return "Pays{" +
+                "paysId=" + paysId +
+                ", pays='" + pays + '\'' +
+                '}';
     }
 }

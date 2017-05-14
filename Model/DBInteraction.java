@@ -4,6 +4,7 @@ import jdk.nashorn.internal.runtime.ECMAException;
 //import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
 
 import javax.jws.WebParam;
+import javax.swing.plaf.nimbus.State;
 import java.sql.*;
 import java.sql.Date;
 import java.time.Month;
@@ -147,6 +148,9 @@ public class DBInteraction {
     // Insertion d'un nouvel intervenant
     // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
     private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null, ?, ?, ?, ?, ?, ?, ?);";
+
+    private static final String SEL_INTERVENANT_CONCERNED_IN_EVENT = "SELECT * FROM Intervenant INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Intervenant.id WHERE Personne_Evenement.evenement = ?;";
+
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
@@ -370,10 +374,11 @@ public class DBInteraction {
      * @param intervenant(Intervenant)
      *
      */
-    public void insertIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+    public int insertIntervenant(Intervenant intervenant) throws SQLException, ExceptionDataBase {
 
         // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
-        this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_INTERVANT, Statement.RETURN_GENERATED_KEYS);
+
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
         this.stmt.setString(3, intervenant.getNom());
@@ -381,8 +386,16 @@ public class DBInteraction {
         this.stmt.setString(5, intervenant.getEmail());
         this.stmt.setString(6, intervenant.getTelephone());
         this.stmt.setInt(7, intervenant.getStatut());
-        int row = this.stmt.executeUpdate();
-        System.out.println(row);
+
+        this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle adresse
+            // rs.beforeFirst();   // On remet le curseur au début
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -398,6 +411,16 @@ public class DBInteraction {
 
         return this.createTabIntervenant(rs);
     }
+
+    public ArrayList<Intervenant> selAllIntervenantsParEvenementId(int eventID) throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_INTERVENANT_CONCERNED_IN_EVENT);
+        this.stmt.setInt(1, eventID);
+        ResultSet rs = this.stmt.executeQuery();
+
+        return this.createTabIntervenant(rs);
+    }
+
 
     /**
      * Permet de "supprimer" un intervenant de la DB
@@ -909,11 +932,16 @@ public class DBInteraction {
         this.stmt.setString(5, personne.getEmail());
         this.stmt.setString(6, personne.getTelephone());
         this.stmt.setDate(7, personne.getDateNaissance());
-        this.stmt.setInt(8, personne.getResponsable());
+
+        if (personne.getResponsable() == 0) {
+            this.stmt.setNull(8, Types.NULL);
+        } else {
+            this.stmt.setInt(8, personne.getResponsable());
+        }
+
         this.stmt.setString(9, personne.getStatut());
         this.stmt.setDate(10, personne.getDateDebut());
-        this.stmt.setString(11, personne.getStatut());
-        this.stmt.setInt(12, personne.getIdPersonne());
+        this.stmt.setInt(11, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
     }
@@ -1959,15 +1987,22 @@ public class DBInteraction {
      *
      * @return void
      */
-    public void insertEvenement (Evenement evenement) throws SQLException {
+    public int insertEvenement(Evenement evenement) throws SQLException {
 
-        this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
+        this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT, Statement.RETURN_GENERATED_KEYS);
 
         this.stmt.setString(1, evenement.getDescription());
         this.stmt.setTimestamp(2, evenement.getDate());
         this.stmt.setString(3, evenement.getType());
 
         this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle commande
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -2144,7 +2179,6 @@ public class DBInteraction {
         this.stmt.setInt(2, id_evenement);
 
         this.stmt.executeUpdate();
-
     }
 
     /**

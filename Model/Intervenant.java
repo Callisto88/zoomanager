@@ -162,4 +162,18 @@ public class Intervenant {
         vObjet.add(telephone);
         return vObjet;
     }
+
+    @Override
+    public String toString() {
+        return "Intervenant{" +
+                "id=" + id +
+                ", entreprise='" + entreprise + '\'' +
+                ", prenom='" + prenom + '\'' +
+                ", nom='" + nom + '\'' +
+                ", adresse=" + adresse.toString() +
+                ", email='" + email + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", statut=" + statut +
+                '}';
+    }
 }

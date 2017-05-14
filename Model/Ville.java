@@ -137,6 +137,11 @@ public class Ville {
 
     @Override
     public String toString() {
-        return ville;
+        return "Ville{" +
+                "id=" + id +
+                ", cp=" + cp +
+                ", ville='" + ville + '\'' +
+                ", pays=" + pays +
+                '}';
     }
 }
