@@ -4,6 +4,7 @@ import Controller.Staff.StaffController;
 import Model.*;
 import View.GenericWindow;
 import View.MyModelTable;
+import com.itextpdf.text.Chunk;
 import com.itextpdf.text.PageSize;
 import com.itextpdf.text.Paragraph;
 import com.itextpdf.text.pdf.PdfPTable;
@@ -88,38 +89,15 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(((JButton) e.getSource()).getText().equals("Imprimer listing employés")){
                     System.out.println("Impression listing employés");
-                    Document document = new Document(PageSize.A4.rotate());
-                    try {
-                        PdfWriter.getInstance(document, new FileOutputStream("C:\\Users\\Bureau\\Desktop\\jTable.pdf"));
-
-                        document.open();
-                        document.addTitle("Impression listing employée");
-                        Paragraph p = new Paragraph("Impression listing employée");
-                        p.setAlignment(1);
-                        document.add(p);
-                        PdfPTable pdfTable = new PdfPTable(jtTable.getColumnCount());
-                        //adding table headers
-                        for (int i = 0; i < jtTable.getColumnCount(); i++) {
-                            pdfTable.addCell(jtTable.getColumnName(i));
-                        }
-                        //extracting data from the JTable and inserting it to PdfPTable
-                        for (int rows = 0; rows < jtTable.getRowCount() - 1; rows++) {
-                            for (int cols = 0; cols < jtTable.getColumnCount(); cols++) {
-                                pdfTable.addCell(jtTable.getModel().getValueAt(rows, cols).toString());
-
-                            }
-                        }
-
-                        document.add(pdfTable);
-
-
-                    } catch (Exception ex) {
-                        System.err.println(ex.getMessage());
-                    }
-                    document.close();
+                    String output = "C:\\Users\\Bureau\\Desktop\\Personnal_Listing.pdf";
+                    String title = "Listing employée";
+                    controller.print(jtTable, output, title, null);
                 }
                 else{
                     System.out.println("Impression listing intervenants");
+                    String output = "C:\\Users\\Bureau\\Desktop\\External_Listing.pdf";
+                    String title = "Listing intervenant";
+                    controller.print(jtTable, output, title, null);
                 }
             }
         });
@@ -127,7 +105,7 @@ public class StaffView extends GenericWindow {
         JLabel jlSearch = new JLabel("Recherche");
         // Champ pour pouvoir filtrer
         JTextField jtFilter = new JTextField();
-        jtFilter.setPreferredSize(new Dimension(90, 30));
+        jtFilter.setPreferredSize(new Dimension(80, 30));
         jtFilter.setToolTipText("Recherche");
 
         JButton jbSwitchexernalInternalStaff = new JButton("Afficher les externes");
@@ -211,7 +189,7 @@ public class StaffView extends GenericWindow {
         jpButtonStaff.setLayout(gblStockBoutton);
         GridBagConstraints gbcStaffBouton = new GridBagConstraints();
 
-        gbcStaffBouton.insets = new Insets(0,15,0,15);
+        gbcStaffBouton.insets = new Insets(0,5,0,5);
         gbcStaffBouton.gridx = 0;
         gbcStaffBouton.gridy = 0;
         jpButtonStaff.add(jbPrint, gbcStaffBouton);
@@ -253,7 +231,7 @@ public class StaffView extends GenericWindow {
                     //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
                     JLabel jlDetails = new JLabel("Détails du personnel");
                     setTitleConfig(jlDetails);
-                    gbcRight.gridwidth = 2;
+                    //gbcRight.gridwidth = 2;
                     gbcRight.anchor = GridBagConstraints.CENTER;
                     gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
@@ -330,14 +308,13 @@ public class StaffView extends GenericWindow {
         setTitleConfig(jlDetails);
         jpRight.add(jlDetails, gbcRight);
 
-
         configFrame(getJfFrame(), this);
     }
 
     /**
      * Méthode permettant de crée le tableau avec les employées
      */
-    public Vector<Vector<Object>> createEmployeeTab(){
+    public void createEmployeeTab(){
         tableauStaff = new Vector<>();
         personnes = controller.getPersonnel();
         if(personnes!= null) {
@@ -355,13 +332,12 @@ public class StaffView extends GenericWindow {
 
         sorterStaff = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterStaff);
-        return tableauStaff;
     }
 
     /**
      * Méthode permettant de crée le tableau avec les Intervenants
      */
-    public Vector<Vector<Object>> createExternalTab(){
+    public void createExternalTab(){
         tableauExternal = new Vector<>();
         alExternal = controller.getExternal();
         if(alExternal != null) {
@@ -379,39 +355,19 @@ public class StaffView extends GenericWindow {
 
         sorterExternal = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterExternal);
-        return tableauExternal;
     }
 
-    /*
-    public void createTab(Vector<Vector<Object>> vObj, String[] column){
-        // permet de crée le tableau de saisie qui peut-être triable
-        mmtListing = new MyModelTable(vObj, column);
-        System.out.println(vObj.size());
-        jtTable.setModel(mmtListing);
-        //jtTable = new JTable(mmtListing);
-        jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-        jtTable.setColumnSelectionAllowed(false);
-        jtTable.setCellSelectionEnabled(false);
-        jtTable.setRowSelectionAllowed(true);
-
-        sorter = new TableRowSorter<>(mmtListing);
-        jtTable.setRowSorter(sorter);
-    }
-    */
 
     /**
      * Méthode permettant de supprimé une ligne passé en paramètre
      * @param line numéro de ligne à supprimer
      */
     public void eraseStaffRow(int line){
-        /*
-        tableau.removeElementAt(line);
-        mmtListing.removeRow(line);
-        jtTable.clearSelection();
+        tableauStaff.removeElementAt(line);
+        //mmtListing.removeRow(line);
+        //jtTable.clearSelection();
         jtTable.updateUI();
-        */
-        createEmployeeTab();
-        //createTab(createEmployeeTab(), columnName);
+        //createEmployeeTab();
     }
 
     /**
@@ -419,13 +375,11 @@ public class StaffView extends GenericWindow {
      * @param line numéro de ligne à supprimé
      */
     public void eraseExternalRow(int line){
-        /*
-        tableau.removeElementAt(line);
-        jtTable.clearSelection();
+
+        tableauExternal.removeElementAt(line);
+        //jtTable.clearSelection();
         jtTable.updateUI();
-        */
-        createExternalTab();
-        //createTab(createExternalTab(), sColumnExternal);
+        //createExternalTab();
     }
 
 }

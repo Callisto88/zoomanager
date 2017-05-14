@@ -101,7 +101,13 @@ public class ModifyStaffPanel extends GenericWindow {
         else {
             sEMail = personne.getEmail();
         }
-        if(personne.getAdresse() != null) {
+        if(personne.getAdresse() == null) {
+            sAddress = "";
+            sCity = "";
+            sNPA = "";
+            sCountry = "";
+        }
+        else{
             sAddress = personne.getAdresse().getAdresse();
             sCity = personne.getAdresse().getVille().getVille();
             sNPA = "" + personne.getAdresse().getVille().getCp();

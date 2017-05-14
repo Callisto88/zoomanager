@@ -49,7 +49,7 @@ abstract public class GenericWindow extends JPanel {
     static protected Dimension defaultFormSize = new Dimension(140, 30);
 
     public GenericWindow(String windowTitle){
-        MIN_WIDTH = 1440;
+        MIN_WIDTH = 1500;
         MIN_HEIGHT = 900;
         this.windowTitle = windowTitle;
         jfFrame = new JFrame(getWindowTitle());

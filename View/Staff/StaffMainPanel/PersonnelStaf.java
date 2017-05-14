@@ -232,8 +232,8 @@ public class PersonnelStaf extends JPanel{
         gbcDetailsStaff.gridx = x;
         gbcDetailsStaff.gridwidth = 2;
         gbcDetailsStaff.insets = new Insets(5,5,5,5);
-
-        this.add(new StaffTask(tasks), gbcDetailsStaff);
+        StaffTask stStaff = new StaffTask(tasks);
+        this.add(stStaff, gbcDetailsStaff);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
         JPanel jpButtons = new JPanel();
@@ -241,7 +241,7 @@ public class PersonnelStaf extends JPanel{
         //Ajout du bouton de suppression de l'employé actuel
         JButton jbDelete = new JButton("Suppression de l'employé");
         jpButtons.add(jbDelete);
-        jpButtons.add(Box.createHorizontalStrut(20));
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -259,23 +259,38 @@ public class PersonnelStaf extends JPanel{
         // Ajout du bouton d'édition du personnel
         JButton jbEdit = new JButton("Modification");
         jpButtons.add(jbEdit);
-        jpButtons.add(Box.createHorizontalStrut(20));
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("modification du personnel");
+                System.out.println("modification personnel");
                 controller.modifyStaffView(personne);
             }
         });
 
         // Ajout du bouton d'assignation de taches
-        JButton jbAssignTask = new JButton("Assignation de tâches");
+        JButton jbAssignTask = new JButton("Assignation tâches");
         jpButtons.add(jbAssignTask);
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbAssignTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Assignation de tâches");
                 controller.assignStaffTaskView(personne);
+            }
+        });
+
+        // Ajout du bouton d'impression de taches
+        JButton jbPrintTask = new JButton("Impression tâches");
+        jpButtons.add(jbPrintTask);
+        jbPrintTask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Impression de tâches");
+                String output = "C:\\Users\\Bureau\\Desktop\\Personnal_Task_" + personne.getNom() + ".pdf";
+                String title = "Tâches personnels";
+                String name = personne.getNom() + " " + personne.getPrenom();
+                controller.print(stStaff.getJTable(), output, title, name);
             }
         });
 

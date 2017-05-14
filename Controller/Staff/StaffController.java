@@ -3,11 +3,19 @@ package Controller.Staff;
 import Controller.Error.ErrorController;
 import Model.*;
 import View.Staff.StaffMainPanel.StaffView;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
+import java.io.FileOutputStream;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 
 /**
  * Created by Andre on 15.03.2017.
@@ -263,6 +271,42 @@ public class StaffController {
             delete = false;
         }
         return delete;
+    }
+
+    public void print(JTable jtTable, String output, String title, String additional){
+        Document document = new Document(PageSize.A4.rotate());
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(output));
+
+            document.open();
+            Paragraph p = new Paragraph(title);
+            p.setAlignment(1);
+            document.add(p);
+            if(additional != null){
+                Paragraph pAdditional = new Paragraph(additional);
+                p.setAlignment(1);
+                document.add(pAdditional);
+            }
+            document.add( Chunk.NEWLINE );
+
+            PdfPTable pdfTable = new PdfPTable(jtTable.getColumnCount());
+            //adding table headers
+            for (int i = 0; i < jtTable.getColumnCount(); i++) {
+                pdfTable.addCell(jtTable.getColumnName(i));
+            }
+            //extracting data from the JTable and inserting it to PdfPTable
+            for (int rows = 0; rows < jtTable.getRowCount() - 1; rows++) {
+                for (int cols = 0; cols < jtTable.getColumnCount(); cols++) {
+                    pdfTable.addCell(jtTable.getModel().getValueAt(rows, cols).toString());
+                }
+            }
+            document.add(pdfTable);
+
+
+        } catch (Exception ex) {
+            System.err.println(ex.getMessage());
+        }
+        document.close();
     }
 
     /**

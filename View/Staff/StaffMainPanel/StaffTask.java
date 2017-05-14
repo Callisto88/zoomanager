@@ -21,6 +21,7 @@ public class StaffTask extends JPanel {
     private Dimension dDate = new Dimension(70, 15);
     private Dimension dDescription = new Dimension(120, 15);
     private String[] columnName = {"Date", "Heure", "Description"};
+    private JTable jtTable = null;
 
     /**
      * Constructeur de la sous fenêtre affichant les tâches à faire pour un employé
@@ -35,7 +36,7 @@ public class StaffTask extends JPanel {
         }
 
         MyModelTable dataTable = new MyModelTable(vEvents, columnName);
-        JTable jtTable = new JTable(dataTable);
+        jtTable = new JTable(dataTable);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
@@ -54,5 +55,9 @@ public class StaffTask extends JPanel {
         gbcTable.gridx = 0;
         gbcTable.gridy = 0;
         this.add(jspTask, gbcTable);
+    }
+
+    public JTable getJTable(){
+        return jtTable;
     }
 }
