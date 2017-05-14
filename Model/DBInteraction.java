@@ -809,7 +809,7 @@ public class DBInteraction {
                     rs.getString("ville")
             );
 
-            getPaysID()
+            getPaysID();
         }
     }*/
 

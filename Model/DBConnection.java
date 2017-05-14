@@ -23,8 +23,12 @@ import java.util.HashMap;
 public class DBConnection {
 
     protected static Connection con;
-    private static String url = "jdbc:mysql://nas.lozann.ch:3306/zoomanager";
-    //private static String url = "jdbc:mysql://evodede.synology.me:3306/zoomanager";
+    // Adresse Cyril
+    //private static String url = "jdbc:mysql://nas.lozann.ch:3306/zoomanager";
+    // Adresse André
+    private static String url = "jdbc:mysql://evodede.synology.me:3306/zoomanager";
+    // Adresse local
+    //private static String url = "jdbc:mysql://localhost:3306/zoomanager";
     private static String  user = "zmusr";
     private static String  pass = "a78DKkw9QfQV**";
 
