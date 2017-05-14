@@ -152,7 +152,7 @@ public class AddStaffController {
                 }
         }
         else if(!bEmptyAddress && bEmptyNPA && bEmptyCity && bEmptyCountry){
-            // TODO: comment faire si il en manque un??
+
         }
         else{
             if(bEmptyAddress){
@@ -187,7 +187,7 @@ public class AddStaffController {
         }
     }
 
-    /** TODO : tester le retour d'erreur!!
+    /**
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param personne personne à insérer dans la DB
      */
@@ -203,9 +203,8 @@ public class AddStaffController {
 
         int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
-        System.out.print(n);
         if(n == 1) {
-            add.getParent().hide();
+            add.close();
         }
     }
 

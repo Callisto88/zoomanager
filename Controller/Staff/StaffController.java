@@ -71,13 +71,13 @@ public class StaffController {
      * @return un ArrayList avec les intervenants présents dans la base de donnée
      */
     public ArrayList<Intervenant> getExternal(){
-        ArrayList<Intervenant> aliExternal = new ArrayList<>();
+        ArrayList<Intervenant> aliExternal = null;
         dbConnection();
         try{
             aliExternal = querry.selIntervenant();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-           new ErrorController(exceptionDB.toString());
+           //new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
@@ -174,7 +174,7 @@ public class StaffController {
             events = querry.getEvenementAssignToPersonByID(IDStaff);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            new ErrorController(exceptionDB.toString());
+            //new ErrorController(exceptionDB.toString());
             return null;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -217,7 +217,7 @@ public class StaffController {
             events = querry.getEvenementAssignToIntervenantByID(IDExternal);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            new ErrorController(exceptionDB.toString());
+            //new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             new ErrorController(sqlException.toString());

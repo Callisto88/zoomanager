@@ -146,6 +146,7 @@ public class ModifyStaffController {
                 mspModifyStaff.setPhoneError("Le champ téléphone est incorrect");
             }
         }
+
         if(bFirstName && bLastName && bEmail && bCity && bNPA && bChange && bAddAddress && bPhone){
             personne.setEmail(sEMail);
             personne.setPrenom(sFirstName);
@@ -177,7 +178,7 @@ public class ModifyStaffController {
             erreur = true;
         }
         if(!erreur){
-            mspModifyStaff.getParent().disable();
+            mspModifyStaff.close();
         }
     }
 

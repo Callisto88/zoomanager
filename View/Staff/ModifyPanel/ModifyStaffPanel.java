@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
@@ -101,10 +102,10 @@ public class ModifyStaffPanel extends GenericWindow {
             sEMail = personne.getEmail();
         }
         if(personne.getAdresse() != null) {
-            sAddress = personne.getAdresse().toString();
-            sCity = personne.getAdresse().getVille().toString();
+            sAddress = personne.getAdresse().getAdresse();
+            sCity = personne.getAdresse().getVille().getVille();
             sNPA = "" + personne.getAdresse().getVille().getCp();
-            sCountry = personne.getAdresse().getVille().getPays().toString();
+            sCountry = personne.getAdresse().getVille().getPays().getPays();
         }
         if(personne.getTelephone() == null){
             sPhone = "";
@@ -619,5 +620,9 @@ public class ModifyStaffPanel extends GenericWindow {
     public void setCountryError(String error) {
         jcbCountry.setToolTipText(error);
         jcbCountry.setBackground(Color.RED);
+    }
+
+    public void close(){
+        this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
     }
 }

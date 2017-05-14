@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 
 /**
@@ -425,5 +426,9 @@ public class ModifyExternalPanel extends GenericWindow {
     public void setPhoneError(String error) {
         jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
+    }
+
+    public void close(){
+        this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
     }
 }

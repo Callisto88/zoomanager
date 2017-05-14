@@ -109,10 +109,10 @@ public class ExternalStaff extends JPanel{
         String sNPA = "";
         String sCountry = "";
         if(external.getAdresse() != null){
-            sAddress = external.getAdresse().toString();
-            sCity = external.getAdresse().toString();
+            sAddress = external.getAdresse().getAdresse();
+            sCity = external.getAdresse().getVille().getVille();
             sNPA = "" + external.getAdresse().getVille().getCp();
-            sCountry = external.getAdresse().getVille().getPays().toString();
+            sCountry = external.getAdresse().getVille().getPays().getPays();
         }
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
@@ -160,24 +160,6 @@ public class ExternalStaff extends JPanel{
         gbcDetailsExternal.gridy = y;
         jpCountry.add(jlCountryInfo);
         this.add(jpCountry, gbcDetailsExternal);
-
-        /******************* Permet de tester offline **************************/
-        /*
-        ArrayList<Evenement> tasks = new ArrayList<>();
-
-        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
-        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Représentation");
-        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Spectacle");
-        Evenement e4 = new Evenement(1, "Nourrir singes", new Timestamp(2012, 11, 20, 15, 47, 13, 2), "animation");
-        Evenement e5 = new Evenement(1, "Nourrir pinguoin", new Timestamp(2011, 5, 25, 10, 57, 13, 2), "Spectacle");
-        Evenement e6 = new Evenement(1, "Médicaments Yéti", new Timestamp(2016, 4, 12, 16, 50, 13, 7), "Goûter");
-
-        tasks.add(e1);
-        tasks.add(e2);
-        tasks.add(e3);
-        tasks.add(e4);
-        tasks.add(e5);
-        tasks.add(e6);+*/
 
         ArrayList<Evenement> tasks = controller.getExternalTask(external.getId());
         ++y;

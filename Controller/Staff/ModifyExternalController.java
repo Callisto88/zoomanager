@@ -128,7 +128,7 @@ public class ModifyExternalController {
             error = true;
         }
         if(!error){
-            mepExternal.getParent().hide();
+            mepExternal.close();
         }
 
     }

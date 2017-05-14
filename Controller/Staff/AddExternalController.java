@@ -165,7 +165,7 @@ public class AddExternalController {
         int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
-            aeExternal.getParent().hide();
+            aeExternal.close();
         }
         System.out.println("Intervenant externe inséré");
     }

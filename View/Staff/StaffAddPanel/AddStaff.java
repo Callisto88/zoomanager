@@ -422,4 +422,8 @@ public class AddStaff extends GenericWindow {
         jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
     }
+
+    public void close(){
+        this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
+    }
 }

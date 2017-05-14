@@ -127,10 +127,10 @@ public class PersonnelStaf extends JPanel{
         String sNPA = "";
         String sCountry = "";
         if(personne.getAdresse() != null){
-            sAddress = personne.getAdresse().toString();
-            sCity = personne.getAdresse().toString();
+            sAddress = personne.getAdresse().getAdresse();
+            sCity = personne.getAdresse().getVille().getVille();
             sNPA = "" + personne.getAdresse().getVille().getCp();
-            sCountry = personne.getAdresse().getVille().getPays().toString();
+            sCountry = personne.getAdresse().getVille().getPays().getPays();
         }
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
@@ -223,20 +223,9 @@ public class PersonnelStaf extends JPanel{
         gbcDetailsStaff.gridy = y;
         this.add(jpContract, gbcDetailsStaff);
 
-        JPanel fusion = new JPanel();
-        fusion.setLayout(new GridBagLayout());
-
         ArrayList<Evenement> tasks = new ArrayList<>();
         tasks = controller.getStaffTask(personne.getIdPersonne());
-/*
-        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
-        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Spectacle");
-        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Représentation");
 
-        tasks.add(e1);
-        tasks.add(e2);
-        tasks.add(e3);
-*/
         ++y;
         gbcDetailsStaff.gridy = y;
         x = 0;
