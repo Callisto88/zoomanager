@@ -82,6 +82,8 @@ public class AddStaff extends GenericWindow {
         this.supervisor = supervisor;
         this.country = country;
 
+        System.out.println(supervisor.size());
+
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = 0;
         gbcConstraint.insets = new Insets(10,5,10,5);
@@ -186,6 +188,7 @@ public class AddStaff extends GenericWindow {
         jlCountry.setPreferredSize(dLabel);
         jpCountry.add(jlCountry);
         jcbCountry = new JComboBox();
+        jcbCountry.addItem("");
         for(int i = 0; i < country.size(); ++i){
             jcbCountry.addItem(country.get(i).getPays());
         }
@@ -222,7 +225,7 @@ public class AddStaff extends GenericWindow {
         jlSupervisor.setPreferredSize(dLabel);
         jpSupervisor.add(jlSupervisor);
         jcbSupervisor = new JComboBox();
-        System.out.println(supervisor.size());
+        jcbSupervisor.addItem("");
         for(int i = 0; i < supervisor.size(); ++i){
             jcbSupervisor.addItem(supervisor.get(i).getPrenom() + " " + supervisor.get(i).getNom());
         }
@@ -282,9 +285,17 @@ public class AddStaff extends GenericWindow {
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
                 sCity = jtfCity.getText();
-                sCountry = jcbCountry.getSelectedItem().toString();
+                if(jcbCountry.getSelectedIndex() != 0) {
+                    sCountry = country.get(jcbCountry.getSelectedIndex() - 1).getPays();
+                }
+                else sCountry = "";
                 sPhone = jtfPhone.getText();
-                iSupervisor = supervisor.get(jcbSupervisor.getSelectedIndex()).getIdPersonne();
+                if(jcbSupervisor.getSelectedIndex() != 0) {
+                    iSupervisor = supervisor.get(jcbSupervisor.getSelectedIndex() - 1).getIdPersonne();
+                }
+                else{
+                    iSupervisor = 0;
+                }
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
 
