@@ -63,7 +63,7 @@ public class ModifyStaffController {
         }
 
         boolean bEmail = true;
-        if(!sEMail.isEmpty()) {
+        if(sEMail.length() != 0) {
             bEmail = Validate.isEmail(sEMail);
             if (!bEmail) {
                 mspModifyStaff.setEmailError("Champ Email non conforme");
@@ -139,11 +139,13 @@ public class ModifyStaffController {
                 mspModifyStaff.setCountryError("Champ manquant");
             }
         }
-        boolean bPhone = Validate.isPhoneNumber(sPhone);
-        if(!bPhone){
-            mspModifyStaff.setPhoneError("Le champ téléphone est incorrect");
+        boolean bPhone = true;
+        if(!sPhone.isEmpty()) {
+            bPhone = Validate.isPhoneNumber(sPhone);
+            if (!bPhone) {
+                mspModifyStaff.setPhoneError("Le champ téléphone est incorrect");
+            }
         }
-
         if(bFirstName && bLastName && bEmail && bCity && bNPA && bChange && bAddAddress && bPhone){
             personne.setEmail(sEMail);
             personne.setPrenom(sFirstName);
@@ -175,7 +177,7 @@ public class ModifyStaffController {
             erreur = true;
         }
         if(!erreur){
-            mspModifyStaff.getParent().hide();
+            mspModifyStaff.getParent().disable();
         }
     }
 
