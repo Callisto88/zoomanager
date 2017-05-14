@@ -73,73 +73,108 @@ public class AddStaffController {
             add.setAVSError("Champ AVS non conforme");
         }
         // Permet de checker l'email
-        boolean bEmail = Validate.isEmail(email);
-        if(!bEmail){
-            add.setEmailError("Champ Email non conforme");
-        }
-        //boolean bAddress = Validate.isAlphabetic(address);
-        // Permet de checker le npa
-        boolean bNPA = Validate.isNumeric(npa);
-        if(!bNPA){
-            add.setNPAError("Le champ NPA ne contient pas que des chiffres");
-        }
-        // Permet de checker la ville
-        boolean bCity = Validate.isAlphabetic(city);
-        if(!bCity){
-            add.setCityError("Le champ ville non conforme");
-        }
-        // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country);
-        if(!bCountry){
-            add.setCountryError("Le champ pays non conforme");
-        }
-
-        // Permet de convertir en int le npa
-
-        int cp = 0;
-        boolean bChange = true;
-        if(bNPA) {
-            try {
-                cp = Integer.parseInt(npa);
-            } catch (Exception exception) {
-                bChange = false;
-                exception.printStackTrace();
-                new ErrorController("Erreur conversion NPA " + exception.toString());
+        boolean bEmail = true;
+        if(!email.isEmpty()) {
+            bEmail = Validate.isEmail(email);
+            if (!bEmail) {
+                add.setEmailError("Champ Email non conforme");
             }
         }
 
-        // Permet d'insérer l'adresse dans la db
-        dbConnection();
+        // TODO : check si un champ est null!!
+        boolean bNPA = true;
+        boolean bCity = true;
+        boolean bChange = true;
+        boolean bCountry = true;
         boolean bAddAddress = true;
-        int cityID = 0;
-        Pays pays = new Pays();
-        pays.setPays(country);
-
-        Ville ville = new Ville();
-        ville.setVille(city);
-        ville.setCp(cp);
-        ville.setPays(pays);
-
+        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
-        adresse.setAdresse(address);
-        adresse.setVille(ville);
+        boolean bEmptyAddress = address.isEmpty();
+        boolean bEmptyNPA = npa.isEmpty();
+        boolean bEmptyCity = city.isEmpty();
+        boolean bEmptyCountry = country.isEmpty();
+        if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
+            //boolean bAddress = Validate.isAlphabetic(address);
+            // Permet de checker le npa
+            bNPA = Validate.isNumeric(npa);
+            if (!bNPA) {
+                add.setNPAError("Le champ NPA ne contient pas que des chiffres");
+            }
+            // Permet de checker la ville
+            bCity = Validate.isAlphabetic(city);
+            if (!bCity) {
+                add.setCityError("Le champ ville non conforme");
+            }
+            // Permet de checker le pays
+            bCountry = Validate.isAlphabetic(country);
+            if (!bCountry) {
+                add.setCountryError("Le champ pays non conforme");
+            }
 
-        if (bNPA && bChange && bCity && bCountry) {
-            try {
-                querry.insAddress(adresse, ville, pays);
-            } catch (ExceptionDataBase exceptionDataBase) {
-                exceptionDataBase.printStackTrace();
-                bAddAddress = false;
-            } catch (SQLException sqlException) {
-                bAddAddress = false;
-                sqlException.printStackTrace();
-                new ErrorController("Erreur insertion adresse " + sqlException.toString());
+            // Permet de convertir en int le npa
+
+            int cp = 0;
+            bChange = true;
+            if (bNPA) {
+                try {
+                    cp = Integer.parseInt(npa);
+                } catch (Exception exception) {
+                    bChange = false;
+                    exception.printStackTrace();
+                    new ErrorController("Erreur conversion NPA " + exception.toString());
+                }
+            }
+
+            // Permet d'insérer l'adresse dans la db
+            dbConnection();
+            bAddAddress = true;
+            int cityID = 0;
+            Pays pays = new Pays();
+            pays.setPays(country);
+
+            Ville ville = new Ville();
+            ville.setVille(city);
+            ville.setCp(cp);
+            ville.setPays(pays);
+
+            adresse.setAdresse(address);
+            adresse.setVille(ville);
+
+                try {
+                    querry.insAddress(adresse, ville, pays);
+                } catch (ExceptionDataBase exceptionDataBase) {
+                    exceptionDataBase.printStackTrace();
+                    bAddAddress = false;
+                } catch (SQLException sqlException) {
+                    bAddAddress = false;
+                    sqlException.printStackTrace();
+                    new ErrorController("Erreur insertion adresse " + sqlException.toString());
+                }
+        }
+        else if(!bEmptyAddress && bEmptyNPA && bEmptyCity && bEmptyCountry){
+            // TODO: comment faire si il en manque un??
+        }
+        else{
+            if(bEmptyAddress){
+                add.setAddressError("Champ manquant");
+            }
+            if(bEmptyNPA){
+                add.setNPAError("Champ manquant");
+            }
+            if(bEmptyCity){
+                add.setCityError("Champ manquant");
+            }
+            if(bEmptyCountry){
+                add.setCountryError("Champ manquant");
             }
         }
         // Permet de checker le numéro de télephone
-        boolean bPhone = Validate.isPhoneNumber(phone);
-        if(!bPhone){
-            add.setPhoneError("Champ télephone non conforme");
+        boolean bPhone = true;
+        if(!phone.isEmpty()) {
+            bPhone = Validate.isPhoneNumber(phone);
+            if (!bPhone) {
+                add.setPhoneError("Champ télephone non conforme");
+            }
         }
         if (bLastName && bFirstName && bBirthday && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
@@ -168,6 +203,7 @@ public class AddStaffController {
 
         int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
+        System.out.print(n);
         if(n == 1) {
             add.getParent().hide();
         }
