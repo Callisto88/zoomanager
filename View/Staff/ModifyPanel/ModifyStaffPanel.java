@@ -94,19 +94,28 @@ public class ModifyStaffPanel extends GenericWindow {
         this.mscController = mscController;
         sFirstName = personne.getPrenom();
         sLastName = personne.getNom();
-        sEMail = personne.getEmail();
+        if(personne.getEmail() == null){
+            sEMail = "";
+        }
+        else {
+            sEMail = personne.getEmail();
+        }
         if(personne.getAdresse() != null) {
             sAddress = personne.getAdresse().toString();
             sCity = personne.getAdresse().getVille().toString();
             sNPA = "" + personne.getAdresse().getVille().getCp();
             sCountry = personne.getAdresse().getVille().getPays().toString();
         }
-        sPhone = personne.getTelephone();
+        if(personne.getTelephone() == null){
+            sPhone = "";
+        }
+        else{
+            sPhone = personne.getTelephone();
+        }
         sStatut = personne.getStatut();
         sContract = personne.getTypeContrat();
         if(personne.getResponsable() != 0) {
             sSupervisor = mscController.getSupervisor(personne.getResponsable());
-            System.out.println(sSupervisor);
         }
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
@@ -320,12 +329,13 @@ public class ModifyStaffPanel extends GenericWindow {
         jpCountry.add(jlCountry);
         // Récupération du Pays
         jcbCountry = new JComboBox();
+        jcbCountry.addItem("");
         int index = 0;
         for(int i = 0; i < alpCountries.size(); ++i){
             jcbCountry.addItem(alpCountries.get(i).getPays());
             if(personne.getAdresse() != null && alpCountries.get(i).getPays().toString().equals(
                                                 personne.getAdresse().getVille().getPays().toString())){
-                index = i;
+                index = i + 1;
             }
         }
         jcbCountry.setSelectedIndex(index);
@@ -373,15 +383,14 @@ public class ModifyStaffPanel extends GenericWindow {
             jlSupervisor.setPreferredSize(dLabel);
             jpSupervisor.add(jlSupervisor);
             jcbSupervisor = new JComboBox();
+            jcbSupervisor.addItem("");
             int index = 0;
             for(int i = 0; i < alpSupervisor.size(); ++i){
                 jcbSupervisor.addItem(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
                 if(personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(
                                         alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())){
-                    index = i;
+                    index = i + 1;
                 }
-                System.out.println(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
-                System.out.println(sSupervisor);
             }
             jcbSupervisor.setSelectedIndex(index);
             jcbSupervisor.setPreferredSize(dInput);
@@ -487,7 +496,7 @@ public class ModifyStaffPanel extends GenericWindow {
                         sPhone = jtfPhone.getText();
                     }
                     if(bSupervisor) {
-                        iSupervisor = alpSupervisor.get(jcbSupervisor.getSelectedIndex()).getIdPersonne();
+                        iSupervisor = alpSupervisor.get(jcbSupervisor.getSelectedIndex() + 1).getIdPersonne();
                     }
                     if(bContract) {
                         sContract = jcbContract.getSelectedItem().toString();
