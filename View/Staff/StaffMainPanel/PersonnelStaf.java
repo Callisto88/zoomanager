@@ -3,6 +3,7 @@ package View.Staff.StaffMainPanel;
 import Controller.Staff.StaffController;
 import Model.Evenement;
 import Model.Personne;
+import View.EventsTable;
 
 import javax.swing.*;
 import java.awt.*;
@@ -232,7 +233,7 @@ public class PersonnelStaf extends JPanel{
         gbcDetailsStaff.gridx = x;
         gbcDetailsStaff.gridwidth = 2;
         gbcDetailsStaff.insets = new Insets(5,5,5,5);
-        StaffTask stStaff = new StaffTask(tasks);
+        EventsTable stStaff = new EventsTable(tasks);
         this.add(stStaff, gbcDetailsStaff);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache

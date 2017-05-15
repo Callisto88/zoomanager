@@ -1,4 +1,4 @@
-package View.Staff.StaffMainPanel;
+package View;
 
 import Controller.Staff.AssignStaffTaskController;
 import Model.Evenement;
@@ -14,7 +14,7 @@ import java.util.Vector;
  * Created by Andre on 28.03.2017.
  * Sous-fenêtre de la fenêtre principale du personnel contenant les tâches d'un employé
  */
-public class StaffTask extends JPanel {
+public class EventsTable extends JPanel {
 
     private AssignStaffTaskController controller = null;
     private Dimension dHour = new Dimension(40, 15);
@@ -27,7 +27,7 @@ public class StaffTask extends JPanel {
      * Constructeur de la sous fenêtre affichant les tâches à faire pour un employé
      * @param events ArrayList d'évenements assigné à la personne
      */
-    public StaffTask(ArrayList<Evenement> events) {
+    public EventsTable(ArrayList<Evenement> events) {
         Vector<Vector<Object>> vEvents = new Vector<>();
         if(events != null) {
             for (Evenement event : events) {

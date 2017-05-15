@@ -37,9 +37,11 @@ public class AnimalController {
         try {
             animauxDB = query.selAnimaux();
         } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
 
         query = null;
@@ -60,9 +62,11 @@ public class AnimalController {
         try {
             enclosDB = query.selEnclos();
         } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
 
         query = null;
@@ -84,9 +88,11 @@ public class AnimalController {
         try {
             racesDB = query.getAllRaceAnimal();
         } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
 
         query = null;
@@ -107,9 +113,11 @@ public class AnimalController {
         try {
             originesDB = query.selCountries();
         } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
 
         query = null;
@@ -167,9 +175,11 @@ public class AnimalController {
         try {
             success = query.delAnimal(animalToDel);
         } catch (ExceptionDataBase e) {
-            System.out.println(e.getMsg());
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
         }
 
         query = null;
@@ -177,8 +187,97 @@ public class AnimalController {
         return success;
     }
 
-    public void refreshTest(){
+    public boolean insAnimal(Animal animalToAdd){
+        DBInteraction query = null;
 
+        boolean success = false;
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            //success = query.insAnimal(animalToAdd);
+            query.insAnimal(animalToAdd);
+        /*
+        } catch (ExceptionDataBase e) {
+            success = false;
+            e.printStackTrace();
+            System.out.println(e.getMsg());
+        */
+        } catch (SQLException e) {
+            success = false;
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
+        }
+
+        query = null;
+
+        return success;
     }
+
+    public boolean modAnimal(Animal animalToMod){
+        DBInteraction query = null;
+
+        boolean success = false;
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            //success = query.insAnimal(animalToAdd);
+            query.updateAnimal(animalToMod);
+        } catch (ExceptionDataBase e) {
+            success = false;
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            success = false;
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
+        }
+
+        query = null;
+
+        return success;
+    }
+
+
+    public ArrayList<Evenement> getTasks(int id){
+        DBInteraction query = null;
+
+        ArrayList<Evenement> events = new ArrayList<>();
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        /*
+        try {
+            events = query.getAnimalTasks(id);
+        } catch (ExceptionDataBase e) {
+            success = false;
+            e.printStackTrace();
+            //System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            success = false;
+            e.printStackTrace();
+            //System.out.println(e.getMessage());
+        }
+        */
+
+        query = null;
+
+        return events;
+    }
+
+
 
 }
