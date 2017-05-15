@@ -381,6 +381,7 @@ public class AnimalTab extends GenericWindow {
         GridBagConstraints gbcAnimalForm = new GridBagConstraints();
 
         gbcAnimalForm.anchor = GridBagConstraints.WEST;
+        gbcAnimalForm.fill = GridBagConstraints.HORIZONTAL;
 
 
         // Xe ligne : nom
@@ -678,8 +679,18 @@ public class AnimalTab extends GenericWindow {
 
         //JTable pour les événements
         ArrayList<Evenement> events = atAnimalController.getTasks(selectedAnimal.getId());
-        EventsTable stStaff = new EventsTable(events);
-        this.add(stStaff, gbcAnimalForm);
+        EventsTable etStaff = new EventsTable(events);
+        gbcAnimalForm.gridx = 0;
+        gbcAnimalForm.gridy = y;
+        gbcAnimalForm.gridwidth = 2;
+        etStaff.setPreferredSize(new Dimension(361, 260));
+        etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(360, 230));
+        jpDetAnimal.add(etStaff, gbcAnimalForm);
+
+        y++;
+
+
+        gbcAnimalForm.gridwidth = 1;
 
 
         JButton jbConfirm = new JButton("Appliquer");

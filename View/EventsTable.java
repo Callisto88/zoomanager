@@ -16,10 +16,6 @@ import java.util.Vector;
  */
 public class EventsTable extends JPanel {
 
-    private AssignStaffTaskController controller = null;
-    private Dimension dHour = new Dimension(40, 15);
-    private Dimension dDate = new Dimension(70, 15);
-    private Dimension dDescription = new Dimension(120, 15);
     private String[] columnName = {"Date", "Heure", "Description"};
     private JTable jtTable = null;
 
@@ -45,8 +41,10 @@ public class EventsTable extends JPanel {
         TableRowSorter<MyModelTable> sorter = new TableRowSorter<>(dataTable);
         jtTable.setRowSorter(sorter);
 
+        /*
         Dimension d = jtTable.getPreferredScrollableViewportSize();
         jtTable.setPreferredScrollableViewportSize(d);
+        */
 
         JScrollPane jspTask = new JScrollPane(jtTable);
 
