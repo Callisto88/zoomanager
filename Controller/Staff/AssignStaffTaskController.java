@@ -8,7 +8,6 @@ import Model.Personne;
 import View.Staff.AssignTaskPanel.TaskStaffPanel;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -39,16 +38,7 @@ public class AssignStaffTaskController {
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
         }
-/*
-        tasks = new ArrayList<>();
-        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(2002, 11, 20, 15, 47, 13, 2), "animation");
-        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(2012, 5, 25, 10, 57, 13, 2), "Spectacle");
-        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(2015, 4, 12, 16, 50, 13, 7), "Représentation");
 
-        tasks.add(e1);
-        tasks.add(e2);
-        tasks.add(e3);
-*/
         task = new TaskStaffPanel(this, personne, tasks);
     }
 

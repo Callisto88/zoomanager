@@ -8,7 +8,6 @@ import Model.Intervenant;
 import View.Staff.AssignTaskPanel.TaskExternalPanel;
 
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 
 /**
@@ -40,17 +39,6 @@ public class AssignExternalTaskController {
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
         }
-
-        Evenement e1 = new Evenement(1, "Nettoyage cage", new Timestamp(
-                02, 11, 20, 15, 47, 13, 2), "animation");
-        Evenement e2 = new Evenement(1, "Nourrir Lion", new Timestamp(
-                2012, 5, 25, 10, 57, 13, 2), "Spectacle");
-        Evenement e3 = new Evenement(1, "Médicaments Singe", new Timestamp(
-                2015, 4, 12, 16, 50, 13, 7), "Représentation");
-
-        tasks.add(e1);
-        tasks.add(e2);
-        tasks.add(e3);
 
         tepExternal = new TaskExternalPanel(this, external, tasks);
     }

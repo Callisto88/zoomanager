@@ -16,13 +16,16 @@ import java.util.ArrayList;
 public class AddExternalController {
     private AddExternal aeExternal = null;
     private DBInteraction querry = null;
+    private StaffController scControlleur = null;
 
 
     /**
      * Constructeur du controlleur d'ajout d'intervenant
+     * @param scControlleur controlleur géneral
      * @param countries permet d'avoir touts les pays présent dans la DB
      */
-    public AddExternalController(ArrayList<Pays> countries){
+    public AddExternalController(StaffController scControlleur, ArrayList<Pays> countries){
+
         aeExternal = new AddExternal(this, countries);
         aeExternal.disableError();
     }
@@ -166,6 +169,7 @@ public class AddExternalController {
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
             aeExternal.close();
+            scControlleur.refreshExternal();
         }
         System.out.println("Intervenant externe inséré");
     }

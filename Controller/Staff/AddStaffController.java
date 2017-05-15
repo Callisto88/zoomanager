@@ -16,18 +16,21 @@ import java.util.ArrayList;
  */
 public class AddStaffController {
     private AddStaff add = null;
+    private StaffController scControlleur = null;
 
     private DBInteraction querry = null;
 
     /**
      * Constructeur du controlleur de la fenêtre d'ajout de personnel
+     * @param scControlleur controlleur géneral
      * @param statuts liste des statuts actuels
      * @param contract liste des contract actuels
      * @param supervisor liste des responsables actuels
      * @param countries liste des pays actuels
      */
-    public AddStaffController(ArrayList<String> statuts,ArrayList<String> contract,
+    public AddStaffController(StaffController scControlleur, ArrayList<String> statuts,ArrayList<String> contract,
                               ArrayList<Personne> supervisor, ArrayList<Pays> countries) {
+        this.scControlleur = scControlleur;
         add = new AddStaff(this, statuts, contract, supervisor, countries);
         add.disableError();
     }
@@ -205,6 +208,7 @@ public class AddStaffController {
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
             add.close();
+            scControlleur.refreshStaff();
         }
     }
 

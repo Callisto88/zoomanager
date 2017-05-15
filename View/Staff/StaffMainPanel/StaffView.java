@@ -4,19 +4,12 @@ import Controller.Staff.StaffController;
 import Model.*;
 import View.GenericWindow;
 import View.MyModelTable;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
-import com.itextpdf.text.Document;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.regex.Pattern;

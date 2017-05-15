@@ -191,7 +191,7 @@ public class AddExternal extends GenericWindow{
     }
 
     /**
-     * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
+     * Méthode permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
         jtfLastNameInput.setBackground(Color.WHITE);
@@ -283,7 +283,9 @@ public class AddExternal extends GenericWindow{
         jtfPhone.setToolTipText(error);
         jtfPhone.setBackground(Color.RED);
     }
-
+    /**
+     * Méthode permettant de fermer la fenêtre une fois que l'on a fini d'insérer des intervenants
+     */
     public void close(){
         this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
     }

@@ -273,6 +273,13 @@ public class StaffController {
         return delete;
     }
 
+    /**
+     * Methode permettant de crée un PDF
+     * @param jtTable Table à crée
+     * @param output String contenant le chemin de destination
+     * @param title titre du PDF
+     * @param additional Permet d'ajouter le nom d'une personne (en option)
+     */
     public void print(JTable jtTable, String output, String title, String additional){
         Document document = new Document(PageSize.A4.rotate());
         try {
@@ -310,6 +317,20 @@ public class StaffController {
     }
 
     /**
+     * Méthode permettant de mettre à jour le tableau une fois l'ajout de personne OK
+     */
+    public void refreshStaff(){
+        svPersonnel.createEmployeeTab();
+    }
+
+    /**
+     * Méthode permettant de mettre à jour le tableau une fois l'ajout d'intervenant OK
+     */
+    public void refreshExternal(){
+        svPersonnel.createExternalTab();
+    }
+
+    /**
      * Méthode permettant de supprimer une ligne du tableau des intervenanta
      * @param line ligne à supprimer
      */
@@ -329,14 +350,14 @@ public class StaffController {
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
     public void addStaffView() {
-        addController = new AddStaffController(getStatus(), getContract(), getResponsable(), getCountries());
+        addController = new AddStaffController(this, getStatus(), getContract(), getResponsable(), getCountries());
     }
 
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout d'intervenant
      */
     public void addExternalView(){
-        aecAddExternal = new AddExternalController(getCountries());
+        aecAddExternal = new AddExternalController(this, getCountries());
     }
 
     /**

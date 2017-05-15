@@ -428,6 +428,9 @@ public class ModifyExternalPanel extends GenericWindow {
         jtfPhone.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant de fermer la fenêtre une fois que l'on a fini de modifier un intervenant
+     */
     public void close(){
         this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
     }
