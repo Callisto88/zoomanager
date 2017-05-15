@@ -1,7 +1,6 @@
 package View.Staff.ModifyPanel;
 
 import Controller.Staff.ModifyStaffController;
-import Model.Adresse;
 import Model.Pays;
 import Model.Personne;
 import View.GenericWindow;
@@ -628,6 +627,9 @@ public class ModifyStaffPanel extends GenericWindow {
         jcbCountry.setBackground(Color.RED);
     }
 
+    /**
+     * Méthode permettant de fermer la fenêtre une fois que l'on a fini de modifier du personnel
+     */
     public void close(){
         this.getJfFrame().dispatchEvent(new WindowEvent(getJfFrame(), WindowEvent.WINDOW_CLOSING));
     }

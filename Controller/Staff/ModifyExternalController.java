@@ -16,7 +16,6 @@ import java.util.ArrayList;
 public class ModifyExternalController {
     private ModifyExternalPanel mepExternal = null;
     private Intervenant external = null;
-
     private DBInteraction querry = null;
 
     /**
@@ -133,6 +132,10 @@ public class ModifyExternalController {
 
     }
 
+    /**
+     * Méthode permettant d'obtenir les différents pays présent dans la DB
+     * @return un array list de pays
+     */
     private ArrayList<Pays> getCountries(){
         dbConnection();
         ArrayList<Pays> alp = null;

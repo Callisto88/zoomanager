@@ -17,7 +17,6 @@ public class ModifyStaffController {
     private ModifyStaffPanel mspModifyStaff = null;
     private Personne personne = null;
     private DBInteraction querry = null;
-// TODO : LAISSER UNE CASE VIDE POUR LE PAYS!!!!
     /**
      * Constructeur du controlleur
      * @param personne personne à modifier
@@ -195,6 +194,11 @@ public class ModifyStaffController {
         }
     }
 
+    /**
+     * Méthode permettant d'obtenir le nom complet d'un responsable en fonction de son ID
+     * @param supervisorID ID du responsable à trouver
+     * @return Le nom complet du responsable
+     */
     public String getSupervisor(int supervisorID){
         dbConnection();
         Personne supervisor = null;
