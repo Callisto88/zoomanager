@@ -941,7 +941,8 @@ public class DBInteraction {
 
         this.stmt.setString(9, personne.getStatut());
         this.stmt.setDate(10, personne.getDateDebut());
-        this.stmt.setInt(11, personne.getIdPersonne());
+        this.stmt.setString(11, personne.getStatut());
+        this.stmt.setInt(12, personne.getIdPersonne());
 
         this.stmt.executeUpdate();
     }

@@ -8,28 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Commande {
-
-    public static int menu() {
-
-        int selection;
-        Scanner input = new Scanner(System.in);
-
-        /***************************************************/
-
-        System.out.println("Sélectionner une action : ");
-        System.out.println("-------------------------\n");
-        System.out.println("1 - Créer une nouvelle commande avec son contenu");
-        System.out.println("2 - Afficher une commande d'après son ID");
-        System.out.println("3 - Affiche le contenu d'une commande d'après son ID");
-        System.out.println("4 - Lister les commandes selon leur statut");
-        System.out.println("5 - Lister les commandes selon un range de date");
-        System.out.println("6 - Lister les commandes selon un statut et un range de date");
-        System.out.println("7 - Quit");
-
-        selection = input.nextInt();
-        return selection;
-    }
+public class Commande extends CLI {
 
     public static void main(String arg[]) throws SQLException {
 
@@ -46,17 +25,23 @@ public class Commande {
 
                 case 2:
                     System.out.println("Entrer l'ID de la commande que vous souhaitez afficher : ");
-                    Scanner input = new Scanner(System.in);
-                    int orderID = Integer.parseInt(input.next());
-                    afficherCommande(orderID);
+                    Scanner input2 = new Scanner(System.in);
+                    int orderID2 = Integer.parseInt(input2.next());
+                    afficherCommande(orderID2);
                     break;
 
                 case 3:
-                    afficherContenuCommande(502);
+                    System.out.println("Entrer l'ID de la commande que vous souhaitez afficher : ");
+                    Scanner input3 = new Scanner(System.in);
+                    int orderID3 = Integer.parseInt(input3.next());
+                    afficherContenuCommande(orderID3);
                     break;
 
                 case 4:
-                    afficherCommandeParStatut(Statut.ANNULEE);
+                    System.out.println("Entrer le statut souhaité : ");
+                    Scanner input4 = new Scanner(System.in);
+                    String s = String.valueOf(input4.next());
+                    afficherCommandeParStatut(Model.Statut.valueOf(s));
                     break;
 
                 case 5:
