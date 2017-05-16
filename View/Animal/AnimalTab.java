@@ -1,5 +1,6 @@
 package View.Animal;
 
+import Controller.Validate.Validate;
 import Model.*;
 import View.DateLabelFormatter;
 import View.EventsTable;
@@ -53,9 +54,13 @@ public class AnimalTab extends GenericWindow {
     protected ArrayList<Race> racesDB;
     protected ArrayList<Pays> originesDB;
 
+    protected JTable jtTable;
+
     private static TableRowSorter<MyModelTable> sorter;
 
     protected AnimalController atAnimalController;
+
+    Dimension defaultFormSize = new Dimension(140, 30);
 
     public AnimalTab(AnimalController atAnimalController) {
         super("Animaux");
@@ -71,7 +76,7 @@ public class AnimalTab extends GenericWindow {
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB, racesDB);
 
         dataTable = new MyModelTable(vAnimal, columnName);
-        JTable jtTable = new JTable(dataTable);
+        jtTable = new JTable(dataTable);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
@@ -196,18 +201,13 @@ public class AnimalTab extends GenericWindow {
                 }
                 jpMainPanel.updateUI();
 
-                switch (mode) {
-                    case 0:
-                        setDetView();
-                        break;
-                    case 1:
-                        setModView();
-                        break;
-                    case 2:
-                        setAddView();
-                        break;
-                }
+                setView();
+
                 super.mousePressed(e);
+            }
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                super.mouseClicked(e);
             }
         });
 
@@ -267,22 +267,20 @@ public class AnimalTab extends GenericWindow {
                         jlDetAnimal.setText(S_MODANIMAL);
                         jbMod.setText("Détails");
                         mode = 1;
-                        setModView();
                         break;
                     case 1:
                         jlDetAnimal.setText(S_DETANIMAL);
                         jbMod.setText("Modifier");
                         mode = 0;
-                        setDetView();
                         break;
                     case 2:
                         jlDetAnimal.setText(S_MODANIMAL);
                         jbMod.setText("Détails");
                         jbAdd.setText("Ajouter");
                         mode = 1;
-                        setModView();
                         break;
                 }
+                setView();
             }
         });
         setButtonConfig(jbMod);
@@ -295,22 +293,20 @@ public class AnimalTab extends GenericWindow {
                         jlDetAnimal.setText(S_ADDANIMAL);
                         jbAdd.setText("Détails");
                         mode = 2;
-                        setAddView();
                         break;
                     case 1:
                         jlDetAnimal.setText(S_ADDANIMAL);
                         jbAdd.setText("Détails");
                         jbMod.setText("Modifier");
                         mode = 2;
-                        setAddView();
                         break;
                     case 2:
                         jlDetAnimal.setText(S_DETANIMAL);
                         jbAdd.setText("Ajouter");
                         mode = 0;
-                        setDetView();
                         break;
                 }
+                setView();
             }
         });
         setButtonConfig(jbAdd);
@@ -353,26 +349,17 @@ public class AnimalTab extends GenericWindow {
 
         //Formulaire/détails
         jpDetAnimal = new JPanel();
-        setDetView();
+        setView();
         jpRight.add(jpDetAnimal, gbcRight);
 
         configFrame(getJfFrame(), this);
     }
 
-    private void setDetView() {
-        jpDetAnimal.removeAll();
 
-
-
-        jpDetAnimal.updateUI();
-    }
-
-    private void setModView() {
+    private void setView() {
         jpDetAnimal.removeAll();
 
         int y = 0;
-
-        Dimension defaultFormSize = new Dimension(140, 30);
 
         Animal selectedAnimal = animauxDB.get(selectedRow);
 
@@ -397,6 +384,12 @@ public class AnimalTab extends GenericWindow {
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
+        if(mode == 2) {
+            jtNomAnimal.setText("");
+        }
+        else if(mode == 0){
+            jtNomAnimal.setEditable(false);
+        }
         jpDetAnimal.add(jtNomAnimal, gbcAnimalForm);
 
         y++;
@@ -405,7 +398,7 @@ public class AnimalTab extends GenericWindow {
         // Xe ligne : enclos
         int maxLength = 200;
         JLabel jlEnclos = new JLabel("Enclos :");
-        jlEnclos.setPreferredSize(defaultFormSize);
+        setLabelConfig(jlEnclos);
         gbcAnimalForm.gridx = 0;
         gbcAnimalForm.gridy = y;
         jpDetAnimal.add(jlEnclos, gbcAnimalForm);
@@ -429,7 +422,17 @@ public class AnimalTab extends GenericWindow {
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
-        jpDetAnimal.add(jcEnclos, gbcAnimalForm);
+        if(mode == 2) {
+            jcEnclos.setSelectedIndex(0);
+            jpDetAnimal.add(jcEnclos, gbcAnimalForm);
+        }
+        else if(mode == 0){
+            jpDetAnimal.add(new JLabel(String.valueOf(jcEnclos.getSelectedItem())), gbcAnimalForm);
+        }
+        else{
+            jpDetAnimal.add(jcEnclos, gbcAnimalForm);
+        }
+
 
         y++;
 
@@ -443,9 +446,15 @@ public class AnimalTab extends GenericWindow {
 
         JTextField jtNomCommun = new JTextField();
         jtNomCommun.setText(selectedAnimal.getNomCommun());
+        jtNomCommun.setPreferredSize(defaultFormSize);
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
-        jtNomCommun.setPreferredSize(defaultFormSize);
+        if(mode == 2) {
+            jtNomCommun.setText("");
+        }
+        else if(mode == 0){
+            jtNomCommun.setEditable(false);
+        }
         jpDetAnimal.add(jtNomCommun, gbcAnimalForm);
 
         y++;
@@ -477,7 +486,18 @@ public class AnimalTab extends GenericWindow {
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
-        jpDetAnimal.add(jcRaces, gbcAnimalForm);
+        if(mode == 2) {
+            jcRaces.setSelectedIndex(0);
+            jpDetAnimal.add(jcRaces, gbcAnimalForm);
+        }
+        else if(mode == 0){
+            JLabel jlRacesS = new JLabel(String.valueOf(jcRaces.getSelectedItem()));
+            jlRace.setMaximumSize(new Dimension(350, 30));
+            jpDetAnimal.add(jlRacesS, gbcAnimalForm);
+        }
+        else{
+            jpDetAnimal.add(jcRaces, gbcAnimalForm);
+        }
 
         y++;
 
@@ -493,6 +513,12 @@ public class AnimalTab extends GenericWindow {
         jtSexe.setPreferredSize(defaultFormSize);
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
+        if(mode == 2) {
+            jtSexe.setText("");
+        }
+        else if(mode == 0){
+            jtSexe.setEditable(false);
+        }
         jpDetAnimal.add(jtSexe, gbcAnimalForm);
 
         y++;
@@ -528,7 +554,16 @@ public class AnimalTab extends GenericWindow {
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
-        jpDetAnimal.add(jcOrigines, gbcAnimalForm);
+        if(mode == 2){
+            jcOrigines.setSelectedIndex(0);
+            jpDetAnimal.add(jcOrigines, gbcAnimalForm);
+        }
+        else if(mode == 0){
+            jpDetAnimal.add(new Label(String.valueOf(jcOrigines.getSelectedItem())), gbcAnimalForm);
+        }
+        else{
+            jpDetAnimal.add(jcOrigines, gbcAnimalForm);
+        }
 
         y++;
 
@@ -550,13 +585,24 @@ public class AnimalTab extends GenericWindow {
         int month = localDate.getMonthValue() - 1;
         int day   = localDate.getDayOfMonth();
         sdmModel1.setDate(year, month, day);
+        sdmModel1.setSelected(true);
         JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
-        jdpliStartDatePanel.setPreferredSize(new Dimension(230, 230));
+        jdpliStartDatePanel.setPreferredSize(new Dimension(270, 230));
         JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+
+        jdpriStartDatePicker.getJDateInstantPanel().getModel().getValue();
 
         gbcAnimalForm.gridx = 1;
         gbcAnimalForm.gridy = y;
-        jpDetAnimal.add(jdpriStartDatePicker, gbcAnimalForm);
+        if(mode == 2){
+            sdmModel1.setSelected(false);
+        }
+        if(mode == 1 || mode == 2) {
+            jpDetAnimal.add(jdpriStartDatePicker, gbcAnimalForm);
+        }
+        else if(mode == 0){
+            jpDetAnimal.add(new JLabel(year + "-" + month + "-" + day), gbcAnimalForm);
+        }
 
         y++;
 
@@ -571,17 +617,23 @@ public class AnimalTab extends GenericWindow {
 
 
             LocalDate localDateD = selectedAnimal.getDateDeces().toLocalDate();
-            int yearD  = localDateD.getYear();
-            int monthD = localDateD.getMonthValue() - 1;
-            int dayD   = localDateD.getDayOfMonth();
-            sdmModel1.setDate(yearD, monthD, dayD);
-            JDatePanelImpl jdpliStartDatePanelD = new JDatePanelImpl(sdmModel1, pStartProperties);
-            jdpliStartDatePanel.setPreferredSize(new Dimension(230, 230));
-            JDatePickerImpl jdpriStartDatePickerD = new JDatePickerImpl(jdpliStartDatePanelD, new DateLabelFormatter());
+            year  = localDateD.getYear();
+            month = localDateD.getMonthValue() - 1;
+            day   = localDateD.getDayOfMonth();
+            sdmModel1.setDate(year, month, day);
+            sdmModel1.setSelected(true);
+            jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+            jdpliStartDatePanel.setPreferredSize(new Dimension(270, 230));
+            jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
 
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
-            jpDetAnimal.add(jdpriStartDatePickerD, gbcAnimalForm);
+            if(mode == 1 || mode == 2) {
+                jpDetAnimal.add(jdpriStartDatePicker, gbcAnimalForm);
+            }
+            else if(mode == 0){
+                jpDetAnimal.add(new JLabel(year + "-" + month + "-" + day), gbcAnimalForm);
+            }
 
             y++;
         }
@@ -603,6 +655,12 @@ public class AnimalTab extends GenericWindow {
             jtPoids.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
+            if(mode == 2){
+                jtPoids.setText("");
+            }
+            else if(mode == 0){
+                jtPoids.setEditable(false);
+            }
             jpDetAnimal.add(jtPoids, gbcAnimalForm);
 
             y++;
@@ -620,6 +678,12 @@ public class AnimalTab extends GenericWindow {
             jtBague.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
+            if(mode == 2){
+                jtBague.setText("");
+            }
+            else if(mode == 0){
+                jtBague.setEditable(false);
+            }
             jpDetAnimal.add(jtBague, gbcAnimalForm);
 
             y++;
@@ -637,6 +701,12 @@ public class AnimalTab extends GenericWindow {
             jtEnvergure.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
+            if(mode == 2){
+                jtEnvergure.setText("");
+            }
+            else if(mode == 0){
+                jtEnvergure.setEditable(false);
+            }
             jpDetAnimal.add(jtEnvergure, gbcAnimalForm);
 
             y++;
@@ -654,6 +724,12 @@ public class AnimalTab extends GenericWindow {
             JTextField jtTemperature = new JTextField(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
+            if(mode == 2){
+                jtTemperature.setText("");
+            }
+            else if(mode == 0){
+                jtTemperature.setEditable(false);
+            }
             jpDetAnimal.add(jtTemperature, gbcAnimalForm);
 
             y++;
@@ -671,6 +747,12 @@ public class AnimalTab extends GenericWindow {
             JTextField jtTemperature = new JTextField(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
+            if(mode == 2){
+                jtTemperature.setText("");
+            }
+            else if(mode == 0){
+                jtTemperature.setEditable(false);
+            }
             jpDetAnimal.add(jtTemperature, gbcAnimalForm);
 
             y++;
@@ -684,14 +766,12 @@ public class AnimalTab extends GenericWindow {
         gbcAnimalForm.gridy = y;
         gbcAnimalForm.gridwidth = 2;
         etStaff.setPreferredSize(new Dimension(361, 260));
-        etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(360, 230));
+        etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(355, 230));
         jpDetAnimal.add(etStaff, gbcAnimalForm);
 
         y++;
 
-
         gbcAnimalForm.gridwidth = 1;
-
 
         JButton jbConfirm = new JButton("Appliquer");
         setButtonConfig(jbConfirm);
@@ -706,17 +786,10 @@ public class AnimalTab extends GenericWindow {
 
         gbcAnimalForm.gridx = 0;
         gbcAnimalForm.gridy = y;
-        jpDetAnimal.add(jbConfirm, gbcAnimalForm);
+        if(mode != 0) {
+            jpDetAnimal.add(jbConfirm, gbcAnimalForm);
+        }
 
-
-        jpDetAnimal.updateUI();
-    }
-
-    private void setAddView() {
-        jpDetAnimal.removeAll();
-
-
-        Animal newAnimal = new Animal();
 
         jpDetAnimal.updateUI();
     }
