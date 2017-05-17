@@ -211,28 +211,28 @@ public class DBInteraction {
     private static final String SELECT_ALL_INFO_FAUVE_ID =
             "SELECT Animal_Fauve.id AS id, poids, nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
                     "FROM Animal_Fauve " +
-                    "INNER JOIN Animal " +
+                    "RIGHT JOIN Animal " +
                     "ON Animal.id = Animal_Fauve.id " +
                     "WHERE Animal.id =  ? ;";
     // Récupérer toues les infos d'un OISEAU par rapport à un ID
     private static final String SELECT_ALL_INFO_OISEAU_ID =
             "SELECT Animal_Oiseau.id AS id , envergure, bague , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
                     "FROM Animal_Oiseau " +
-                    "INNER JOIN Animal " +
+                    "RIGHT JOIN Animal " +
                     "ON Animal.id = Animal_Oiseau.id " +
                     "WHERE Animal.id =  ? ;";
     // Récupérer toues les infos d'un REPTILE par rapport à un ID
     private static final String SELECT_ALL_INFO_REPTILE_ID =
             "SELECT Animal_Reptile.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
                     "FROM Animal_Reptile " +
-                    "INNER JOIN Animal " +
+                    "RIGHT JOIN Animal " +
                     "ON Animal.id = Animal_Reptile.id " +
                     "WHERE Animal.id =  ? ;";
     // Récupérer tous les infos d'un REPTILE par rapport à un ID
     private static final String SELECT_ALL_INFO_PRIMATE_ID =
             "SELECT Animal_Primate.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
                     "FROM Animal_Primate " +
-                    "INNER JOIN Animal " +
+                    "RIGHT JOIN Animal " +
                     "ON Animal.id = Animal_Primate.id " +
                     "WHERE Animal.id =  ? ;";
     // Récupérer toutes les races d'animal
