@@ -177,7 +177,7 @@ public class DBInteraction {
 
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?);";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
@@ -1125,7 +1125,7 @@ public class DBInteraction {
         this.stmt.setInt(8, personne.getResponsable());
         this.stmt.setString(9, personne.getStatut());
         this.stmt.setDate(10, personne.getDateDebut());
-        this.stmt.setString(10, personne.getTypeContrat());
+        this.stmt.setString(11, personne.getTypeContrat());
         this.stmt.executeUpdate();
     }
 
@@ -1602,12 +1602,13 @@ public class DBInteraction {
 
         // Attribut communs à tous les animaux
         this.stmt.setNull(1, Types.NULL);
-        this.stmt.setString(2, a.getNom());
-        this.stmt.setString(3, a.getSexe());
-        this.stmt.setDate(4, a.getAnneeNaissance());
-        this.stmt.setInt(5, a.getEnclos());
-        this.stmt.setInt(6, a.getOrigine());
-        this.stmt.setDate(7, a.getDateDeces());
+        this.stmt.setString(2, a.getNomCommun());
+        this.stmt.setString(3, a.getNom());
+        this.stmt.setString(4, a.getSexe());
+        this.stmt.setDate(5, a.getAnneeNaissance());
+        this.stmt.setInt(6, a.getEnclos());
+        this.stmt.setInt(7, a.getOrigine());
+        // this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
         this.stmt.execute();

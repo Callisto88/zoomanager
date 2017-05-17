@@ -281,7 +281,7 @@ public class AddStaff extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 disableError();
                 sLastName = jtfLastNameInput.getText();
-                sFirstName = jtfLastNameInput.getText();
+                sFirstName = jtfFirstNameInput.getText();
                 iDay = jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay();
                 iMonth = jdpriStartDatePicker.getJDateInstantPanel().getModel().getMonth();
                 iYear = jdpriStartDatePicker.getJDateInstantPanel().getModel().getYear();

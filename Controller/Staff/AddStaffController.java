@@ -193,7 +193,7 @@ public class AddStaffController {
      */
     public void insertPersonne (Personne personne){
         dbConnection();
-        //personne.toString();
+        personne.toString();
         try{
             querry.insertPersonne(personne);
         } catch (SQLException exceptionsql){
