@@ -193,6 +193,57 @@ public class DBInteraction {
     private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
             "FROM Animal;";
     // Récupérer tous les paramètre d'un animal
+
+    private static final String SEL_TANS = "-- Animal_Fauve\n" +
+            "SELECT *\n" +
+            "FROM Animal\n" +
+            "INNER JOIN Animal_Fauve\n" +
+            "  ON Animal.id = Animal_Fauve.id\n" +
+            "LEFT JOIN Pays AS p\n" +
+            "  ON Animal.origine = p.paysId\n" +
+            "LEFT JOIN Animal_Race AS r\n" +
+            "  ON r.id = Animal.id\n" +
+            "LEFT JOIN Enclos\n" +
+            "  ON Animal.enclos = Enclos.id\n" +
+            "LEFT JOIN Secteur\n" +
+            "  ON Enclos.secteur = Secteur.id;";
+
+    private static final String SEL_PRIMATES = "-- Animal_Primate\n" +
+            "SELECT *\n" +
+            "FROM Animal\n" +
+            "INNER JOIN Animal_Primate\n" +
+            "  ON Animal.id = Animal_Primate.id\n" +
+            "LEFT JOIN Pays AS p\n" +
+            "  ON Animal.origine = p.paysId\n" +
+            "LEFT JOIN Animal_Race AS r\n" +
+            "  ON r.id = Animal.id\n" +
+            "LEFT JOIN Infrastructure\n" +
+            "  ON Animal.enclos = Infrastructure.id;";
+
+    private static final String SEL_REPTILS = "-- Animal_Reptile\n" +
+            "SELECT *\n" +
+            "FROM Animal\n" +
+            "INNER JOIN Animal_Reptile\n" +
+            "  ON Animal.id = Animal_Reptile.id\n" +
+            "LEFT JOIN Pays AS p\n" +
+            "  ON Animal.origine = p.paysId\n" +
+            "LEFT JOIN Animal_Race AS r\n" +
+            "  ON r.id = Animal.id\n" +
+            "LEFT JOIN Infrastructure\n" +
+            "  ON Animal.enclos = Infrastructure.id;";
+
+    private static final String SEL_BIRDS = "-- Animal_Oiseau\n" +
+            "SELECT *\n" +
+            "FROM Animal\n" +
+            "INNER JOIN Animal_Oiseau\n" +
+            "  ON Animal.id = Animal_Oiseau.id\n" +
+            "LEFT JOIN Pays AS p\n" +
+            "  ON Animal.origine = p.paysId\n" +
+            "LEFT JOIN Animal_Race AS r\n" +
+            "  ON r.id = Animal.id\n" +
+            "LEFT JOIN Infrastructure\n" +
+            "  ON Animal.enclos = Infrastructure.id;";
+
     private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
     // Récupérer les informations d'un animal en fonction de son ID
     private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
@@ -1453,9 +1504,46 @@ public class DBInteraction {
      * @return ArrayList<Animal>
      */
     public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
-        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL);
+
+        ArrayList<Primate> pr = this.selPrimates();
+        // ArrayList<Oiseau> os = this.selBirds();
+
+        ArrayList<Animal> animals = null;
+        animals.addAll(pr);
+
+        return animals;
+    }
+
+    private ArrayList<Primate> selPrimates() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_PRIMATES);
         ResultSet rs = this.stmt.executeQuery();
-        return creerTableauAnimal(rs);
+        ArrayList<Primate> result = new ArrayList<>();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase(12);
+        } else {
+            rs.beforeFirst();
+        while (rs.next()) {
+
+                Race r = new Race(rs.getInt("raceID"), rs.getString("raceName"));
+                Pays ps = new Pays(rs.getInt("origineID"), rs.getString("origineName"));
+                Personne p = new Personne(rs.getString("prenomResponsable"), rs.getString("nomResponsable"));
+                Secteur s = new Secteur(rs.getInt("secteurID"), rs.getString("nomSecteur"), p);
+                Enclos e = new Enclos(rs.getInt("enclosID"), rs.getString("nomEnclos"), s, rs.getDouble("surface") );
+                Primate pr = new Primate(
+                        rs.getInt("id"),
+                        rs.getString("nomCommun"),
+                        rs.getString("nom"),
+                        rs.getString("sexe"),
+                        rs.getDate("dateNaissance"),
+                        e, ps, r, rs.getDate("dateDeces"),
+                        rs.getDouble("temperature")
+                );
+                result.add(pr);
+    }
+        }
+        return result;
     }
 
     /**
