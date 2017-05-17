@@ -99,8 +99,24 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
 
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
-    private static final String SEL_ALL_EMPLOYES = "SELECT * FROM Personne;";
-    private static final String SEL_EMPLOYE_DETAILS = "SELECT * FROM Personne WHERE idPersonne = ? ;";
+    private static final String SEL_ALL_EMPLOYES = "SELECT idPersonne, noAVS, prenom, nom, Adresse.id, Adresse.adresse, Ville.villeId, Ville.ville, Ville.codePostal, Pays.paysId, Pays.pays, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat\n" +
+            "FROM Personne\n" +
+            "  INNER JOIN Adresse\n" +
+            "    ON Personne.adresse = Adresse.id\n" +
+            "  INNER JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  INNER JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId;";
+
+    private static final String SEL_EMPLOYE_DETAILS = "SELECT idPersonne, noAVS, prenom, nom, Adresse.id, Adresse.adresse, Ville.villeId, Ville.ville, Ville.codePostal, Pays.paysId, Pays.pays, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat\n" +
+            "FROM Personne\n" +
+            "  INNER JOIN Adresse\n" +
+            "    ON Personne.adresse = Adresse.id\n" +
+            "  INNER JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  INNER JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId\n" +
+            "WHERE idPersonne = ?;";
     private static final String SEL_EMPLOYE_PAR_PRENOM_NOM = "SELECT * " +
             "FROM Personne " +
             "WHERE Personne.nom = ? " +
@@ -129,7 +145,15 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // INTERVENANT :
     // Selectionne tous les intervenants
-    private static final String SELECT_INTERVENANT = "SELECT * FROM Intervenant;";
+    private static final String SELECT_INTERVENANT = "SELECT *\n" +
+            "FROM Intervenant\n" +
+            "  INNER JOIN Adresse\n" +
+            "    ON Intervenant.adresse = Adresse.id\n" +
+            "  INNER JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  INNER JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId;";
+
     // Supprime un intervenant de la DB, pour garder les "traces" on passe uniquement son "statut" à 1
     private static final String DELETE_INTERVENANT = "UPDATE Intervenant " +
             "SET statut = 1 " +
@@ -503,14 +527,10 @@ public class DBInteraction {
                         rs.getInt("statut")
                 );
 
-                Adresse a = null;
-                int adresseID = rs.getInt("adresse");
-                if (adresseID > 0) {
-                    a = this.selAdresseFromID(adresseID);
-                    if (a != null) {
-                        i.setAdresse(a);
-                    }
-                }
+                Pays pays = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                Ville ville = new Ville(rs.getInt("Ville.villeId"), rs.getInt("Ville.codePostal"), rs.getString("Ville.ville"), pays);
+                Adresse address = new Adresse(rs.getInt("Adresse.id"), rs.getString("Adresse.adresse"), ville);
+                i.setAdresse(address);
                 data.add(i);
             }
         }
@@ -1148,14 +1168,11 @@ public class DBInteraction {
                         rs.getInt("responsable"), rs.getString("statut"),
                         rs.getDate("dateDebut"), rs.getString("typeContrat")
                 );
-                Adresse a = null;
-                int adresseID = rs.getInt("adresse");
-                if (adresseID > 0) {
-                    a = this.selAdresseFromID(adresseID);
-                    if (a != null) {
-                        p.setAdresse(a);
-                    }
-                }
+
+                Pays pays = new Pays(rs.getInt("paysId"), rs.getString("pays"));
+                Ville ville = new Ville(rs.getInt("villeId"), rs.getInt("codePostal"), rs.getString("ville"), pays);
+                Adresse address = new Adresse(rs.getInt("id"), rs.getString("adresse"), ville);
+                p.setAdresse(address);
                 data.add(p);
             }
         }
