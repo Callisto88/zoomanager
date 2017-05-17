@@ -306,7 +306,15 @@ public class DBInteraction {
     // En cours
     private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
 
-    private static final String SEL_RESPONSABLES = "SELECT * FROM Personne WHERE statut LIKE 'responsable'";
+    private static final String SEL_RESPONSABLES = "SELECT idPersonne, noAVS, prenom, nom, Adresse.id, Adresse.adresse, Ville.villeId, Ville.ville, Ville.codePostal, Pays.paysId, Pays.pays, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat\n" +
+            "FROM Personne\n" +
+            "  INNER JOIN Adresse\n" +
+            "    ON Personne.adresse = Adresse.id\n" +
+            "  INNER JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  INNER JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId\n" +
+            "WHERE statut LIKE 'responsable';";
 
     // Enlever un peu de quantité d'un produit
     private static final String UPDATE_DELETE_QUANTITE_OF_DESCRIPTION =
@@ -336,7 +344,7 @@ public class DBInteraction {
     private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ? WHERE id = ?;";
 
     // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
-    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` BETWEEN ? AND ? ;";
+    // private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` BETWEEN ? AND ? ;";
 
     // Récupérer le contenu d'une commande en fonction de son ID
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
@@ -350,6 +358,7 @@ public class DBInteraction {
             "AND Commande.statut = \"EN_COURS\";";
 
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` >= ? AND `dateHeure` <= ? ORDER BY dateHeure;";
+    private static final String SEL_ORDERS_BY_STATE_AND_DATE = "SELECT * FROM Commande WHERE `statut` LIKE ? AND `dateHeure` >= ? AND `dateHeure` <= ? ORDER BY dateHeure;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
