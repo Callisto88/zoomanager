@@ -177,7 +177,6 @@ public class ModifyExternalPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(lastNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Nom");
         }
     }
 
@@ -199,7 +198,6 @@ public class ModifyExternalPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(firstNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Prénom");
         }
     }
 
@@ -221,7 +219,6 @@ public class ModifyExternalPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(emailPanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif E-Mail");
         }
     }
 
@@ -293,7 +290,6 @@ public class ModifyExternalPanel extends GenericWindow {
             jpModifyPanel.add(jpCountry, gbcConstraint);
 
             jpMainPanel.revalidate();
-            System.out.println("modif Adresse");
         }
     }
 
@@ -315,7 +311,6 @@ public class ModifyExternalPanel extends GenericWindow {
             ++y;
             jpModifyPanel.add(telephonePanel, gbcConstraint);
             jpMainPanel.revalidate();
-            System.out.println("modif Téléphone");
         }
     }
 

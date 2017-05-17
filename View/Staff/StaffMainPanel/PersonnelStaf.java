@@ -152,7 +152,6 @@ public class PersonnelStaf extends JPanel{
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
         jlAddressInfo = new JLabel(sAddress);
-        //System.out.println(personne.getAdresse().toString());
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddress);
         jpAddress.add(jlAddressInfo);
@@ -279,7 +278,6 @@ public class PersonnelStaf extends JPanel{
         jbEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("modification personnel");
                 controller.modifyStaffView(personne);
             }
         });
@@ -291,7 +289,6 @@ public class PersonnelStaf extends JPanel{
         jbAssignTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Assignation de tâches");
                 controller.assignStaffTaskView(personne);
             }
         });
@@ -302,11 +299,9 @@ public class PersonnelStaf extends JPanel{
         jbPrintTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Impression de tâches");
-                String pdfName = "\\Personnal_Task_" + personne.getNom() + ".pdf";
                 String title = "Tâches personnels";
                 String name = personne.getNom() + " " + personne.getPrenom();
-                controller.print(stStaff.getJTable(), pdfName, title, name);
+                controller.print(stStaff.getJTable(), title, name);
             }
         });
 

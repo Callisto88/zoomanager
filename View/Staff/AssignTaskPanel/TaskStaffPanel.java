@@ -48,7 +48,6 @@ public class TaskStaffPanel extends GenericWindow{
             task.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println(e.getActionCommand());
                     JButton jb = (JButton)e.getSource();
                     checkTask(jb.getText());
                     Container c = jb.getParent();

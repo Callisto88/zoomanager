@@ -116,8 +116,6 @@ public class ModifyStaffPanel extends GenericWindow {
         if(personne.getResponsable() != 0) {
             iSupervisor = personne.getResponsable();
             sSupervisor = mscController.getSupervisor(personne.getResponsable());
-            System.out.println(personne.getResponsable());
-            System.out.println(sSupervisor);
         }
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier

@@ -210,7 +210,7 @@ public class ExternalStaff extends JPanel{
         jbEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("modification de l'intervenant");
+
                 controller.modifyExternalView(external);
             }
         });
@@ -222,7 +222,6 @@ public class ExternalStaff extends JPanel{
         jbAssignTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Assignation de tâches");
                 controller.assignExternalTaskView(external);
             }
         });
@@ -232,11 +231,9 @@ public class ExternalStaff extends JPanel{
         jbPrintTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println("Impression de tâches");
-                String pdfName = "\\Personnal_Task_" + external.getNom() + ".pdf";
                 String title = "Tâches personnels";
                 String name = external.getNom() + " " + external.getPrenom();
-                controller.print(etExternal.getJTable(), pdfName, title, name);
+                controller.print(etExternal.getJTable(), title, name);
             }
         });
 

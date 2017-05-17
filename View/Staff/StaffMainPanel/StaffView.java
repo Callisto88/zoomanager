@@ -83,16 +83,12 @@ public class StaffView extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 if(((JButton) e.getSource()).getText().equals("Imprimer listing employés")){
-                    System.out.println("Impression listing employés");
-                    String pdfName = "\\Personnal_Listing.pdf";
                     String title = "Listing employée";
-                    controller.print(jtTable, pdfName, title, null);
+                    controller.print(jtTable, title, null);
                 }
                 else{
-                    System.out.println("Impression listing intervenants");
-                    String pdfName = "\\External_Listing.pdf";
                     String title = "Listing intervenant";
-                    controller.print(jtTable, pdfName, title, null);
+                    controller.print(jtTable, title, null);
                 }
             }
         });
@@ -137,11 +133,9 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(((JButton) e.getSource()).getText().equals("Ajouter un employé")) {
                     controller.addStaffView();
-                    System.out.println("ajout personnel");
                 }
                 else{
                     controller.addExternalView();
-                    System.out.println("ajout intervenant");
                 }
             }
         });
@@ -154,7 +148,6 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
                     // Permet de recrée une nouvelle table
-                    System.out.println("création tableau externe");
                     createExternalTab();
                     //createTab(createExternalTab(), sColumnExternal);
                     // Permet de renommer le bouton pour faire afficher les employées
@@ -166,7 +159,6 @@ public class StaffView extends GenericWindow {
                 }
                 else{
                     // Permet de recrée une nouvelle table
-                    System.out.println("création tableau staff");
                     createEmployeeTab();
                     //createTab(createEmployeeTab(), sColumnExternal);
                     // Permet de renommer le bouton pour faire afficher les employées
