@@ -76,7 +76,7 @@ public class AddStaff extends GenericWindow {
      * @param country ArrayList contenant les différents pays actuellement présent
      */
     public AddStaff(AddStaffController asc, ArrayList<String> statut, ArrayList<String> contract, ArrayList<Personne> supervisor, ArrayList<Pays> country) {
-        super("Ajout");
+        super("Ajout d'employés");
         controller = asc;
         jpMainPanel.setLayout(new GridBagLayout());
 

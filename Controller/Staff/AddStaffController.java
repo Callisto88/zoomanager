@@ -56,6 +56,7 @@ public class AddStaffController {
                               String email, String address, String npa, String city, String country, String phone,
                               int supervisor, String status, String contract) {
 
+        System.out.println(supervisor);
         // Permet de checker le nom
         boolean bLastName = Validate.isAlphabetic(lastName);
         if(!bLastName){
@@ -201,7 +202,7 @@ public class AddStaffController {
             new ErrorController("Erreur insertion personne " + exceptionsql.toString());
         }
 
-        int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
+        int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres employées ?",
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
             add.close();

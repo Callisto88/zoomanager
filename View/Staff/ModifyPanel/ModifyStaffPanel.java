@@ -85,7 +85,7 @@ public class ModifyStaffPanel extends GenericWindow {
      */
     public ModifyStaffPanel(ModifyStaffController mscController, Personne personne, ArrayList<String> contract,
                             ArrayList<String> status, ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
-        super("Modificaion");
+        super("Modification");
         jpModifyPanel.setLayout(new GridBagLayout());
         alpSupervisor = supervisor;
         alsContract = contract;
@@ -334,8 +334,8 @@ public class ModifyStaffPanel extends GenericWindow {
         int index = 0;
         for(int i = 0; i < alpCountries.size(); ++i){
             jcbCountry.addItem(alpCountries.get(i).getPays());
-            if(personne.getAdresse() != null && alpCountries.get(i).getPays().toString().equals(
-                                                personne.getAdresse().getVille().getPays().toString())){
+            if(personne.getAdresse() != null && alpCountries.get(i).getPays().equals(
+                                                personne.getAdresse().getVille().getPays().getPays())){
                 index = i;
             }
         }

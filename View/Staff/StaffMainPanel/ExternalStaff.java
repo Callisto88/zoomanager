@@ -169,7 +169,8 @@ public class ExternalStaff extends JPanel{
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridwidth = 2;
         gbcDetailsExternal.insets = new Insets(5,5,5,5);
-        this.add(new EventsTable(tasks), gbcDetailsExternal);
+        EventsTable etExternal = new EventsTable(tasks);
+        this.add(etExternal, gbcDetailsExternal);
 
         // panel permettant de mettre les trois bouttons de suppression, modification et d'ajout de tache
         JPanel jpButtons = new JPanel();
@@ -177,7 +178,7 @@ public class ExternalStaff extends JPanel{
         //Ajout du bouton de suppression de l'intervenant actuel
         JButton jbDelete = new JButton("Suppression de l'intervenant");
         jpButtons.add(jbDelete);
-        jpButtons.add(Box.createHorizontalStrut(20));
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbDelete.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -194,7 +195,7 @@ public class ExternalStaff extends JPanel{
         // Ajout du bouton d'édition de l'intervenant
         JButton jbEdit = new JButton("Modification");
         jpButtons.add(jbEdit);
-        jpButtons.add(Box.createHorizontalStrut(20));
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -206,11 +207,25 @@ public class ExternalStaff extends JPanel{
         // Ajout du bouton d'assignation de taches
         JButton jbAssignTask = new JButton("Assignation de tâches");
         jpButtons.add(jbAssignTask);
+        jpButtons.add(Box.createHorizontalStrut(5));
         jbAssignTask.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Assignation de tâches");
                 controller.assignExternalTaskView(external);
+            }
+        });
+        // Ajout du bouton d'impression de taches
+        JButton jbPrintTask = new JButton("Impression tâches");
+        jpButtons.add(jbPrintTask);
+        jbPrintTask.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println("Impression de tâches");
+                String pdfName = "\\Personnal_Task_" + external.getNom() + ".pdf";
+                String title = "Tâches personnels";
+                String name = external.getNom() + " " + external.getPrenom();
+                controller.print(etExternal.getJTable(), pdfName, title, name);
             }
         });
 

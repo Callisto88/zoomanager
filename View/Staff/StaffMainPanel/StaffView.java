@@ -82,15 +82,15 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(((JButton) e.getSource()).getText().equals("Imprimer listing employés")){
                     System.out.println("Impression listing employés");
-                    String output = "C:\\Users\\Andre\\Desktop\\Personnal_Listing.pdf";
+                    String pdfName = "\\Personnal_Listing.pdf";
                     String title = "Listing employée";
-                    controller.print(jtTable, output, title, null);
+                    controller.print(jtTable, pdfName, title, null);
                 }
                 else{
                     System.out.println("Impression listing intervenants");
-                    String output = "C:\\Users\\Andre\\Desktop\\External_Listing.pdf";
+                    String pdfName = "\\External_Listing.pdf";
                     String title = "Listing intervenant";
-                    controller.print(jtTable, output, title, null);
+                    controller.print(jtTable, pdfName, title, null);
                 }
             }
         });
@@ -222,13 +222,14 @@ public class StaffView extends GenericWindow {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
                     //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
-                    JLabel jlDetails = new JLabel("Détails du personnel");
+                    JLabel jlDetails = new JLabel("Détails du personnel", SwingConstants.CENTER);
+                    jlDetails.setHorizontalAlignment(SwingConstants.CENTER);
                     setTitleConfig(jlDetails);
                     //gbcRight.gridwidth = 2;
                     gbcRight.anchor = GridBagConstraints.CENTER;
                     gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
-                    jpRight.add(jlDetails, gbcRight);
+                    jpRight.add(jlDetails, BorderLayout.CENTER);
                     PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(selectedRow), jtTable.getSelectedRow());
                     gbcRight.gridy = 1;
                     gbcRight.gridx = 0;

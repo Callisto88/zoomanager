@@ -298,10 +298,10 @@ public class PersonnelStaf extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Impression de tâches");
-                String output = "C:\\Users\\Andre\\Desktop\\Personnal_Task_" + personne.getNom() + ".pdf";
+                String pdfName = "\\Personnal_Task_" + personne.getNom() + ".pdf";
                 String title = "Tâches personnels";
                 String name = personne.getNom() + " " + personne.getPrenom();
-                controller.print(stStaff.getJTable(), output, title, name);
+                controller.print(stStaff.getJTable(), pdfName, title, name);
             }
         });
 

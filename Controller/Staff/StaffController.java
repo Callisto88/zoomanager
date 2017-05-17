@@ -282,7 +282,7 @@ public class StaffController {
      * @param title titre du PDF
      * @param additional Permet d'ajouter le nom d'une personne (en option)
      */
-    public void print(JTable jtTable, String output, String title, String additional){
+    public void print(JTable jtTable, String fileName, String title, String additional){
         Document document = new Document(PageSize.A4.rotate());
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
@@ -293,14 +293,15 @@ public class StaffController {
 
         // Permet de désactiver les types de fichiers
         jfc.setAcceptAllFileFilterUsed(false);
-
         int answers = jfc.showOpenDialog(new JPanel());
+        String output = "";
         if(answers == JFileChooser.APPROVE_OPTION){
             System.out.println(jfc.getSelectedFile().toString());
+            output = jfc.getSelectedFile().toString() + fileName;
         }
 
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(jfc.getSelectedFile()));
+            PdfWriter.getInstance(document, new FileOutputStream(output));
 
             document.open();
             Paragraph p = new Paragraph(title);
