@@ -121,9 +121,6 @@ public class ModifyStaffController {
                 new ErrorController(exceptionDataBase.toString());
             }
         }
-        else if(!bEmptyAddress && bEmptyNPA && bEmptyCity && bEmptyCountry){
-            // TODO: comment faire si il en manque un??
-        }
         else{
             if(bEmptyAddress){
                 mspModifyStaff.setAddressError("Champ manquant");
@@ -178,6 +175,7 @@ public class ModifyStaffController {
         }
         if(!erreur){
             mspModifyStaff.close();
+
         }
     }
 

@@ -25,6 +25,22 @@ public class PersonnelStaf extends JPanel{
     private Dimension dLabel = new Dimension(100,25);
     private Dimension dDetail = new Dimension(120, 25);
 
+    private String sFirstName;
+    private String sLastName;
+    private String sBirthday;
+    private String sAVS;
+    private String sMail;
+    private String sPhone;
+    private String sDateHire;
+    private String sAddress;
+    private String sCity;
+    private String sNPA;
+    private String sCountry;
+    private String sSupervisor;
+    private String sStatut;
+    private String sContract;
+
+
     /**
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
@@ -123,16 +139,10 @@ public class PersonnelStaf extends JPanel{
         this.add(jpBeginingDate, gbcDetailsStaff);
 
         // Ajout du champ de détails pour l'adresse
-        String sAddress = "";
-        String sCity = "";
-        String sNPA = "";
-        String sCountry = "";
-        if(personne.getAdresse() != null){
-            sAddress = personne.getAdresse().getAdresse();
-            sCity = personne.getAdresse().getVille().getVille();
-            sNPA = "" + personne.getAdresse().getVille().getCp();
-            sCountry = personne.getAdresse().getVille().getPays().getPays();
-        }
+        sAddress = personne.getAdresse().getAdresse();
+        sCity = personne.getAdresse().getVille().getVille();
+        sNPA = "" + personne.getAdresse().getVille().getCp();
+        sCountry = personne.getAdresse().getVille().getPays().getPays();
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
@@ -185,7 +195,7 @@ public class PersonnelStaf extends JPanel{
         this.add(jpCountry, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le responsable
-        String sSupervisor = "";
+        sSupervisor = "";
         if(personne.getResponsable() != 0){
             sSupervisor = controller.getNameStaff(personne.getResponsable());
         }
@@ -288,7 +298,7 @@ public class PersonnelStaf extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.out.println("Impression de tâches");
-                String output = "C:\\Users\\Bureau\\Desktop\\Personnal_Task_" + personne.getNom() + ".pdf";
+                String output = "C:\\Users\\Andre\\Desktop\\Personnal_Task_" + personne.getNom() + ".pdf";
                 String title = "Tâches personnels";
                 String name = personne.getNom() + " " + personne.getPrenom();
                 controller.print(stStaff.getJTable(), output, title, name);
@@ -299,6 +309,10 @@ public class PersonnelStaf extends JPanel{
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpButtons, gbcDetailsStaff);
+
+    }
+
+    private void updateLabel(){
 
     }
 }

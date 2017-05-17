@@ -82,13 +82,13 @@ public class StaffView extends GenericWindow {
             public void actionPerformed(ActionEvent e) {
                 if(((JButton) e.getSource()).getText().equals("Imprimer listing employés")){
                     System.out.println("Impression listing employés");
-                    String output = "C:\\Users\\Bureau\\Desktop\\Personnal_Listing.pdf";
+                    String output = "C:\\Users\\Andre\\Desktop\\Personnal_Listing.pdf";
                     String title = "Listing employée";
                     controller.print(jtTable, output, title, null);
                 }
                 else{
                     System.out.println("Impression listing intervenants");
-                    String output = "C:\\Users\\Bureau\\Desktop\\External_Listing.pdf";
+                    String output = "C:\\Users\\Andre\\Desktop\\External_Listing.pdf";
                     String title = "Listing intervenant";
                     controller.print(jtTable, output, title, null);
                 }

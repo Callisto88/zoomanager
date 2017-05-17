@@ -36,6 +36,7 @@ public class AddStaff extends GenericWindow {
     // Variables pour enregistrer la saisie.
     private String sLastName;
     private String sFirstName;
+    private boolean dateOK = false;
     private int iDay;
     private int iMonth;
     private int iYear;
@@ -128,6 +129,14 @@ public class AddStaff extends GenericWindow {
         JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
         jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
         jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+        // Permet de vérifier qu'une personne à bien sélectionné une date.
+        jdpriStartDatePicker.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dateOK = true;
+            }
+        });
+
         GridBagLayout gblDate = new GridBagLayout();
         jpBirthdayPanel.setLayout(gblDate);
         GridBagConstraints gbcDate = new GridBagConstraints();
@@ -188,7 +197,6 @@ public class AddStaff extends GenericWindow {
         jlCountry.setPreferredSize(dLabel);
         jpCountry.add(jlCountry);
         jcbCountry = new JComboBox();
-        jcbCountry.addItem("");
         for(int i = 0; i < country.size(); ++i){
             jcbCountry.addItem(country.get(i).getPays());
         }
@@ -285,10 +293,7 @@ public class AddStaff extends GenericWindow {
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
                 sCity = jtfCity.getText();
-                if(jcbCountry.getSelectedIndex() != 0) {
-                    sCountry = country.get(jcbCountry.getSelectedIndex() - 1).getPays();
-                }
-                else sCountry = "";
+                sCountry = country.get(jcbCountry.getSelectedIndex()).getPays();
                 sPhone = jtfPhone.getText();
                 if(jcbSupervisor.getSelectedIndex() != 0) {
                     iSupervisor = supervisor.get(jcbSupervisor.getSelectedIndex() - 1).getIdPersonne();
@@ -300,7 +305,7 @@ public class AddStaff extends GenericWindow {
                 sContract = jcbContract.getSelectedItem().toString();
 
                 // Permet de fermer la fenêtre si tout s'est bien passé
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, sAVS, sEMail, sAddress, sNPA,
+                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, dateOK, sAVS, sEMail, sAddress, sNPA,
                                             sCity, sCountry, sPhone, iSupervisor, sStatus, sContract);
             }
         });
@@ -357,7 +362,7 @@ public class AddStaff extends GenericWindow {
      */
     public void setBirthdayError(String error) {
         jdpriStartDatePicker.setToolTipText(error);
-        jdpriStartDatePicker.setBackground(Color.RED);
+        jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.RED);
     }
 
     /**

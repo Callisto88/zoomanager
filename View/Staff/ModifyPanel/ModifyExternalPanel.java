@@ -277,9 +277,14 @@ public class ModifyExternalPanel extends GenericWindow {
             jpCountry.add(jlCountry);
             // Récupération du Pays
             jcbCountry = new JComboBox();
+            int index = 0;
             for(int i = 0; i < alpCountries.size(); ++i){
                 jcbCountry.addItem(alpCountries.get(i).getPays());
+                if(sCountry.equals(alpCountries.get(i).getPays().toString())){
+                    index = i;
+                }
             }
+            jcbCountry.setSelectedIndex(index);
             jcbCountry.setPreferredSize(dInput);
             jpCountry.add(jcbCountry);
             gbcConstraint.anchor = GridBagConstraints.WEST;

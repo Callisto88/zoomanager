@@ -11,6 +11,8 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
 import java.sql.Date;
 import java.sql.SQLException;
@@ -27,10 +29,10 @@ public class StaffController {
     private AddStaffController addController = null;
     private ModifyStaffController modifyStaffController = null;
     private AssignStaffTaskController assignController = null;
-    private AssignExternalTaskController aetcAssignExternal = null;
 
     private AddExternalController aecAddExternal = null;
     private ModifyExternalController mecModifyExternal = null;
+    private AssignExternalTaskController aetcAssignExternal = null;
 
     private StaffView svPersonnel = null;
     private DBInteraction querry = null;
@@ -61,7 +63,7 @@ public class StaffController {
      */
     public ArrayList<Personne> getPersonnel(){
         ArrayList<Personne> alpPersonnel = new ArrayList<>();
-        dbConnection(); // TODO: BONNE PRATIQUE OU PAS??????? (instancier une nouvelle co à chaque fois?)
+        dbConnection();
         try{
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
@@ -282,8 +284,23 @@ public class StaffController {
      */
     public void print(JTable jtTable, String output, String title, String additional){
         Document document = new Document(PageSize.A4.rotate());
+        // Permet de crée une popup permettant de choisir son chemin de destination
+        final JFileChooser jfc = new JFileChooser();
+        jfc.setCurrentDirectory(new java.io.File("."));
+        jfc.setDialogTitle("Veuillez sélectionner un dossier de destination");
+        // Permet de sélectionner uniquement les dossiers
+        jfc.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        // Permet de désactiver les types de fichiers
+        jfc.setAcceptAllFileFilterUsed(false);
+
+        int answers = jfc.showOpenDialog(new JPanel());
+        if(answers == JFileChooser.APPROVE_OPTION){
+            System.out.println(jfc.getSelectedFile().toString());
+        }
+
         try {
-            PdfWriter.getInstance(document, new FileOutputStream(output));
+            PdfWriter.getInstance(document, new FileOutputStream(jfc.getSelectedFile()));
 
             document.open();
             Paragraph p = new Paragraph(title);
