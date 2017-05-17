@@ -8,6 +8,7 @@ import View.GenericWindow;
 import View.MyModelTable;
 import Controller.Animal.*;
 import com.jidesoft.swing.AutoCompletion;
+import com.sun.org.apache.regexp.internal.RE;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
@@ -608,6 +609,7 @@ public class AnimalTab extends GenericWindow {
 
 
         // Ye ligne DateDeces
+        SqlDateModel sdmModel2 = new SqlDateModel();
         if(selectedAnimal.getDateDeces() != null){
             JLabel jlDateDeces = new JLabel("Date Décès :");
             setLabelConfig(jlDateDeces);
@@ -620,9 +622,9 @@ public class AnimalTab extends GenericWindow {
             year  = localDateD.getYear();
             month = localDateD.getMonthValue() - 1;
             day   = localDateD.getDayOfMonth();
-            sdmModel1.setDate(year, month, day);
-            sdmModel1.setSelected(true);
-            jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+            sdmModel2.setDate(year, month, day);
+            sdmModel2.setSelected(true);
+            jdpliStartDatePanel = new JDatePanelImpl(sdmModel2, pStartProperties);
             jdpliStartDatePanel.setPreferredSize(new Dimension(270, 230));
             jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
 
@@ -640,8 +642,13 @@ public class AnimalTab extends GenericWindow {
 
 
 
-
         // Les autre éléments dépendants du type d'animal
+        JTextField jtTemperature = new JTextField();
+        JTextField jtPoids = new JTextField();
+        JTextField jtBague = new JTextField();
+        JTextField jtEnvergure = new JTextField();
+
+
         if(selectedAnimal instanceof Felin){
             JLabel jlPoids = new JLabel("Poids :");
             setLabelConfig(jlPoids);
@@ -651,7 +658,7 @@ public class AnimalTab extends GenericWindow {
 
             double poids = ((Felin) selectedAnimal).getPoids();
 
-            JTextField jtPoids = new JTextField(String.valueOf(poids));
+            jtPoids.setText(String.valueOf(poids));
             jtPoids.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
@@ -674,7 +681,7 @@ public class AnimalTab extends GenericWindow {
 
             String bague = ((Oiseau) selectedAnimal).getBague();
 
-            JTextField jtBague = new JTextField(bague);
+            jtBague.setText(bague);
             jtBague.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
@@ -697,7 +704,7 @@ public class AnimalTab extends GenericWindow {
 
             double envergure = ((Oiseau) selectedAnimal).getEnvergure();
 
-            JTextField jtEnvergure = new JTextField(String.valueOf(envergure));
+            jtEnvergure.setText(String.valueOf(envergure));
             jtEnvergure.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
@@ -721,7 +728,7 @@ public class AnimalTab extends GenericWindow {
             y++;
 
             double temperature = ((Reptile) selectedAnimal).getTemperature();
-            JTextField jtTemperature = new JTextField(String.valueOf(temperature));
+            jtTemperature.setText(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
             if(mode == 2){
@@ -744,7 +751,7 @@ public class AnimalTab extends GenericWindow {
             y++;
 
             double temperature = ((Primate) selectedAnimal).getTemperature();
-            JTextField jtTemperature = new JTextField(String.valueOf(temperature));
+            jtTemperature.setText(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
             if(mode == 2){
@@ -779,8 +786,124 @@ public class AnimalTab extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 //Check des valeurs du formulaire avant de demander confirmation
+                boolean formOk = true;
 
-                //selectedAnimal.setAnneeNaissance();
+                String nom = jtNomAnimal.getText();
+                String nomCommun = jtNomCommun.getText();
+                String sexe = jtSexe.getText();
+                String poids;
+                String temperature;
+                String bague;
+                String envergure;
+
+                int year = sdmModel1.getYear();
+                int month = sdmModel1.getMonth();
+                int day = sdmModel1.getDay();
+
+                int yearD = 1970;
+                int monthD = 1;
+                int dayD = 1;
+
+
+                int enclos = enclosDB.get(jcEnclos.getSelectedIndex()).getId();
+                int race = racesDB.get(jcRaces.getSelectedIndex()).getId();
+                int origine = originesDB.get(jcOrigines.getSelectedIndex()).getPaysId();
+
+                if(!Validate.isAlphabetic(nom)){
+                    jtNomAnimal.setBackground(Color.RED);
+                    formOk = false;
+                }
+                if(!Validate.isAlphabetic(nomCommun)){
+                    jtNomCommun.setBackground(Color.RED);
+                    formOk = false;
+                }
+                if(!Validate.isAlphabetic(sexe)){
+                    jtSexe.setBackground(Color.RED);
+                    formOk = false;
+                }
+                if(!Validate.isDate(year, month, day)){
+                    //jdpliStartDatePanel.setBackground(Color.RED);
+                    formOk = false;
+                }
+                if(selectedAnimal instanceof Felin){
+                    poids = jtPoids.getText();
+                    if(!Validate.isNumeric(poids)) {
+                        formOk = false;
+                        jtPoids.setBackground(Color.RED);
+                    }
+                }
+                else if(selectedAnimal instanceof Oiseau){
+                    envergure = jtEnvergure.getText();
+                    bague = jtBague.getText();
+                    if(!Validate.isNumeric(envergure)){
+                        formOk = false;
+                        jtEnvergure.setBackground(Color.RED);
+                    }
+                    if(!Validate.isAlphabetic(bague)){
+                        formOk = false;
+                        jtBague.setBackground(Color.RED);
+                    }
+                }
+                else if(selectedAnimal instanceof Reptile || selectedAnimal instanceof Primate){
+                    temperature = jtTemperature.getText();
+                    if(!Validate.isNumeric(temperature)){
+                        formOk = false;
+                        jtTemperature.setBackground(Color.RED);
+                    }
+                }
+
+                if(selectedAnimal.getDateDeces() != null){
+                    yearD = sdmModel2.getYear();
+                    monthD = sdmModel2.getYear();
+                    dayD = sdmModel2.getYear();
+                }
+
+                if(formOk){
+                    Animal newAnimal;
+                    if(selectedAnimal.getDateDeces() != null) {
+                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), enclos, origine, race, new Date(yearD, monthD, dayD));
+                    }
+                    else{
+                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), enclos, origine, race);
+                    }
+                    if(mode == 1){
+                        newAnimal.setId(selectedAnimal.getId());
+                        atAnimalController.modAnimal(newAnimal);
+                    }
+                    else if(mode == 2) {
+                        atAnimalController.insAnimal(newAnimal);
+                        Vector<Object> vNewAnimal = newAnimal.toVector(1);
+                        int age = calculateAge(newAnimal.getAnneeNaissance());
+                        String ageL = newAnimal.getAnneeNaissance().toString() + " : " + age + " ans";
+                        vNewAnimal.setElementAt(ageL ,4);
+                        if (newAnimal.getEnclos() != 0) {
+                            for (Enclos enclos2 : enclosDB) {
+                                if (enclos2.getId() == newAnimal.getEnclos()) {
+                                    vNewAnimal.add(enclos2.getNom());
+                                }
+                            }
+                        } else {
+                            vNewAnimal.add("");
+                        }
+                        if (newAnimal.getRace() != 0) {
+                            for (Race race2 : racesDB) {
+                                if (race2.getId() == newAnimal.getRace()) {
+                                    vNewAnimal.setElementAt(race2.getNom(), 2);
+                                }
+                            }
+                        } else {
+                            vNewAnimal.setElementAt("", 2);
+                        }
+                        dataTable.addRow(vNewAnimal);
+                        animauxDB.add(newAnimal);
+                        jtTable.updateUI();
+                    }
+                    JOptionPane.showMessageDialog(jpMainPanel, "Succès");
+                }
+                else{
+                    JOptionPane.showMessageDialog(jpMainPanel, "Données éronées !", "Erreur", JOptionPane.WARNING_MESSAGE);
+                }
+
             }
         });
 
