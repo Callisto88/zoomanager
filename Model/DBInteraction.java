@@ -349,7 +349,7 @@ public class DBInteraction {
             "WHERE refArticle = ?\n" +
             "AND Commande.statut = \"EN_COURS\";";
 
-    private static final String SEL_ORDERS_BY_STATE_AND_DATE = "SELECT * FROM Commande WHERE `statut` LIKE ? AND `dateHeure` BETWEEN ? AND ?;";
+    private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` >= ? AND `dateHeure` <= ? ORDER BY dateHeure;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // PARAMETRE DE LA CLASSE :
