@@ -10,6 +10,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Classe pour l'assignation de tâches à un employé
@@ -19,6 +20,7 @@ public class TaskStaffPanel extends GenericWindow{
     private ArrayList<Evenement> tasks = null;
     private AssignStaffTaskController astcController = null;
     private Personne personne = null;
+    private HashMap<String, String> hmTask = null;
 
     /**
      * Constructeur de la fenêtre d'assignation de tâche à un employé
@@ -38,10 +40,11 @@ public class TaskStaffPanel extends GenericWindow{
         // Boucle permettant de crée les boutons correspondant au tâches non-assignés, et les efface
         // en attribuant la tache sélectionné (cliqué) à la personne
         ArrayList<JButton> buttons = new ArrayList<>();
+        hmTask = new HashMap<>();
         for(int i = 0; i < tasks.size(); ++i){
             JButton task = new JButton(tasks.get(i).getDescription());
             buttons.add(task);
-            System.out.println(tasks.get(i).getDescription());
+            hmTask.put("" + i, tasks.get(i).getDescription());
             task.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
@@ -59,7 +62,6 @@ public class TaskStaffPanel extends GenericWindow{
         // Permet d'ajouter chaque bouttons au pannel
         for(int i = 0; i < buttons.size(); ++i){
             jpMainPanel.add(buttons.get(i));
-            System.out.println(buttons.get(i).getName());
         }
 
         configFrame(getJfFrame(), this);
@@ -70,10 +72,12 @@ public class TaskStaffPanel extends GenericWindow{
      * @param task tâche à retrouver
      */
     private void checkTask(String task){
-        for (Evenement event : tasks){
-            if (event.getDescription().equals(task)){
-                astcController.assignTask(personne, event);
-            }
+        int id = 0;
+        try{
+           id = Integer.parseInt(hmTask.get(task));
+        } catch (Exception e){
+           e.printStackTrace();
         }
+        astcController.assignTask(personne, tasks.get(id));
     }
 }

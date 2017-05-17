@@ -29,11 +29,13 @@ public class StaffView extends GenericWindow {
     protected int selectedRow;
     private TableRowSorter<MyModelTable> sorterStaff = null;
     private TableRowSorter<MyModelTable> sorterExternal = null;
-    private ArrayList<Personne> personnes = null;
+    private ArrayList<Personne> alPersonnes = null;
     private Vector<Vector<Object>> tableauStaff = null;
     private Vector<Vector<Object>> tableauExternal = null;
     private ArrayList<Intervenant> alExternal = null;
-    MyModelTable mmtListing = null;
+    private MyModelTable mmtListing = null;
+    private PersonnelStaf psDetail = null;
+    private ExternalStaff esExternal = null;
 
     /**
      * Constructeur permettant d'instancier toutes les fenêtre composant la fenêtre principale
@@ -44,7 +46,7 @@ public class StaffView extends GenericWindow {
     public StaffView(StaffController persControl, ArrayList<Personne> tab) {
         super("Personnel");
         controller = persControl;
-        personnes = tab;
+        alPersonnes = tab;
         jtTable = new JTable();
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
@@ -221,7 +223,7 @@ public class StaffView extends GenericWindow {
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                    //setRightPanelPersonnel(personnes.get(jtTable.getSelectedRow()));
+                    //setRightPanelPersonnel(alPersonnes.get(jtTable.getSelectedRow()));
                     JLabel jlDetails = new JLabel("Détails du personnel", SwingConstants.CENTER);
                     jlDetails.setHorizontalAlignment(SwingConstants.CENTER);
                     setTitleConfig(jlDetails);
@@ -230,7 +232,7 @@ public class StaffView extends GenericWindow {
                     gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
                     jpRight.add(jlDetails, BorderLayout.CENTER);
-                    PersonnelStaf psDetail = new PersonnelStaf(controller, personnes.get(selectedRow), jtTable.getSelectedRow());
+                    psDetail = new PersonnelStaf(controller, alPersonnes.get(selectedRow), selectedRow);
                     gbcRight.gridy = 1;
                     gbcRight.gridx = 0;
                     jpRight.add(psDetail, gbcRight);
@@ -242,7 +244,7 @@ public class StaffView extends GenericWindow {
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                    ExternalStaff external = new ExternalStaff(controller, alExternal.get(selectedRow), jtTable.getSelectedRow());
+                    esExternal = new ExternalStaff(controller, alExternal.get(selectedRow), selectedRow);
                     JLabel jlDetails = new JLabel("Détails des intervenants");
                     setTitleConfig(jlDetails);
                     gbcRight.gridx = 0;
@@ -251,7 +253,7 @@ public class StaffView extends GenericWindow {
                     gbcRight.gridwidth = 2;
                     jpRight.add(jlDetails, gbcRight);
                     gbcRight.gridy = 1;
-                    jpRight.add(external, gbcRight);
+                    jpRight.add(esExternal, gbcRight);
                     jpRight.revalidate();
                     jpRight.repaint();
                 }
@@ -310,10 +312,10 @@ public class StaffView extends GenericWindow {
      */
     public void createEmployeeTab(){
         tableauStaff = new Vector<>();
-        personnes = controller.getPersonnel();
-        if(personnes!= null) {
-            for (int i = 0; i < personnes.size(); ++i) {
-                tableauStaff.add(personnes.get(i).toVector());
+        alPersonnes = controller.getPersonnel();
+        if(alPersonnes != null) {
+            for (int i = 0; i < alPersonnes.size(); ++i) {
+                tableauStaff.add(alPersonnes.get(i).toVector());
             }
         }
         mmtListing = new MyModelTable(tableauStaff, columnName);
@@ -351,17 +353,55 @@ public class StaffView extends GenericWindow {
         jtTable.setRowSorter(sorterExternal);
     }
 
+    /**
+     * Méthode permettant de remettre à jour le pannel de droite pour le détail d'un intervenant, une fois une
+     * modification d'intervenant effectué
+     * @param external Intervenant qui a été modifié
+     */
+    public void refreshExternalView(Intervenant external){
+        esExternal.updateLabel(external);
+    }
+
+    /**
+     * Méthode permettant de remettre à jour le pannel de droite pour le détail d'un employés, une fois une
+     * modification d'intervenant effectué
+     * @param personne personnel qui a été modifié
+     */
+    public void refreshStaffView(Personne personne){
+        psDetail.updateLabel(personne);
+    }
+
+    /**
+     * Méthode permettant de rajouter une personne à la JTable des intervenants
+     * @param external Intervenant qui a été rajouter à la BDD
+     */
+    public void addExternalTab(Intervenant external){
+        mmtListing.addRow(external.toVector());
+        alExternal.add(external);
+        jtTable.clearSelection();
+        jtTable.updateUI();
+    }
+
+    /**
+     * Méthode permettant de rajouter une personne à la JTable des employés
+     * @param personne personnel qui a été rajouter à la BDD
+     */
+    public void addStaffTab(Personne personne){
+        mmtListing.addRow(personne.toVector());
+        alPersonnes.add(personne);
+        jtTable.clearSelection();
+        jtTable.updateUI();
+    }
 
     /**
      * Méthode permettant de supprimé une ligne passé en paramètre
      * @param line numéro de ligne à supprimer
      */
     public void eraseStaffRow(int line){
-        tableauStaff.removeElementAt(line);
-        //mmtListing.removeRow(line);
-        //jtTable.clearSelection();
+        mmtListing.removeRow(line);
+        alPersonnes.remove(line);
+        jtTable.clearSelection();
         jtTable.updateUI();
-        //createEmployeeTab();
     }
 
     /**
@@ -370,10 +410,10 @@ public class StaffView extends GenericWindow {
      */
     public void eraseExternalRow(int line){
 
-        tableauExternal.removeElementAt(line);
-        //jtTable.clearSelection();
+        mmtListing.removeRow(line);
+        alExternal.remove(line);
+        jtTable.clearSelection();
         jtTable.updateUI();
-        //createExternalTab();
     }
 
 }

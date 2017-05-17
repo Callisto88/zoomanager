@@ -496,7 +496,12 @@ public class ModifyStaffPanel extends GenericWindow {
                         sPhone = jtfPhone.getText();
                     }
                     if(bSupervisor) {
-                        iSupervisor = alpSupervisor.get(jcbSupervisor.getSelectedIndex() + 1).getIdPersonne();
+                        if(jcbSupervisor.getSelectedIndex() != 0) {
+                            iSupervisor = alpSupervisor.get(jcbSupervisor.getSelectedIndex() - 1).getIdPersonne();
+                        }
+                        else {
+                            iSupervisor = 0;
+                        }
                     }
                     if(bContract) {
                         sContract = jcbContract.getSelectedItem().toString();

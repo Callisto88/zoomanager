@@ -23,6 +23,16 @@ public class ExternalStaff extends JPanel{
     private int y = 0;
     private int line;
 
+    private JLabel jlFirstNameInfo;
+    private JLabel jlLastNameInfo;
+    private JLabel jlEmailInfo;
+    private JLabel jlPhoneInfo;
+    private JLabel jlAddressInfo;
+    private JLabel jlCityInfo;
+    private JLabel jlNPAInfo;
+    private JLabel jlCountryInfo;
+    private JLabel jlCompagnyInfo;
+
     private Dimension dLabel = new Dimension(100,25);
     private Dimension dDetail = new Dimension(120, 25);
 
@@ -45,7 +55,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpLastName = new JPanel();
         JLabel jlLastName = new JLabel("Nom : ");
         jlLastName.setPreferredSize(dLabel);
-        JLabel jlLastNameInfo = new JLabel(external.getNom());
+        jlLastNameInfo = new JLabel(external.getNom());
         jpLastName.add(jlLastName);
         jlLastNameInfo.setPreferredSize(dDetail);
         jpLastName.add(jlLastNameInfo);
@@ -56,7 +66,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpFirstName = new JPanel();
         JLabel jlFirstName = new JLabel("Prénom : ");
         jlFirstName.setPreferredSize(dLabel);
-        JLabel jlFirstNameInfo = new JLabel(external.getPrenom());
+        jlFirstNameInfo = new JLabel(external.getPrenom());
         jlFirstNameInfo.setPreferredSize(dLabel);
         jpFirstName.add(jlFirstName);
         jlFirstNameInfo.setPreferredSize(dDetail);
@@ -69,7 +79,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-Mail : ");
         jlEmail.setPreferredSize(dLabel);
-        JLabel jlEmailInfo = new JLabel(external.getEmail());
+        jlEmailInfo = new JLabel(external.getEmail());
         jlEmailInfo.setPreferredSize(dDetail);
         jpEmail.add(jlEmail);
         jpEmail.add(jlEmailInfo);
@@ -81,7 +91,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
         jlPhone.setPreferredSize(dLabel);
-        JLabel jlPhoneInfo = new JLabel(external.getTelephone());
+        jlPhoneInfo = new JLabel(external.getTelephone());
         jpPhone.add(jlPhone);
         jlPhoneInfo.setPreferredSize(dDetail);
         jpPhone.add(jlPhoneInfo);
@@ -93,7 +103,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpCompagny = new JPanel();
         JLabel jlCompagny = new JLabel("Entreprise : ");
         jlCompagny.setPreferredSize(dLabel);
-        JLabel jlCompagnyInfo = new JLabel(external.getEntreprise());
+        jlCompagnyInfo = new JLabel(external.getEntreprise());
         jpCompagny.add(jlCompagny);
         jlCompagny.setPreferredSize(dDetail);
         jpCompagny.add(jlCompagnyInfo);
@@ -105,6 +115,7 @@ public class ExternalStaff extends JPanel{
 
 
         // Ajout du champ de détails pour l'adresse
+        // TODO A VIRER UNE FOIS LA BDD RETOUCHER!!!!! ADRESSE OBLIGATOIRE!
         String sAddress = "";
         String sCity = "";
         String sNPA = "";
@@ -118,7 +129,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel(sAddress);
+        jlAddressInfo = new JLabel(sAddress);
         jpAddress.add(jlAddress);
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddressInfo);
@@ -130,7 +141,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        JLabel jlCityInfo = new JLabel(sCity);
+        jlCityInfo = new JLabel(sCity);
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
         jpCity.add(jlCityInfo);
@@ -142,7 +153,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        JLabel jlNPAInfo = new JLabel(sNPA);
+        jlNPAInfo = new JLabel(sNPA);
         jpNPA.add(jlNPA);
         jlNPAInfo.setPreferredSize(dDetail);
         jpNPA.add(jlNPAInfo);
@@ -154,7 +165,7 @@ public class ExternalStaff extends JPanel{
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        JLabel jlCountryInfo = new JLabel(sCountry);
+        jlCountryInfo = new JLabel(sCountry);
         jpCountry.add(jlCountry);
         jlCountryInfo.setPreferredSize(dDetail);
         ++y;
@@ -234,6 +245,19 @@ public class ExternalStaff extends JPanel{
         gbcDetailsExternal.gridy = y;
         this.add(jpButtons, gbcDetailsExternal);
 
+    }
+
+    public void updateLabel(Intervenant external){
+        jlFirstNameInfo.setText(external.getPrenom());
+        jlLastNameInfo.setText(external.getNom());
+        jlEmailInfo.setText(external.getEmail());
+        jlPhoneInfo.setText(external.getTelephone());
+        jlAddressInfo.setText(external.getAdresse().getAdresse());
+        jlCityInfo.setText(external.getAdresse().getVille().getVille());
+        jlNPAInfo.setText("" + external.getAdresse().getVille().getCp());
+        jlCountryInfo.setText(external.getAdresse().getVille().getPays().getPays());
+        jlCompagnyInfo.setText(external.getEntreprise());
+        this.updateUI();
     }
 
 }

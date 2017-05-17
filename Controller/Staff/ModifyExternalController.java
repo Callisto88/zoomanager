@@ -17,14 +17,16 @@ public class ModifyExternalController {
     private ModifyExternalPanel mepExternal = null;
     private Intervenant external = null;
     private DBInteraction querry = null;
+    private StaffController scController = null;
 
     /**
      * Constructeur du controlleur de la fenêtre de modification des intervenant
      * @param external Interveant à modifier
      */
-    public ModifyExternalController(Intervenant external){
+    public ModifyExternalController(StaffController scController, Intervenant external){
         mepExternal = new ModifyExternalPanel(this, external, getCountries());
         this.external = external;
+        this.scController = scController;
     }
 
     /**
@@ -128,6 +130,7 @@ public class ModifyExternalController {
         }
         if(!error){
             mepExternal.close();
+            scController.refreshExternal(external);
         }
 
     }

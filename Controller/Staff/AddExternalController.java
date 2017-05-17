@@ -28,6 +28,7 @@ public class AddExternalController {
 
         aeExternal = new AddExternal(this, countries);
         aeExternal.disableError();
+        this.scControlleur = scControlleur;
     }
 
     /**
@@ -157,19 +158,19 @@ public class AddExternalController {
     public void insertExternal(Intervenant external){
         dbConnection();
         try{
-            int newIntervenantID = querry.insertIntervenant(external);
+            querry.insertIntervenant(external);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
             new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
-            new ErrorController("Erreur insertion externe " + exceptionsql.toString());
+            new ErrorController(exceptionsql.toString());
         }
+        scControlleur.refreshExternalTab(external);
         int n = JOptionPane.showConfirmDialog(new JPanel(), "Voulez-vous ajouter d'autres intervenants ?",
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
             aeExternal.close();
-            scControlleur.refreshExternal();
         }
         System.out.println("Intervenant externe inséré");
     }

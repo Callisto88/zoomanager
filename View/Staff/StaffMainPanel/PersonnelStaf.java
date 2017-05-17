@@ -17,6 +17,8 @@ import java.util.ArrayList;
  */
 public class PersonnelStaf extends JPanel{
 
+    private StaffController scController = null;
+
     private GridBagConstraints gbcDetailsStaff = new GridBagConstraints();
     private int x = 0;
     private int y = 0;
@@ -25,20 +27,20 @@ public class PersonnelStaf extends JPanel{
     private Dimension dLabel = new Dimension(100,25);
     private Dimension dDetail = new Dimension(120, 25);
 
-    private String sFirstName;
-    private String sLastName;
-    private String sBirthday;
-    private String sAVS;
-    private String sMail;
-    private String sPhone;
-    private String sDateHire;
-    private String sAddress;
-    private String sCity;
-    private String sNPA;
-    private String sCountry;
-    private String sSupervisor;
-    private String sStatut;
-    private String sContract;
+    private JLabel jlFirstNameInfo;
+    private JLabel jlLastNameInfo;
+    private JLabel jlBirthdayInfo;
+    private JLabel jlAVSInfo;
+    private JLabel jlEmailInfo;
+    private JLabel jlPhoneInfo;
+    private JLabel jlDateHireInfo;
+    private JLabel jlAddressInfo;
+    private JLabel jlCityInfo;
+    private JLabel jlNPAInfo;
+    private JLabel jlCountryInfo;
+    private JLabel jlSupervisorInfo;
+    private JLabel jlStatutInfo;
+    private JLabel jlContractInfo;
 
 
     /**
@@ -51,6 +53,9 @@ public class PersonnelStaf extends JPanel{
 
         this.setLayout(new GridBagLayout());
         this.line = line;
+        this.scController = controller;
+
+
         gbcDetailsStaff.gridx = x;
         gbcDetailsStaff.gridy = y;
         JPanel jpLeft = new JPanel();
@@ -60,7 +65,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpLastName = new JPanel();
         JLabel jlLastName = new JLabel("Nom : ");
         jlLastName.setPreferredSize(dLabel);
-        JLabel jlLastNameInfo = new JLabel(personne.getNom());
+        jlLastNameInfo = new JLabel(personne.getNom());
         jlLastNameInfo.setPreferredSize(dDetail);
         jpLastName.add(jlLastName);
         jpLastName.add(jlLastNameInfo);
@@ -69,7 +74,7 @@ public class PersonnelStaf extends JPanel{
         // Ajout du champ de détails pour le prénom
         JPanel jpFirstName = new JPanel();
         JLabel jlFirstName = new JLabel("Prénom : ");
-        JLabel jlFirstNameInfo = new JLabel(personne.getPrenom());
+        jlFirstNameInfo = new JLabel(personne.getPrenom());
         jlFirstName.setPreferredSize(dLabel);
         jpFirstName.add(jlFirstName);
         jlFirstNameInfo.setPreferredSize(dDetail);
@@ -82,7 +87,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpBirthday = new JPanel();
         JLabel jlBirthday = new JLabel("Date de naissance : ");
         jlBirthday.setPreferredSize(dLabel);
-        JLabel jlBirthdayInfo = new JLabel(personne.getDateNaissance().toString());
+        jlBirthdayInfo = new JLabel(personne.getDateNaissance().toString());
         jpBirthday.add(jlBirthday);
         jlBirthdayInfo.setPreferredSize(dDetail);
         jpBirthday.add(jlBirthdayInfo);
@@ -93,7 +98,7 @@ public class PersonnelStaf extends JPanel{
         // Ajout du champ de détails pour le numéro AVS
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
-        JLabel jlAVSInfo = new JLabel(personne.getNoAVS());
+        jlAVSInfo = new JLabel(personne.getNoAVS());
         jlAVS.setPreferredSize(dLabel);
         jpAVS.add(jlAVS);
         jlAVSInfo.setPreferredSize(dDetail);
@@ -106,7 +111,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpEmail = new JPanel();
         JLabel jlEmail = new JLabel("E-Mail : ");
         jlEmail.setPreferredSize(dLabel);
-        JLabel jlEmailInfo = new JLabel(personne.getEmail());
+        jlEmailInfo = new JLabel(personne.getEmail());
         jpEmail.add(jlEmail);
         jlEmailInfo.setPreferredSize(dDetail);
         jpEmail.add(jlEmailInfo);
@@ -118,7 +123,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpPhone = new JPanel();
         JLabel jlPhone = new JLabel("Téléphone : ");
         jlPhone.setPreferredSize(dLabel);
-        JLabel jlPhoneInfo = new JLabel(personne.getTelephone());
+        jlPhoneInfo = new JLabel(personne.getTelephone());
         jpPhone.add(jlPhone);
         jlPhoneInfo.setPreferredSize(dDetail);
         jpPhone.add(jlPhoneInfo);
@@ -130,23 +135,23 @@ public class PersonnelStaf extends JPanel{
         JPanel jpBeginingDate = new JPanel();
         JLabel jlBeginingDate = new JLabel("Engagement : ");
         jlBeginingDate.setPreferredSize(dLabel);
-        JLabel jlBeginingDateInfo = new JLabel(personne.getDateDebut().toString());
+        jlDateHireInfo = new JLabel(personne.getDateDebut().toString());
         jpBeginingDate.add(jlBeginingDate);
-        jlBeginingDateInfo.setPreferredSize(dDetail);
-        jpBeginingDate.add(jlBeginingDateInfo);
+        jlDateHireInfo.setPreferredSize(dDetail);
+        jpBeginingDate.add(jlDateHireInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpBeginingDate, gbcDetailsStaff);
 
         // Ajout du champ de détails pour l'adresse
-        sAddress = personne.getAdresse().getAdresse();
-        sCity = personne.getAdresse().getVille().getVille();
-        sNPA = "" + personne.getAdresse().getVille().getCp();
-        sCountry = personne.getAdresse().getVille().getPays().getPays();
+        String sAddress = personne.getAdresse().getAdresse();
+        String sCity = personne.getAdresse().getVille().getVille();
+        String sNPA = "" + personne.getAdresse().getVille().getCp();
+        String sCountry = personne.getAdresse().getVille().getPays().getPays();
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);
-        JLabel jlAddressInfo = new JLabel(sAddress);
+        jlAddressInfo = new JLabel(sAddress);
         //System.out.println(personne.getAdresse().toString());
         jlAddressInfo.setPreferredSize(dDetail);
         jpAddress.add(jlAddress);
@@ -162,7 +167,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpCity = new JPanel();
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
-        JLabel jlCityInfo = new JLabel(sCity);
+        jlCityInfo = new JLabel(sCity);
         jpCity.add(jlCity);
         jlCityInfo.setPreferredSize(dDetail);
         jpCity.add(jlCityInfo);
@@ -174,7 +179,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpNPA = new JPanel();
         JLabel jlNPA = new JLabel("NPA : ");
         jlNPA.setPreferredSize(dLabel);
-        JLabel jlNPAInfo = new JLabel(sNPA);
+        jlNPAInfo = new JLabel(sNPA);
         jpNPA.add(jlNPA);
         jlNPAInfo.setPreferredSize(dDetail);
         jpNPA.add(jlNPAInfo);
@@ -186,7 +191,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpCountry = new JPanel();
         JLabel jlCountry = new JLabel("Pays : ");
         jlCountry.setPreferredSize(dLabel);
-        JLabel jlCountryInfo = new JLabel(sCountry);
+        jlCountryInfo = new JLabel(sCountry);
         jpCountry.add(jlCountry);
         jlCountryInfo.setPreferredSize(dDetail);
         jpCountry.add(jlCountryInfo);
@@ -195,17 +200,17 @@ public class PersonnelStaf extends JPanel{
         this.add(jpCountry, gbcDetailsStaff);
 
         // Ajout du champ de détails pour le responsable
-        sSupervisor = "";
+        String sSupervisor = "";
         if(personne.getResponsable() != 0){
             sSupervisor = controller.getNameStaff(personne.getResponsable());
         }
         JPanel jpAdvisor = new JPanel();
         JLabel jlAdvisor = new JLabel("Responsable : ");
         jlAdvisor.setPreferredSize(dLabel);
-        JLabel jlAdvisorInfo = new JLabel(sSupervisor);
+        jlSupervisorInfo = new JLabel(sSupervisor);
         jpAdvisor.add(jlAdvisor);
-        jlAdvisorInfo.setPreferredSize(dDetail);
-        jpAdvisor.add(jlAdvisorInfo);
+        jlSupervisorInfo.setPreferredSize(dDetail);
+        jpAdvisor.add(jlSupervisorInfo);
         ++y;
         gbcDetailsStaff.gridy = y;
         this.add(jpAdvisor, gbcDetailsStaff);
@@ -214,7 +219,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpStatut = new JPanel();
         JLabel jlStatut = new JLabel("Statut : ");
         jlStatut.setPreferredSize(dLabel);
-        JLabel jlStatutInfo = new JLabel(personne.getStatut());
+        jlStatutInfo = new JLabel(personne.getStatut());
         jpStatut.add(jlStatut);
         jlStatutInfo.setPreferredSize(dDetail);
         jpStatut.add(jlStatutInfo);
@@ -226,7 +231,7 @@ public class PersonnelStaf extends JPanel{
         JPanel jpContract = new JPanel();
         JLabel jlContract = new JLabel("Contrat : ");
         jlContract.setPreferredSize(dLabel);
-        JLabel jlContractInfo = new JLabel(personne.getTypeContrat());
+        jlContractInfo = new JLabel(personne.getTypeContrat());
         jpContract.add(jlContract);
         jlContractInfo.setPreferredSize(dDetail);
         jpContract.add(jlContractInfo);
@@ -312,8 +317,27 @@ public class PersonnelStaf extends JPanel{
 
     }
 
-    private void updateLabel(){
-
+    public void updateLabel(Personne personne){
+        jlFirstNameInfo.setText(personne.getPrenom());
+        jlLastNameInfo.setText(personne.getNom());
+        jlBirthdayInfo.setText(personne.getDateNaissance().toString());
+        jlAVSInfo.setText(personne.getNoAVS());
+        jlEmailInfo.setText(personne.getEmail());
+        jlPhoneInfo.setText(personne.getTelephone());
+        jlDateHireInfo.setText(personne.getDateDebut().toString());
+        jlAddressInfo.setText(personne.getAdresse().getAdresse());
+        jlCityInfo.setText(personne.getAdresse().getVille().getVille());
+        jlNPAInfo.setText("" + personne.getAdresse().getVille().getCp());
+        jlCountryInfo.setText(personne.getAdresse().getVille().getPays().getPays());
+        if(personne.getResponsable() != 0){
+            jlSupervisorInfo.setText(scController.getNameStaff(personne.getResponsable()));
+        }
+        else{
+            jlSupervisorInfo.setText("");
+        }
+        jlStatutInfo.setText(personne.getStatut());
+        jlContractInfo.setText(personne.getTypeContrat());
+        this.updateUI();
     }
 }
 

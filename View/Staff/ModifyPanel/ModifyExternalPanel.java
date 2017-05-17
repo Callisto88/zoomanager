@@ -79,10 +79,10 @@ public class ModifyExternalPanel extends GenericWindow {
         sFirstName = external.getPrenom();
         sEMail = external.getEmail();
         sPhone = external.getTelephone();
-        sAddress = external.getAdresse().toString();
-        sCity = external.getAdresse().getVille().toString();
+        sAddress = external.getAdresse().getAdresse();
+        sCity = external.getAdresse().getVille().getVille();
         sNPA = "" + external.getAdresse().getVille().getCp();
-        sCountry = external.getAdresse().getVille().getPays().toString();
+        sCountry = external.getAdresse().getVille().getPays().getPays();
         GridBagLayout gblModify = new GridBagLayout();
         jpModifyPanel.setLayout(gblModify);
 

@@ -11,13 +11,9 @@ import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.io.FileOutputStream;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Vector;
 
 /**
  * Created by Andre on 15.03.2017.
@@ -278,7 +274,7 @@ public class StaffController {
     /**
      * Methode permettant de crée un PDF
      * @param jtTable Table à crée
-     * @param output String contenant le chemin de destination
+     * @param fileName String contenant la fin du chemin de destination (le titre)
      * @param title titre du PDF
      * @param additional Permet d'ajouter le nom d'une personne (en option)
      */
@@ -337,17 +333,24 @@ public class StaffController {
     /**
      * Méthode permettant de mettre à jour le tableau une fois l'ajout de personne OK
      */
-    public void refreshStaff(){
-        svPersonnel.createEmployeeTab();
+    public void refreshStaffTab(Personne personne){
+        svPersonnel.addStaffTab(personne);
     }
 
     /**
      * Méthode permettant de mettre à jour le tableau une fois l'ajout d'intervenant OK
      */
-    public void refreshExternal(){
-        svPersonnel.createExternalTab();
+    public void refreshExternalTab(Intervenant external){
+        svPersonnel.addExternalTab(external);
     }
 
+    public void refreshStaff(Personne personne){
+        svPersonnel.refreshStaffView(personne);
+    }
+
+    public void refreshExternal(Intervenant external){
+        svPersonnel.refreshExternalView(external);
+    }
     /**
      * Méthode permettant de supprimer une ligne du tableau des intervenanta
      * @param line ligne à supprimer
@@ -399,7 +402,7 @@ public class StaffController {
      * @param personne personne que l'on souhaite modifier
      */
     public void modifyStaffView(Personne personne) {
-        modifyStaffController = new ModifyStaffController(personne,getContract(), getStatus(), getCountries(), getResponsable());
+        modifyStaffController = new ModifyStaffController(this, personne,getContract(), getStatus(), getCountries(), getResponsable());
     }
 
     /**
@@ -407,7 +410,7 @@ public class StaffController {
      * @param external intervenant à modifier
      */
     public void modifyExternalView(Intervenant external){
-        mecModifyExternal = new ModifyExternalController(external);
+        mecModifyExternal = new ModifyExternalController(this, external);
     }
 
 }
