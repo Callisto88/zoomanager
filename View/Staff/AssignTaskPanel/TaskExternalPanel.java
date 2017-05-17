@@ -53,12 +53,10 @@ public class TaskExternalPanel extends GenericWindow {
         for(int i = 0; i < tasks.size(); ++i){
             JButton task = new JButton(tasks.get(i).getDescription());
             buttons.add(task);
-            System.out.println(tasks.get(i).getDescription());
             // Permet de récupérer l'action du clic de la personne, et le supprimer
             task.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    System.out.println(e.getActionCommand());
                     JButton jb = (JButton)e.getSource();
                     checkTask(jb.getText());
                     Container c = jb.getParent();
@@ -80,7 +78,6 @@ public class TaskExternalPanel extends GenericWindow {
                 gbcConstraint.gridx = 1;
             }
             jpMainPanel.add(buttons.get(i), gbcConstraint);
-            System.out.println(buttons.get(i).getName());
         }
 
         configFrame(getJfFrame(), this);

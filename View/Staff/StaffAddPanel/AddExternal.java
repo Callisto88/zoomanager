@@ -173,7 +173,6 @@ public class AddExternal extends GenericWindow{
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                System.out.println("ajout");
                 sLastName = jtfLastNameInput.getText();
                 sFirstName = jtfLastNameInput.getText();
                 sCompagny = jtfCompagnyInput.getText();

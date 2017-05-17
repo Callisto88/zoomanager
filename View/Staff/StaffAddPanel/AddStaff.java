@@ -83,8 +83,6 @@ public class AddStaff extends GenericWindow {
         this.supervisor = supervisor;
         this.country = country;
 
-        System.out.println(supervisor.size());
-
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = 0;
         gbcConstraint.insets = new Insets(10,5,10,5);
@@ -282,7 +280,6 @@ public class AddStaff extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                System.out.println("ajout");
                 sLastName = jtfLastNameInput.getText();
                 sFirstName = jtfLastNameInput.getText();
                 iDay = jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay();

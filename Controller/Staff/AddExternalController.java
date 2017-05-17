@@ -172,7 +172,6 @@ public class AddExternalController {
         if(n == 1) {
             aeExternal.close();
         }
-        System.out.println("Intervenant externe inséré");
     }
 
 }
