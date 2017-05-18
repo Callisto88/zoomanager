@@ -1,5 +1,6 @@
 package Controller.Animal;
 
+import Controller.Error.ErrorController;
 import Model.*;
 import View.Animal.*;
 
@@ -32,16 +33,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
             animauxDB = query.selAnimaux();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -57,16 +59,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
             enclosDB = query.selEnclos();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -83,16 +86,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
             racesDB = query.getAllRaceAnimal();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -108,16 +112,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
             originesDB = query.selCountries();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -170,16 +175,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
             success = query.delAnimal(animalToDel);
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -196,6 +202,7 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
@@ -210,7 +217,7 @@ public class AnimalController {
         } catch (SQLException e) {
             success = false;
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.toString());
         }
 
         query = null;
@@ -227,6 +234,7 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.toString());
         }
 
         try {
@@ -235,11 +243,11 @@ public class AnimalController {
         } catch (ExceptionDataBase e) {
             success = false;
             e.printStackTrace();
-            //System.out.println(e.getMsg());
+            new ErrorController(e.toString());
         } catch (SQLException e) {
             success = false;
             e.printStackTrace();
-            //System.out.println(e.getMessage());
+            new ErrorController(e.getMessage());
         }
 
         query = null;
@@ -257,6 +265,7 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.getMessage());
         }
 
         /*

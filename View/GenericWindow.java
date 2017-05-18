@@ -1,7 +1,5 @@
 package View;
 
-import gnu.jpdf.PDFJob;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.Rectangle2D;
@@ -149,28 +147,6 @@ abstract public class GenericWindow extends JPanel {
 
     protected void setLabelConfig(JLabel lLabel){
         lLabel.setPreferredSize(defaultFormSize);
-    }
-
-    protected void createPDF(){
-        OutputStream fileOutputStream = new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-
-            }
-        };
-        PDFJob job = new PDFJob(fileOutputStream);
-
-
-
-        Graphics pdfGraphics = job.getGraphics();
-
-
-
-        pdfGraphics.dispose();
-        pdfGraphics = job.getGraphics();
-
-        job.end();
-
     }
 
     protected void configFrame(JFrame jfFrame, GenericWindow gw){
