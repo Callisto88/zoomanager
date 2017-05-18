@@ -14,6 +14,7 @@ import net.coderazzi.filters.gui.TableFilterHeader;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
+import org.oxbow.swingbits.table.filter.TableRowFilterSupport;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -91,7 +92,8 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
-        TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
+        //TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
+        TableRowFilterSupport.forTable(jtTable).searchable(true).apply();
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft = new GridBagConstraints();
