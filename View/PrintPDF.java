@@ -13,22 +13,32 @@ import java.io.FileOutputStream;
 
 /**
  * Created by Andre on 17.05.2017.
+ * Classe permettant de crée un PDF en demandant au client le chemin et le nom pour enregistrer
  */
 public class PrintPDF {
     Font fontTitle = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD, BaseColor.BLACK);
     Font fontTextWhite = new Font(Font.FontFamily.HELVETICA, 15, Font.NORMAL, BaseColor.WHITE);
     Font fontTextBlack = new Font(Font.FontFamily.HELVETICA, 15, Font.NORMAL, BaseColor.BLACK);
 
+    /**
+     * Construteur pour crée un PDF et demander au client de sélectionner un chemin
+     * @param jtTable table à imprimer
+     * @param title titre inclus dans le PDF
+     * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
+     */
     public PrintPDF(JTable jtTable, String title, String additional){
         Document document = new Document(PageSize.A4.rotate());
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
         jfc.setCurrentDirectory(new java.io.File("."));
+        // Permet de spécifier que l'on désire sélectionner un chemin de destination
         jfc.setDialogTitle("Veuillez sélectionner un dossier de destination");
+        // Change le bouton d'ouverture en bouton de création
         jfc.setApproveButtonText("crée");
 
         // Permet de désactiver les types de fichiers
         jfc.setAcceptAllFileFilterUsed(false);
+        // Permet d'instancier une fenêtre de demande de chemin de destination et de chemin de fichier
         int answers = jfc.showOpenDialog(new JPanel());
         String output = "";
         if(answers == JFileChooser.APPROVE_OPTION){
@@ -50,11 +60,11 @@ public class PrintPDF {
             document.add( Chunk.NEWLINE );
 
             PdfPTable pdfTable = new PdfPTable(jtTable.getColumnCount());
-            //adding table headers
+            // Permet d'ajouter les nom des colonnes
             for (int i = 0; i < jtTable.getColumnCount(); i++) {
                 pdfTable.addCell(jtTable.getColumnName(i));
             }
-            //extracting data from the JTable and inserting it to PdfPTable
+            // Permet d'extraire les données de la JTable, et de les insérer dans la PDFTable
             for (int rows = 0; rows < jtTable.getRowCount() - 1; rows++) {
                 for (int cols = 0; cols < jtTable.getColumnCount(); cols++) {
                     pdfTable.addCell(jtTable.getModel().getValueAt(rows, cols).toString());
