@@ -1,32 +1,25 @@
 package View.Animal;
 
+import Controller.Animal.AnimalController;
 import Controller.Validate.Validate;
 import Model.*;
 import View.DateLabelFormatter;
 import View.EventsTable;
 import View.GenericWindow;
 import View.MyModelTable;
-import Controller.Animal.*;
 import com.jidesoft.swing.AutoCompletion;
-import com.sun.org.apache.regexp.internal.RE;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-import org.oxbow.swingbits.table.filter.TableRowFilterSupport;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
-import javax.swing.text.html.ListView;
 import java.awt.*;
-
-
 import java.awt.event.*;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Vector;
@@ -92,8 +85,7 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
-        //TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
-        TableRowFilterSupport.forTable(jtTable).searchable(true).apply();
+        TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft = new GridBagConstraints();
