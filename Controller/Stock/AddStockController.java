@@ -4,6 +4,9 @@ import Controller.Validate.Validate;
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
 import Model.Stock;
+import View.CellStatus;
+import View.MyModelTable;
+import View.MyRenderer;
 import View.Stock.AddStock;
 
 import javax.swing.*;
@@ -29,75 +32,145 @@ import java.util.Vector;
  */
 
 public class AddStockController {
-
-    private Validate vAddStock;
+    private DBInteraction dbiQuery;
     private AddStock asAddStock;
-    Vector<Vector<Object>> vAdd;
-    JTable jtTableStock;
+    private Vector<Vector<Object>> vAdd;
+    private JTable jtTableAddStock;
+    private JTable jtTableAddStockFromGui;
+    private MyModelTable mmtTableAddStock;
+    private final int ID_REF = 0;
+    private final int COLUMN_QUANTITY = 2;
 
-    public AddStockController(Vector<Vector<Object>> vAdd, JTable jtTableStock){
-        vAddStock = new Validate();
+    /**
+     * Constructeur
+     * @param vAdd
+     * @param jtTableAddStock
+     */
+    public AddStockController(Vector<Vector<Object>> vAdd, JTable jtTableAddStock){
         this.vAdd = vAdd;
-        this.jtTableStock = jtTableStock;
+        this.jtTableAddStock = jtTableAddStock;
         asAddStock = new AddStock(this, this.vAdd);
     }
 
+    /**
+     * Méthode permettant d'obtenir la valeur contenu dans une cellule spécifique du tableau
+     * @param rowIndex entier représentant le numéro de la ligne
+     * @param columnIndex entier représentant le numéro de la colonne
+     * @return Object contenu dans la cellule
+     */
     public Object getValueAt(int rowIndex, int columnIndex) {
         return vAdd.elementAt(rowIndex).elementAt(columnIndex);
     }
 
     public void addStock() throws Exception {
-        DBInteraction query = null;
-        ArrayList<Stock> data = new ArrayList<>();
+        dbiQuery = null;
 
         try {
-            query = new DBInteraction();
+            dbiQuery = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
 
         try {
-            //int i = 0;
 
             for(int i = 0; i < vAdd.size(); ++i){
-                Vector<Object> temp = vAdd.elementAt(i);
-                //System.out.println((int)temp.elementAt(0) + " + " + (double)temp.elementAt(2));
-
-                query.addQuantity((int)temp.elementAt(0), (double)temp.elementAt(2));
-
-                //System.out.println((double)jtTableStock.getValueAt(i, 2));
-                //System.out.println((double)temp.elementAt(2));
-
-
-                jtTableStock.setValueAt((double)jtTableStock.getValueAt(i, 2) + (double)temp.elementAt(2), i , 2);
+                Vector<Object> vTemp = vAdd.elementAt(i);
+                dbiQuery.addQuantity((int)vTemp.elementAt(ID_REF), (double)vTemp.elementAt(COLUMN_QUANTITY));
+                jtTableAddStock.setValueAt((double)jtTableAddStock.getValueAt(i, COLUMN_QUANTITY) + (double)vTemp.elementAt(COLUMN_QUANTITY), i , COLUMN_QUANTITY);
             }
-
-            /*
-            for(Vector<Object> temp : vAdd){
-                System.out.println((int)temp.elementAt(0) + " + " + (double)temp.elementAt(2));
-
-                query.addQuantity((int)temp.elementAt(0), (double)temp.elementAt(2));
-
-                System.out.println((double)jtTableStock.getValueAt(i, 2));
-                System.out.println((double)temp.elementAt(2));
-
-
-                jtTableStock.setValueAt((double)jtTableStock.getValueAt(i, 2) + (double)temp.elementAt(2), i, 2);
-                ++i;
-            }
-            */
-
-            //} catch (ExceptionDataBase e) {
-            //   System.out.println(e.getMsg());
         } catch (SQLException e) {
             throw new Exception();
         }
-
-        //return data;
-
     }
 
-    public boolean isValidate(){
-        return true;
+    public boolean checkData(JTable jtTableAddStockFromGui, MyModelTable mmtTableAddStock){
+        this.jtTableAddStockFromGui = jtTableAddStockFromGui;
+        this.mmtTableAddStock = mmtTableAddStock;
+        MyRenderer mrRenderer = new MyRenderer(mmtTableAddStock, COLUMN_QUANTITY);
+        boolean dataOK = true;
+        for(int i = 0; i < vAdd.size(); ++i){
+            Vector<Object> vTemp = vAdd.elementAt(i);
+            double temp;
+            if(vTemp.elementAt(COLUMN_QUANTITY) == null){
+                temp = 0;
+            }else{
+                temp = (double)vTemp.elementAt(COLUMN_QUANTITY);
+            }
+
+            if(isNumericPositiveDouble(temp)){
+                mmtTableAddStock.setCellStatus(CellStatus.EMPTY, i, COLUMN_QUANTITY);
+
+            }else if(isNumericAndBelowZero(temp)){
+                jtTableAddStockFromGui.getColumnModel().getColumn(COLUMN_QUANTITY).setCellRenderer(mrRenderer);
+                mmtTableAddStock.setCellStatus(CellStatus.RED, i, COLUMN_QUANTITY);
+                dataOK = false;
+            }
+
+        }
+        return dataOK;
+    }
+
+    public boolean isNumericPositiveDouble(Object object){
+        return Validate.isNumericPositiveDouble(object);
+    }
+
+    public boolean isNumericAndBelowZero(Object object){
+        return Validate.isNumericAndBelowZero(object);
+    }
+
+    public DBInteraction getDBInteraction(){
+        return dbiQuery;
+    }
+
+    public void setDBIteraction(DBInteraction dbiQuery){
+        this.dbiQuery = dbiQuery;
+    }
+
+    public AddStock getAsAddStock(){
+        return asAddStock;
+    }
+
+    public void setAsAddStock(AddStock asAddStock){
+        this.asAddStock = asAddStock;
+    }
+
+    public Vector<Vector<Object>> getVAdd(){
+        return vAdd;
+    }
+
+    public void setVAdd(Vector<Vector<Object>> vAdd){
+        this.vAdd = vAdd;
+    }
+
+    public JTable getJtTableAddStock(){
+        return jtTableAddStock;
+    }
+
+    public void setJtTableAddStock(JTable jtTableAddStock){
+        this.jtTableAddStock = jtTableAddStock;
+    }
+
+    public JTable getJtTableAddStockFromGui(){
+        return jtTableAddStockFromGui;
+    }
+
+    public void setJtTableAddStockFromGui(JTable jtTableAddStockFromGui){
+        this.jtTableAddStockFromGui = jtTableAddStockFromGui;
+    }
+
+    public MyModelTable getMmtTableAddStock(){
+        return mmtTableAddStock;
+    }
+
+    public void setMmtTableAddStock(MyModelTable mmtTableAddStock){
+        this.mmtTableAddStock = mmtTableAddStock;
+    }
+
+    public int getID_REF(){
+        return ID_REF;
+    }
+
+    public int getCOLUMN_QUANTITY(){
+        return COLUMN_QUANTITY;
     }
 }

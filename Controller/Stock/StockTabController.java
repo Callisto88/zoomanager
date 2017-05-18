@@ -1,11 +1,10 @@
 package Controller.Stock;
 
-import Model.Commande;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Stock;
+import Controller.Validate.Validate;
+import Model.*;
 import View.Stock.StockTab;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -29,6 +28,8 @@ import java.util.Vector;
 
 public class StockTabController {
 
+    private DBInteraction dbiQuery;
+
     private StockTab stStockTab;
 
 
@@ -37,17 +38,17 @@ public class StockTabController {
     }
 
     public ArrayList<Stock> getAllStock(){
-        DBInteraction query = null;
+        dbiQuery = null;
         ArrayList<Stock> data = new ArrayList<>();
 
         try {
-            query = new DBInteraction();
+            dbiQuery = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
 
         try {
-            data = query.selAllStock ();
+            data = dbiQuery.selAllStock ();
 
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
@@ -59,17 +60,17 @@ public class StockTabController {
     }
 
     public ArrayList<Commande> getAllCommandeHistory(){
-        DBInteraction query = null;
+        dbiQuery = null;
         ArrayList<Commande> data = new ArrayList<>();
 
         try {
-            query = new DBInteraction();
+            dbiQuery = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
 
         try {
-            data = query.selAllCommande();
+            data = dbiQuery.selAllCommande();
 
         } catch (ExceptionDataBase e) {
             System.out.println(e.getMsg());
@@ -80,4 +81,78 @@ public class StockTabController {
         return data;
     }
 
+
+    public ArrayList<Commande> getOrderByStatusAndDate(Statut sStatut, Date sStartDate, Date sEndDate){
+
+        dbiQuery = null;
+        ArrayList<Commande> data = new ArrayList<>();
+
+        try {
+            dbiQuery = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            data = dbiQuery.selOrdersByStateAndDate(sStatut, sStartDate, sEndDate);
+
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return data;
+    }
+
+    public ArrayList<Commande> getOrderByDate(Date sStartDate, Date sEndDate){
+        dbiQuery = null;
+        ArrayList<Commande> data = new ArrayList<>();
+
+        try {
+            dbiQuery = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            data = dbiQuery.selAllCommandeParDate(sStartDate, sEndDate);
+
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return data;
+    }
+
+    public ArrayList<Commande> getOrderByStatus(Statut sStatut){
+        dbiQuery = null;
+        ArrayList<Commande> data = new ArrayList<>();
+
+        try {
+            dbiQuery = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            data = dbiQuery.selOrdersByStatut(sStatut);
+        } catch (ExceptionDataBase e) {
+            System.out.println(e.getMsg());
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return data;
+    }
+
+    public boolean isNumericPositiveDouble(Object object){
+        return Validate.isNumericPositiveDouble(object);
+    }
+
+    public boolean isNumericAndBelowZero(Object object){
+        return Validate.isNumericAndBelowZero(object);
+    }
 }

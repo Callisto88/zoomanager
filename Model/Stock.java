@@ -222,6 +222,16 @@ public class Stock {
         return vStock;
     }
 
+    public Vector<Object> toVectorToLookOrder(){
+        Vector<Object> vStock = new Vector<>();
+        vStock.add(getId());
+        vStock.add(getDescription());
+        vStock.add(getQuantite());
+        vStock.add(getUnite());
+
+        return vStock;
+    }
+
     public void addToStock(double quantity){
         this.quantite += quantity;
     }

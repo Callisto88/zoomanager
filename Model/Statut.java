@@ -13,6 +13,7 @@ package Model;
  */
 
 public enum Statut {
+    TOUS,
     CREEE,
     EN_COURS,
     TERMINEE,

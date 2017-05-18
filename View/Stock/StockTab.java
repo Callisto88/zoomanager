@@ -1,32 +1,34 @@
 package View.Stock;
 
+import Controller.Information.InformationController;
 import Controller.Stock.*;
+import Controller.Validate.Validate;
 import Model.Commande;
+import Model.Statut;
 import Model.Stock;
 //import View.Stock;
 //import View.ButtonShowRenderer;
-import View.DateLabelFormatter;
-import View.GenericWindow;
-import View.MyModelTable;
-import org.jdatepicker.JDatePicker;
+import Model.Tools.DateSQL;
+import View.*;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-import org.jdatepicker.impl.UtilDateModel;
 //import org.jdesktop.swingx.JXDatePicker;
 import javax.swing.*;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.TableCellRenderer;
-import javax.swing.table.TableColumnModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.SimpleDateFormat;
+import java.math.RoundingMode;
+import java.sql.Date;
+import java.text.NumberFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Properties;
 import java.util.Vector;
+
+import static javax.swing.SwingConstants.CENTER;
 
 /**
  *
@@ -48,7 +50,19 @@ public class StockTab extends GenericWindow {
     private final String[] COLUMN_STOCK_NAME = {"ID", "Description", "Quantité", "Quantité Minimum", "Unite", "Commande"};
     private final boolean[] COLUMN_STOCK_EDITABLE = {false, false, false, false, false, true};
     private final String[] COLUMN_HISTORY_NAME = {"ID", "Date", "Statut"};
-    private final String[] ORDER_STATUS = {"Tous les statuts", "CREEE", "EN_COURS", "TERMINEE", "ANNULEE", "REMBOURSEE"};
+    private final Statut [] ORDER_STATUS = {Statut.TOUS, Statut.CREEE, Statut.EN_COURS, Statut.TERMINEE, Statut.ANNULEE, Statut.REMBOURSEE};
+    final int COLUMN_QUANTITY = 5;
+
+
+
+    private ArrayList<Commande> alCommandeHistory;
+    private MyModelTable mmtStock;
+    private MyModelTable mmtCommandeHistory;
+    private MyRenderer mrRendererStock;
+    private MyRenderer mrRendererOrder;
+    private JTable jtTableStock;
+    private JTable jtTableCommandeHistory;
+    private TableRowSorter<MyModelTable> trsSorter;
 
     public StockTab(StockTabController stcStockTabController){
         super("Stock");
@@ -139,9 +153,28 @@ public class StockTab extends GenericWindow {
             vStock.add(sStock.toVector());
         }
 
-        MyModelTable mtStock = new MyModelTable(vStock, COLUMN_STOCK_NAME, COLUMN_STOCK_EDITABLE);
-        JTable jtTableStock = new JTable(mtStock);
-        //setTableConfig(jtTableStock);
+        mmtStock = new MyModelTable(vStock, COLUMN_STOCK_NAME, COLUMN_STOCK_EDITABLE);
+        jtTableStock = new JTable((mmtStock));
+        mrRendererStock = new MyRenderer(mmtStock, COLUMN_QUANTITY);
+        trsSorter = new TableRowSorter<>(mmtStock);
+        jtTableStock.setRowSorter(trsSorter);
+
+        jtTableStock.addMouseMotionListener(new MouseAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                super.mouseMoved(e);
+                Point p = e.getPoint();
+                int rowIndex = jtTableStock.rowAtPoint(p);
+                int columnIndex = jtTableStock.columnAtPoint(p);
+
+                if (rowIndex > 0 && columnIndex == 5) {
+                    jtTableStock.setToolTipText("Seuls les nombres positifs sont acceptés dans la colonne commande");
+                }else{
+                    jtTableStock.setToolTipText("");
+                }
+            }
+
+        });
 
         Dimension d = jtTableStock.getPreferredScrollableViewportSize();
         d.width = jtTableStock.getPreferredSize().width;
@@ -193,10 +226,10 @@ public class StockTab extends GenericWindow {
         pStartProperties.put("text.month", "Mois");
         pStartProperties.put("text.year", "Année");
 
-        SqlDateModel sdmModel1 = new SqlDateModel();
-        SqlDateModel sdmModel2 = new SqlDateModel();
+        SqlDateModel sdmModelStartDate = new SqlDateModel();
+        SqlDateModel sdmModelEndDate = new SqlDateModel();
 
-        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
+        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModelStartDate, pStartProperties);
         jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
         JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
 
@@ -205,7 +238,7 @@ public class StockTab extends GenericWindow {
         pEndProperties.put("text.month", "Mois");
         pEndProperties.put("text.year", "Année");
 
-        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModel2, pEndProperties);
+        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModelEndDate, pEndProperties);
         jdpliEndDatePanel.setPreferredSize(new Dimension(200, 200));
         JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpliEndDatePanel, new DateLabelFormatter());
 
@@ -254,47 +287,28 @@ public class StockTab extends GenericWindow {
         JPanel jpTableOrder = new JPanel();
         jpTableOrder.setPreferredSize(new Dimension(800, 720));
 
-        ArrayList<Commande> alCommandeHistory = stcStockTabController.getAllCommandeHistory();
+        alCommandeHistory = stcStockTabController.getAllCommandeHistory();
         Vector<Vector<Object>> vCommandeHistory = new Vector<>();
 
         for(Commande cHistory : alCommandeHistory){
             vCommandeHistory.add(cHistory.toVector());
         }
 
-        for(int i = 0; i < vCommandeHistory.size(); ++i){
-            for(int j = 0; j < vCommandeHistory.elementAt(i).size(); ++j){
-                System.out.println(vCommandeHistory.elementAt(i).elementAt(j));
-            }
-        }
-        MyModelTable mtCommandeHistory = new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME);
-        JTable jtTableCommandeHistory = new JTable(mtCommandeHistory);
+        mmtCommandeHistory = new MyModelTable(vCommandeHistory, COLUMN_HISTORY_NAME);
+        jtTableCommandeHistory = new JTable(mmtCommandeHistory);
+        mrRendererOrder = new MyRenderer(mmtCommandeHistory, COLUMN_QUANTITY);
+        //trsSorter = new TableRowSorter<>(mmtCommandeHistory);
+        //jtTableCommandeHistory.setRowSorter(trsSorter);
 
-        jtTableCommandeHistory.addMouseListener(new MouseListener() {
+        jtTableCommandeHistory.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() == 2){
-                    new OrderContentController((int)jtTableCommandeHistory.getValueAt(jtTableCommandeHistory.getSelectedRow(),0));
+                final int CLICK_COUNT = 2;
+
+                if(e.getClickCount() == CLICK_COUNT){
+                    //new OrderContentController((int)jtTableCommandeHistory.getValueAt(jtTableCommandeHistory.getSelectedRow(),COLUMN_ID));
+                    new OrderContentController(mmtCommandeHistory.getValueAtRow(jtTableCommandeHistory.getSelectedRow()), mmtCommandeHistory);
                 }
-            }
-
-            @Override
-            public void mousePressed(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseReleased(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e) {
-
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-
             }
         });
 
@@ -310,28 +324,54 @@ public class StockTab extends GenericWindow {
         jpTableOrder.add(jspStock1);
         jpRight.add(jpTableOrder, gbcRight);
 
+        /**
+         * Attention ne pas oublier ce bouton
+         */
         jbPrint.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-
+                JLabel jlPrintTitle = new JLabel("Stock");
+                //setFontTitlePrint(jlPrintTitle);
+                String sAdditionalTest = "";
+                new PrintPDF(jtTableStock, jlPrintTitle, sAdditionalTest);
             }
         });
 
         jbOrder.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent ae) {
                 Vector<Vector<Object>> vOrder = new Vector<>();
-                final int COLUMN_QUANTITY = 5;
+                final String NO_DATA_IN_CELLS = new String("Impossible de créer une nouvelle commande car toutes les commandes sont à 0!!");
+
+                boolean dataOK = true;
 
                 for(int i = 0; i < jtTableStock.getRowCount(); ++i){
-                    if((double)jtTableStock.getValueAt(i, COLUMN_QUANTITY) > 0){
+                    //double temp = (double) jtTableStock.getValueAt(i, COLUMN_QUANTITY);
+
+                    double temp;
+                    if(jtTableStock.getValueAt(i, COLUMN_QUANTITY) == null){
+                        temp = 0;
+                    }else{
+                        temp = (double) jtTableStock.getValueAt(i, COLUMN_QUANTITY);
+                    }
+
+                    if(stcStockTabController.isNumericPositiveDouble(temp)){
+                        mmtStock.setCellStatus(CellStatus.EMPTY, i, COLUMN_QUANTITY);
                         Stock sStock = new Stock(alStock.get(i));
                         sStock.setCommande((double)jtTableStock.getValueAt(i, COLUMN_QUANTITY));
                         vOrder.add(sStock.toVectorForOrder());
+                    }else if(stcStockTabController.isNumericAndBelowZero(temp)){
+                        jtTableStock.getColumnModel().getColumn(COLUMN_QUANTITY).setCellRenderer(mrRendererStock);
+                        mmtStock.setCellStatus(CellStatus.RED, i, COLUMN_QUANTITY);
+                        dataOK = false;
                     }
                 }
+                if(dataOK && !vOrder.isEmpty()){
+                    new NewOrderController(vOrder, mmtCommandeHistory);
+                }else if(dataOK && vOrder.isEmpty()){
+                    new InformationController(NO_DATA_IN_CELLS);
+                }
 
-                new NewOrderController(vOrder, mtCommandeHistory);
             }
         });
 
@@ -341,7 +381,6 @@ public class StockTab extends GenericWindow {
                 Vector<Vector<Object>> vAdd = new Vector<>();
 
                 for(Stock sStock : alStock){
-                    System.out.println(sStock.getId() + " " + sStock.getQuantite());
                     vAdd.add(sStock.toVectorAddDel());
                 }
 
@@ -365,9 +404,10 @@ public class StockTab extends GenericWindow {
         jbReset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int column = 5;
+                final int COLUMN_SELECTED = 5;
+                final int DEFAULT_NUMBER_QUANTITY = 0;
                 for(int i = 0; i < jtTableStock.getRowCount(); ++i){
-                    jtTableStock.setValueAt(new Double(0), i, column);
+                    jtTableStock.setValueAt(new Double(DEFAULT_NUMBER_QUANTITY), i, COLUMN_SELECTED);
                 }
             }
         });
@@ -376,13 +416,117 @@ public class StockTab extends GenericWindow {
 
         jbSearch.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
+            public void actionPerformed(ActionEvent ae) {
 
+                Vector<Vector<Object>> vCommandeHistory = new Vector<>();
+                Date dStartDate = sdmModelStartDate.getValue();
+                Date dEndDate = sdmModelEndDate.getValue();
+                Statut sStatus = (Statut)jcbOrderStatus.getSelectedItem();
+                int total = 0;
+                boolean dateOK = true;
+
+                if(dStartDate != null){
+                    jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.WHITE);
+                    total += 1;
+                }
+
+                if(dEndDate != null){
+                    jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.WHITE);
+                    total += 2;
+                }
+
+                if(!sStatus.equals(Statut.TOUS)){
+                    total += 4;
+                }
+
+                switch (total){
+                    case 0:
+                        alCommandeHistory = stcStockTabController.getAllCommandeHistory();
+                        break;
+                    case 1:
+                        jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                        dateOK = false;
+                        break;
+                    case 2:
+                        jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                        dateOK = false;
+                        break;
+                    case 3:
+                        if(dStartDate.getTime() <= dEndDate.getTime()){
+                            if(isDate(dStartDate) && isDate(dEndDate)){
+                                alCommandeHistory = stcStockTabController.getOrderByDate(dStartDate, dEndDate);
+                            }
+                        }else{
+                            jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                            jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                            dateOK = false;
+                        }
+                        break;
+                    case 4:
+                        alCommandeHistory = stcStockTabController.getOrderByStatus(sStatus);
+                        break;
+                    case 5:
+                        jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                        dateOK = false;
+                        break;
+                    case 6:
+                        jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                        dateOK = false;
+                        break;
+                    case 7:
+                        if(dStartDate.getTime() <= dEndDate.getTime()){
+                            if(isDate(dStartDate) && isDate(dEndDate)){
+                                alCommandeHistory = stcStockTabController.getOrderByStatusAndDate(sStatus, dStartDate, dEndDate);
+                            }
+                        }else{
+                            jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                            jdpriEndDatePicker.getJFormattedTextField().setBackground(Color.RED);
+                            dateOK = false;
+                        }
+                        break;
+                    default:
+                }
+
+                if(dateOK){
+                    for(Commande cHistory : alCommandeHistory){
+                        vCommandeHistory.add(cHistory.toVector());
+                    }
+/*
+                    for(int i = 0; i < vCommandeHistory.size(); ++i){
+                        for(int j = 0; j < vCommandeHistory.elementAt(i).size(); ++j){
+                            System.out.println(vCommandeHistory.elementAt(i).elementAt(j));
+                        }
+
+                    }
+                    */
+
+                    int rowCount = jtTableCommandeHistory.getRowCount();
+                    //jpRight.remove(jtTableCommandeHistory);
+                    for(int i = rowCount - 1; i >= 0; --i){
+                        mmtCommandeHistory.removeRow(i);
+                    }
+
+                    for(int i = 0; i < vCommandeHistory.size(); ++i){
+                        mmtCommandeHistory.addRow(vCommandeHistory.elementAt(i));
+                    }
+                }
             }
         });
 
         configFrame(getJfFrame(), this);
 
+    }
+
+    public boolean isDate(Date date) {
+        return Validate.isDate(date);
+    }
+
+    public MyModelTable getMmtCommandeHistory(){
+        return mmtCommandeHistory;
+    }
+
+    public void setMmtCommandeHistory (MyModelTable mmtCommandeHistory){
+        this.mmtCommandeHistory = mmtCommandeHistory;
     }
 
 }

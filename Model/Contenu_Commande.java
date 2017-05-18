@@ -1,5 +1,7 @@
 package Model;
 
+import java.util.Vector;
+
 /**
  *
  * Cette classes contient la conception de la table Contenu_Commande de la base de données
@@ -75,6 +77,16 @@ public class Contenu_Commande {
 
     public void setQuantite(double quantite) {
         this.quantite = quantite;
+    }
+
+    public Vector<Object> toVector(){
+        Vector<Object> vCommande = new Vector<Object>();
+        vCommande.add(orderID);
+        vCommande.add(refArticle);
+        vCommande.add(id);
+        vCommande.add(quantite);
+
+        return vCommande;
     }
 
 }

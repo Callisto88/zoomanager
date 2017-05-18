@@ -1,9 +1,10 @@
 package Model;
 
+import java.awt.*;
 import java.sql.Date;
 import java.util.Vector;
 
-public class Commande {
+public class Commande extends Component {
     private int id;
     private java.sql.Date date;
     private Statut statut;

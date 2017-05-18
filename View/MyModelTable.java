@@ -25,11 +25,10 @@ import java.util.Vector;
  */
 
 public class MyModelTable extends AbstractTableModel{
-
+    private CellStatus csTab[][];
     private String[] columnNames;
     private boolean[] columnEditable; // false par défaut
     private Vector<Vector<Object>> vData;
-    //private JButton jbTest = new JButton("Show");
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames){
         super();
@@ -37,6 +36,12 @@ public class MyModelTable extends AbstractTableModel{
         this.vData = vData;
         this.columnNames = columnNames;
         this.columnEditable = new boolean[columnNames.length]; // false par défaut
+        csTab = new CellStatus[getRowCount()][getColumnCount()];
+        for(int i = 0; i < getRowCount(); ++i){
+            for(int j = 0; j < getColumnCount(); ++j){
+                csTab[i][j] = CellStatus.EMPTY;
+            }
+        }
     }
 
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames, boolean[] columnEditable){
@@ -45,6 +50,12 @@ public class MyModelTable extends AbstractTableModel{
         this.vData = vData;
         this.columnNames = columnNames;
         this.columnEditable = columnEditable;
+        csTab = new CellStatus[getRowCount()][getColumnCount()];
+        for(int i = 0; i < getRowCount(); ++i){
+            for(int j = 0; j < getColumnCount(); ++j){
+                csTab[i][j] = CellStatus.EMPTY;
+            }
+        }
     }
 
     @Override
@@ -54,7 +65,7 @@ public class MyModelTable extends AbstractTableModel{
 
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        return super.getColumnClass(columnIndex);
+        return vData.elementAt(0).elementAt(columnIndex).getClass();
     }
 
 
@@ -92,9 +103,22 @@ public class MyModelTable extends AbstractTableModel{
         fireTableDataChanged();
     }
 
+    public CellStatus getCellStatus(int rowIndex, int columnIndex){
+        return csTab[rowIndex][columnIndex];
+    }
+
+    public void setCellStatus(CellStatus csStatus, int rowIndex, int columnIndex){
+        csTab[rowIndex][columnIndex] = csStatus;
+        fireTableDataChanged();
+    }
+
+
     public boolean isCellEditable(int row, int column){
         return columnEditable[column];
     }
 
+    public void setIsCellEditable(boolean bool, int rowIndex, int columnIndex){
+        columnEditable[columnIndex] = bool;
+    }
 
 }

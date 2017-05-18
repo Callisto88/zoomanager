@@ -76,6 +76,30 @@ public class Validate {
     }
 
     /**
+     * Permet de verifier qu'un nombre est plus grand ou égal à 0
+     *
+     * @param value(double)
+     *
+     * @return boolean
+     *
+     */
+    public static boolean isNumericPositiveDouble(Object value) {
+        return ((double)value > 0);
+    }
+
+    /**
+     * Permet de verifier qu'un nombre est égal à 0
+     *
+     * @param value(double)
+     *
+     * @return boolean
+     *
+     */
+    public static boolean isNumericAndBelowZero(Object value) {
+        return ((double)value < 0);
+    }
+
+    /**
      * Permet de verifier que la chaine de caractere est composee uniquement de lettres
      * ou des caracteres "'" / "-" / " "
      *
@@ -208,8 +232,7 @@ public class Validate {
      *
      * @return boolean
      */
-    public static boolean isDate(DateSQL date) {
-
+    public static boolean isDate(Date date) {
         return true;
     }
 

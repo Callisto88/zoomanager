@@ -1,7 +1,13 @@
 package View;
 
+import gnu.jpdf.PDFJob;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Rectangle2D;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 
 /**
  *
@@ -20,12 +26,14 @@ import java.awt.*;
  */
 
 abstract public class GenericWindow extends JPanel {
+    static private String FONT_TITLE_PRINT = "Fonte Titre Impression";
     static private String BUTTON_FONT_NAME = "Fonte Bouton";
     static private String FONT_TITLE = "Fonte Titre";
     static private String FONT_WINDOW_TITLE = "Fonte Titre Fenêtre";
     static private String FONT_TABLE = "Fonte Table";
     static private String FONT_ERROR_MESSAGE = "Fonte Message Erreur";
     static private String FONT_CHECKBOX_NAME = "Fonte Checkbox";
+    static private int TITLE_PRINT_FONT_SIZE = 60;
     static private int BUTTON_FONT_SIZE = 15;
     static private int TITLE_FONT_SIZE = 30;
     static private int WINDOW_TITLE_FONT_SIZE = 15;
@@ -40,6 +48,7 @@ abstract public class GenericWindow extends JPanel {
     private String windowTitle;
     protected JLabel jlErrorMessage = new JLabel();
     private JFrame jfFrame;
+    private Font fTitlePrintFont = new Font(FONT_TITLE_PRINT, Font.PLAIN, TITLE_PRINT_FONT_SIZE);
     private Font fButtonFont = new Font(BUTTON_FONT_NAME, Font.PLAIN, BUTTON_FONT_SIZE);
     private Font fTitleFont = new Font(FONT_TITLE, Font.PLAIN, TITLE_FONT_SIZE);
     private Font fWindowTitleFont = new Font(FONT_WINDOW_TITLE, Font.PLAIN, WINDOW_TITLE_FONT_SIZE);
@@ -96,6 +105,10 @@ abstract public class GenericWindow extends JPanel {
         return jlErrorMessage;
     }
 
+    protected void setFontTitlePrint(JLabel jlTitlePrint){
+        jlTitlePrint.setFont(fTitlePrintFont);
+    }
+
     protected void setErrorMessage(JLabel jlErrorMessage){
         this.jlErrorMessage = jlErrorMessage;
     }
@@ -136,6 +149,28 @@ abstract public class GenericWindow extends JPanel {
 
     protected void setLabelConfig(JLabel lLabel){
         lLabel.setPreferredSize(defaultFormSize);
+    }
+
+    protected void createPDF(){
+        OutputStream fileOutputStream = new OutputStream() {
+            @Override
+            public void write(int b) throws IOException {
+
+            }
+        };
+        PDFJob job = new PDFJob(fileOutputStream);
+
+
+
+        Graphics pdfGraphics = job.getGraphics();
+
+
+
+        pdfGraphics.dispose();
+        pdfGraphics = job.getGraphics();
+
+        job.end();
+
     }
 
     protected void configFrame(JFrame jfFrame, GenericWindow gw){
