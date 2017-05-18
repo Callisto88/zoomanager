@@ -862,34 +862,41 @@ public class AnimalTab extends GenericWindow {
                     else{
                         newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), enclos, origine, race);
                     }
+
+                    Vector<Object> vNewAnimal = newAnimal.toVector(1);
+                    int age = calculateAge(newAnimal.getAnneeNaissance());
+                    String ageL = newAnimal.getAnneeNaissance().toString() + " : " + age + " ans";
+                    vNewAnimal.setElementAt(ageL ,4);
+                    if (newAnimal.getEnclos() != 0) {
+                        for (Enclos enclos2 : enclosDB) {
+                            if (enclos2.getId() == newAnimal.getEnclos()) {
+                                vNewAnimal.add(enclos2.getNom());
+                            }
+                        }
+                    } else {
+                        vNewAnimal.add("");
+                    }
+                    if (newAnimal.getRace() != 0) {
+                        for (Race race2 : racesDB) {
+                            if (race2.getId() == newAnimal.getRace()) {
+                                vNewAnimal.setElementAt(race2.getNom(), 2);
+                            }
+                        }
+                    } else {
+                        vNewAnimal.setElementAt("", 2);
+                    }
+
                     if(mode == 1){
                         newAnimal.setId(selectedAnimal.getId());
                         atAnimalController.modAnimal(newAnimal);
+                        for(int i = 0; i < vNewAnimal.size(); i++) {
+                            dataTable.setValueAt(vNewAnimal.get(i), selectedRow, i);
+                        }
+                        animauxDB.add(newAnimal);
+                        jtTable.updateUI();
                     }
                     else if(mode == 2) {
                         atAnimalController.insAnimal(newAnimal);
-                        Vector<Object> vNewAnimal = newAnimal.toVector(1);
-                        int age = calculateAge(newAnimal.getAnneeNaissance());
-                        String ageL = newAnimal.getAnneeNaissance().toString() + " : " + age + " ans";
-                        vNewAnimal.setElementAt(ageL ,4);
-                        if (newAnimal.getEnclos() != 0) {
-                            for (Enclos enclos2 : enclosDB) {
-                                if (enclos2.getId() == newAnimal.getEnclos()) {
-                                    vNewAnimal.add(enclos2.getNom());
-                                }
-                            }
-                        } else {
-                            vNewAnimal.add("");
-                        }
-                        if (newAnimal.getRace() != 0) {
-                            for (Race race2 : racesDB) {
-                                if (race2.getId() == newAnimal.getRace()) {
-                                    vNewAnimal.setElementAt(race2.getNom(), 2);
-                                }
-                            }
-                        } else {
-                            vNewAnimal.setElementAt("", 2);
-                        }
                         dataTable.addRow(vNewAnimal);
                         animauxDB.add(newAnimal);
                         jtTable.updateUI();
