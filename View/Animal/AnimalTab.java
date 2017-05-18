@@ -9,10 +9,11 @@ import View.MyModelTable;
 import Controller.Animal.*;
 import com.jidesoft.swing.AutoCompletion;
 import com.sun.org.apache.regexp.internal.RE;
+import net.coderazzi.filters.gui.AutoChoices;
+import net.coderazzi.filters.gui.TableFilterHeader;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
-
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
@@ -90,6 +91,7 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
+        TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft = new GridBagConstraints();
