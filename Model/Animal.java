@@ -31,9 +31,9 @@ public class Animal {
     private String nomCommun;
     private String sexe;
     private Date dateNaissance;
-    private int enclos;     // REF (id)
-    private int origine;    // REF Pays(paysId)
-    private int race;       // REF (raceId)
+    private Enclos enclos;      // REF (id)
+    private Pays origine;       // REF Pays(paysId)
+    private Race race;          // REF (raceId)
     private Date dateDeces;
 
     /**
@@ -49,8 +49,8 @@ public class Animal {
         this.id = id;
     }
 
-    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
-                  int origine, int race, java.sql.Date dateDeces) {
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Enclos enclos,
+                  Pays origine, Race race, java.sql.Date dateDeces) {
         this.id = id;
         this.nom = nom;
         this.nomCommun = nomCommun;
@@ -72,7 +72,7 @@ public class Animal {
      * @param dateDeces
      */
     public Animal(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance,
-                  int enclos, int origine, int race, java.sql.Date dateDeces) {
+                  Enclos enclos, Pays origine, Race race, java.sql.Date dateDeces) {
         this.nom = nom;
         this.nomCommun = nomCommun;
         this.sexe = sexe;
@@ -84,7 +84,7 @@ public class Animal {
     }
 
     public Animal(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance,
-                  int enclos, int origine, int race) {
+                  Enclos enclos, Pays origine, Race race) {
         this.nom = nom;
         this.nomCommun = nomCommun;
         this.sexe = sexe;
@@ -102,7 +102,7 @@ public class Animal {
         this.dateNaissance = anneeNaissance;
     }
 
-    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int race) {
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Race race) {
         this.id = id;
         this.nomCommun = nomCommun;
         this.nom = nom;
@@ -144,19 +144,19 @@ public class Animal {
         this.nom = nom;
     }
 
-    public int getOrigine() {
+    public Pays getOrigine() {
         return origine;
     }
 
-    public void setOrigine(int origine) {
+    public void setOrigine(Pays origine) {
         this.origine = origine;
     }
 
-    public int getRace() {
+    public Race getRace() {
         return race;
     }
 
-    public void setRace(int race) {
+    public void setRace(Race race) {
         this.race = race;
     }
 
@@ -184,11 +184,11 @@ public class Animal {
         this.dateNaissance = anneeNaissance;
     }
 
-    public int getEnclos() {
+    public Enclos getEnclos() {
         return enclos;
     }
 
-    public void setEnclos(int enclos) {
+    public void setEnclos(Enclos enclos) {
         this.enclos = enclos;
     }
 
@@ -198,9 +198,9 @@ public class Animal {
         System.out.printf("%-10s : %s\n", "Nom", this.nom);
         System.out.printf("%-10s : %s\n", "Sexe", this.sexe);
         System.out.printf("%-10s : %s\n", "Naissance", this.dateNaissance);
-        System.out.printf("%-10s : %s\n", "Enclos", this.enclos);
-        System.out.printf("%-10s : %s\n", "Origine", this.origine);
-        System.out.printf("%-10s : %s\n", "Race", this.race);
+        System.out.printf("%-10s : %s\n", "Enclos", this.enclos.toString());
+        System.out.printf("%-10s : %s\n", "Origine", this.origine.toString());
+        System.out.printf("%-10s : %s\n", "Race", this.race.toString());
         System.out.printf("%-10s : %s\n", "Décès", this.dateDeces);
         System.out.println("-----------------------------\n");
         return null;
@@ -216,16 +216,16 @@ public class Animal {
                 vAnimal.add(this.getNom());
                 vAnimal.add(this.getSexe());
                 vAnimal.add(this.getNomCommun());
-                vAnimal.add(this.getRace());
+                vAnimal.add(this.getRace().getNom());
                 vAnimal.add(this.getAnneeNaissance());
-                vAnimal.add(this.getEnclos());
-                vAnimal.add(this.getOrigine());
+                vAnimal.add(this.getEnclos().getNom());
+                vAnimal.add(this.getOrigine().getPays());
                 vAnimal.add(this.getDateDeces());
                 break;
             case 1:
                 vAnimal.add(this.getNom());
                 vAnimal.add(this.getNomCommun());
-                vAnimal.add(this.getRace());
+                vAnimal.add(this.getRace().getNom());
                 vAnimal.add(this.getSexe());
                 vAnimal.add(this.getAnneeNaissance());
                 break;
@@ -244,10 +244,10 @@ public class Animal {
         vAnimal.add(this.getNom());
         vAnimal.add(this.getSexe());
         vAnimal.add(this.getNomCommun());
-        vAnimal.add(this.getRace());
+        vAnimal.add(this.getRace().getNom());
         vAnimal.add(this.getAnneeNaissance());
-        vAnimal.add(this.getEnclos());
-        vAnimal.add(this.getOrigine());
+        vAnimal.add(this.getEnclos().getNom());
+        vAnimal.add(this.getOrigine().getPays());
         vAnimal.add(this.getDateDeces());
 
         return vAnimal;

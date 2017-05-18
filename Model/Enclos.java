@@ -21,10 +21,10 @@ public class Enclos {
 
     private int id;
     private String nom;
-    private int secteur;
+    private Secteur secteur;
     private double surface;
 
-    public Enclos(int id, String nom, int secteur, double surface) {
+    public Enclos(int id, String nom, Secteur secteur, double surface) {
         this.id = id;
         this.nom = nom;
         this.secteur = secteur;
@@ -47,11 +47,11 @@ public class Enclos {
         this.nom = nom;
     }
 
-    public int getSecteur() {
+    public Secteur getSecteur() {
         return secteur;
     }
 
-    public void setSecteur(int secteur) {
+    public void setSecteur(Secteur secteur) {
         this.secteur = secteur;
     }
 

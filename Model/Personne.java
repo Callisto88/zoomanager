@@ -119,6 +119,10 @@ public class Personne {
         this.typeContrat = typeContrat;
     }
 
+    public Personne(int personneID) {
+        this.idPersonne = personneID;
+    }
+
     public static void afficherPersonne(Personne p) {
 
         System.out.println("ID Personne" + p.idPersonne);

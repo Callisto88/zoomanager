@@ -23,7 +23,7 @@ public class Secteur {
      */
     private int id;
     private String nom;
-    private int responsable;
+    private Personne responsable;
 
 
     /**
@@ -32,7 +32,7 @@ public class Secteur {
      * @param nom
      * @param responsable
      */
-    public Secteur(int id, String nom, int responsable) {
+    public Secteur(int id, String nom, Personne responsable) {
         this.id = id;
         this.nom = nom;
         this.responsable = responsable;
@@ -75,7 +75,7 @@ public class Secteur {
      * Getter responsable Secteur
      * @return responsable int
      */
-    public int getResponsable() {
+    public Personne getResponsable() {
         return responsable;
     }
 
@@ -83,7 +83,16 @@ public class Secteur {
      * Setter responsable
      * @param responsable int
      */
-    public void setResponsable(int responsable) {
+    public void setResponsable(Personne responsable) {
         this.responsable = responsable;
+    }
+
+    @Override
+    public String toString() {
+        return "Secteur{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", responsable=" + responsable.toString() +
+                '}';
     }
 }

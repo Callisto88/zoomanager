@@ -26,8 +26,17 @@ public class Primate extends Animal {
 
     /**
      * Constructeur par défaut
+     * @param id
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param dateNaissance
+     * @param e
+     * @param ps
+     * @param r
+     * @param dateDeces
      */
-    public Primate() {
+    public Primate(int id, String nomCommun, String nom, String sexe, Date dateNaissance, Enclos e, Pays ps, Race r, Date dateDeces) {
     }
 
     /**
@@ -64,8 +73,8 @@ public class Primate extends Animal {
      * @param dateDeces
      * @param temperature
      */
-    public Primate(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
-                   int race, java.sql.Date dateDeces, double temperature) {
+    public Primate(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Enclos enclos, Pays origine,
+                   Race race, java.sql.Date dateDeces, double temperature) {
         super(id, nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }
@@ -84,8 +93,8 @@ public class Primate extends Animal {
      * @param dateDeces
      * @param temperature
      */
-    public Primate(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
-                   int race, java.sql.Date dateDeces, double temperature) {
+    public Primate(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Enclos enclos, Pays origine,
+                   Race race, java.sql.Date dateDeces, double temperature) {
         super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }
