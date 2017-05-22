@@ -31,6 +31,17 @@ public class Enclos {
         this.surface = surface;
     }
 
+    public Enclos(int id, String nom, int secteur, double surface) {
+        this.id = id;
+        this.nom = nom;
+        this.secteur = new Secteur(secteur);
+        this.surface = surface;
+    }
+
+    public Enclos(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }
@@ -61,5 +72,15 @@ public class Enclos {
 
     public void setSurface(double surface) {
         this.surface = surface;
+    }
+
+    @Override
+    public String toString() {
+        return "Enclos{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", secteur=" + secteur +
+                ", surface=" + surface +
+                '}';
     }
 }

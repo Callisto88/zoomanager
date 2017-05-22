@@ -43,7 +43,7 @@ public class Felin extends Animal {
      */
     public Felin(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
                  int race, java.sql.Date dateDeces, double poids) {
-        super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(nomCommun, nom, sexe, anneeNaissance, new Enclos(enclos), new Pays(origine), new Race(race), dateDeces);
         this.poids = poids;
     }
 

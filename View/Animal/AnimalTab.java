@@ -413,7 +413,7 @@ public class AnimalTab extends GenericWindow {
         //jcEnclos.setEditable(true);
         AutoCompletion acEnclos = new AutoCompletion(jcEnclos);
         //ac.setStrict(false);
-        jcEnclos.setSelectedIndex(selectedAnimal.getEnclos() - 1);
+        jcEnclos.setSelectedIndex(selectedAnimal.getEnclos().getId() - 1);
         jcEnclos.setMaximumSize(new Dimension(maxLength + 5, 30));
         jcEnclos.setPreferredSize(defaultFormSize);
 
@@ -477,7 +477,7 @@ public class AnimalTab extends GenericWindow {
         //jcEnclos.setEditable(true);
         AutoCompletion acRaces = new AutoCompletion(jcRaces);
         //ac.setStrict(false);
-        jcRaces.setSelectedIndex(selectedAnimal.getRace() - 1);
+        jcRaces.setSelectedIndex(selectedAnimal.getRace().getId() - 1);
         jcRaces.setMaximumSize(new Dimension(maxLength + 4, 30));
         jcRaces.setPreferredSize(defaultFormSize);
 
@@ -536,7 +536,7 @@ public class AnimalTab extends GenericWindow {
             if(sOrigines[i].length() > maxLength){
                 maxLength = sOrigines[i].length();
             }
-            if(selectedAnimal.getOrigine() == originesDB.get(i).getPaysId()){
+            if(selectedAnimal.getOrigine().getPaysId() == originesDB.get(i).getPaysId()){
                 origineID = i;
             }
         }
@@ -857,28 +857,28 @@ public class AnimalTab extends GenericWindow {
                 if(formOk){
                     Animal newAnimal;
                     if(selectedAnimal.getDateDeces() != null) {
-                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), enclos, origine, race, new Date(yearD, monthD, dayD));
+                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), new Date(yearD, monthD, dayD));
                     }
                     else{
-                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), enclos, origine, race);
+                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race));
                     }
 
                     Vector<Object> vNewAnimal = newAnimal.toVector(1);
                     int age = calculateAge(newAnimal.getAnneeNaissance());
                     String ageL = newAnimal.getAnneeNaissance().toString() + " : " + age + " ans";
                     vNewAnimal.setElementAt(ageL ,4);
-                    if (newAnimal.getEnclos() != 0) {
+                    if (newAnimal.getEnclos().getId() != 0) {
                         for (Enclos enclos2 : enclosDB) {
-                            if (enclos2.getId() == newAnimal.getEnclos()) {
+                            if (enclos2.getId() == newAnimal.getEnclos().getId()) {
                                 vNewAnimal.add(enclos2.getNom());
                             }
                         }
                     } else {
                         vNewAnimal.add("");
                     }
-                    if (newAnimal.getRace() != 0) {
+                    if (newAnimal.getRace().getId() != 0) {
                         for (Race race2 : racesDB) {
-                            if (race2.getId() == newAnimal.getRace()) {
+                            if (race2.getId() == newAnimal.getRace().getId()) {
                                 vNewAnimal.setElementAt(race2.getNom(), 2);
                             }
                         }

@@ -143,18 +143,18 @@ public class AnimalController {
             age = calculateAge(animal.getAnneeNaissance());
             ageL = animal.getAnneeNaissance().toString() + " : " + age + " ans";
             vectAnimaux.lastElement().setElementAt(ageL ,4);
-            if (animal.getEnclos() != 0) {
+            if (animal.getEnclos().getId() != 0) {
                 for (Enclos enclos : enclosTab) {
-                    if (enclos.getId() == animal.getEnclos()) {
+                    if (enclos.getId() == animal.getEnclos().getId()) {
                         vectAnimaux.lastElement().add(enclos.getNom());
                     }
                 }
             } else {
                 vectAnimaux.lastElement().add("");
             }
-            if (animal.getRace() != 0) {
+            if (animal.getRace().getId() != 0) {
                 for (Race race : racesDB) {
-                    if (race.getId() == animal.getRace()) {
+                    if (race.getId() == animal.getRace().getId()) {
                         vectAnimaux.lastElement().setElementAt(race.getNom(), 2);
                     }
                 }

@@ -30,6 +30,10 @@ public class Race {
     public Race() {
     }
 
+    public Race(int id) {
+        this.id = id;
+    }
+
     /**
      * Constructeurs avec tous les attributs
      *

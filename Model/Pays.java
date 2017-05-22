@@ -27,6 +27,10 @@ public class Pays {
     public Pays() {
     }
 
+    public Pays(int paysId) {
+        this.paysId = paysId;
+    }
+
     /**
      * Constructeur avec tous les membres
      *

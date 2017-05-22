@@ -49,6 +49,22 @@ public class Animal {
         this.id = id;
     }
 
+    public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
+                  int origine, int race, java.sql.Date dateDeces) {
+        this.id = id;
+        this.nom = nom;
+        this.nomCommun = nomCommun;
+        this.sexe = sexe;
+        this.dateNaissance = anneeNaissance;
+        this.enclos = new Enclos(enclos);
+        this.origine = new Pays(origine);
+        this.race = new Race(race);
+        this.dateDeces = dateDeces;
+    }
+
+    /*
+    super(id, nomCommun, nom, sexe, anneeNaissance, e, p, r, dateDeces);
+     */
     public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Enclos enclos,
                   Pays origine, Race race, java.sql.Date dateDeces) {
         this.id = id;

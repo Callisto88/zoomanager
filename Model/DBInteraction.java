@@ -1,14 +1,9 @@
 package Model;
 
-import jdk.nashorn.internal.runtime.ECMAException;
 //import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
 
-import javax.jws.WebParam;
-import javax.swing.plaf.nimbus.State;
 import java.sql.*;
-import java.sql.Date;
-import java.time.Month;
-import java.util.*;
+        import java.util.*;
 
 /**
  *
@@ -177,6 +172,27 @@ public class DBInteraction {
 
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
+
+    private static final String SEL_FAUVES = "SELECT *, Animal.id AS id\n" +
+            "FROM Animal_Fauve\n" +
+            "RIGHT JOIN Animal\n" +
+            "    ON Animal_Fauve.id = Animal.id;";
+
+    private static final String SEL_OISEAUX = "SELECT *, Animal.id AS id\n" +
+            "FROM Animal_Oiseau\n" +
+            "RIGHT JOIN Animal\n" +
+            "    ON Animal_Oiseau.id = Animal.id;";
+
+    private static final String SEL_PRIMATES = "SELECT *, Animal.id AS id\n" +
+            "FROM Animal_Primate\n" +
+            "RIGHT JOIN Animal\n" +
+            "    ON Animal_Primate.id = Animal.id;";
+
+    private static final String SEL_REPTILES = "SELECT *, Animal.id AS id\n" +
+            "FROM Animal_Reptile\n" +
+            "RIGHT JOIN Animal\n" +
+            "    ON Animal_Reptile.id = Animal.id;";
+
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
@@ -1370,24 +1386,29 @@ public class DBInteraction {
         this.stmt.setString(1, animal.getNom());
         this.stmt.setString(2, animal.getSexe());
         this.stmt.setDate(3, animal.getAnneeNaissance());
-        this.stmt.setInt(4, animal.getEnclos());
-        this.stmt.setInt(5, animal.getOrigine());
+        this.stmt.setInt(4, animal.getEnclos().getId());
+        this.stmt.setInt(5, animal.getOrigine().getPaysId());
         this.stmt.setDate(6, animal.getDateDeces());
-        this.stmt.setInt(7, animal.getRace());
+        this.stmt.setInt(7, animal.getRace().getId());
         this.stmt.setInt(8, animal.getId());
         this.stmt.executeUpdate();
 
         // Definition du type de l'animal
-        if (animal instanceof Oiseau)
+        if (animal instanceof Oiseau) {
             updateAnimalOiseau((Oiseau) animal);
-        else if (animal instanceof Reptile)
+        }
+        else if (animal instanceof Reptile) {
             updateAnimalReptile((Reptile) animal);
-        else if (animal instanceof Felin)
+        }
+        else if (animal instanceof Felin) {
             updateAnimalFauve((Felin) animal);
-        else if (animal instanceof Primate)
+        }
+        else if (animal instanceof Primate) {
             updateAnimalPrimate((Primate) animal);
-        else
+        }
+        else {
             throw new ExceptionDataBase(2);
+        }
     }
 
     /**
@@ -1453,9 +1474,91 @@ public class DBInteraction {
      * @return ArrayList<Animal>
      */
     public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
-        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL);
+
+        ArrayList<Animal> animalArrayList = new ArrayList<>();
+        animalArrayList.addAll(this.selFelins());
+        animalArrayList.addAll(this.selOiseaux());
+        animalArrayList.addAll(this.selPrimates());
+        animalArrayList.addAll(this.selReptiles());
+
+        return animalArrayList;
+    }
+
+    private ArrayList<Animal> selFelins() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_FAUVES);
         ResultSet rs = this.stmt.executeQuery();
-        return creerTableauAnimal(rs);
+
+        ArrayList<Felin> felinArrayList = createTabFelin(rs);
+        ArrayList<? extends Animal> animalsArrayList = felinArrayList;
+
+        return (ArrayList<Animal>) animalsArrayList;
+    }
+
+    private ArrayList<Animal> selOiseaux() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_OISEAUX);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Oiseau> oiseauArrayList = createTabOiseau(rs);
+        ArrayList<? extends Animal> animalsArrayList = oiseauArrayList;
+
+        return (ArrayList<Animal>) animalsArrayList;
+    }
+
+    private ArrayList<Animal> selPrimates() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_PRIMATES);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Primate> primateArrayList = createTabPrimate(rs);
+        ArrayList<? extends Animal> animalsArrayList = primateArrayList;
+
+        return (ArrayList<Animal>) animalsArrayList;
+    }
+
+    private ArrayList<Animal> selReptiles() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_REPTILES);
+        ResultSet rs = this.stmt.executeQuery();
+
+        ArrayList<Reptile> reptileArrayList = createTabReptile(rs);
+        ArrayList<? extends Animal> animalsArrayList = reptileArrayList;
+
+        return (ArrayList<Animal>) animalsArrayList;
+    }
+
+    private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
+
+        ArrayList<Primate> data = new ArrayList<>();
+        if (!rs.next()) {
+            throw new ExceptionDataBase(12);
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+
+                // Pays ps     = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                // Enclos e    = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), s, rs.getDouble("Enclos.surface"));
+                // Race r      = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
+
+                Primate pr = new Primate(
+                        rs.getInt("id"),
+                        rs.getString("nomCommun"),
+                        rs.getString("nom"),
+                        rs.getString("sexe"),
+                        rs.getDate("dateNaissance"),
+                        rs.getInt("enclos"),
+                        rs.getInt("origine"),
+                        rs.getInt("race"),
+                        rs.getDate("dateDeces"),
+                        rs.getDouble("temperature")
+                );
+
+                data.add(pr);
+            }
+        }
+
+        return data;
     }
 
     /**
@@ -1497,8 +1600,13 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getDouble("surface")));
+                data.add(new Enclos(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getInt("secteur"),
+                        rs.getDouble("surface")
+                        )
+                );
             }
         }
         // Fermeture de la DB obligatoire après le ResultSet !
@@ -1606,8 +1714,8 @@ public class DBInteraction {
         this.stmt.setString(3, a.getNom());
         this.stmt.setString(4, a.getSexe());
         this.stmt.setDate(5, a.getAnneeNaissance());
-        this.stmt.setInt(6, a.getEnclos());
-        this.stmt.setInt(7, a.getOrigine());
+        this.stmt.setInt(6, a.getEnclos().getId());
+        this.stmt.setInt(7, a.getOrigine().getPaysId());
         // this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
@@ -1646,8 +1754,12 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data = new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getDouble("surface"));
+                data = new Enclos(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getInt("secteur"),
+                        rs.getDouble("surface")
+                );
             }
         }
 
@@ -1667,8 +1779,12 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Enclos(rs.getInt("id"), rs.getString("nom"),
-                        rs.getInt("secteur"), rs.getDouble("surface")));
+                data.add(new Enclos(
+                        rs.getInt("id"),
+                        rs.getString("nom"),
+                        rs.getInt("secteur"),
+                        rs.getDouble("surface"))
+                );
             }
         }
 
@@ -1694,7 +1810,7 @@ public class DBInteraction {
                         rs.getDate("dateNaissance"), rs.getInt("enclos"),
                         rs.getInt("origine"), rs.getInt("race"),
                         rs.getDate("dateDeces"),
-                        rs.getDouble("race")));
+                        rs.getDouble("poids")));
             }
 
             return data;
@@ -1747,31 +1863,6 @@ public class DBInteraction {
             return data;
         }
     }
-
-    /**
-     * Permet de créer une ArrayList de PRIMATE à partir de Resultset passé en paramètre
-     *
-     * @param rs(ResultSet)
-     *
-     * @return ArrayList<Primate>
-     */
-    private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
-        ArrayList<Primate> data = new ArrayList<>();
-        if (!rs.next()) {
-            throw new ExceptionDataBase(17);
-        } else {
-            rs.beforeFirst();
-            while (rs.next()) {
-                data.add(new Primate(rs.getInt("id"), rs.getString("nomCommun"),
-                        rs.getString("nom"), rs.getString("sexe"),
-                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
-                        rs.getInt("origine"), rs.getInt("race"),
-                        rs.getDate("dateDeces"), rs.getDouble("temperature")));
-            }
-            return data;
-        }
-    }
-
 
     /**
      * Permet de créer un tableau contenant le nom de toutes les races d'animax à partir de Resultset passé en paramètre

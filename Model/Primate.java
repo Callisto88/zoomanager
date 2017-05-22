@@ -79,6 +79,13 @@ public class Primate extends Animal {
         this.temperature = temperature;
     }
 
+    public Primate(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos, int origine,
+                   int race, java.sql.Date dateDeces, double temperature) {
+
+        super(id, nomCommun, nom, sexe, anneeNaissance, new Enclos(enclos), new Pays(origine), new Race(race), dateDeces);
+        this.temperature = temperature;
+    }
+
 
     /**
      * Constructeur avec tous les attributs sauf ID

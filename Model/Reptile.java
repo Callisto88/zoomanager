@@ -64,7 +64,7 @@ public class Reptile extends Animal {
      * @param temperature
      */
     public Reptile(String nomCommun, String nom, String sexe, Date anneeNaissance, int enclos, int origine, int race, Date dateDeces, double temperature) {
-        super(nomCommun, nom, sexe, anneeNaissance, enclos, origine, race, dateDeces);
+        super(nomCommun, nom, sexe, anneeNaissance, new Enclos(enclos), new Pays(origine), new Race(race), dateDeces);
         this.temperature = temperature;
     }
 

@@ -38,6 +38,10 @@ public class Secteur {
         this.responsable = responsable;
     }
 
+    public Secteur(int id) {
+        this.id = id;
+    }
+
     /**
      * Getter id Secteur
      * @return id int
