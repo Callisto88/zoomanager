@@ -36,6 +36,23 @@ public class Evenement {
         this.type = type;
     }
 
+    public Evenement(String description, Timestamp date, String type) {
+        this.description = description;
+        this.date = date;
+        this.type = type;
+    }
+
+    public Evenement(String description, String type) {
+        this.description = description;
+        this.type = type;
+    }
+
+    public Evenement(String description, Date date, String spectacle) {
+        this.description = description;
+        this.date = new Timestamp(date.getTime());
+        this.type = type;
+    }
+
     public int getId() {
         return id;
     }
@@ -74,5 +91,15 @@ public class Evenement {
         vObject.add("" + date.getHours() + "H" + date.getMinutes());
         vObject.add(description);
         return vObject;
+    }
+
+    @Override
+    public String toString() {
+        return "Evenement{" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", date=" + date +
+                ", type='" + type + '\'' +
+                '}';
     }
 }

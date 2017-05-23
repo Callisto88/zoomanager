@@ -168,30 +168,72 @@ public class DBInteraction {
     // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
     private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null, ?, ?, ?, ?, ?, ?, ?);";
 
-    private static final String SEL_INTERVENANT_CONCERNED_IN_EVENT = "SELECT * FROM Intervenant INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Intervenant.id WHERE Personne_Evenement.evenement = ?;";
+    private static final String SEL_INTERVENANT_CONCERNED_IN_EVENT = "SELECT *\n" +
+            "FROM Intervenant\n" +
+            "  INNER JOIN Personne_Evenement\n" +
+            "    ON Personne_Evenement.personne = Intervenant.id\n" +
+            "  INNER JOIN Adresse\n" +
+            "    ON Intervenant.adresse = Adresse.id\n" +
+            "  INNER JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  INNER JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId\n" +
+            "WHERE Personne_Evenement.evenement = ?;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // ANIMAUX :
 
-    private static final String SEL_FAUVES = "SELECT *, Animal.id AS id\n" +
-            "FROM Animal_Fauve\n" +
-            "RIGHT JOIN Animal\n" +
-            "    ON Animal_Fauve.id = Animal.id;";
+    private static final String SEL_FAUVES = "SELECT *\n" +
+            "FROM Animal\n" +
+            "  LEFT JOIN Animal_Fauve\n" +
+            "    ON Animal.id = Animal_Fauve.id\n" +
+            "  LEFT JOIN Pays\n" +
+            "    ON Animal.origine = Pays.paysId\n" +
+            "  LEFT JOIN Animal_Race\n" +
+            "    ON Animal_Race.id = Animal.id\n" +
+            "  LEFT JOIN Enclos\n" +
+            "    ON Animal.enclos = Enclos.id\n" +
+            "  LEFT JOIN Secteur\n" +
+            "    ON Enclos.secteur = Secteur.id;";
 
-    private static final String SEL_OISEAUX = "SELECT *, Animal.id AS id\n" +
-            "FROM Animal_Oiseau\n" +
-            "RIGHT JOIN Animal\n" +
-            "    ON Animal_Oiseau.id = Animal.id;";
+    private static final String SEL_OISEAUX = "SELECT *\n" +
+            "FROM Animal\n" +
+            "  LEFT JOIN Animal_Oiseau\n" +
+            "    ON Animal.id = Animal_Oiseau.id\n" +
+            "  LEFT JOIN Pays\n" +
+            "    ON Animal.origine = Pays.paysId\n" +
+            "  LEFT JOIN Animal_Race\n" +
+            "    ON Animal_Race.id = Animal.id\n" +
+            "  LEFT JOIN Enclos\n" +
+            "    ON Animal.enclos = Enclos.id\n" +
+            "  LEFT JOIN Secteur\n" +
+            "    ON Enclos.secteur = Secteur.id;";
 
-    private static final String SEL_PRIMATES = "SELECT *, Animal.id AS id\n" +
-            "FROM Animal_Primate\n" +
-            "RIGHT JOIN Animal\n" +
-            "    ON Animal_Primate.id = Animal.id;";
+    private static final String SEL_PRIMATES = "SELECT *\n" +
+            "FROM Animal\n" +
+            "  LEFT JOIN Animal_Primate\n" +
+            "    ON Animal.id = Animal_Primate.id\n" +
+            "  LEFT JOIN Pays\n" +
+            "    ON Animal.origine = Pays.paysId\n" +
+            "  LEFT JOIN Animal_Race\n" +
+            "    ON Animal_Race.id = Animal.id\n" +
+            "  LEFT JOIN Enclos\n" +
+            "    ON Animal.enclos = Enclos.id\n" +
+            "  LEFT JOIN Secteur\n" +
+            "    ON Enclos.secteur = Secteur.id;";
 
-    private static final String SEL_REPTILES = "SELECT *, Animal.id AS id\n" +
-            "FROM Animal_Reptile\n" +
-            "RIGHT JOIN Animal\n" +
-            "    ON Animal_Reptile.id = Animal.id;";
+    private static final String SEL_REPTILES = "SELECT *\n" +
+            "FROM Animal\n" +
+            "  LEFT JOIN Animal_Reptile\n" +
+            "    ON Animal.id = Animal_Reptile.id\n" +
+            "  LEFT JOIN Pays\n" +
+            "    ON Animal.origine = Pays.paysId\n" +
+            "  LEFT JOIN Animal_Race\n" +
+            "    ON Animal_Race.id = Animal.id\n" +
+            "  LEFT JOIN Enclos\n" +
+            "    ON Animal.enclos = Enclos.id\n" +
+            "  LEFT JOIN Secteur\n" +
+            "    ON Enclos.secteur = Secteur.id;";
 
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
@@ -326,7 +368,17 @@ public class DBInteraction {
     private static final String ADD_ANIMAL_TO_EVENT = "INSERT INTO Animal_Evenement VALUES(?,?,?);";
     private static final String DEL_ANIMAL_FROM_EVENT = "DELETE FROM Animal_Evenement WHERE animal = ? AND evenement = ?;";
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
-    private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT * FROM Personne INNER JOIN Personne_Evenement ON Personne_Evenement.personne = Personne.idPersonne WHERE Personne_Evenement.evenement = ?;";
+    private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT *\n" +
+            "FROM Personne\n" +
+            "  INNER JOIN Personne_Evenement\n" +
+            "    ON Personne_Evenement.personne = Personne.idPersonne\n" +
+            "  LEFT JOIN Adresse\n" +
+            "    ON Personne.adresse = Adresse.id\n" +
+            "  LEFT JOIN Ville\n" +
+            "    ON Adresse.villeId = Ville.villeId\n" +
+            "  LEFT JOIN Pays\n" +
+            "    ON Ville.paysId = Pays.paysId\n" +
+            "WHERE Personne_Evenement.evenement = ?;";
     private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
 
     private static final String SEL_EVENTS = "SELECT * FROM Evenement;";
@@ -1537,19 +1589,21 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
 
-                // Pays ps     = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
-                // Enclos e    = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), s, rs.getDouble("Enclos.surface"));
-                // Race r      = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
+                Pays ps = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                Secteur s = new Secteur(rs.getInt("Secteur.id"));
+                Enclos e = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), s,
+                        rs.getDouble("Enclos.surface"));
+                Race r = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
 
                 Primate pr = new Primate(
-                        rs.getInt("id"),
+                        rs.getInt("Animal.id"),
                         rs.getString("nomCommun"),
                         rs.getString("nom"),
                         rs.getString("sexe"),
                         rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"),
-                        rs.getInt("origine"),
-                        rs.getInt("race"),
+                        e,
+                        ps,
+                        r,
                         rs.getDate("dateDeces"),
                         rs.getDouble("temperature")
                 );
@@ -1805,12 +1859,21 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Felin(rs.getInt("id"), rs.getString("nomCommun"),
+
+                Pays origine = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                Secteur secteur = new Secteur(rs.getInt("Secteur.id"));
+                Enclos enclos = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), secteur,
+                        rs.getDouble("Enclos.surface"));
+                Race race = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
+
+                Felin felin = new Felin(
+                        rs.getInt("Animal.id"), rs.getString("nomCommun"),
                         rs.getString("nom"), rs.getString("sexe"),
-                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
-                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateNaissance"), enclos, origine, race,
                         rs.getDate("dateDeces"),
-                        rs.getDouble("poids")));
+                        rs.getDouble("poids")
+                );
+                data.add(felin);
             }
 
             return data;
@@ -1830,12 +1893,20 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Oiseau(rs.getInt("id"), rs.getString("nomCommun"),
+
+                Pays ps = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                Secteur s = new Secteur(rs.getInt("Secteur.id"));
+                Enclos e = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), s,
+                        rs.getDouble("Enclos.surface"));
+                Race r = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
+
+                Oiseau oiseau = new Oiseau(rs.getInt("Animal.id"), rs.getString("nomCommun"),
                         rs.getString("nom"), rs.getString("sexe"),
-                        rs.getDate("dateNaissance"), rs.getInt("enclos"),
-                        rs.getInt("origine"), rs.getInt("race"),
+                        rs.getDate("dateNaissance"), e, ps, r,
                         rs.getDate("dateDeces"), rs.getDouble("envergure"),
-                        rs.getString("bague")));
+                        rs.getString("bague"));
+
+                data.add(oiseau);
             }
             return data;
         }
@@ -1854,11 +1925,19 @@ public class DBInteraction {
         } else {
             rs.beforeFirst();
             while (rs.next()) {
-                data.add(new Reptile(rs.getInt("id"), rs.getString("nomCommun"), rs.getString("nom"),
-                        rs.getString("sexe"), rs.getDate("dateNaissance"),
-                        rs.getInt("enclos"), rs.getInt("origine"),
-                        rs.getInt("race"), rs.getDate("dateDeces"),
-                        rs.getDouble("temperature")));
+                Pays ps = new Pays(rs.getInt("Pays.paysId"), rs.getString("Pays.pays"));
+                Secteur s = new Secteur(rs.getInt("Secteur.id"));
+                Enclos e = new Enclos(rs.getInt("Enclos.id"), rs.getString("Enclos.nom"), s,
+                        rs.getDouble("Enclos.surface"));
+                Race r = new Race(rs.getInt("Animal_Race.id"), rs.getString("Animal_Race.nom"));
+
+                Reptile rep = new Reptile(
+                        rs.getInt("Animal.id"), rs.getString("nomCommun"),
+                        rs.getString("nom"), rs.getString("sexe"),
+                        rs.getDate("dateNaissance"), e, ps, r,
+                        rs.getDate("dateDeces"), rs.getDouble("temperature")
+                );
+                data.add(rep);
             }
             return data;
         }
@@ -1948,7 +2027,13 @@ public class DBInteraction {
         this.stmt.setInt(1, eventID);
         ResultSet rs = this.stmt.executeQuery();
 
-        return creerTableauAnimal(rs);
+        if (rs.next()) {
+            rs.beforeFirst();
+            return creerTableauAnimal(rs);
+        } else {
+            throw new ExceptionDataBase("La requête n'a retourné aucun résultat, soit l'événement n'existe pas, " +
+                    "soit l'animal n'est impliqué dans aucun événement");
+        }
     }
 
     public boolean insEventType(String eventType) throws SQLException, ExceptionDataBase {
@@ -2117,7 +2202,7 @@ public class DBInteraction {
         this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
 
-        if (rs.next()) {        // On récupère l'ID de la nouvelle commande
+        if (rs.next()) {        // On récupère l'ID du nouvel événement
             return rs.getInt(1);
         } else {
             return 0;

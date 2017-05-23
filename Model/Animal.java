@@ -211,6 +211,7 @@ public class Animal {
     public String toString() {
 
         System.out.println("-----------------------------");
+        System.out.printf("%-10s : %s\n", "ID", this.id);
         System.out.printf("%-10s : %s\n", "Nom", this.nom);
         System.out.printf("%-10s : %s\n", "Sexe", this.sexe);
         System.out.printf("%-10s : %s\n", "Naissance", this.dateNaissance);

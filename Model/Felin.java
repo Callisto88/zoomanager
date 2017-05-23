@@ -47,6 +47,11 @@ public class Felin extends Animal {
         this.poids = poids;
     }
 
+    public Felin(int id, String nomCommun, String nom, String sexe, Date dateNaissance, Enclos enclos, Pays origine, Race race, Date dateDeces, double poids) {
+        super(nomCommun, nom, sexe, dateNaissance, enclos, origine, race, dateDeces);
+        this.poids = poids;
+    }
+
     /**
      * Getter poids  Felin
      * @return poids double

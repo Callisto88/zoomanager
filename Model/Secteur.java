@@ -96,7 +96,7 @@ public class Secteur {
         return "Secteur{" +
                 "id=" + id +
                 ", nom='" + nom + '\'' +
-                ", responsable=" + responsable.toString() +
+                ", responsable=" + (responsable == null ? "" : responsable.toString()) +
                 '}';
     }
 }
