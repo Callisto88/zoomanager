@@ -21,6 +21,19 @@ import java.sql.Date;
  */
 public class Validate {
     /**
+     * Permet de verifier que la chaine de caractere est composee uniquement de lettres
+     * ou des caracteres "'" / "-" / " "
+     * <p>
+     * Format d'un numero AVS :     xxx.xxxx.xxxx.xx    x = chiffre
+     *
+     * @param s(String)
+     * @return boolean
+     */
+    private static final int indexDotAVS1 = 3;
+    private static final int indexDotAVS2 = 8;
+    private static final int indexDotAVS3 = 13;
+
+    /**
      * Permet de verifier que la chaine de caractere est vide
      *
      * @param s(String)
@@ -43,7 +56,6 @@ public class Validate {
         return !isEmpty(s);
     }
 
-
     /**
      * Permet de verifier que la chaine de caractere est composee uniquement de caracteres numeriques
      *
@@ -53,14 +65,12 @@ public class Validate {
      *
      */
     public static boolean isNumeric(String s) {
-        if (isNotEmpty(s)) {
-            for (char caractere : s.toCharArray()) {
-                if (!(Character.isDigit(caractere)))
-                    return false;
-            }
+
+        if (s.matches("[-+]?[0-9]*\\.?[0-9]+")) { // You can use the `\\d` instead of `0-9` too!
             return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     /**
@@ -119,19 +129,6 @@ public class Validate {
         return false;
     }
 
-    /**
-     * Permet de verifier que la chaine de caractere est composee uniquement de lettres
-     * ou des caracteres "'" / "-" / " "
-     *
-     * Format d'un numero AVS :     xxx.xxxx.xxxx.xx    x = chiffre
-     *
-     * @param s(String)
-     *
-     * @return boolean
-     */
-    private static final int indexDotAVS1 = 3;
-    private static final int indexDotAVS2 = 8;
-    private static final int indexDotAVS3 = 13;
     public static boolean isAVS(String s) {
         if(isNotEmpty(s) && s.length() == 16) {
 
