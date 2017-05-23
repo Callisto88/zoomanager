@@ -255,7 +255,6 @@ public class AnimalTab extends GenericWindow {
         GridBagConstraints gbcDetAnimalButton = new GridBagConstraints();
 
 
-
         jbMod.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -645,7 +644,31 @@ public class AnimalTab extends GenericWindow {
         JTextField jtEnvergure = new JTextField();
 
 
-        if(selectedAnimal instanceof Felin){
+        final int[] animalType = {0};
+        String[] alTypes = new String[4];
+        alTypes[0] = "Primate";
+        alTypes[1] = "Oiseau";
+        alTypes[2] = "Felin";
+        alTypes[3] = "Reptile";
+        WideComboBox jcAnimalType = new WideComboBox(alTypes);
+        jcAnimalType.setMaximumSize(new Dimension(200, 30));
+        jcAnimalType.setPreferredSize(defaultFormSize);
+        jcAnimalType.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                animalType[0] = jcAnimalType.getSelectedIndex();
+            }
+        });
+        if(mode == 2){
+            gbcAnimalForm.gridx = 1;
+            gbcAnimalForm.gridy = y;
+            jpDetAnimal.add(jcAnimalType, gbcAnimalForm);
+
+            y++;
+        }
+
+
+        if((mode == 2 && animalType[0] == 2) || selectedAnimal instanceof Felin){
             JLabel jlPoids = new JLabel("Poids :");
             setLabelConfig(jlPoids);
             gbcAnimalForm.gridx = 0;
@@ -668,7 +691,7 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if(selectedAnimal instanceof Oiseau){
+        else if((mode == 2 && animalType[0] == 1) || selectedAnimal instanceof Oiseau){
             JLabel jlBague = new JLabel("Bague :");
             setLabelConfig(jlBague);
             gbcAnimalForm.gridx = 0;
@@ -699,7 +722,6 @@ public class AnimalTab extends GenericWindow {
             jpDetAnimal.add(jlEnvergure, gbcAnimalForm);
 
             double envergure = ((Oiseau) selectedAnimal).getEnvergure();
-
             jtEnvergure.setText(String.valueOf(envergure));
             jtEnvergure.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
@@ -714,14 +736,12 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if(selectedAnimal instanceof Reptile){
+        else if((mode == 2 && animalType[0] == 3) || selectedAnimal instanceof Reptile){
             JLabel jlTemperature = new JLabel("Température :");
             setLabelConfig(jlTemperature);
             gbcAnimalForm.gridx = 0;
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlTemperature, gbcAnimalForm);
-
-            y++;
 
             double temperature = ((Reptile) selectedAnimal).getTemperature();
             jtTemperature.setText(String.valueOf(temperature));
@@ -737,14 +757,12 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if(selectedAnimal instanceof Primate){
+        else if((mode == 2 && animalType[0] == 0) || selectedAnimal instanceof Primate){
             JLabel jlTemperature = new JLabel("Température :");
             setLabelConfig(jlTemperature);
             gbcAnimalForm.gridx = 0;
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlTemperature, gbcAnimalForm);
-
-            y++;
 
             double temperature = ((Primate) selectedAnimal).getTemperature();
             jtTemperature.setText(String.valueOf(temperature));
@@ -760,7 +778,6 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-
 
         //JTable pour les événements
         ArrayList<Evenement> events = atAnimalController.getTasks(selectedAnimal.getId());
@@ -788,9 +805,12 @@ public class AnimalTab extends GenericWindow {
                 String nomCommun = jtNomCommun.getText();
                 String sexe = jtSexe.getText();
                 String poids;
+                double dPoids = 0;
                 String temperature;
-                String bague;
+                double dTemperature = 0;
+                String bague = "";
                 String envergure;
+                double dEnvergure = 0;
 
                 int year = sdmModel1.getYear();
                 int month = sdmModel1.getMonth();
@@ -801,6 +821,9 @@ public class AnimalTab extends GenericWindow {
                 int dayD = 1;
 
 
+                if(mode == 2){
+                     animalType[0] = jcAnimalType.getSelectedIndex();
+                }
                 int enclos = enclosDB.get(jcEnclos.getSelectedIndex()).getId();
                 int race = racesDB.get(jcRaces.getSelectedIndex()).getId();
                 int origine = originesDB.get(jcOrigines.getSelectedIndex()).getPaysId();
@@ -821,30 +844,39 @@ public class AnimalTab extends GenericWindow {
                     //jdpliStartDatePanel.setBackground(Color.RED);
                     formOk = false;
                 }
-                if(selectedAnimal instanceof Felin){
+                if((mode == 2 && animalType[0] == 2) || selectedAnimal instanceof Felin){
                     poids = jtPoids.getText();
                     if(!Validate.isNumeric(poids)) {
                         formOk = false;
                         jtPoids.setBackground(Color.RED);
                     }
+                    else {
+                        dPoids = Double.parseDouble(poids);
+                    }
                 }
-                else if(selectedAnimal instanceof Oiseau){
+                else if((mode == 2 && animalType[0] == 1) || selectedAnimal instanceof Oiseau){
                     envergure = jtEnvergure.getText();
                     bague = jtBague.getText();
                     if(!Validate.isNumeric(envergure)){
                         formOk = false;
                         jtEnvergure.setBackground(Color.RED);
                     }
+                    else{
+                        dEnvergure = Double.parseDouble(envergure);
+                    }
                     if(!Validate.isAlphabetic(bague)){
                         formOk = false;
                         jtBague.setBackground(Color.RED);
                     }
                 }
-                else if(selectedAnimal instanceof Reptile || selectedAnimal instanceof Primate){
+                else if((mode == 2 && (animalType[0] == 0 || animalType[0] == 3)) || selectedAnimal instanceof Reptile || selectedAnimal instanceof Primate){
                     temperature = jtTemperature.getText();
                     if(!Validate.isNumeric(temperature)){
                         formOk = false;
                         jtTemperature.setBackground(Color.RED);
+                    }
+                    else{
+                        dTemperature = Double.parseDouble(temperature);
                     }
                 }
 
@@ -857,10 +889,38 @@ public class AnimalTab extends GenericWindow {
                 if(formOk){
                     Animal newAnimal;
                     if(selectedAnimal.getDateDeces() != null) {
-                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), new Date(yearD, monthD, dayD));
+                        if((mode == 2 && animalType[0] == 2) || selectedAnimal instanceof Felin){
+                            newAnimal = new Felin(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dPoids);
+                        }
+                        else if((mode == 2 && animalType[0] == 0) || selectedAnimal instanceof Primate){
+                            newAnimal = new Primate(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dTemperature);
+                        }
+                        else if((mode == 2 && animalType[0] == 1) || selectedAnimal instanceof Oiseau){
+                            newAnimal = new Oiseau(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dEnvergure, bague);
+                        }
+                        else if((mode == 2 && animalType[0] == 3) || selectedAnimal instanceof Reptile){
+                            newAnimal = new Reptile(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dTemperature);
+                        }
+                        else{
+                            newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), new Date(yearD, monthD, dayD));
+                        }
                     }
                     else{
-                        newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race));
+                        if((mode == 2 && animalType[0] == 2) || selectedAnimal instanceof Felin){
+                            newAnimal = new Felin(nomCommun, nom, sexe, new java.sql.Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dPoids);
+                        }
+                        else if((mode == 2 && animalType[0] == 0) || selectedAnimal instanceof Primate){
+                            newAnimal = new Primate(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dTemperature);
+                        }
+                        else if((mode == 2 && animalType[0] == 1) || selectedAnimal instanceof Oiseau){
+                            newAnimal = new Oiseau(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dEnvergure, bague);
+                        }
+                        else if((mode == 2 && animalType[0] == 3) || selectedAnimal instanceof Reptile){
+                            newAnimal = new Reptile(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race), null, dTemperature);
+                        }
+                        else {
+                            newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), new Enclos(enclos), new Pays(origine), new Race(race));
+                        }
                     }
 
                     Vector<Object> vNewAnimal = newAnimal.toVector(1);
@@ -868,20 +928,12 @@ public class AnimalTab extends GenericWindow {
                     String ageL = newAnimal.getAnneeNaissance().toString() + " : " + age + " ans";
                     vNewAnimal.setElementAt(ageL ,4);
                     if (newAnimal.getEnclos().getId() != 0) {
-                        for (Enclos enclos2 : enclosDB) {
-                            if (enclos2.getId() == newAnimal.getEnclos().getId()) {
-                                vNewAnimal.add(enclos2.getNom());
-                            }
-                        }
+                        vNewAnimal.add(newAnimal.getEnclos().getNom());
                     } else {
                         vNewAnimal.add("");
                     }
                     if (newAnimal.getRace().getId() != 0) {
-                        for (Race race2 : racesDB) {
-                            if (race2.getId() == newAnimal.getRace().getId()) {
-                                vNewAnimal.setElementAt(race2.getNom(), 2);
-                            }
-                        }
+                        vNewAnimal.setElementAt(newAnimal.getRace().getNom(), 2);
                     } else {
                         vNewAnimal.setElementAt("", 2);
                     }

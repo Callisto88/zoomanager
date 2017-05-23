@@ -33,17 +33,17 @@ public class AnimalController {
             query = new DBInteraction();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
-            new ErrorController(exceptionDataBase.toString());
+            new ErrorController(exceptionDataBase.getMsg());
         }
 
         try {
             animauxDB = query.selAnimaux();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            new ErrorController(e.toString());
+            new ErrorController(e.getMsg());
         } catch (SQLException e) {
             e.printStackTrace();
-            new ErrorController(e.toString());
+            new ErrorController(e.getMessage());
         }
 
         query = null;
@@ -240,6 +240,7 @@ public class AnimalController {
         try {
             //success = query.insAnimal(animalToAdd);
             query.updateAnimal(animalToMod);
+            success = true;
         } catch (ExceptionDataBase e) {
             success = false;
             e.printStackTrace();

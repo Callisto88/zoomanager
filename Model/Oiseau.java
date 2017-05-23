@@ -80,6 +80,12 @@ public class Oiseau extends Animal {
     }
 
     public Oiseau(int id, String nomCommun, String nom, String sexe, Date dateNaissance, Enclos enclos, Pays origine, Race race, Date dateDeces, double envergure, String bague) {
+        super(id, nomCommun, nom, sexe, dateNaissance, enclos, origine, race, dateDeces);
+        this.envergure = envergure;
+        this.bague = bague;
+    }
+
+    public Oiseau(String nomCommun, String nom, String sexe, Date dateNaissance, Enclos enclos, Pays origine, Race race, Date dateDeces, double envergure, String bague) {
         super(nomCommun, nom, sexe, dateNaissance, enclos, origine, race, dateDeces);
         this.envergure = envergure;
         this.bague = bague;

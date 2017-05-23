@@ -69,6 +69,10 @@ public class Reptile extends Animal {
     }
 
     public Reptile(int id, String nomCommun, String nom, String sexe, Date dateNaissance, Enclos enclos, Pays origine, Race race, Date dateDeces, double temperature) {
+        super(id, nomCommun, nom, sexe, dateNaissance, enclos, origine, race, dateDeces);
+        this.temperature = temperature;
+    }
+    public Reptile(String nomCommun, String nom, String sexe, Date dateNaissance, Enclos enclos, Pays origine, Race race, Date dateDeces, double temperature) {
         super(nomCommun, nom, sexe, dateNaissance, enclos, origine, race, dateDeces);
         this.temperature = temperature;
     }
