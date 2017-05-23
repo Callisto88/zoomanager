@@ -22,15 +22,6 @@ import java.util.ArrayList;
  */
 public class StaffController {
 
-    // Controlleur des sous fenêtres de Staff
-    private AddStaffController addController = null;
-    private ModifyStaffController modifyStaffController = null;
-    private AssignStaffTaskController assignController = null;
-
-    private AddExternalController aecAddExternal = null;
-    private ModifyExternalController mecModifyExternal = null;
-    private AssignExternalTaskController aetcAssignExternal = null;
-
     private StaffView svPersonnel = null;
     private DBInteraction querry = null;
 
@@ -282,23 +273,33 @@ public class StaffController {
     }
 
     /**
-     * Méthode permettant de mettre à jour le tableau une fois l'ajout de personne OK
+     * Méthode permettant de rajouter une ligne sur le tableau une fois l'ajout de personne OK
+     * @param personne personne à rajouter
      */
     public void refreshStaffTab(Personne personne){
         svPersonnel.addStaffTab(personne);
     }
 
     /**
-     * Méthode permettant de mettre à jour le tableau une fois l'ajout d'intervenant OK
+     * Méthode permettant de rajouter une ligne sur le tableau une fois l'ajout d'intervenant OK
+     * @param external intervenant à rajouter
      */
     public void refreshExternalTab(Intervenant external){
         svPersonnel.addExternalTab(external);
     }
 
+    /**
+     * Méthode permettant de rafraichir la fenêtre de droite une fois l'employé modifié
+     * @param personne personne qui à été modifié
+     */
     public void refreshStaff(Personne personne){
         svPersonnel.refreshStaffView(personne);
     }
 
+    /**
+     * Méthode permettant de rafraichir la fenêtre de droite une fois l'intervenant modifié
+     * @param external intervenant qui à été modifié
+     */
     public void refreshExternal(Intervenant external){
         svPersonnel.refreshExternalView(external);
     }
@@ -322,14 +323,14 @@ public class StaffController {
      * Méthode permettant d'instancier la fenêtre d'ajout de personne
      */
     public void addStaffView() {
-        addController = new AddStaffController(this, getStatus(), getContract(), getResponsable(), getCountries());
+        AddStaffController addController = new AddStaffController(this, getStatus(), getContract(), getResponsable(), getCountries());
     }
 
     /**
      * Méthode permettant d'instancier la fenêtre d'ajout d'intervenant
      */
     public void addExternalView(){
-        aecAddExternal = new AddExternalController(this, getCountries());
+        AddExternalController aecAddExternal = new AddExternalController(this, getCountries());
     }
 
     /**
@@ -337,7 +338,7 @@ public class StaffController {
      * @param personne personne à qui l'on souhaite assigner des tâches
      */
     public void assignStaffTaskView(Personne personne) {
-        assignController = new AssignStaffTaskController(personne);
+        AssignStaffTaskController assignController = new AssignStaffTaskController(personne);
     }
 
     /**
@@ -345,7 +346,7 @@ public class StaffController {
      * @param external personne externe à qui attribuer des tâches
      */
     public void assignExternalTaskView(Intervenant external) {
-        aetcAssignExternal = new AssignExternalTaskController(external);
+        AssignExternalTaskController aetcAssignExternal = new AssignExternalTaskController(external);
     }
 
     /**
@@ -353,7 +354,7 @@ public class StaffController {
      * @param personne personne que l'on souhaite modifier
      */
     public void modifyStaffView(Personne personne) {
-        modifyStaffController = new ModifyStaffController(this, personne,getContract(), getStatus(), getCountries(), getResponsable());
+        ModifyStaffController modifyStaffController = new ModifyStaffController(this, personne,getContract(), getStatus(), getCountries(), getResponsable());
     }
 
     /**
@@ -361,7 +362,7 @@ public class StaffController {
      * @param external intervenant à modifier
      */
     public void modifyExternalView(Intervenant external){
-        mecModifyExternal = new ModifyExternalController(this, external);
+        ModifyExternalController mecModifyExternal = new ModifyExternalController(this, external);
     }
 
 }

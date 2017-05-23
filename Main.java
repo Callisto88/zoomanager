@@ -1,6 +1,5 @@
 import Controller.ManagerDashboardController;
 import View.ManagerDashboard.ManagerDashboard;
-//import com.mysql.jdbc.MySQLConnection;
 import Model.*;
 
 public class Main {

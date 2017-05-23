@@ -25,8 +25,6 @@ public class ModifyStaffPanel extends GenericWindow {
     private ArrayList<String> alsStatus = null;
     private ArrayList<Pays> alpCountries = null;
 
-    private JComboBox boxChoiceLabel = null;
-    private JPanel jpModifyPanel = new JPanel();
     private int NUMBER_OF_ROW = 13;
     private int y = 0;
 
@@ -57,7 +55,6 @@ public class ModifyStaffPanel extends GenericWindow {
     private String sCountry;
     private String sPhone;
     private int iSupervisor = 0;
-    private String sSupervisor;
     private String sStatut;
     private String sContract;
 
@@ -86,7 +83,7 @@ public class ModifyStaffPanel extends GenericWindow {
     public ModifyStaffPanel(ModifyStaffController mscController, Personne personne, ArrayList<String> contract,
                             ArrayList<String> status, ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
         super("Modification");
-        jpModifyPanel.setLayout(new GridBagLayout());
+        jpMainPanel.setLayout(new GridBagLayout());
         alpSupervisor = supervisor;
         alsContract = contract;
         alsStatus = status;
@@ -115,12 +112,11 @@ public class ModifyStaffPanel extends GenericWindow {
         sContract = personne.getTypeContrat();
         if(personne.getResponsable() != 0) {
             iSupervisor = personne.getResponsable();
-            sSupervisor = mscController.getSupervisor(personne.getResponsable());
         }
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
         JPanel modification = new JPanel();
-        boxChoiceLabel = new JComboBox();
+        JComboBox boxChoiceLabel = new JComboBox();
         boxChoiceLabel.addItem("Tous les champs");
         boxChoiceLabel.addItem("Nom");
         boxChoiceLabel.addItem("Prénom");
@@ -137,7 +133,7 @@ public class ModifyStaffPanel extends GenericWindow {
         gbcConstraint.insets = new Insets(5, 5, 10, 10);
         gbcConstraint.anchor = GridBagConstraints.NORTH;
         ++y;
-        jpModifyPanel.add(modification, gbcConstraint);
+        jpMainPanel.add(modification, gbcConstraint);
 
         // Bouton pour demander l'ajout de champ à modifier
         JPanel modifyLabel = new JPanel();
@@ -145,7 +141,7 @@ public class ModifyStaffPanel extends GenericWindow {
         modifyLabel.add(newLabel);
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(modifyLabel, gbcConstraint);
+        jpMainPanel.add(modifyLabel, gbcConstraint);
 
         /**
          * Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
@@ -205,8 +201,7 @@ public class ModifyStaffPanel extends GenericWindow {
 
         this.setVisible(true);
         gbcConstraint.weighty = 1.0;
-        jpModifyPanel.add(new JPanel(), gbcConstraint);
-        jpMainPanel.add(jpModifyPanel, gbcConstraint);
+        jpMainPanel.add(new JPanel(), gbcConstraint);
         configFrame(getJfFrame(), this);
         this.setMinimumSize(new Dimension(200, 400));
     }
@@ -227,7 +222,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(lastNamePanel, gbcConstraint);
+            jpMainPanel.add(lastNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -248,7 +243,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(firstNamePanel, gbcConstraint);
+            jpMainPanel.add(firstNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -269,7 +264,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(emailPanel, gbcConstraint);
+            jpMainPanel.add(emailPanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -292,7 +287,7 @@ public class ModifyStaffPanel extends GenericWindow {
         gbcConstraint.anchor = GridBagConstraints.WEST;
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(addressPanel, gbcConstraint);
+            jpMainPanel.add(addressPanel, gbcConstraint);
 
         // Pour ajouter le npa
         JPanel jpNPA = new JPanel();
@@ -306,7 +301,7 @@ public class ModifyStaffPanel extends GenericWindow {
         gbcConstraint.anchor = GridBagConstraints.WEST;
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(jpNPA, gbcConstraint);
+            jpMainPanel.add(jpNPA, gbcConstraint);
 
         // Pour ajouter la ville
         JPanel jpCity = new JPanel();
@@ -320,7 +315,7 @@ public class ModifyStaffPanel extends GenericWindow {
         gbcConstraint.anchor = GridBagConstraints.WEST;
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(jpCity, gbcConstraint);
+            jpMainPanel.add(jpCity, gbcConstraint);
 
         //Pour ajouter le pays
         JPanel jpCountry = new JPanel();
@@ -343,7 +338,7 @@ public class ModifyStaffPanel extends GenericWindow {
         gbcConstraint.anchor = GridBagConstraints.WEST;
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(jpCountry, gbcConstraint);
+            jpMainPanel.add(jpCountry, gbcConstraint);
 
         jpMainPanel.revalidate();
     }
@@ -366,7 +361,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpPhone, gbcConstraint);
+            jpMainPanel.add(jpPhone, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -397,7 +392,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpSupervisor, gbcConstraint);
+            jpMainPanel.add(jpSupervisor, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -426,7 +421,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpStatut, gbcConstraint);
+            jpMainPanel.add(jpStatut, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -455,7 +450,7 @@ public class ModifyStaffPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpContract, gbcConstraint);
+            jpMainPanel.add(jpContract, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -469,7 +464,7 @@ public class ModifyStaffPanel extends GenericWindow {
             JButton jbModify = new JButton("Modifier");
             gbcConstraint.gridy = NUMBER_OF_ROW;
             gbcConstraint.anchor = GridBagConstraints.CENTER;
-            jpModifyPanel.add(jbModify, gbcConstraint);
+            jpMainPanel.add(jbModify, gbcConstraint);
             // Permet de récupérer l'action d'appui sur le bouton
             jbModify.addActionListener(new ActionListener() {
                 @Override

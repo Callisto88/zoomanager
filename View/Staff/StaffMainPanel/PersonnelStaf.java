@@ -19,14 +19,6 @@ public class PersonnelStaf extends JPanel{
 
     private StaffController scController = null;
 
-    private GridBagConstraints gbcDetailsStaff = new GridBagConstraints();
-    private int x = 0;
-    private int y = 0;
-    private int line;
-
-    private Dimension dLabel = new Dimension(100,25);
-    private Dimension dDetail = new Dimension(120, 25);
-
     private JLabel jlFirstNameInfo;
     private JLabel jlLastNameInfo;
     private JLabel jlBirthdayInfo;
@@ -52,7 +44,13 @@ public class PersonnelStaf extends JPanel{
     public PersonnelStaf(StaffController controller, Personne personne, int line){
 
         this.setLayout(new GridBagLayout());
-        this.line = line;
+
+        GridBagConstraints gbcDetailsStaff = new GridBagConstraints();
+        int x = 0;
+        int y = 0;
+
+        Dimension dLabel = new Dimension(100,25);
+        Dimension dDetail = new Dimension(120, 25);
         this.scController = controller;
 
 

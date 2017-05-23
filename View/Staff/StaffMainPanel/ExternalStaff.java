@@ -18,11 +18,6 @@ import java.util.ArrayList;
  */
 public class ExternalStaff extends JPanel{
 
-    private GridBagConstraints gbcDetailsExternal = new GridBagConstraints();
-    private int x = 0;
-    private int y = 0;
-    private int line;
-
     private JLabel jlFirstNameInfo;
     private JLabel jlLastNameInfo;
     private JLabel jlEmailInfo;
@@ -33,21 +28,26 @@ public class ExternalStaff extends JPanel{
     private JLabel jlCountryInfo;
     private JLabel jlCompagnyInfo;
 
-    private Dimension dLabel = new Dimension(100,25);
-    private Dimension dDetail = new Dimension(120, 25);
 
     /**
      * Constructeur de la class pour afficher les détails
      * @param controller controlleur StaffController permettant de faire remonter les informations
      * @param external intervenant pour lequel on souhaite afficher les détails
-     * @param line ligne correspondant à la ligne sélectionné de l'intervenant TODO : ne marche pas très bien
+     * @param line ligne permettant d'indiquer si nécéssaire cella à supprimer
      */
     public ExternalStaff(StaffController controller, Intervenant external, int line){
 
         this.setLayout(new GridBagLayout());
-        this.line = line;
+
+        GridBagConstraints gbcDetailsExternal = new GridBagConstraints();
+        int x = 0;
+        int y = 0;
         gbcDetailsExternal.gridx = x;
         gbcDetailsExternal.gridy = y;
+
+        Dimension dLabel = new Dimension(100,25);
+        Dimension dDetail = new Dimension(120, 25);
+
         JPanel jpLeft = new JPanel();
         jpLeft.setLayout(new GridBagLayout());
 

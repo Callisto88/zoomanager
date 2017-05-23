@@ -1,4 +1,4 @@
-package View.Staff.StaffAddPanel;
+package View.Staff.AddPanel;
 
 import Controller.Staff.AddStaffController;
 
@@ -25,13 +25,6 @@ public class AddStaff extends GenericWindow {
 
     // Controlleur de la fenêtre pour faire remonté les informations
     private AddStaffController controller;
-    private ArrayList<Personne> supervisor = null;
-    private ArrayList<Pays> country = null;
-
-    private Dimension dLabel = new Dimension(130, 30);
-    private Dimension dInput = new Dimension(150, 30);
-
-    private GridBagConstraints gbcConstraint = new GridBagConstraints();
 
     // Variables pour enregistrer la saisie.
     private String sLastName;
@@ -80,8 +73,10 @@ public class AddStaff extends GenericWindow {
         controller = asc;
         jpMainPanel.setLayout(new GridBagLayout());
 
-        this.supervisor = supervisor;
-        this.country = country;
+        Dimension dLabel = new Dimension(130, 30);
+        Dimension dInput = new Dimension(150, 30);
+
+        GridBagConstraints gbcConstraint = new GridBagConstraints();
 
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = 0;

@@ -1,4 +1,4 @@
-package View.Staff.StaffAddPanel;
+package View.Staff.AddPanel;
 
 import Controller.Staff.AddExternalController;
 import Model.Pays;
@@ -17,10 +17,6 @@ import java.util.ArrayList;
  */
 public class AddExternal extends GenericWindow{
     private AddExternalController aecController = null;
-
-    private GridBagConstraints gbcConstraint = new GridBagConstraints();
-    private Dimension dLabel = new Dimension(90, 30);
-    private Dimension dInput = new Dimension(150, 30);
 
     // String permettant de récupérer les champs de saisie
     private String sLastName;
@@ -55,6 +51,9 @@ public class AddExternal extends GenericWindow{
         jpMainPanel.setLayout(new GridBagLayout());
 
 
+        Dimension dLabel = new Dimension(90, 30);
+        Dimension dInput = new Dimension(150, 30);
+
         // Ajout des champs utiles pour le nom
         JPanel jpLastNamePanel = new JPanel();
         JLabel jlLastNameLabel = new JLabel("Nom : ");
@@ -64,6 +63,7 @@ public class AddExternal extends GenericWindow{
         jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jtfLastNameInput.setPreferredSize(dInput);
         jpLastNamePanel.add(jtfLastNameInput);
+        GridBagConstraints gbcConstraint = new GridBagConstraints();
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = 0;
         gbcConstraint.insets = new Insets(10,5,10,5);

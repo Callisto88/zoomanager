@@ -6,6 +6,7 @@ import View.GenericWindow;
 import View.MyModelTable;
 
 import javax.swing.*;
+import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 
 import java.awt.*;
@@ -59,9 +60,9 @@ public class StaffView extends GenericWindow {
         // Permet d'ajouter le Panel de Gauche qui contiendra le tableau et les bouton d'impression et d'ajout de personnel
         jpMainPanel.add(jpLeft);
 
-        JLabel jlStock = new JLabel("Listes du personnel");
-        setTitleConfig(jlStock);
-        jpLeftTitle.add(jlStock);
+        JLabel jlStaff = new JLabel("Liste des employés");
+        setTitleConfig(jlStaff);
+        jpLeftTitle.add(jlStaff);
 
         gbcLeft.fill = GridBagConstraints.CENTER;
         gbcLeft.gridx = 0;
@@ -154,6 +155,7 @@ public class StaffView extends GenericWindow {
                     ((JButton) e.getSource()).setText("Afficher les employés");
                     jbAdd.setText("Ajouter un intervenant");
                     jbPrint.setText("Imprimer listing intervenants");
+                    jlStaff.setText("Liste des intervenants");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
@@ -165,6 +167,7 @@ public class StaffView extends GenericWindow {
                     ((JButton) e.getSource()).setText("Afficher les externes");
                     jbAdd.setText("Ajouter un employé");
                     jbPrint.setText("Imprimer listing employés");
+                    jlStaff.setText("Liste des employés");
                     jbSwitchexernalInternalStaff.repaint();
                     jbSwitchexernalInternalStaff.revalidate();
                 }
@@ -172,8 +175,8 @@ public class StaffView extends GenericWindow {
         });
 
         // Permet d'ajouter les bouton ainsi que le champ de filtre en haut de notre fenêtre
-        GridBagLayout gblStockBoutton = new GridBagLayout();
-        jpButtonStaff.setLayout(gblStockBoutton);
+        GridBagLayout gblStaffBoutton = new GridBagLayout();
+        jpButtonStaff.setLayout(gblStaffBoutton);
         GridBagConstraints gbcStaffBouton = new GridBagConstraints();
 
         gbcStaffBouton.insets = new Insets(0,5,0,5);
@@ -210,7 +213,7 @@ public class StaffView extends GenericWindow {
                 jpRight.removeAll();
                 // Permet de choisir si l'on affiche les détails d'un employée ou d'un externe
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
-                    jtTable.updateUI();
+                    //jtTable.updateUI();
                     selectedRow = jtTable.getSelectedRow();
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
@@ -219,8 +222,8 @@ public class StaffView extends GenericWindow {
                     JLabel jlDetails = new JLabel("Détails du personnel", SwingConstants.CENTER);
                     jlDetails.setHorizontalAlignment(SwingConstants.CENTER);
                     setTitleConfig(jlDetails);
-                    //gbcRight.gridwidth = 2;
-                    gbcRight.anchor = GridBagConstraints.CENTER;
+                    gbcRight.gridwidth = 2;
+                    gbcRight.fill = GridBagConstraints.CENTER;
                     gbcRight.gridx = 0;
                     gbcRight.gridy = 0;
                     jpRight.add(jlDetails, BorderLayout.CENTER);

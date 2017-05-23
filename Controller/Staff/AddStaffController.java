@@ -3,7 +3,7 @@ package Controller.Staff;
 import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
 import Model.*;
-import View.Staff.StaffAddPanel.AddStaff;
+import View.Staff.AddPanel.AddStaff;
 
 import javax.swing.*;
 import java.sql.Date;
@@ -191,7 +191,7 @@ public class AddStaffController {
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param personne personne à insérer dans la DB
      */
-    public void insertPersonne (Personne personne){
+    private void insertPersonne (Personne personne){
         dbConnection();
         personne.toString();
         try{
@@ -205,7 +205,6 @@ public class AddStaffController {
                 "Continuer des ajout?", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE, null);
         if(n == 1) {
             add.close();
-
         }
     }
 

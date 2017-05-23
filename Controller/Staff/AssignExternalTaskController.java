@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public class AssignExternalTaskController {
 
     private DBInteraction querry = null;
-    private TaskExternalPanel tepExternal = null;
 
     /**
      * Constructeur du controlleur
@@ -40,7 +39,7 @@ public class AssignExternalTaskController {
             new ErrorController(exceptionsql.toString());
         }
 
-        tepExternal = new TaskExternalPanel(this, external, tasks);
+        TaskExternalPanel tepExternal = new TaskExternalPanel(this, external, tasks);
     }
 
     /**

@@ -3,7 +3,7 @@ package Controller.Staff;
 import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
 import Model.*;
-import View.Staff.StaffAddPanel.AddExternal;
+import View.Staff.AddPanel.AddExternal;
 
 import javax.swing.*;
 import java.sql.SQLException;
@@ -155,7 +155,7 @@ public class AddExternalController {
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param external personne à insérer dans la DB
      */
-    public void insertExternal(Intervenant external){
+    private void insertExternal(Intervenant external){
         dbConnection();
         try{
             querry.insertIntervenant(external);
@@ -173,5 +173,4 @@ public class AddExternalController {
             aeExternal.close();
         }
     }
-
 }

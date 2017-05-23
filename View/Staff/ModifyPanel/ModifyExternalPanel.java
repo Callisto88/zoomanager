@@ -18,22 +18,18 @@ import java.util.ArrayList;
  * Created by Bureau on 23.04.2017.
  */
 public class ModifyExternalPanel extends GenericWindow {
-    private JComboBox boxChoiceLabel = null;
-    private Intervenant external = null;
     private  ModifyExternalController mecExternalController = null;
 
     // Permet d'avoir la liste actuel des pays
     private ArrayList<Pays> alpCountries = null;
 
     // variable pour permettre l'ajout dynamique des champs avec le bouton en position finale
-    private JPanel jpModifyPanel = new JPanel();
     private GridBagConstraints gbcConstraint = new GridBagConstraints();
-    private int x = 0;
     private int y = 0;
     private int NUMBER_OF_ROW = 11;
 
     private Dimension dLabel = new Dimension(90, 30);
-    private Dimension dInput = new Dimension(120, 30);
+    private Dimension dInput = new Dimension(140, 30);
 
     // Champs de saisie pour la modification
     private JTextField jtfLastNameInput;
@@ -71,8 +67,7 @@ public class ModifyExternalPanel extends GenericWindow {
      */
     public ModifyExternalPanel(ModifyExternalController mecExternalController, Intervenant external, ArrayList<Pays> countries){
         super("Modification Intervenant");
-        jpModifyPanel.setLayout(new GridBagLayout());
-        this.external = external;
+        jpMainPanel.setLayout(new GridBagLayout());
         this.mecExternalController = mecExternalController;
         alpCountries = countries;
         sLastName = external.getNom();
@@ -83,12 +78,10 @@ public class ModifyExternalPanel extends GenericWindow {
         sCity = external.getAdresse().getVille().getVille();
         sNPA = "" + external.getAdresse().getVille().getCp();
         sCountry = external.getAdresse().getVille().getPays().getPays();
-        GridBagLayout gblModify = new GridBagLayout();
-        jpModifyPanel.setLayout(gblModify);
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
         JPanel modification = new JPanel();
-        boxChoiceLabel = new JComboBox();
+        JComboBox boxChoiceLabel = new JComboBox();
         boxChoiceLabel.addItem("Tous les champs");
         boxChoiceLabel.addItem("Nom");
         boxChoiceLabel.addItem("Prénom");
@@ -98,13 +91,13 @@ public class ModifyExternalPanel extends GenericWindow {
         modification.add(boxChoiceLabel);
 
         // contraintes permettant d'insérer les panels en incrémmentant y
-        gbcConstraint.gridx = x;
+        gbcConstraint.gridx = 0;
         gbcConstraint.gridy = y;
         // Permet de crée des marges autour des panels lorsqu'on les inserera
         gbcConstraint.insets = new Insets(5, 5, 10, 10);
         gbcConstraint.anchor = GridBagConstraints.NORTH;
         ++y;
-        jpModifyPanel.add(modification, gbcConstraint);
+        jpMainPanel.add(modification, gbcConstraint);
 
         // Bouton pour demander l'ajout de champ à modifier
 
@@ -113,7 +106,7 @@ public class ModifyExternalPanel extends GenericWindow {
         modifyLabel.add(newLabel);
         gbcConstraint.gridy = y;
         ++y;
-        jpModifyPanel.add(modifyLabel, gbcConstraint);
+        jpMainPanel.add(modifyLabel, gbcConstraint);
 
         // Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
         newLabel.addActionListener(new ActionListener() {
@@ -153,8 +146,7 @@ public class ModifyExternalPanel extends GenericWindow {
         });
         this.setVisible(true);
         gbcConstraint.weighty = 1.0;
-        jpModifyPanel.add(new JPanel(), gbcConstraint);
-        jpMainPanel.add(jpModifyPanel, gbcConstraint);
+        jpMainPanel.add(new JPanel(), gbcConstraint);
         configFrame(getJfFrame(), this);
         this.setMinimumSize(new Dimension(200,400));
     }
@@ -175,7 +167,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(lastNamePanel, gbcConstraint);
+            jpMainPanel.add(lastNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -196,7 +188,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(firstNamePanel, gbcConstraint);
+            jpMainPanel.add(firstNamePanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -217,7 +209,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(emailPanel, gbcConstraint);
+            jpMainPanel.add(emailPanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -239,7 +231,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(addressPanel, gbcConstraint);
+            jpMainPanel.add(addressPanel, gbcConstraint);
 
             // Pour ajouter le npa
             JPanel jpNPA = new JPanel();
@@ -252,7 +244,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpNPA, gbcConstraint);
+            jpMainPanel.add(jpNPA, gbcConstraint);
 
             // Pour ajouter la ville
             JPanel jpCity = new JPanel();
@@ -265,7 +257,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpCity, gbcConstraint);
+            jpMainPanel.add(jpCity, gbcConstraint);
 
             //Pour ajouter le pays
             JPanel jpCountry = new JPanel();
@@ -287,7 +279,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(jpCountry, gbcConstraint);
+            jpMainPanel.add(jpCountry, gbcConstraint);
 
             jpMainPanel.revalidate();
         }
@@ -309,7 +301,7 @@ public class ModifyExternalPanel extends GenericWindow {
             gbcConstraint.anchor = GridBagConstraints.WEST;
             gbcConstraint.gridy = y;
             ++y;
-            jpModifyPanel.add(telephonePanel, gbcConstraint);
+            jpMainPanel.add(telephonePanel, gbcConstraint);
             jpMainPanel.revalidate();
         }
     }
@@ -323,7 +315,7 @@ public class ModifyExternalPanel extends GenericWindow {
             JButton jbModify = new JButton("Modifier");
             gbcConstraint.gridy = NUMBER_OF_ROW;
             gbcConstraint.anchor = GridBagConstraints.CENTER;
-            jpModifyPanel.add(jbModify, gbcConstraint);
+            jpMainPanel.add(jbModify, gbcConstraint);
             jbModify.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
