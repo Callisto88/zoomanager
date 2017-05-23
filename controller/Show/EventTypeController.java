@@ -24,11 +24,13 @@ public class EventTypeController {
             System.out.println("On me peut ajouter un type d evenement vide");
         }
         try {
-            query.insertTypeEvenement(new TypeEvenement(evtType));
+            query.insEventType(evtType);
             System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
             return true;
         } catch (SQLException e1) {
             System.out.println("Insertion du type d evenement "+evtType+" a echoue");
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
         }
         return false;
     }

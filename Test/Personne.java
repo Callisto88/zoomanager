@@ -4,6 +4,7 @@ import Model.DBInteraction;
 import Model.ExceptionDataBase;
 import Model.Intervenant;
 import Model.Statut;
+import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,6 +25,7 @@ public class Personne {
         System.out.println("Sélectionner une action : ");
         System.out.println("-------------------------\n");
         System.out.println("1 - Sélectionner tous les intervenants impliqués dans un événement");
+        System.out.println("2 - Sélectionner les détails d'un employé");
         System.out.println("7 - Quit");
 
         selection = input.nextInt();
@@ -46,6 +48,13 @@ public class Personne {
                     selAllIntervenantsParEvenementId(eventID);
                     break;
 
+                case 2:
+                    System.out.println("Entre l'ID de la personne : ");
+                    Scanner input2 = new Scanner(System.in);
+                    int idPersonne = Integer.parseInt(input2.next());
+                    selEmployeDetails(idPersonne);
+                    break;
+
                 case 7:
                     break;
             }
@@ -63,6 +72,21 @@ public class Personne {
             for (Intervenant i : result) {
                 System.out.println(i.toString());
             }
+
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void selEmployeDetails(int idPersonne) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+            Model.Personne p = query.selEmployeDetails(idPersonne);
+            System.out.println(p.toString());
 
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
