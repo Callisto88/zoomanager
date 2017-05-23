@@ -10,6 +10,7 @@ import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Style;
 import java.awt.*;
+import java.io.File;
 import java.io.FileOutputStream;
 
 /**
@@ -23,11 +24,12 @@ public class PrintPDF {
 
     /**
      * Construteur pour crée un PDF et demander au client de sélectionner un chemin
-     * @param jtTable table à imprimer
-     * @param title titre inclus dans le PDF
+     *
+     * @param jtTable    table à imprimer
+     * @param title      titre inclus dans le PDF
      * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
      */
-    public PrintPDF(JTable jtTable, String title, String additional){
+    public PrintPDF(JTable jtTable, String title, String additional) {
         Document document = new Document(PageSize.A4.rotate());
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
@@ -48,8 +50,12 @@ public class PrintPDF {
         // Permet d'instancier une fenêtre de demande de chemin de destination et de chemin de fichier
         int answers = jfc.showOpenDialog(new JPanel());
         String output = "";
-        if(answers == JFileChooser.APPROVE_OPTION){
-            output = jfc.getSelectedFile().toString() + ".pdf";
+        if (answers == JFileChooser.APPROVE_OPTION) {
+            if (!jfc.getSelectedFile().toString().endsWith(".pdf")) {
+                output = jfc.getSelectedFile().toString() + ".pdf";
+            } else {
+                output = jfc.getSelectedFile().toString();
+            }
         }
 
         try {
@@ -59,12 +65,12 @@ public class PrintPDF {
             Paragraph p = new Paragraph(title);
             p.setAlignment(1);
             document.add(p);
-            if(additional != null){
+            if (additional != null) {
                 Paragraph pAdditional = new Paragraph(additional);
                 p.setAlignment(1);
                 document.add(pAdditional);
             }
-            document.add( Chunk.NEWLINE );
+            document.add(Chunk.NEWLINE);
 
             PdfPTable pdfTable = new PdfPTable(jtTable.getColumnCount());
             // Permet d'ajouter les nom des colonnes
@@ -86,7 +92,7 @@ public class PrintPDF {
         document.close();
     }
 
-    public PrintPDF(JTable jtTable, JLabel title, String additional){
+    public PrintPDF(JTable jtTable, JLabel title, String additional) {
         Document document = new Document(PageSize.A4);
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
@@ -98,7 +104,7 @@ public class PrintPDF {
         jfc.setAcceptAllFileFilterUsed(false);
         int answers = jfc.showOpenDialog(new JPanel());
         String output = "";
-        if(answers == JFileChooser.APPROVE_OPTION){
+        if (answers == JFileChooser.APPROVE_OPTION) {
             output = jfc.getSelectedFile().toString() + ".pdf";
         }
 
@@ -111,19 +117,19 @@ public class PrintPDF {
             p.setAlignment(1);
             document.add(p);
 
-            if(additional != null){
+            if (additional != null) {
                 Paragraph pAdditional = new Paragraph(additional);
                 p.setAlignment(1);
                 document.add(pAdditional);
             }
-            document.add( Chunk.NEWLINE );
+            document.add(Chunk.NEWLINE);
 
 
             PdfPTable pdfTable = new PdfPTable(jtTable.getColumnCount() - 2);
 
             //adding table headers
             for (int i = 0; i < jtTable.getColumnCount(); i++) {
-                if(i != 3 && i != 5){
+                if (i != 3 && i != 5) {
                     PdfPCell ppcCellHeaders = new PdfPCell(new Phrase(jtTable.getColumnName(i), fontTextWhite));
                     ppcCellHeaders.setBackgroundColor(BaseColor.BLACK);
                     pdfTable.addCell(ppcCellHeaders);
@@ -133,7 +139,7 @@ public class PrintPDF {
             //extracting data from the JTable and inserting it to PdfPTable
             for (int rows = 0; rows < jtTable.getRowCount() - 1; rows++) {
                 for (int cols = 0; cols < jtTable.getColumnCount(); cols++) {
-                    if(cols != 3 && cols != 5){
+                    if (cols != 3 && cols != 5) {
                         pdfTable.addCell(jtTable.getModel().getValueAt(rows, cols).toString());
                     }
                 }
@@ -147,7 +153,7 @@ public class PrintPDF {
         document.close();
     }
 
-    public PrintPDF(JTable jtOrderContent, JTable jtInfoOrder, JLabel title, String additional){
+    public PrintPDF(JTable jtOrderContent, JTable jtInfoOrder, JLabel title, String additional) {
         Document document = new Document(PageSize.A4);
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
@@ -159,7 +165,7 @@ public class PrintPDF {
         jfc.setAcceptAllFileFilterUsed(false);
         int answers = jfc.showOpenDialog(new JPanel());
         String output = "";
-        if(answers == JFileChooser.APPROVE_OPTION){
+        if (answers == JFileChooser.APPROVE_OPTION) {
             output = jfc.getSelectedFile().toString() + ".pdf";
         }
 
@@ -172,23 +178,23 @@ public class PrintPDF {
             p.setAlignment(1);
             document.add(p);
 
-            if(additional != null){
+            if (additional != null) {
                 Paragraph pAdditional = new Paragraph(additional);
                 p.setAlignment(1);
                 document.add(pAdditional);
             }
-            document.add( Chunk.NEWLINE );
+            document.add(Chunk.NEWLINE);
 
             PdfPTable pptTableOrderInfo = new PdfPTable(jtInfoOrder.getColumnCount());
             pptTableOrderInfo.setTotalWidth(200);
             for (int rows = 0; rows < jtInfoOrder.getRowCount(); rows++) {
                 for (int cols = 0; cols < jtInfoOrder.getColumnCount(); cols++) {
-                    if(cols == 0){
-                        PdfPCell ppcCell = new PdfPCell(new Phrase(jtInfoOrder.getValueAt(rows,cols).toString(), fontTextWhite));
+                    if (cols == 0) {
+                        PdfPCell ppcCell = new PdfPCell(new Phrase(jtInfoOrder.getValueAt(rows, cols).toString(), fontTextWhite));
                         ppcCell.setBackgroundColor(BaseColor.BLACK);
                         pptTableOrderInfo.addCell(ppcCell);
-                    }else{
-                        PdfPCell ppcCellHeaders = new PdfPCell(new Phrase(jtInfoOrder.getValueAt(rows,cols).toString(), fontTextBlack));
+                    } else {
+                        PdfPCell ppcCellHeaders = new PdfPCell(new Phrase(jtInfoOrder.getValueAt(rows, cols).toString(), fontTextBlack));
                         ppcCellHeaders.setBackgroundColor(BaseColor.WHITE);
                         pptTableOrderInfo.addCell(ppcCellHeaders);
                     }
@@ -196,7 +202,7 @@ public class PrintPDF {
             }
             document.add(pptTableOrderInfo);
 
-            document.add( Chunk.NEWLINE );
+            document.add(Chunk.NEWLINE);
 
             PdfPTable pptTableOrderContent = new PdfPTable(jtOrderContent.getColumnCount());
 
