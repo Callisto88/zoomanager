@@ -4,7 +4,6 @@ import Model.DBInteraction;
 import Model.ExceptionDataBase;
 import Model.Intervenant;
 import Model.Statut;
-import com.sun.tools.doclets.formats.html.SourceToHTMLConverter;
 
 import java.sql.SQLException;
 import java.util.ArrayList;

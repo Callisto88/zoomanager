@@ -3,10 +3,7 @@ package View.Animal;
 import Controller.Animal.AnimalController;
 import Controller.Validate.Validate;
 import Model.*;
-import View.DateLabelFormatter;
-import View.EventsTable;
-import View.GenericWindow;
-import View.MyModelTable;
+import View.*;
 import com.jidesoft.swing.AutoCompletion;
 import net.coderazzi.filters.gui.AutoChoices;
 import net.coderazzi.filters.gui.TableFilterHeader;
@@ -657,9 +654,16 @@ public class AnimalTab extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 animalType[0] = jcAnimalType.getSelectedIndex();
+                setView();
             }
         });
         if(mode == 2){
+            JLabel jlTypeAnimal = new JLabel("Type animal :");
+            setLabelConfig(jlTypeAnimal);
+            gbcAnimalForm.gridx = 0;
+            gbcAnimalForm.gridy = y;
+            jpDetAnimal.add(jlTypeAnimal, gbcAnimalForm);
+
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jcAnimalType, gbcAnimalForm);
@@ -973,7 +977,7 @@ public class AnimalTab extends GenericWindow {
     }
 
     private void print() {
-
+        new PrintPDF(jtTable, "Animaux", "");
     }
 
     public class WideComboBox extends JComboBox{

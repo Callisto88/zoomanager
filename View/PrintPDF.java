@@ -7,6 +7,7 @@ import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 
 import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.text.Style;
 import java.awt.*;
 import java.io.FileOutputStream;
@@ -34,10 +35,16 @@ public class PrintPDF {
         // Permet de spécifier que l'on désire sélectionner un chemin de destination
         jfc.setDialogTitle("Veuillez sélectionner un dossier de destination");
         // Change le bouton d'ouverture en bouton de création
-        jfc.setApproveButtonText("crée");
+        jfc.setApproveButtonText("créer");
 
         // Permet de désactiver les types de fichiers
         jfc.setAcceptAllFileFilterUsed(false);
+
+        FileNameExtensionFilter xmlFilter = new FileNameExtensionFilter("pdf files (*.pdf)", "pdf");
+        // add filters
+        jfc.addChoosableFileFilter(xmlFilter);
+        jfc.setFileFilter(xmlFilter);
+
         // Permet d'instancier une fenêtre de demande de chemin de destination et de chemin de fichier
         int answers = jfc.showOpenDialog(new JPanel());
         String output = "";
