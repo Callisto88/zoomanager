@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo  on 10/05/2017.
+ * Created by doriane kaffo on 10/05/2017.
  */
 public class AnimalEventController {
     DBInteraction query;
@@ -86,5 +86,24 @@ public class AnimalEventController {
             exceptionDataBase.printStackTrace();
         }
         return new Animal();
+    }
+
+
+    public void saveByEventId(Animal a, int id_event) {
+        if(a!=null) {
+            add(a.getId(),id_event);
+            System.out.println("On ENREGISTRE L ANNIMAL " + a.getNom()+" "+a.getId()+" "+" EVENEMENT "+id_event);
+        }else{
+            System.out.println("On ENREGISTRE L ANNIMAL MAIS CETTE PERSONNE EST NULL  EVENEMENT "+id_event);
+        }
+    }
+
+    public void delByEventId(Animal a, int id_event) {
+        if(a!=null) {
+            del(a.getId(),id_event);
+            System.out.println("On SUPPRIME L ANNIMAL " + a.getNom()+" "+a.getId()+" "+" EVENEMENT "+id_event);
+        }else{
+            System.out.println("On SUPPRIME L ANNIMAL MAIS CETTE PERSONNE EST NULL EVENEMENT "+id_event);
+        }
     }
 }

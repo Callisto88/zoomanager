@@ -2,6 +2,7 @@ package Controller.Show;
 
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
+import Model.Infrastructure;
 import Model.Personne;
 
 import java.sql.SQLException;
@@ -53,8 +54,13 @@ public class PersonneEventController {
             /*
             Fonction pas encore implementee
              */
-           // query.inspevent(idP, idE);
-            return  false;
+        try {
+            query.insAnimalEvent(idP,idE);
+            System.out.println("ENREGISTREMENT REUSSIT");
+        } catch (SQLException e) {
+            System.out.println("ECHEC D ENREGISTREMENT");
+        }
+        return  false;
 
     }
     public boolean del(int idP, int idE) {
@@ -65,5 +71,23 @@ public class PersonneEventController {
             System.out.println("Echec de suppression d une nouvelle personne a l evenement");
         }
         return false;
+    }
+
+    public void saveByEventId(Personne a, int id_event) {
+        if(a!=null) {
+            add(a.getIdPersonne(),id_event);
+            System.out.println("On AJOUTE LA PERSONNE " + a.getNom());
+        }else{
+            System.out.println("On AJOUTE LA PERSONNE MAIS CETTE PERSONNE EST NULL");
+        }
+    }
+
+    public void delByEventId(Personne a, int id_event) {
+        if(a!=null) {
+            del(a.getIdPersonne(),id_event);
+            System.out.println("On SUPPRIME LA PERSONNE " + a.getNom());
+        }else{
+            System.out.println("On SUPPRIME LA PERSONNE MAIS CETTE PERSONNE EST NULL");
+        }
     }
 }

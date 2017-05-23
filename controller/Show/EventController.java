@@ -21,14 +21,14 @@ public class EventController {
     }
     public boolean save(Evenement evt){
         if(evt==null){
-            System.out.println("On ne peut ajouter   d evenement vide");
+            System.out.println("On me peut ajouter   d evenement vide");
         }
         try {
             query.insertEvenement(evt);
-            System.out.println("Insertion d un nouvel  evenement reussit "+evt);
+            System.out.println("Insertion d un nouvel d evenement reussit "+evt);
             return true;
         } catch (SQLException e1) {
-            System.out.println("Insertion d evenement "+evt+" a echoue");
+            System.out.println("Insertion   d evenement "+evt+" a echoue");
         }
         return false;
     }

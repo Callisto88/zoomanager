@@ -66,4 +66,22 @@ public class InfrastructureEventController {
 //        }
         return false;
     }
+
+    public void saveByEventId(Infrastructure a, int id_event) {
+        if(a!=null) {
+            add(a.getId(),id_event);
+            System.out.println("On AJOUTE UN INFRASTRUCTURE " + a.getNom());
+        }else{
+            System.out.println("On AJOUTE UNE INFRASTRUCTURE MAIS CETTE PERSONNE EST NULL");
+        }
+    }
+
+    public void delByEventId(Infrastructure a, int id_event) {
+        if(a!=null) {
+            del(a.getId(),id_event);
+            System.out.println("On SUPPRIME UNE INFRASTRUCTURE " + a.getNom());
+        }else{
+            System.out.println("On SUPPRIME UNE INFRASTRUCTURE MAIS CETTE PERSONNE EST NULL");
+        }
+    }
 }

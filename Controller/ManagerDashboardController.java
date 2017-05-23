@@ -1,9 +1,9 @@
 package Controller;
 
 import Controller.Staff.StaffController;
-import Controller.Stock.StockTabController;
 import Controller.Animal.*;
 import View.ManagerDashboard.ManagerDashboard;
+import View.Show.ShowTab;
 import View.Stock.StockTab;
 
 import javax.swing.*;
@@ -18,10 +18,12 @@ public class ManagerDashboardController {
     // Ajout des autres controlleur
     private StockTab stStock = null;
     protected AnimalController acAnimal = null;
-
+    protected ShowTab showControl = null;
+    
+    
     // Fenêtre principale
     JFrame f = null;
-
+    
     /**
      * Constructeur du controlleur
      *
@@ -36,7 +38,7 @@ public class ManagerDashboardController {
         f.setMinimumSize(new Dimension(1280, 720));
         f.setVisible(true);
     }
-
+    
     public void revalidateDash() {
         System.out.println("active");
         f = new JFrame(" Dashboard");
@@ -49,20 +51,25 @@ public class ManagerDashboardController {
         //f.enable();
         //f.revalidate();
     }
-
+    
     /**
      * permet d'instancier la fenêtre des employée
      */
     public void employeeView() {
         persControl = new StaffController();
-
+        
     }
-
+    
+    
+    public void showView(){
+        showControl = new ShowTab();
+    }
     public void StockView() {
-        StockTabController stcStockTabController = new StockTabController();
+        // stStock = new StockTab();
     }
-
+    
     public void AnimalView() {
+        
         acAnimal = new AnimalController();
     }
 }

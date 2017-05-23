@@ -67,4 +67,23 @@ public class IntervenantEventController {
 //        }
         return false;
     }
+
+    public void saveByEventId(Intervenant a, int id_event) {
+        if(a!=null) {
+            add(a.getId(),id_event);
+            System.out.println("On AJOUTE L INTERVENANT " + a.getNom());
+        }else{
+            System.out.println("On AJOUTE L INTERVENANT MAIS CETTE PERSONNE EST NULL");
+        }
+    }
+
+    public void delByEventId(Intervenant a, int id_event) {
+
+        if(a!=null) {
+            del(a.getId(),id_event);
+            System.out.println("On SUPPRIME L INTERVENANT " + a.getNom());
+        }else{
+            System.out.println("On SUPPRIME L INTERVENANT MAIS CETTE PERSONNE EST NULL");
+        }
+    }
 }

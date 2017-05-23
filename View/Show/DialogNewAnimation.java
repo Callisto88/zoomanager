@@ -43,6 +43,12 @@ public class DialogNewAnimation extends javax.swing.JPanel {
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
+
+
+
+
+
+
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -58,6 +64,12 @@ public class DialogNewAnimation extends javax.swing.JPanel {
                         .addComponent(jToggleButton2)))
                 .addContainerGap(21, Short.MAX_VALUE))
         );
+
+
+
+
+
+
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()

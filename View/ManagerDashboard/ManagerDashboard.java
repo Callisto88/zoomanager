@@ -13,7 +13,7 @@ import java.awt.event.ActionListener;
  */
 public class ManagerDashboard extends JPanel {
     ManagerDashboardController controller;
-
+    
     /**
      * Constructeur de la fenêtre du dashboard.
      *
@@ -22,7 +22,7 @@ public class ManagerDashboard extends JPanel {
     public ManagerDashboard(ManagerDashboardController mdc) {
         controller = mdc;
         this.setLayout(new GridLayout(2, 2));
-
+        
         JButton employee = new JButton("Employé");
         this.add(employee);
         // Permet de demander l'instanciation de la fenêtre des employée
@@ -32,7 +32,7 @@ public class ManagerDashboard extends JPanel {
                 controller.employeeView();
             }
         });
-
+        
         JButton stock = new JButton("Stock");
         this.add(stock);
         // Permet de demander l'instanciation de la fenêetre du stock
@@ -43,17 +43,19 @@ public class ManagerDashboard extends JPanel {
                 controller.StockView();
             }
         });
-
+        
         JButton show = new JButton("Animation");
         this.add(show);
         // Permet de demander l'instanciation de la fenêtre des spectacles
         show.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                
                 System.out.println("Lancement fenêtre Animation");
+                controller.showView();
             }
         });
-
+        
         JButton animal = new JButton("Animal");
         this.add(animal);
         // Permet de demander l'instanciation de la fenêtre des annimaux.
@@ -64,6 +66,6 @@ public class ManagerDashboard extends JPanel {
                 controller.AnimalView();
             }
         });
-
+        
     }
 }

@@ -6,7 +6,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by doriane kaffo  on 14/05/2017.
+ * Created by doriane kaffo on 14/05/2017.
  */
 public class SlideJPanel extends javax.swing.JPanel {
     private Image img;
