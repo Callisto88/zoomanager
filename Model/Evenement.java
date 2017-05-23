@@ -53,6 +53,10 @@ public class Evenement {
         this.type = type;
     }
 
+    public Evenement(int eventID) {
+        this.id = eventID;
+    }
+
     public int getId() {
         return id;
     }

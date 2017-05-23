@@ -208,19 +208,19 @@ public class Animal {
         this.enclos = enclos;
     }
 
+    @Override
     public String toString() {
-
-        System.out.println("-----------------------------");
-        System.out.printf("%-10s : %s\n", "ID", this.id);
-        System.out.printf("%-10s : %s\n", "Nom", this.nom);
-        System.out.printf("%-10s : %s\n", "Sexe", this.sexe);
-        System.out.printf("%-10s : %s\n", "Naissance", this.dateNaissance);
-        System.out.printf("%-10s : %s\n", "Enclos", this.enclos.toString());
-        System.out.printf("%-10s : %s\n", "Origine", this.origine.toString());
-        System.out.printf("%-10s : %s\n", "Race", this.race.toString());
-        System.out.printf("%-10s : %s\n", "Décès", this.dateDeces);
-        System.out.println("-----------------------------\n");
-        return null;
+        return "Animal{" +
+                "id=" + id +
+                ", nom='" + nom + '\'' +
+                ", nomCommun='" + nomCommun + '\'' +
+                ", sexe='" + sexe + '\'' +
+                ", dateNaissance=" + dateNaissance +
+                ", enclos=" + enclos +
+                ", origine=" + origine +
+                ", race=" + race +
+                ", dateDeces=" + dateDeces +
+                '}';
     }
 
     public Vector<Object> toVector(int returnLength) {

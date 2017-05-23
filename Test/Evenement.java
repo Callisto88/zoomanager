@@ -75,6 +75,10 @@ public class Evenement {
                     selPeopleByEventID(eventID4);
                     break;
 
+                case 9:
+                    selEventsHavingAnimal();
+                    break;
+
                 case 0:
                     break;
             }
@@ -99,6 +103,7 @@ public class Evenement {
         System.out.println("6 - Supprimer un événement");
         System.out.println("7 - Afficher tous les animaux impliqués dans un événement");
         System.out.println("8 - Afficher toutes les personnes impliqués dans un événement");
+        System.out.println("9 - Afficher tous les événements impliquant au moins un animal");
         System.out.println("0 - Quitter le programme");
 
         selection = input.nextInt();
@@ -259,6 +264,27 @@ public class Evenement {
             ArrayList<Model.Personne> result = query.selPeopleByEventID(eventID);
             for (Model.Personne p : result) {
                 System.out.println(p.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+    }
+
+    public static void selEventsHavingAnimal() {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            ArrayList<Model.Animal_Evenement> result = query.selEventsHavingAnimal();
+            for (Model.Animal_Evenement s : result) {
+                System.out.println(s.toString());
             }
         } catch (SQLException e) {
             e.printStackTrace();

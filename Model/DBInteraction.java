@@ -379,6 +379,14 @@ public class DBInteraction {
             "  LEFT JOIN Pays\n" +
             "    ON Ville.paysId = Pays.paysId\n" +
             "WHERE Personne_Evenement.evenement = ?;";
+
+    private static final String SEL_EVENTS_HAVING_ANIMALS = "SELECT Animal.id AS animalID, Evenement.id AS eventID, Evenement.description, Evenement.date, Evenement.type\n" +
+            "FROM Animal_Evenement\n" +
+            "  INNER JOIN Evenement\n" +
+            "    ON Animal_Evenement.evenement = Evenement.id\n" +
+            "  INNER JOIN Animal\n" +
+            "    ON Animal_Evenement.animal = Animal.id;";
+
     private static final String DEL_PERSONNE_IN_EVENT = "DELETE FROM Personne_Evenement WHERE evenement = ? AND personne = ?;";
 
     private static final String SEL_EVENTS = "SELECT * FROM Evenement;";
@@ -1991,6 +1999,31 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         return creerTableauPersonne(rs);
+    }
+
+    public ArrayList<Animal_Evenement> selEventsHavingAnimal() throws SQLException, ExceptionDataBase {
+
+        this.stmt = DBConnection.con.prepareStatement(SEL_EVENTS_HAVING_ANIMALS);
+        ResultSet rs = this.stmt.executeQuery();
+        ArrayList<Animal_Evenement> data = new ArrayList<>();
+
+        if (!rs.next()) {
+            throw new ExceptionDataBase(19);
+        } else {
+            rs.beforeFirst();
+            while (rs.next()) {
+                Animal a = new Animal(rs.getInt("animalID"));
+
+                // int id, String description, Timestamp date, String type
+                Evenement e = new Evenement(rs.getInt("eventID"),
+                        rs.getString("description"),
+                        rs.getTimestamp("date"), rs.getString("type"));
+                Animal_Evenement result = new Animal_Evenement(a, e);
+                data.add(result);
+            }
+        }
+
+        return data;
     }
 
     public int insAnimalEvent(int idAnimal, int idEvenement) throws SQLException {
