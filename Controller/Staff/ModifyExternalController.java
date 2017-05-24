@@ -61,7 +61,6 @@ public class ModifyExternalController {
         boolean bCity = true;
         boolean bChange = true;
         boolean bAddAddress = true;
-        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
         boolean bEmptyAddress = address.isEmpty();
         boolean bEmptyNPA = NPA.isEmpty();

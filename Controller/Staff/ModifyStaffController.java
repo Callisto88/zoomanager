@@ -73,12 +73,11 @@ public class ModifyStaffController {
                 mspModifyStaff.setEmailError("Champ Email non conforme");
             }
         }
-        // TODO : check si un champ est null!!
+
         boolean bNPA = true;
         boolean bCity = true;
         boolean bChange = true;
         boolean bAddAddress = true;
-        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
         boolean bEmptyAddress = sAddress.isEmpty();
         boolean bEmptyNPA = sNPA.isEmpty();

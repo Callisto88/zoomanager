@@ -59,7 +59,7 @@ public class AddExternal extends GenericWindow{
         JLabel jlLastNameLabel = new JLabel("Nom : ");
         jlLastNameLabel.setPreferredSize(dLabel);
         jpLastNamePanel.add(jlLastNameLabel);
-        jtfLastNameInput = new JTextField("last");
+        jtfLastNameInput = new JTextField("nom");
         jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jtfLastNameInput.setPreferredSize(dInput);
         jpLastNamePanel.add(jtfLastNameInput);
@@ -75,7 +75,7 @@ public class AddExternal extends GenericWindow{
         JLabel lastNameLabel = new JLabel("Prénom : ");
         lastNameLabel.setPreferredSize(dLabel);
         jpFirstNamePanel.add(lastNameLabel);
-        jtfFirstNameInput = new JTextField("first");
+        jtfFirstNameInput = new JTextField("prénom");
         jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jtfFirstNameInput.setPreferredSize(dInput);
         jpFirstNamePanel.add(jtfFirstNameInput);
@@ -87,7 +87,7 @@ public class AddExternal extends GenericWindow{
         JLabel jlCompagny = new JLabel("Entreprise : ");
         jlCompagny.setPreferredSize(dLabel);
         jpCompagny.add(jlCompagny);
-        jtfCompagnyInput = new JTextField("Entreprise");
+        jtfCompagnyInput = new JTextField("entreprise");
         jtfCompagnyInput.setPreferredSize(dInput);
         jpCompagny.add(jtfCompagnyInput);
         gbcConstraint.gridy = 2;
@@ -109,7 +109,7 @@ public class AddExternal extends GenericWindow{
         JLabel jlCity = new JLabel("Ville : ");
         jlCity.setPreferredSize(dLabel);
         jpCity.add(jlCity);
-        jtfCity = new JTextField("Ville");
+        jtfCity = new JTextField("ville");
         jtfCity.setPreferredSize(dInput);
         jpCity.add(jtfCity);
         gbcConstraint.gridy = 4;
@@ -174,7 +174,7 @@ public class AddExternal extends GenericWindow{
             public void actionPerformed(ActionEvent e) {
                 disableError();
                 sLastName = jtfLastNameInput.getText();
-                sFirstName = jtfLastNameInput.getText();
+                sFirstName = jtfFirstNameInput.getText();
                 sCompagny = jtfCompagnyInput.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();

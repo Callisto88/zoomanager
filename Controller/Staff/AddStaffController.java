@@ -34,7 +34,7 @@ public class AddStaffController {
         add = new AddStaff(this, statuts, contract, supervisor, countries);
         add.disableError();
     }
-// TODO : LAISSER UNE CASE VIDE POUR LE PAYS!!!!
+
     /**
      * Méthode permettant de checker qu'une personne est OK avant de l'insérer
      * @param lastName Nom de la personne
@@ -57,12 +57,12 @@ public class AddStaffController {
                               int supervisor, String status, String contract) {
 
         // Permet de checker le nom
-        boolean bLastName = Validate.isAlphabetic(lastName);
+        boolean bLastName = Validate.isAlphabetic(lastName) && !lastName.equals("nom");
         if(!bLastName){
             add.setLastNameError("Champ nom contenant des caractères innaproprié");
         }
         // Permet de checker le prénom
-        boolean bFirstName = Validate.isAlphabetic(firstName);
+        boolean bFirstName = Validate.isAlphabetic(firstName) && !firstName.equals("prénom");
         if(!bFirstName){
             add.setFirstNameError("Champ prénom contenant des caractères innaproprié");
         }
@@ -84,20 +84,18 @@ public class AddStaffController {
             }
         }
 
-        // TODO : check si un champ est null!!
+        // Permet de vérifier que les champs sont correct et que ils sont bien tous remplis
         boolean bNPA = true;
         boolean bCity = true;
         boolean bChange = true;
         boolean bCountry = true;
         boolean bAddAddress = true;
-        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
-        boolean bEmptyAddress = address.isEmpty();
-        boolean bEmptyNPA = npa.isEmpty();
-        boolean bEmptyCity = city.isEmpty();
+        boolean bEmptyAddress = address.isEmpty() || adresse.equals("adresse");
+        boolean bEmptyNPA = npa.isEmpty() || npa.equals("npa");
+        boolean bEmptyCity = city.isEmpty() || city.equals("ville");
         boolean bEmptyCountry = country.isEmpty();
         if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
-            //boolean bAddress = Validate.isAlphabetic(address);
             // Permet de checker le npa
             bNPA = Validate.isNumeric(npa);
             if (!bNPA) {

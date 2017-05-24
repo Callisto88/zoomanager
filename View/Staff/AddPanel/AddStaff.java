@@ -88,7 +88,7 @@ public class AddStaff extends GenericWindow {
         JLabel jlLastNameLabel = new JLabel("Nom : ");
         jlLastNameLabel.setPreferredSize(dLabel);
         jpLastNamePanel.add(jlLastNameLabel, JPanel.LEFT_ALIGNMENT);
-        jtfLastNameInput = new JTextField("Nom");
+        jtfLastNameInput = new JTextField("nom");
         jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
         jtfLastNameInput.setPreferredSize(dInput);
         jpLastNamePanel.add(jtfLastNameInput, JPanel.CENTER_ALIGNMENT);
@@ -312,7 +312,7 @@ public class AddStaff extends GenericWindow {
         jtfLastNameInput.setToolTipText(null);
         jtfFirstNameInput.setBackground(Color.WHITE);
         jtfFirstNameInput.setToolTipText(null);
-        jdpriStartDatePicker.setBackground(Color.WHITE);
+        jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.WHITE);
         jdpriStartDatePicker.setToolTipText(null);
         jtfAVSInput.setBackground(Color.WHITE);
         jtfAVSInput.setToolTipText(null);
@@ -402,7 +402,7 @@ public class AddStaff extends GenericWindow {
         jtfNPA.setBackground(Color.RED);
     }
 
-    /** TODO: a checker en cas de levé d'exception!!
+    /**
      * Méthode permettant d'afficher un état d'erreur sur le champ de saisie du pays
      * @param error message d'erreur indiquant ce qui est autorisé
      */

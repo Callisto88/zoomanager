@@ -59,17 +59,17 @@ public class AddExternalController {
                               String city, String country, String phone) {
 
         // permet de checker le nom
-        boolean bLastName = Validate.isAlphabetic(lastName);
+        boolean bLastName = Validate.isAlphabetic(lastName) && !lastName.equals("nom");
         if(!bLastName){
             aeExternal.setLastNameError("Champ nom contenant des caractères innaproprié");
         }
         // permet de checker le prénom
-        boolean bFirstName = Validate.isAlphabetic(firstName);
+        boolean bFirstName = Validate.isAlphabetic(firstName) && !firstName.equals("prénom");
         if(!bFirstName){
             aeExternal.setFirstNameError("Champ prénom contenant des caractères innaproprié");
         }
         // Permet de checker la compagny
-        boolean bCompagny = Validate.isAlphabetic(compagny);
+        boolean bCompagny = Validate.isAlphabetic(compagny) && !compagny.equals("entreprise");
         if(!bCompagny){
             aeExternal.setCompagnyError("Champ compagny non conforme");
         }
@@ -79,21 +79,18 @@ public class AddExternalController {
             aeExternal.setEmailError("Champ email non conforme");
         }
 
-
-        // Permet de checker le NPA
+        // Permet de vérifier que les champs sont correct et que ils sont bien tous remplis
         boolean bNPA = true;
         boolean bCity = true;
         boolean bChange = true;
         boolean bCountry = true;
         boolean bAddAddress = true;
-        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
-        boolean bEmptyAddress = address.isEmpty();
-        boolean bEmptyNPA = npa.isEmpty();
-        boolean bEmptyCity = city.isEmpty();
+        boolean bEmptyAddress = address.isEmpty() || address.equals("adresse");
+        boolean bEmptyNPA = npa.isEmpty() || npa.equals("npa");
+        boolean bEmptyCity = city.isEmpty() || city.equals("ville");
         boolean bEmptyCountry = country.isEmpty();
         if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
-            //boolean bAddress = Validate.isAlphabetic(address);
             // Permet de checker le npa
             bNPA = Validate.isNumeric(npa);
             if (!bNPA) {
@@ -181,7 +178,7 @@ public class AddExternalController {
         }
     }
 
-    /** TODO : tester le retour d'erreur
+    /**
      * Méthode permettant d'interragir avec la DB pour insérer une personne
      * @param external personne à insérer dans la DB
      */
