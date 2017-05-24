@@ -4,15 +4,8 @@ import Controller.Error.ErrorController;
 import Model.*;
 import View.PrintPDF;
 import View.Staff.StaffMainPanel.StaffView;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.pdf.PdfPTable;
-import com.itextpdf.text.pdf.PdfWriter;
 
 import javax.swing.*;
-import java.io.FileOutputStream;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
@@ -47,7 +40,7 @@ public class StaffController {
 
     /**
      * Méthode permettant d'obtenir le listing du personnel
-     * @return un ArrayList avec le personnel présent dans la base de donnée
+     * @return un ArrayList avec le personnel présent dans la base de données
      */
     public ArrayList<Personne> getPersonnel(){
         ArrayList<Personne> alpPersonnel = new ArrayList<>();

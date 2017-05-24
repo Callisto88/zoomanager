@@ -6,7 +6,6 @@ import View.GenericWindow;
 import View.MyModelTable;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.table.TableRowSorter;
 
 import java.awt.*;

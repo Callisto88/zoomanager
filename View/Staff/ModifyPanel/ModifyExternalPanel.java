@@ -397,6 +397,15 @@ public class ModifyExternalPanel extends GenericWindow {
      * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
      * @param error message indiquant plus précisément l'erreur
      */
+    public void setAddressError(String error) {
+        jtfCity.setToolTipText(error);
+        jtfCity.setBackground(Color.RED);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
+     * @param error message indiquant plus précisément l'erreur
+     */
     public void setCityError(String error) {
         jtfCity.setToolTipText(error);
         jtfCity.setBackground(Color.RED);
@@ -409,6 +418,15 @@ public class ModifyExternalPanel extends GenericWindow {
     public void setNPAError(String error) {
         jtfNPA.setToolTipText(error);
         jtfNPA.setBackground(Color.RED);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCountryError(String error) {
+        jtfCity.setToolTipText(error);
+        jtfCity.setBackground(Color.RED);
     }
 
     /**

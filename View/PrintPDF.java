@@ -2,15 +2,10 @@ package View;
 
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.Style;
-import java.awt.*;
-import java.io.File;
 import java.io.FileOutputStream;
 
 /**

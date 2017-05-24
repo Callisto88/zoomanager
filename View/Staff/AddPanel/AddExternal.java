@@ -266,10 +266,19 @@ public class AddExternal extends GenericWindow{
     }
 
     /**
-     * Méthode permettant de signaler une erreur sur le champ de saisie du pays
+     * Méthode permettant de signaler une erreur sur le champ de saisie de la ville
      * @param error message indiquant plus précisément l'erreur
      */
     public void setCityError(String error){
+        jtfCity.setToolTipText(error);
+        jtfCity.setBackground(Color.RED);
+    }
+
+    /**
+     * Méthode permettant de signaler une erreur sur le champ de saisie du pays
+     * @param error message indiquant plus précisément l'erreur
+     */
+    public void setCountryError(String error){
         jtfCity.setToolTipText(error);
         jtfCity.setBackground(Color.RED);
     }

@@ -4,7 +4,6 @@ import Controller.Error.ErrorController;
 import Controller.Validate.Validate;
 import Model.*;
 import View.Staff.ModifyPanel.ModifyExternalPanel;
-import com.sun.xml.internal.ws.developer.MemberSubmissionEndpointReference;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -54,52 +53,77 @@ public class ModifyExternalController {
         if(!bEmail){
             mepExternal.setEmailError("Champ email non conforme");
         }
-        boolean bNPA = Validate.isNumeric(NPA);
-        if(!bNPA){
-            mepExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
-        }
-        boolean bCity = Validate.isAlphabetic(city);
-        if(!bCity){
-            mepExternal.setCityError("Le champ ville non conforme");
-        }
-        int cp = 0;
+        boolean bNPA = true;
+        boolean bCity = true;
         boolean bChange = true;
-        try{
-            cp = Integer.parseInt(NPA);
-        } catch(Exception exception){
-            bChange = false;
-            exception.printStackTrace();
-            new ErrorController(exception.toString());
-        }
-        dbConnection();
         boolean bAddAddress = true;
+        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
-        try{
-            Pays pays = new Pays();
-            pays.setPays(country);
+        boolean bEmptyAddress = address.isEmpty();
+        boolean bEmptyNPA = NPA.isEmpty();
+        boolean bEmptyCity = city.isEmpty();
+        boolean bEmptyCountry = country.isEmpty();
+        if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
+            bNPA = Validate.isNumeric(NPA);
+            if (!bNPA) {
+                mepExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
+            }
+            bCity = Validate.isAlphabetic(city);
+            if (!bCity) {
+                mepExternal.setCityError("Le champ ville non conforme");
+            }
+            int cp = 0;
+            try {
+                cp = Integer.parseInt(NPA);
+            } catch (Exception exception) {
+                bChange = false;
+                exception.printStackTrace();
+                new ErrorController(exception.toString());
+            }
+            dbConnection();
+            try {
+                Pays pays = new Pays();
+                pays.setPays(country);
 
-            Ville ville = new Ville();
-            ville.setCp(cp);
-            ville.setVille(city);
-            ville.setPays(pays);
+                Ville ville = new Ville();
+                ville.setCp(cp);
+                ville.setVille(city);
+                ville.setPays(pays);
 
-            adresse.setAdresse(address);
-            adresse.setVille(ville);
+                adresse = new Adresse();
+                adresse.setAdresse(address);
+                adresse.setVille(ville);
 
-            querry.insAddress(adresse, ville, pays);
-        } catch(SQLException sqlException){
-            bAddAddress = false;
-            sqlException.printStackTrace();
-            new ErrorController(sqlException.toString());
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-            new ErrorController(exceptionDataBase.toString());
+                querry.insAddress(adresse, ville, pays);
+            } catch (SQLException sqlException) {
+                bAddAddress = false;
+                sqlException.printStackTrace();
+                new ErrorController(sqlException.toString());
+            } catch (ExceptionDataBase exceptionDataBase) {
+                bAddAddress = false;
+                exceptionDataBase.printStackTrace();
+                new ErrorController(exceptionDataBase.toString());
+            }
+        }
+        else{
+            if(bEmptyAddress){
+                mepExternal.setAddressError("Champ manquant");
+            }
+            if(bEmptyNPA){
+                mepExternal.setNPAError("Champ manquant");
+            }
+            if(bEmptyCity){
+                mepExternal.setCityError("Champ manquant");
+            }
+            if(bEmptyCountry){
+                mepExternal.setCountryError("Champ manquant");
+            }
         }
         boolean bPhone = Validate.isPhoneNumber(phone);
         if(!bPhone){
             mepExternal.setPhoneError("Champ télephone non conforme");
         }
-        if(bLastName && bFirstName && bEmail && bAddAddress && bPhone){
+        if(bLastName && bFirstName && bEmail && bCity && bNPA && bChange && bAddAddress && bPhone){
             external.setNom(lastName);
             external.setPrenom(firstName);
             external.setEmail(eMail);

@@ -81,49 +81,65 @@ public class AddExternalController {
 
 
         // Permet de checker le NPA
-        boolean bNPA = Validate.isNumeric(npa);
-        if(!bNPA){
-            aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
-        }
-        // Permet de checker le pays
-        boolean bCountry = Validate.isAlphabetic(country);
-        if(!bCountry){
-            aeExternal.setCityError("Le champ pays non conforme");
-        }
-
-        // permet de convertir le npa en int
-        int cp = 0;
+        boolean bNPA = true;
+        boolean bCity = true;
         boolean bChange = true;
-        if(bNPA) {
-            try {
-                cp = Integer.parseInt(npa);
-            } catch (Exception exception) {
-                bChange = false;
-                exception.printStackTrace();
-                //ecError = new ErrorController("Erreur Parsing NPA " + exception.toString());
-            }
-        }
-
-        // Permet d'insérer une adresse
-        // TODO : a voir si on teste d'abort que le cp est pas 0
-        dbConnection();
+        boolean bCountry = true;
         boolean bAddAddress = true;
-        int cityID = 0;
-        Pays pays = new Pays();
-        pays.setPays(country);
-
-        Ville ville = new Ville();
-        ville.setVille(city);
-        ville.setCp(cp);
-        ville.setPays(pays);
-
+        // TODO : new adresse ou null??
         Adresse adresse = new Adresse();
-        adresse.setAdresse(address);
-        adresse.setVille(ville);
+        boolean bEmptyAddress = address.isEmpty();
+        boolean bEmptyNPA = npa.isEmpty();
+        boolean bEmptyCity = city.isEmpty();
+        boolean bEmptyCountry = country.isEmpty();
+        if(!bEmptyAddress && !bEmptyNPA && !bEmptyCity && !bEmptyCountry) {
+            //boolean bAddress = Validate.isAlphabetic(address);
+            // Permet de checker le npa
+            bNPA = Validate.isNumeric(npa);
+            if (!bNPA) {
+                aeExternal.setNPAError("Le champ NPA ne contient pas que des chiffres");
+            }
+            // Permet de checker la ville
+            bCity = Validate.isAlphabetic(city);
+            if (!bCity) {
+                aeExternal.setCityError("Le champ ville non conforme");
+            }
+            // Permet de checker le pays
+            bCountry = Validate.isAlphabetic(country);
+            if (!bCountry) {
+                aeExternal.setCountryError("Le champ pays non conforme");
+            }
 
-        if (bNPA && bChange && bCountry) {
+            // Permet de convertir en int le npa
+
+            int cp = 0;
+            bChange = true;
+            if (bNPA) {
+                try {
+                    cp = Integer.parseInt(npa);
+                } catch (Exception exception) {
+                    bChange = false;
+                    exception.printStackTrace();
+                    new ErrorController("Erreur conversion NPA " + exception.toString());
+                }
+            }
+
+            // Permet d'insérer l'adresse dans la db
+            dbConnection();
+            bAddAddress = true;
+            int cityID = 0;
+            Pays pays = new Pays();
+            pays.setPays(country);
+
+            Ville ville = new Ville();
+            ville.setVille(city);
+            ville.setCp(cp);
+            ville.setPays(pays);
+
+            adresse.setAdresse(address);
+            adresse.setVille(ville);
+
             try {
-
                 querry.insAddress(adresse, ville, pays);
             } catch (ExceptionDataBase exceptionDataBase) {
                 exceptionDataBase.printStackTrace();
@@ -132,6 +148,20 @@ public class AddExternalController {
                 bAddAddress = false;
                 sqlException.printStackTrace();
                 new ErrorController("Erreur insertion adresse " + sqlException.toString());
+            }
+        }
+        else{
+            if(bEmptyAddress){
+                aeExternal.setAddressError("Champ manquant");
+            }
+            if(bEmptyNPA){
+                aeExternal.setNPAError("Champ manquant");
+            }
+            if(bEmptyCity){
+                aeExternal.setCityError("Champ manquant");
+            }
+            if(bEmptyCountry){
+                aeExternal.setCountryError("Champ manquant");
             }
         }
 

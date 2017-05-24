@@ -39,37 +39,31 @@ public class ManagerDashboardController {
         f.setVisible(true);
     }
     
-    public void revalidateDash() {
-        System.out.println("active");
-        f = new JFrame(" Dashboard");
-        f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        ManagerDashboard md = new ManagerDashboard(this);
-        f.getContentPane().add(md, BorderLayout.CENTER);
-        f.setSize(800, 500);
-        f.setVisible(true);
-        //f.setVisible(true);
-        //f.enable();
-        //f.revalidate();
-    }
-    
     /**
-     * permet d'instancier la fenêtre des employée
+     * permet d'instancier la fenêtre des employés
      */
     public void employeeView() {
         persControl = new StaffController();
-        
     }
-    
-    
+
+    /**
+     * Permet d'instancier la fenêtre des évenements
+     */
     public void showView(){
         showControl = new ShowTab();
     }
+
+    /**
+     * Permet d'instancier la fenêtre du stock
+     */
     public void StockView() {
         // stStock = new StockTab();
     }
-    
+
+    /**
+     * Permet d'instancier la fenêtre des animaux
+     */
     public void AnimalView() {
-        
         acAnimal = new AnimalController();
     }
 }
