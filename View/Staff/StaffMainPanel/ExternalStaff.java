@@ -211,7 +211,7 @@ public class ExternalStaff extends JPanel{
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                controller.modifyExternalView(external);
+                controller.modifyExternalView(external, line);
             }
         });
 

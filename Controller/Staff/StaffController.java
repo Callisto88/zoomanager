@@ -284,17 +284,19 @@ public class StaffController {
     /**
      * Méthode permettant de rafraichir la fenêtre de droite une fois l'employé modifié
      * @param personne personne qui à été modifié
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public void refreshStaff(Personne personne){
-        svPersonnel.refreshStaffView(personne);
+    public void refreshStaff(Personne personne, int line){
+        svPersonnel.refreshStaffView(personne, line);
     }
 
     /**
      * Méthode permettant de rafraichir la fenêtre de droite une fois l'intervenant modifié
      * @param external intervenant qui à été modifié
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public void refreshExternal(Intervenant external){
-        svPersonnel.refreshExternalView(external);
+    public void refreshExternal(Intervenant external, int line){
+        svPersonnel.refreshExternalView(external, line);
     }
     /**
      * Méthode permettant de supprimer une ligne du tableau des intervenanta
@@ -345,17 +347,19 @@ public class StaffController {
     /**
      *  Méthode pour instancier la fenêtre de modification d'une personne
      * @param personne personne que l'on souhaite modifier
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public void modifyStaffView(Personne personne) {
-        ModifyStaffController modifyStaffController = new ModifyStaffController(this, personne,getContract(), getStatus(), getCountries(), getResponsable());
+    public void modifyStaffView(Personne personne, int line) {
+        ModifyStaffController modifyStaffController = new ModifyStaffController(this, personne,getContract(), getStatus(), getCountries(), getResponsable(), line);
     }
 
     /**
      * Méthode permettant de lancer la fenêtre de modification de l'intervenant externe
      * @param external intervenant à modifier
+     * @param line permet d'obtenir la ligne du tableau pour la mise à jour
      */
-    public void modifyExternalView(Intervenant external){
-        ModifyExternalController mecModifyExternal = new ModifyExternalController(this, external);
+    public void modifyExternalView(Intervenant external, int line){
+        ModifyExternalController mecModifyExternal = new ModifyExternalController(this, external, line);
     }
 
 }

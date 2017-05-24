@@ -351,18 +351,31 @@ public class StaffView extends GenericWindow {
      * Méthode permettant de remettre à jour le pannel de droite pour le détail d'un intervenant, une fois une
      * modification d'intervenant effectué
      * @param external Intervenant qui a été modifié
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public void refreshExternalView(Intervenant external){
+    public void refreshExternalView(Intervenant external, int line){
         esExternal.updateLabel(external);
+        alExternal.set(line, external);
+        jtTable.clearSelection();
+        mmtListing.setValueAt(external.getNom(),line, 0);
+        mmtListing.setValueAt(external.getPrenom(),line, 1);
+        mmtListing.setValueAt(external.getTelephone(),line, 3);
+        jtTable.updateUI();
     }
 
     /**
      * Méthode permettant de remettre à jour le pannel de droite pour le détail d'un employés, une fois une
      * modification d'intervenant effectué
      * @param personne personnel qui a été modifié
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public void refreshStaffView(Personne personne){
+    public void refreshStaffView(Personne personne, int line){
         psDetail.updateLabel(personne);
+        alPersonnes.set(line, personne);
+        jtTable.clearSelection();
+        mmtListing.setValueAt(personne.getNom(),line, 0);
+        mmtListing.setValueAt(personne.getPrenom(),line, 1);
+        jtTable.updateUI();
     }
 
     /**

@@ -17,6 +17,8 @@ public class ModifyStaffController {
     private Personne personne = null;
     private DBInteraction querry = null;
     private StaffController stController = null;
+
+    private int line;
     /**
      * Constructeur du controlleur
      * @param personne personne à modifier
@@ -24,11 +26,13 @@ public class ModifyStaffController {
      * @param status liste des statut actuels
      * @param countries liste de pays présent dans la DB
      * @param supervisor liste des superviseur présent dans la db
+     * @param line ligne de la table permettant de la mettre à jour
      */
     public ModifyStaffController(StaffController scController, Personne personne, ArrayList<String> contract, ArrayList<String> status,
-                                 ArrayList<Pays> countries, ArrayList<Personne> supervisor) {
+                                 ArrayList<Pays> countries, ArrayList<Personne> supervisor, int line) {
         this.personne = personne;
         this.stController = scController;
+        this.line = line;
         mspModifyStaff = new ModifyStaffPanel(this ,personne , contract, status, countries, supervisor);
 
     }
@@ -176,7 +180,7 @@ public class ModifyStaffController {
         }
         if(!erreur){
             mspModifyStaff.close();
-            stController.refreshStaff(personne);
+            stController.refreshStaff(personne, line);
         }
     }
 

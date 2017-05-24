@@ -17,15 +17,19 @@ public class ModifyExternalController {
     private Intervenant external = null;
     private DBInteraction querry = null;
     private StaffController scController = null;
+    private int line;
 
     /**
      * Constructeur du controlleur de la fenêtre de modification des intervenant
+     * @param scController contrôleur de la fenêtre principale permettant de faire remonter des informations
      * @param external Interveant à modifier
+     * @param line ligne de la table permettant de la mettre à jour
      */
-    public ModifyExternalController(StaffController scController, Intervenant external){
+    public ModifyExternalController(StaffController scController, Intervenant external, int line){
         mepExternal = new ModifyExternalPanel(this, external, getCountries());
         this.external = external;
         this.scController = scController;
+        this.line = line;
     }
 
     /**
@@ -154,7 +158,7 @@ public class ModifyExternalController {
         }
         if(!error){
             mepExternal.close();
-            scController.refreshExternal(external);
+            scController.refreshExternal(external, line);
         }
 
     }

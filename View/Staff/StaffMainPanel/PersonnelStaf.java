@@ -277,7 +277,7 @@ public class PersonnelStaf extends JPanel{
         jbEdit.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                controller.modifyStaffView(personne);
+                controller.modifyStaffView(personne, line);
             }
         });
 
