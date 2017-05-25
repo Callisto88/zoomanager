@@ -1,25 +1,31 @@
 package View;
 
+import Controller.Error.ErrorController;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.*;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.printing.PDFPageable;
 
+
+import javax.print.PrintService;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import java.io.FileOutputStream;
+import java.awt.print.PrinterJob;
+import java.io.*;
 
 /**
  * Created by Andre on 17.05.2017.
  * Classe permettant de crée un PDF en demandant au client le chemin et le nom pour enregistrer
  */
-public class PrintPDF {
+public class PrintPDF{
     Font fontTitle = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD, BaseColor.BLACK);
     Font fontTextWhite = new Font(Font.FontFamily.HELVETICA, 15, Font.NORMAL, BaseColor.WHITE);
     Font fontTextBlack = new Font(Font.FontFamily.HELVETICA, 15, Font.NORMAL, BaseColor.BLACK);
 
     /**
      * Construteur pour crée un PDF et demander au client de sélectionner un chemin
-     *
      * @param jtTable    table à imprimer
      * @param title      titre inclus dans le PDF
      * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
@@ -85,6 +91,22 @@ public class PrintPDF {
             System.err.println(ex.getMessage());
         }
         document.close();
+
+        // permet de lancer une impression du PDF après avoir sélectionné l'imprimante
+        try{
+            PrinterJob job = PrinterJob.getPrinterJob();
+            job.setPrintService(choosePrinter());
+            PDDocument doc = PDDocument.load(new File(output));
+            job.setPageable(new PDFPageable(doc));
+            job.print();
+
+        } catch (Exception exception) {
+            exception.printStackTrace();
+            // TODO : à voir si on crée bien cette fenêtre d'erreur...
+            new ErrorController(exception.toString());
+        }
+
+
     }
 
     public PrintPDF(JTable jtTable, JLabel title, String additional) {
@@ -283,4 +305,19 @@ public class PrintPDF {
     }
 
 */
+
+    /**
+     * Méthode permettant de sélectionner une imprimante
+     * @return l'imprimante sélectionné
+     */
+    private PrintService choosePrinter() {
+        PrinterJob printJob = PrinterJob.getPrinterJob();
+        if(printJob.printDialog()) {
+            return printJob.getPrintService();
+        }
+        else {
+            return null;
+        }
+    }
+
 }
