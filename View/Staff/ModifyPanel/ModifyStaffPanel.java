@@ -115,33 +115,29 @@ public class ModifyStaffPanel extends GenericWindow {
         }
 
         // Liste déroulante pour séléctionner les champs que l'on souhaite modifier
-        JPanel modification = new JPanel();
-        JComboBox boxChoiceLabel = new JComboBox();
-        boxChoiceLabel.addItem("Tous les champs");
-        boxChoiceLabel.addItem("Nom");
-        boxChoiceLabel.addItem("Prénom");
-        boxChoiceLabel.addItem("Responsable");
-        boxChoiceLabel.addItem("Adresse E-Mail");
-        boxChoiceLabel.addItem("Adresse");
-        boxChoiceLabel.addItem("Téléphone");
-        boxChoiceLabel.addItem("Statut");
-        boxChoiceLabel.addItem("Contrat");
+        JComboBox jcbChoiceLabel = new JComboBox();
+        jcbChoiceLabel.addItem("Tous les champs");
+        jcbChoiceLabel.addItem("Nom");
+        jcbChoiceLabel.addItem("Prénom");
+        jcbChoiceLabel.addItem("Responsable");
+        jcbChoiceLabel.addItem("Adresse E-Mail");
+        jcbChoiceLabel.addItem("Adresse");
+        jcbChoiceLabel.addItem("Téléphone");
+        jcbChoiceLabel.addItem("Statut");
+        jcbChoiceLabel.addItem("Contrat");
 
-        modification.add(boxChoiceLabel);
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = y;
         gbcConstraint.insets = new Insets(5, 5, 10, 10);
         gbcConstraint.anchor = GridBagConstraints.NORTH;
         ++y;
-        jpMainPanel.add(modification, gbcConstraint);
+        jpMainPanel.add(jcbChoiceLabel, gbcConstraint);
 
         // Bouton pour demander l'ajout de champ à modifier
-        JPanel modifyLabel = new JPanel();
         JButton newLabel = new JButton("Ajouter un nouveau champ");
-        modifyLabel.add(newLabel);
         gbcConstraint.gridy = y;
         ++y;
-        jpMainPanel.add(modifyLabel, gbcConstraint);
+        jpMainPanel.add(newLabel, gbcConstraint);
 
         /**
          * Permet d'ajouter un champ en plus lors de la séléction, ou directement tous les champs
@@ -149,42 +145,42 @@ public class ModifyStaffPanel extends GenericWindow {
         newLabel.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (boxChoiceLabel.getSelectedItem().equals("Nom")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Nom")) {
                     addLastName();
                     addModifyButton();
                 }
 
-                if (boxChoiceLabel.getSelectedItem().equals("Prénom")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Prénom")) {
                     addFirstName();
                     addModifyButton();
                 }
-                if (boxChoiceLabel.getSelectedItem().equals("Adresse E-Mail")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Adresse E-Mail")) {
                     addEMail();
                     addModifyButton();
                 }
 
-                if (boxChoiceLabel.getSelectedItem().equals("Adresse")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Adresse")) {
                     addAddress();
                     addModifyButton();
                 }
-                if (boxChoiceLabel.getSelectedItem().equals("Téléphone")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Téléphone")) {
                     addPhone();
                     addModifyButton();
                 }
 
-                if (boxChoiceLabel.getSelectedItem().equals("Responsable")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Responsable")) {
                     addSupervisor();
                     addModifyButton();
                 }
-                if (boxChoiceLabel.getSelectedItem().equals("Statut")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Statut")) {
                     addStatut();
                     addModifyButton();
                 }
-                if(boxChoiceLabel.getSelectedItem().equals("Contrat")){
+                if(jcbChoiceLabel.getSelectedItem().equals("Contrat")){
                     addContract();
                     addModifyButton();
                 }
-                if (boxChoiceLabel.getSelectedItem().equals("Tous les champs")) {
+                if (jcbChoiceLabel.getSelectedItem().equals("Tous les champs")) {
                     addLastName();
                     addFirstName();
                     addSupervisor();

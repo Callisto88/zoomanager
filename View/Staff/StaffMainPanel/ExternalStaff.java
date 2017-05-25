@@ -59,7 +59,6 @@ public class ExternalStaff extends JPanel{
         jpLastName.add(jlLastName);
         jlLastNameInfo.setPreferredSize(dDetail);
         jpLastName.add(jlLastNameInfo);
-        gbcDetailsExternal.gridy = y;
         this.add(jpLastName, gbcDetailsExternal);
 
         // Ajout du champ de détails pour le prénom
@@ -105,7 +104,7 @@ public class ExternalStaff extends JPanel{
         jlCompagny.setPreferredSize(dLabel);
         jlCompagnyInfo = new JLabel(external.getEntreprise());
         jpCompagny.add(jlCompagny);
-        jlCompagny.setPreferredSize(dDetail);
+        jlCompagnyInfo.setPreferredSize(dDetail);
         jpCompagny.add(jlCompagnyInfo);
         y = 0;
         x = 1;
@@ -115,17 +114,11 @@ public class ExternalStaff extends JPanel{
 
 
         // Ajout du champ de détails pour l'adresse
-        // TODO A VIRER UNE FOIS LA BDD RETOUCHER!!!!! ADRESSE OBLIGATOIRE!
-        String sAddress = "";
-        String sCity = "";
-        String sNPA = "";
-        String sCountry = "";
-        if(external.getAdresse() != null){
-            sAddress = external.getAdresse().getAdresse();
-            sCity = external.getAdresse().getVille().getVille();
-            sNPA = "" + external.getAdresse().getVille().getCp();
-            sCountry = external.getAdresse().getVille().getPays().getPays();
-        }
+        String sAddress = external.getAdresse().getAdresse();
+        String sCity = external.getAdresse().getVille().getVille();
+        String  sNPA = "" + external.getAdresse().getVille().getCp();
+        String sCountry = external.getAdresse().getVille().getPays().getPays();
+
         JPanel jpAddress = new JPanel();
         JLabel jlAddress = new JLabel("Adresse : ");
         jlAddress.setPreferredSize(dLabel);

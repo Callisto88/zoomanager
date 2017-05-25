@@ -34,16 +34,16 @@ public class TaskStaffPanel extends GenericWindow{
         jpMainPanel.setLayout(new GridBagLayout());
         JLabel jlTitle = new JLabel("Assignation de tâches des employées pour : ");
         setTitleConfig(jlTitle);
-        GridBagConstraints gbctable = new GridBagConstraints();
-        gbctable.gridx = 0;
-        gbctable.gridy = 0;
-        gbctable.insets = new Insets(10,5,10,5);
-        jpMainPanel.add(jlTitle, gbctable);
+        GridBagConstraints gbcTable = new GridBagConstraints();
+        gbcTable.gridx = 0;
+        gbcTable.gridy = 0;
+        gbcTable.insets = new Insets(10,5,10,5);
+        jpMainPanel.add(jlTitle, gbcTable);
 
         JLabel jlPersonne = new JLabel(personne.getPrenom() + " " + personne.getNom());
         setTitleConfig(jlPersonne);
-        gbctable.gridy = 1;
-        jpMainPanel.add(jlPersonne, gbctable);
+        gbcTable.gridy = 1;
+        jpMainPanel.add(jlPersonne, gbcTable);
 
         Vector<Vector<Object>> voTasks = new Vector<>();
         if(tasks != null) {
@@ -67,8 +67,8 @@ public class TaskStaffPanel extends GenericWindow{
         //jspStaff.setPreferredSize(new Dimension(800, 700));
 
 
-        gbctable.gridy = 2;
-        jpMainPanel.add(jspStaff, gbctable);
+        gbcTable.gridy = 2;
+        jpMainPanel.add(jspStaff, gbcTable);
 
         jtTable.addMouseListener(new MouseListener() {
             @Override

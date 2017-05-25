@@ -45,10 +45,10 @@ public class AddStaff extends GenericWindow {
     private String sContract;
 
     // Champs de saisie ou sélection
-    private JTextField jtfLastNameInput;
-    private JTextField jtfFirstNameInput;
-    private JDatePickerImpl jdpriStartDatePicker = null;
-    private JTextField jtfAVSInput;
+    private JTextField jtfLastName;
+    private JTextField jtfFirstName;
+    private JDatePickerImpl jdpickiBirthday = null;
+    private JTextField jtfAVS;
     private JTextField jtfEmail;
     private JTextField jtfAddress;
     private JTextField jtfCity;
@@ -84,46 +84,43 @@ public class AddStaff extends GenericWindow {
         gbcConstraint.anchor = GridBagConstraints.WEST;
 
         // Ajout des champs utiles pour le nom
-        JPanel jpLastNamePanel = new JPanel();
-        JLabel jlLastNameLabel = new JLabel("Nom : ");
-        jlLastNameLabel.setPreferredSize(dLabel);
-        jpLastNamePanel.add(jlLastNameLabel, JPanel.LEFT_ALIGNMENT);
-        jtfLastNameInput = new JTextField("nom");
-        jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jtfLastNameInput.setPreferredSize(dInput);
-        jpLastNamePanel.add(jtfLastNameInput, JPanel.CENTER_ALIGNMENT);
-        jpMainPanel.add(jpLastNamePanel, gbcConstraint);
+        JPanel jpLastName = new JPanel();
+        JLabel jlLastName = new JLabel("Nom : ");
+        jlLastName.setPreferredSize(dLabel);
+        jpLastName.add(jlLastName, JPanel.LEFT_ALIGNMENT);
+        jtfLastName = new JTextField("nom");
+        jtfLastName.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jtfLastName.setPreferredSize(dInput);
+        jpLastName.add(jtfLastName, JPanel.CENTER_ALIGNMENT);
+        jpMainPanel.add(jpLastName, gbcConstraint);
 
         // Ajout des champs utiles pour le prénom
-        JPanel jpFirstNamePanel = new JPanel();
-        JLabel lastNameLabel = new JLabel("Prénom : ");
-        lastNameLabel.setPreferredSize(dLabel);
-        jpFirstNamePanel.add(lastNameLabel,JPanel.LEFT_ALIGNMENT);
-        jtfFirstNameInput = new JTextField("prénom");
-        jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jtfFirstNameInput.setPreferredSize(dInput);
-        jpFirstNamePanel.add(jtfFirstNameInput, JPanel.CENTER_ALIGNMENT);
+        JPanel jpFirstName = new JPanel();
+        JLabel lastName = new JLabel("Prénom : ");
+        lastName.setPreferredSize(dLabel);
+        jpFirstName.add(lastName,JPanel.LEFT_ALIGNMENT);
+        jtfFirstName = new JTextField("prénom");
+        jtfFirstName.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jtfFirstName.setPreferredSize(dInput);
+        jpFirstName.add(jtfFirstName, JPanel.CENTER_ALIGNMENT);
         gbcConstraint.gridy = 1;
-        jpMainPanel.add(jpFirstNamePanel, gbcConstraint);
+        jpMainPanel.add(jpFirstName, gbcConstraint);
 
         // Ajout des champs utiles pour la date de naissance
-        JPanel jpBirthdayPanel = new JPanel();
-        JLabel jlBirthdayLabel = new JLabel("Date de Naissance : ");
-        jlBirthdayLabel.setPreferredSize(dLabel);
-        GridBagConstraints gbcDateLabel = new GridBagConstraints();
-        gbcDateLabel.gridx = 0;
-        gbcDateLabel.gridy = 0;
-        jpBirthdayPanel.add(jlBirthdayLabel, gbcDateLabel);
+        JPanel jpBirthday = new JPanel();
+        JLabel jlBirthday = new JLabel("Date de Naissance : ");
+        jlBirthday.setPreferredSize(dLabel);
+        jpBirthday.add(jlBirthday);
         Properties pStartProperties = new Properties();
         pStartProperties.put("text.today", "Aujourd'hui");
         pStartProperties.put("text.month", "Mois");
         pStartProperties.put("text.year", "Année");
         SqlDateModel sdmModel1 = new SqlDateModel();
-        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModel1, pStartProperties);
-        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
-        jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+        JDatePanelImpl jdpiBirthday = new JDatePanelImpl(sdmModel1, pStartProperties);
+        jdpiBirthday.setPreferredSize(new Dimension(200, 200));
+        jdpickiBirthday = new JDatePickerImpl(jdpiBirthday, new DateLabelFormatter());
         // Permet de vérifier qu'une personne à bien sélectionné une date.
-        jdpriStartDatePicker.addActionListener(new ActionListener() {
+        jdpickiBirthday.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dateOK = true;
@@ -131,23 +128,20 @@ public class AddStaff extends GenericWindow {
         });
 
         GridBagLayout gblDate = new GridBagLayout();
-        jpBirthdayPanel.setLayout(gblDate);
-        GridBagConstraints gbcDate = new GridBagConstraints();
-        gbcDate.gridx = 1;
-        gbcDate.gridy = 0;
-        jpBirthdayPanel.add(jdpriStartDatePicker, gbcDate);
+        jpBirthday.setLayout(gblDate);
+        jpBirthday.add(jdpickiBirthday);
 
         gbcConstraint.gridy = 2;
-        jpMainPanel.add(jpBirthdayPanel, gbcConstraint);
+        jpMainPanel.add(jpBirthday, gbcConstraint);
 
         // Ajout des champs utiles pour le numéro AVS
         JPanel jpAVS = new JPanel();
         JLabel jlAVS = new JLabel("Numéro AVS : ");
         jlAVS.setPreferredSize(dLabel);
         jpAVS.add(jlAVS);
-        jtfAVSInput = new JTextField("sAVS");
-        jtfAVSInput.setPreferredSize(dInput);
-        jpAVS.add(jtfAVSInput);
+        jtfAVS = new JTextField("sAVS");
+        jtfAVS.setPreferredSize(dInput);
+        jpAVS.add(jtfAVS);
         gbcConstraint.gridy = 3;
         jpMainPanel.add(jpAVS, gbcConstraint);
 
@@ -264,23 +258,23 @@ public class AddStaff extends GenericWindow {
         jpMainPanel.add(jpContract, gbcConstraint);
 
         // Ajout du bouton d'ajout du personnel
-        JButton add = new JButton("Ajouter");
-        setButtonConfig(add);
+        JButton jbAdd = new JButton("Ajouter");
+        setButtonConfig(jbAdd);
         gbcConstraint.gridy = 13;
         gbcConstraint.anchor = GridBagConstraints.CENTER;
-        jpMainPanel.add(add, gbcConstraint);
+        jpMainPanel.add(jbAdd, gbcConstraint);
 
         // Permet de controller et mettre à jour à chaque fois que l'on va appuyer sur le bouton ajouter
-        add.addActionListener(new ActionListener() {
+        jbAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                sLastName = jtfLastNameInput.getText();
-                sFirstName = jtfFirstNameInput.getText();
-                iDay = jdpriStartDatePicker.getJDateInstantPanel().getModel().getDay();
-                iMonth = jdpriStartDatePicker.getJDateInstantPanel().getModel().getMonth();
-                iYear = jdpriStartDatePicker.getJDateInstantPanel().getModel().getYear();
-                sAVS = jtfAVSInput.getText();
+                sLastName = jtfLastName.getText();
+                sFirstName = jtfFirstName.getText();
+                iDay = jdpickiBirthday.getJDateInstantPanel().getModel().getDay();
+                iMonth = jdpickiBirthday.getJDateInstantPanel().getModel().getMonth();
+                iYear = jdpickiBirthday.getJDateInstantPanel().getModel().getYear();
+                sAVS = jtfAVS.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
@@ -308,14 +302,14 @@ public class AddStaff extends GenericWindow {
      * Méthoed permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jtfLastNameInput.setBackground(Color.WHITE);
-        jtfLastNameInput.setToolTipText(null);
-        jtfFirstNameInput.setBackground(Color.WHITE);
-        jtfFirstNameInput.setToolTipText(null);
-        jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.WHITE);
-        jdpriStartDatePicker.setToolTipText(null);
-        jtfAVSInput.setBackground(Color.WHITE);
-        jtfAVSInput.setToolTipText(null);
+        jtfLastName.setBackground(Color.WHITE);
+        jtfLastName.setToolTipText(null);
+        jtfFirstName.setBackground(Color.WHITE);
+        jtfFirstName.setToolTipText(null);
+        jdpickiBirthday.getJFormattedTextField().setBackground(Color.WHITE);
+        jdpickiBirthday.setToolTipText(null);
+        jtfAVS.setBackground(Color.WHITE);
+        jtfAVS.setToolTipText(null);
         jtfAddress.setBackground(Color.WHITE);
         jtfAddress.setToolTipText(null);
         jtfCity.setBackground(Color.WHITE);
@@ -335,8 +329,8 @@ public class AddStaff extends GenericWindow {
      * @param error message d'erreur indiquant ce qui est autorisé
      */
     public void setFirstNameError(String error) {
-        jtfFirstNameInput.setToolTipText(error);
-        jtfFirstNameInput.setBackground(Color.RED);
+        jtfFirstName.setToolTipText(error);
+        jtfFirstName.setBackground(Color.RED);
     }
 
     /**
@@ -344,8 +338,8 @@ public class AddStaff extends GenericWindow {
      * @param error message d'erreur indiquant ce qui est autorisé
      */
     public void setLastNameError(String error) {
-        jtfLastNameInput.setToolTipText(error);
-        jtfLastNameInput.setBackground(Color.RED);
+        jtfLastName.setToolTipText(error);
+        jtfLastName.setBackground(Color.RED);
     }
 
     /**
@@ -353,8 +347,8 @@ public class AddStaff extends GenericWindow {
      * @param error message d'erreur indiquant ce qui est autorisé
      */
     public void setBirthdayError(String error) {
-        jdpriStartDatePicker.setToolTipText(error);
-        jdpriStartDatePicker.getJFormattedTextField().setBackground(Color.RED);
+        jdpickiBirthday.setToolTipText(error);
+        jdpickiBirthday.getJFormattedTextField().setBackground(Color.RED);
     }
 
     /**
@@ -362,8 +356,8 @@ public class AddStaff extends GenericWindow {
      * @param error message d'erreur indiquant ce qui est autorisé
      */
     public void setAVSError(String error) {
-        jtfAVSInput.setToolTipText(error);
-        jtfAVSInput.setBackground(Color.RED);
+        jtfAVS.setToolTipText(error);
+        jtfAVS.setBackground(Color.RED);
     }
 
     /**

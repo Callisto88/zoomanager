@@ -30,9 +30,9 @@ public class AddExternal extends GenericWindow{
     private String sPhone;
 
     // Champs ou choix permettant la récupérations des données de l'utilisateur
-    private JTextField jtfLastNameInput;
-    private JTextField jtfFirstNameInput;
-    private JTextField jtfCompagnyInput;
+    private JTextField jtfLastName;
+    private JTextField jtfFirstName;
+    private JTextField jtfCompagny;
     private JTextField jtfEmail;
     private JTextField jtfAddress;
     private JTextField jtfCity;
@@ -55,41 +55,40 @@ public class AddExternal extends GenericWindow{
         Dimension dInput = new Dimension(150, 30);
 
         // Ajout des champs utiles pour le nom
-        JPanel jpLastNamePanel = new JPanel();
-        JLabel jlLastNameLabel = new JLabel("Nom : ");
-        jlLastNameLabel.setPreferredSize(dLabel);
-        jpLastNamePanel.add(jlLastNameLabel);
-        jtfLastNameInput = new JTextField("nom");
-        jtfLastNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jtfLastNameInput.setPreferredSize(dInput);
-        jpLastNamePanel.add(jtfLastNameInput);
+        JPanel jpLastName = new JPanel();
+        JLabel jlLastName = new JLabel("Nom : ");
+        jlLastName.setPreferredSize(dLabel);
+        jpLastName.add(jlLastName);
+        jtfLastName = new JTextField("nom");
+        jtfLastName.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jtfLastName.setPreferredSize(dInput);
+        jpLastName.add(jtfLastName);
         GridBagConstraints gbcConstraint = new GridBagConstraints();
         gbcConstraint.gridx = 0;
         gbcConstraint.gridy = 0;
         gbcConstraint.insets = new Insets(10,5,10,5);
-        gbcConstraint.anchor = GridBagConstraints.WEST;
-        jpMainPanel.add(jpLastNamePanel, gbcConstraint);
+        jpMainPanel.add(jpLastName, gbcConstraint);
 
         // Ajout des champs utiles pour le prénom
-        JPanel jpFirstNamePanel = new JPanel();
-        JLabel lastNameLabel = new JLabel("Prénom : ");
-        lastNameLabel.setPreferredSize(dLabel);
-        jpFirstNamePanel.add(lastNameLabel);
-        jtfFirstNameInput = new JTextField("prénom");
-        jtfFirstNameInput.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
-        jtfFirstNameInput.setPreferredSize(dInput);
-        jpFirstNamePanel.add(jtfFirstNameInput);
+        JPanel jpFirstName = new JPanel();
+        JLabel jFirstName = new JLabel("Prénom : ");
+        jFirstName.setPreferredSize(dLabel);
+        jpFirstName.add(jFirstName);
+        jtfFirstName = new JTextField("prénom");
+        jtfFirstName.setToolTipText("caractères accepté [A-Z], [a-z], [0-9], [' -]");
+        jtfFirstName.setPreferredSize(dInput);
+        jpFirstName.add(jtfFirstName);
         gbcConstraint.gridy = 1;
-        jpMainPanel.add(jpFirstNamePanel, gbcConstraint);
+        jpMainPanel.add(jpFirstName, gbcConstraint);
 
         // Ajout des champs utiles pour l'entreprise
         JPanel jpCompagny = new JPanel();
         JLabel jlCompagny = new JLabel("Entreprise : ");
         jlCompagny.setPreferredSize(dLabel);
         jpCompagny.add(jlCompagny);
-        jtfCompagnyInput = new JTextField("entreprise");
-        jtfCompagnyInput.setPreferredSize(dInput);
-        jpCompagny.add(jtfCompagnyInput);
+        jtfCompagny = new JTextField("entreprise");
+        jtfCompagny.setPreferredSize(dInput);
+        jpCompagny.add(jtfCompagny);
         gbcConstraint.gridy = 2;
         jpMainPanel.add(jpCompagny, gbcConstraint);
 
@@ -173,9 +172,9 @@ public class AddExternal extends GenericWindow{
             @Override
             public void actionPerformed(ActionEvent e) {
                 disableError();
-                sLastName = jtfLastNameInput.getText();
-                sFirstName = jtfFirstNameInput.getText();
-                sCompagny = jtfCompagnyInput.getText();
+                sLastName = jtfLastName.getText();
+                sFirstName = jtfFirstName.getText();
+                sCompagny = jtfCompagny.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
                 sNPA = jtfNPA.getText();
@@ -193,12 +192,12 @@ public class AddExternal extends GenericWindow{
      * Méthode permettant de réinitialiser les états d'erreur crée lors de mauvaises saisies
      */
     public void disableError() {
-        jtfLastNameInput.setBackground(Color.WHITE);
-        jtfLastNameInput.setToolTipText(null);
-        jtfFirstNameInput.setBackground(Color.WHITE);
-        jtfFirstNameInput.setToolTipText(null);
-        jtfCompagnyInput.setBackground(Color.WHITE);
-        jtfCompagnyInput.setToolTipText(null);
+        jtfLastName.setBackground(Color.WHITE);
+        jtfLastName.setToolTipText(null);
+        jtfFirstName.setBackground(Color.WHITE);
+        jtfFirstName.setToolTipText(null);
+        jtfCompagny.setBackground(Color.WHITE);
+        jtfCompagny.setToolTipText(null);
         jtfAddress.setBackground(Color.WHITE);
         jtfAddress.setToolTipText(null);
         jtfNPA.setBackground(Color.WHITE);
@@ -216,8 +215,8 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setFirstNameError(String error) {
-        jtfFirstNameInput.setToolTipText(error);
-        jtfFirstNameInput.setBackground(Color.RED);
+        jtfFirstName.setToolTipText(error);
+        jtfFirstName.setBackground(Color.RED);
     }
 
     /**
@@ -225,8 +224,8 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setLastNameError(String error) {
-        jtfLastNameInput.setToolTipText(error);
-        jtfLastNameInput.setBackground(Color.RED);
+        jtfLastName.setToolTipText(error);
+        jtfLastName.setBackground(Color.RED);
     }
 
     /**
@@ -234,8 +233,8 @@ public class AddExternal extends GenericWindow{
      * @param error message indiquant plus précisément l'erreur
      */
     public void setCompagnyError(String error) {
-        jtfCompagnyInput.setToolTipText(error);
-        jtfCompagnyInput.setBackground(Color.RED);
+        jtfCompagny.setToolTipText(error);
+        jtfCompagny.setBackground(Color.RED);
     }
 
     /**

@@ -41,11 +41,6 @@ public class EventsTable extends JPanel {
         TableRowSorter<MyModelTable> sorter = new TableRowSorter<>(dataTable);
         jtTable.setRowSorter(sorter);
 
-        /*
-        Dimension d = jtTable.getPreferredScrollableViewportSize();
-        jtTable.setPreferredScrollableViewportSize(d);
-        */
-
         JScrollPane jspTask = new JScrollPane(jtTable);
 
         GridBagConstraints gbcTable = new GridBagConstraints();
