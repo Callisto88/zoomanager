@@ -124,7 +124,7 @@ public class DBInteraction {
     // 12 Paramètres Dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?); ";
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
     private static final String SEL_ALL_PERSONNE = "SELECT * " +
@@ -319,6 +319,13 @@ public class DBInteraction {
                     "WHERE Animal.id =  ? ;";
     // Récupérer toutes les races d'animal
     private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
+
+    private static final String SEL_INTERVENANTS_BY_EVENT_ID = "SELECT *\n" +
+            "FROM Infrastructure_Evenement\n" +
+            "  INNER JOIN Infrastructure\n" +
+            "    ON Infrastructure_Evenement.infrastructure = Infrastructure.id\n" +
+            "WHERE evenement = 12;";
+
     // -----------------------------------------------------------------------------------------------------------------
     // ENCLOS :
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
@@ -365,7 +372,7 @@ public class DBInteraction {
     private static final String SEL_EVENT_TYPE_FROM_EVENT_NAME = "SELECT type FROM Evenement WHERE description LIKE ? ;";
 
     private static final String SEL_ANIMALS_FROM_EVENT_ID = "SELECT * FROM Animal INNER JOIN Animal_Evenement ON Animal.id = Animal_Evenement.animal WHERE Animal_Evenement.evenement = ?;";
-    private static final String ADD_ANIMAL_TO_EVENT = "INSERT INTO Animal_Evenement VALUES(?,?,?);";
+    private static final String ADD_ANIMAL_TO_EVENT = "INSERT INTO Animal_Evenement VALUES(null,?,?);";
     private static final String DEL_ANIMAL_FROM_EVENT = "DELETE FROM Animal_Evenement WHERE animal = ? AND evenement = ?;";
     private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT *\n" +
@@ -391,6 +398,8 @@ public class DBInteraction {
 
     private static final String SEL_EVENTS = "SELECT * FROM Evenement;";
 
+    private static final String DEL_INTERVENANT_EVENEMENT = "DELETE FROM Intervenant_Evenement WHERE evenement = ? AND intervenant = ?;";
+
     // Selectionne les événements auxquels participe un intervenant externe. Intervenant externe par ID
     private static final String SEL_ASSIGN_EVENEMENT_INTERVENANT =
             "SELECT evenement " +
@@ -402,6 +411,8 @@ public class DBInteraction {
                     "FROM Personne_Evenement " +
                     "WHERE personne = ? ;";
 
+    private static final String INSERT_INFRA_EVENT = "INSERT INTO Infrastructure_Evenement VALUES(null,?,?);";
+    private static final String DELETE_INFRA_EVENT = "DELETE FROM Infrastructure_Evenement WHERE infrastructure = ? AND evenement = ?;";
 
     // En cours
     private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
@@ -1978,12 +1989,6 @@ public class DBInteraction {
 
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
-    // Partie pour la gestion des INFRASTRUCTURE dans la DB
-
-
-
-    // -----------------------------------------------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
 
     public ArrayList<Evenement> selAllEvents() throws SQLException, ExceptionDataBase {
@@ -2032,11 +2037,10 @@ public class DBInteraction {
         this.stmt.setInt(1, idAnimal);
         this.stmt.setInt(2, idEvenement);
 
-        // En premier lieu, on enregistre l'animal dans la DB
-        this.stmt.execute();
+        this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
-        if (rs.next()) {    // On récupère l'ID de l'événement animal
-            rs.beforeFirst();   // On remet le curseur au début
+
+        if (rs.next()) {        // On récupère l'ID du nouvel événement
             return rs.getInt(1);
         } else {
             return 0;
@@ -2393,16 +2397,22 @@ public class DBInteraction {
      *
      * @return void
      */
-    public void assignEvenementIntervenant (Evenement evenement, Intervenant intervenant) throws SQLException {
+    public int assignEvenementIntervenant(Evenement evenement, Intervenant intervenant) throws SQLException {
         int id_intervenant = intervenant.getId();
         int id_evenement = evenement.getId();
 
-        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT);
-
+        this.stmt = DBConnection.con.prepareStatement(ASSIGNER_EVENEMENT_INTERVENANT, Statement.RETURN_GENERATED_KEYS);
         this.stmt.setInt(1, id_intervenant);
         this.stmt.setInt(2, id_evenement);
-
         this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID de la nouvelle commande
+            int intervenantEventID = rs.getInt(1);
+            return intervenantEventID;
+        } else {
+            return 0;
+        }
     }
 
     /**
@@ -2425,6 +2435,18 @@ public class DBInteraction {
 
                 this.stmt.executeUpdate();
             }
+        }
+    }
+
+    public boolean delIntervenantEvenement(int intervenantID, int eventID) throws SQLException {
+        this.stmt = DBConnection.con.prepareStatement(DEL_INTERVENANT_EVENEMENT);
+        this.stmt.setInt(1, eventID);
+        this.stmt.setInt(2, intervenantID);
+        int affectedRows = this.stmt.executeUpdate();
+        if (affectedRows == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -2468,6 +2490,35 @@ public class DBInteraction {
 
                 this.stmt.executeUpdate();
             }
+        }
+    }
+
+    public int insInfrastructureEvenement(int infraID, int eventID) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(INSERT_INFRA_EVENT, Statement.RETURN_GENERATED_KEYS);
+        this.stmt.setInt(1, infraID);
+        this.stmt.setInt(2, eventID);
+
+        this.stmt.executeUpdate();
+        ResultSet rs = this.stmt.getGeneratedKeys();
+
+        if (rs.next()) {        // On récupère l'ID du nouvel événement
+            return rs.getInt(1);
+        } else {
+            return 0;
+        }
+    }
+
+    public boolean delInfrastructureEvenement(int infraID, int eventID) throws SQLException {
+
+        this.stmt = DBConnection.con.prepareStatement(DELETE_INFRA_EVENT, Statement.RETURN_GENERATED_KEYS);
+        this.stmt.setInt(1, infraID);
+        this.stmt.setInt(2, eventID);
+        int rowCount = this.stmt.executeUpdate();
+        if (rowCount == 1) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -2924,5 +2975,4 @@ public class DBInteraction {
 
         return data;
     }
-
 }

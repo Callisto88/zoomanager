@@ -79,6 +79,36 @@ public class Evenement {
                     selEventsHavingAnimal();
                     break;
 
+                case 10:
+                    System.out.println("Entrer l'ID de l'événement concerné : ");
+                    Scanner input10 = new Scanner(System.in);
+                    int eventID10 = Integer.parseInt(input10.next());
+                    System.out.println("Entrer l'ID de l'animal concerné : ");
+                    Scanner input11 = new Scanner(System.in);
+                    int animalID10 = Integer.parseInt(input11.next());
+                    delAnimalFromEvent(animalID10, eventID10);
+                    break;
+
+                case 11:
+                    System.out.println("Entrer l'ID de l'événement concerné : ");
+                    Scanner input111 = new Scanner(System.in);
+                    int eventID11 = Integer.parseInt(input111.next());
+                    System.out.println("Entrer l'ID de l'intervenant concerné : ");
+                    Scanner s11 = new Scanner(System.in);
+                    int intervenantID11 = Integer.parseInt(s11.next());
+                    assignEvenementIntervenant(eventID11, intervenantID11);
+                    break;
+
+                case 12:
+                    System.out.println("Entrer l'ID de l'événement concerné : ");
+                    Scanner input112 = new Scanner(System.in);
+                    int eventID12 = Integer.parseInt(input112.next());
+                    System.out.println("Entrer l'ID de l'intervenant concerné : ");
+                    Scanner s12 = new Scanner(System.in);
+                    int intervenantID12 = Integer.parseInt(s12.next());
+                    delIntervenantEvenement(intervenantID12, eventID12);
+                    break;
+
                 case 0:
                     break;
             }
@@ -104,6 +134,9 @@ public class Evenement {
         System.out.println("7 - Afficher tous les animaux impliqués dans un événement");
         System.out.println("8 - Afficher toutes les personnes impliqués dans un événement");
         System.out.println("9 - Afficher tous les événements impliquant au moins un animal");
+        System.out.println("10 - Retirer un animal d'un événement");
+        System.out.println("11 - Assigner un intervenant à un événement");
+        System.out.println("12 - Retirer un intervenant d'un événement");
         System.out.println("0 - Quitter le programme");
 
         selection = input.nextInt();
@@ -290,6 +323,67 @@ public class Evenement {
             e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+        }
+    }
+
+    public static void delAnimalFromEvent(int animalID, int eventID) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            boolean success = query.delAnimalEvent(animalID, eventID);
+            System.out.println((success ? "L'animal portant l'ID " + animalID + "a bien été retiré de l'événement ID " + eventID : "Erreur"));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void assignEvenementIntervenant(int eventID, int intervenantID) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            Model.Evenement e = new Model.Evenement(eventID);
+            Model.Intervenant i = new Model.Intervenant(intervenantID);
+            int interEventID = query.assignEvenementIntervenant(e, i);
+            if (interEventID != 0) {
+                System.out.println("L'événement ID " + eventID + " a bien été assigné à l'intervenant : " + intervenantID);
+            } else {
+                System.out.println("Erreur lors de l'assignation, soit l'événement soit l'intervenant n'existe pas");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public static void delIntervenantEvenement(int intervenantID, int eventID) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            Model.Evenement e = new Model.Evenement(eventID);
+            Model.Intervenant i = new Model.Intervenant(intervenantID);
+            boolean success = query.delIntervenantEvenement(intervenantID, eventID);
+            System.out.println(success);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
