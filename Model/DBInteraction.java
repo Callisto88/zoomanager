@@ -1,18 +1,16 @@
 package Model;
 
-//import sun.jvm.hotspot.debugger.win32.coff.AuxFunctionDefinitionRecord;
-
 import java.sql.*;
-        import java.util.*;
+import java.util.*;
 
 /**
  *
- * Cette classes à pour but de créer une connexion avec la base de données
+ * Cette classes a pour but de créer une connexion avec la base de données
  * L'attribut permettant de se connecter à la base de données est :     DBConnection db
  *
- * Elle contient également toute les requêtes disponibles afin de faire des actions sur la base de données
+ * Elle contient également toute les requêtes disponibles pour interagir avec la base de données
  *
- * La création d'un objet DBInteraction ne demande aucun paramètre
+ * La création d'un objet DBInteraction ne requiert aucun paramètre
  *
  * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
  *
@@ -43,9 +41,6 @@ public class DBInteraction {
 
     // Récupère un pays d'après son nom
     private static final String SEL_PAYS_PAR_NOM = "SELECT * FROM Pays WHERE pays LIKE ?;";
-
-    // Récupère une ville d'après son nom
-    private static final String SEL_VILLE_PAR_NOM = "SELECT * FROM Ville WHERE ville LIKE ?;";
 
     // Insère un nouveau pays
     private static final String INSERT_PAYS = "INSERT INTO Pays VALUES (null , ? );";
@@ -88,12 +83,12 @@ public class DBInteraction {
 
     private static final String SEL_ADRESSE_FROM_ID = "SELECT * FROM Adresse WHERE id = ?;";
 
-
     // -----------------------------------------------------------------------------------------------------------------
     // REQUETES RELATIVES AUX PERSONNES, EMPLOYES, INTERVENANTS
     // -----------------------------------------------------------------------------------------------------------------
 
     private static final String NOMBRE_PERSONNE = "SELECT COUNT(*) as nbPersonne FROM Personne;";
+
     private static final String SEL_ALL_EMPLOYES = "SELECT idPersonne, noAVS, prenom, nom, Adresse.id, Adresse.adresse, Ville.villeId, Ville.ville, Ville.codePostal, Pays.paysId, Pays.pays, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat\n" +
             "FROM Personne\n" +
             "  INNER JOIN Adresse\n" +
@@ -121,14 +116,15 @@ public class DBInteraction {
     private static final String SEL_EMPLOYE_PAR_NOM = "SELECT * " +
             "FROM Personne " +
             "WHERE Personne.nom = ? ;";
+
     // 12 Paramètres Dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
     // idResponsable / statut / dateDebut	TypeContrat /
     private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?); ";
+
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
-    private static final String SEL_ALL_PERSONNE = "SELECT * " +
-            "FROM Personne;";
+    private static final String SEL_ALL_PERSONNE = "SELECT * FROM Personne;";
 
     // Permet de modifier les informations relatives à une Personne
     // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
@@ -137,8 +133,11 @@ public class DBInteraction {
     private static final String DEL_PERSONNE = "DELETE FROM Personne WHERE idPersonne = ?;";
     private static final String SEL_TYPE_CONTRAT = "SELECT DISTINCT typeContrat FROM Personne";
     private static final String SEL_ALL_STATUTS = "SELECT DISTINCT statut FROM Personne";
+
     // -----------------------------------------------------------------------------------------------------------------
-    // INTERVENANT :
+    // REQUETES SPECIFIQUES AUX INTERVENANTS
+    // -----------------------------------------------------------------------------------------------------------------
+
     // Selectionne tous les intervenants
     private static final String SELECT_INTERVENANT = "SELECT *\n" +
             "FROM Intervenant\n" +
@@ -148,6 +147,12 @@ public class DBInteraction {
             "    ON Adresse.villeId = Ville.villeId\n" +
             "  INNER JOIN Pays\n" +
             "    ON Ville.paysId = Pays.paysId;";
+
+    private static final String SEL_INTERVENANTS_BY_EVENT_ID = "SELECT *\n" +
+            "FROM Infrastructure_Evenement\n" +
+            "  INNER JOIN Infrastructure\n" +
+            "    ON Infrastructure_Evenement.infrastructure = Infrastructure.id\n" +
+            "WHERE evenement = 12;";
 
     // Supprime un intervenant de la DB, pour garder les "traces" on passe uniquement son "statut" à 1
     private static final String DELETE_INTERVENANT = "UPDATE Intervenant " +
@@ -164,6 +169,7 @@ public class DBInteraction {
                     "  telephone = ? , " +
                     "  statut = ? " +
                     "WHERE id = ? ;";
+
     // Insertion d'un nouvel intervenant
     // Expected :: id, entreprise, prenom, nom, adresse, email, telephone, statut
     private static final String INSERT_INTERVANT = "INSERT INTO Intervenant VALUES (null, ?, ?, ?, ?, ?, ?, ?);";
@@ -181,8 +187,14 @@ public class DBInteraction {
             "WHERE Personne_Evenement.evenement = ?;";
 
     // -----------------------------------------------------------------------------------------------------------------
-    // ANIMAUX :
+    // REQUÈTES RELATIVES AUX ANIMAUX ( + SOUS-CLASSES TELLES QUE REPTILES, FAUVES, ETC... )
+    // -----------------------------------------------------------------------------------------------------------------
 
+    /**
+     * Requêtes de sélection
+     */
+
+    // Sélectionne la liste de tous les fauves
     private static final String SEL_FAUVES = "SELECT *\n" +
             "FROM Animal\n" +
             "  LEFT JOIN Animal_Fauve\n" +
@@ -196,6 +208,7 @@ public class DBInteraction {
             "  LEFT JOIN Secteur\n" +
             "    ON Enclos.secteur = Secteur.id;";
 
+    // Sélectionne la liste de tous les oiseaux
     private static final String SEL_OISEAUX = "SELECT *\n" +
             "FROM Animal\n" +
             "  LEFT JOIN Animal_Oiseau\n" +
@@ -209,6 +222,7 @@ public class DBInteraction {
             "  LEFT JOIN Secteur\n" +
             "    ON Enclos.secteur = Secteur.id;";
 
+    // Sélectionne la liste de tous les primates
     private static final String SEL_PRIMATES = "SELECT *\n" +
             "FROM Animal\n" +
             "  LEFT JOIN Animal_Primate\n" +
@@ -222,6 +236,7 @@ public class DBInteraction {
             "  LEFT JOIN Secteur\n" +
             "    ON Enclos.secteur = Secteur.id;";
 
+    // Sélectionne la liste de tous les reptiles
     private static final String SEL_REPTILES = "SELECT *\n" +
             "FROM Animal\n" +
             "  LEFT JOIN Animal_Reptile\n" +
@@ -235,25 +250,82 @@ public class DBInteraction {
             "  LEFT JOIN Secteur\n" +
             "    ON Enclos.secteur = Secteur.id;";
 
+    // Récupère la liste des races
+    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
+
+    // Récupérer les informations d'un animal en fonction de son ID
+    private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
+
+    // Récupérer tous les ID des OISEAUX
+    private static final String SELECT_ALL_ID_OISEAU = "SELECT id FROM Animal_Oiseau;";
+
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_FAUVE = "SELECT id FROM Animal_Fauve;";
+
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_PRIMATE = "SELECT id FROM Animal_Primate;";
+
+    // Récupérer tous les ID des FAUVES
+    private static final String SELECT_ALL_ID_REPTILE = "SELECT id FROM Animal_Reptile;";
+
+    // Récupérer toues les infos d'un FAUVE par rapport à un ID
+    private static final String SELECT_ALL_INFO_FAUVE_ID =
+            "SELECT Animal_Fauve.id AS id, poids, nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Fauve " +
+                    "RIGHT JOIN Animal " +
+                    "ON Animal.id = Animal_Fauve.id " +
+                    "WHERE Animal.id =  ? ;";
+
+    // Récupérer toues les infos d'un OISEAU par rapport à un ID
+    private static final String SELECT_ALL_INFO_OISEAU_ID =
+            "SELECT Animal_Oiseau.id AS id , envergure, bague , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Oiseau " +
+                    "RIGHT JOIN Animal " +
+                    "ON Animal.id = Animal_Oiseau.id " +
+                    "WHERE Animal.id =  ? ;";
+
+    // Récupérer toues les infos d'un REPTILE par rapport à un ID
+    private static final String SELECT_ALL_INFO_REPTILE_ID =
+            "SELECT Animal_Reptile.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Reptile " +
+                    "RIGHT JOIN Animal " +
+                    "ON Animal.id = Animal_Reptile.id " +
+                    "WHERE Animal.id =  ? ;";
+
+    // Récupérer tous les infos d'un REPTILE par rapport à un ID
+    private static final String SELECT_ALL_INFO_PRIMATE_ID =
+            "SELECT Animal_Primate.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
+                    "FROM Animal_Primate " +
+                    "RIGHT JOIN Animal " +
+                    "ON Animal.id = Animal_Primate.id " +
+                    "WHERE Animal.id =  ? ;";
+
+    // Récupérer toutes les races d'animal
+    private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
+
+    /**
+     * Requêtes d'insertion
+     */
     private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
     private static final String INSERT_PRIMATE = "INSERT INTO Animal_Primate (id, temperature) VALUES (?, ?);";
+
+    /**
+     * Requêtes de suppression
+     */
     private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
     private static final String DELETE_FAUVE = "DELETE FROM Animal_Fauve WHERE id = ?;";
     private static final String DELETE_OISEAU = "DELETE FROM Animal_Oiseau WHERE id = ?;";
     private static final String DELETE_PRIMATE = "DELETE FROM Animal_Primate WHERE id = ?;";
+
     private static final String DELETE_REPTILE = "DELETE FROM Animal_Reptile WHERE id = ?;";
 
-    private static final String SEL_ALL_RACE_ANIMAL = "SELECT nom FROM Race;";
-    // Récupérer uniquement ces 5 paramètress de l'animal
-    private static final String SEL_ANIMAL_ID_NOM_RACE_SEX_DATENAISSANCE = "SELECT id, nom, race, sexe, dateNaissance " +
-            "FROM Animal;";
-    // Récupérer tous les paramètre d'un animal
-    private static final String SEL_ANIMAL = "SELECT * FROM Animal;";
-    // Récupérer les informations d'un animal en fonction de son ID
-    private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
+    /**
+     * Requêtes de mise à jour
+     */
+
     // Modifier les parametre d'un animal
     private static final String UPDATE_ANIMAL = "UPDATE Animal " +
             "SET nom = ?, " +
@@ -264,74 +336,45 @@ public class DBInteraction {
             "dateDeces = ?, " +
             "race = ? " +
             "WHERE id = ?;";
+
     // Modifier les parametre d'un FAUVE
     private static final String UPDATE_ANIMAL_FAUVE = "UPDATE Animal_Fauve " +
             "SET poids = ? " +
             "WHERE id = ?;";
+
     // Modifier les parametre d'un REPTILE
     private static final String UPDATE_ANIMAL_REPTILE = "UPDATE Animal_Reptile " +
             "SET temperature = ? " +
             "WHERE id = ?;";
+
     // Modifier les parametre d'un PRIMATE
     private static final String UPDATE_ANIMAL_PRIMATE = "UPDATE Animal_Primate " +
             "SET temperature = ? " +
             "WHERE id = ?;";
+
     // Modifier les parametre d'un OISEAU
     private static final String UPDATE_ANIMAL_OISEAU = "UPDATE Animal_Oiseau " +
             "SET envergure = ?, " +
             "bague = ? " +
             "WHERE id = ?;";
-    // Récupérer tous les ID des OISEAUX
-    private static final String SELECT_ALL_ID_OISEAU = "SELECT id FROM Animal_Oiseau;";
-    // Récupérer tous les ID des FAUVES
-    private static final String SELECT_ALL_ID_FAUVE = "SELECT id FROM Animal_Fauve;";
-    // Récupérer tous les ID des FAUVES
-    private static final String SELECT_ALL_ID_PRIMATE = "SELECT id FROM Animal_Primate;";
-    // Récupérer tous les ID des FAUVES
-    private static final String SELECT_ALL_ID_REPTILE = "SELECT id FROM Animal_Reptile;";
-    // Récupérer toues les infos d'un FAUVE par rapport à un ID
-    private static final String SELECT_ALL_INFO_FAUVE_ID =
-            "SELECT Animal_Fauve.id AS id, poids, nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
-                    "FROM Animal_Fauve " +
-                    "RIGHT JOIN Animal " +
-                    "ON Animal.id = Animal_Fauve.id " +
-                    "WHERE Animal.id =  ? ;";
-    // Récupérer toues les infos d'un OISEAU par rapport à un ID
-    private static final String SELECT_ALL_INFO_OISEAU_ID =
-            "SELECT Animal_Oiseau.id AS id , envergure, bague , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
-                    "FROM Animal_Oiseau " +
-                    "RIGHT JOIN Animal " +
-                    "ON Animal.id = Animal_Oiseau.id " +
-                    "WHERE Animal.id =  ? ;";
-    // Récupérer toues les infos d'un REPTILE par rapport à un ID
-    private static final String SELECT_ALL_INFO_REPTILE_ID =
-            "SELECT Animal_Reptile.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
-                    "FROM Animal_Reptile " +
-                    "RIGHT JOIN Animal " +
-                    "ON Animal.id = Animal_Reptile.id " +
-                    "WHERE Animal.id =  ? ;";
-    // Récupérer tous les infos d'un REPTILE par rapport à un ID
-    private static final String SELECT_ALL_INFO_PRIMATE_ID =
-            "SELECT Animal_Primate.id AS id , temperature , nom, sexe, dateNaissance, enclos, origine, dateDeces, race " +
-                    "FROM Animal_Primate " +
-                    "RIGHT JOIN Animal " +
-                    "ON Animal.id = Animal_Primate.id " +
-                    "WHERE Animal.id =  ? ;";
-    // Récupérer toutes les races d'animal
-    private static final String SEL_ALL_ANIMAL_RACE = "SELECT * FROM Animal_Race;";
-
-    private static final String SEL_INTERVENANTS_BY_EVENT_ID = "SELECT *\n" +
-            "FROM Infrastructure_Evenement\n" +
-            "  INNER JOIN Infrastructure\n" +
-            "    ON Infrastructure_Evenement.infrastructure = Infrastructure.id\n" +
-            "WHERE evenement = 12;";
 
     // -----------------------------------------------------------------------------------------------------------------
-    // ENCLOS :
+    // REQUETES RELATIVES AUX INFRASTRUCTURES
+    // -----------------------------------------------------------------------------------------------------------------
+
+    /**
+     * Enclos
+     */
+    // Récupère toutes les informations concernant un enclos
     private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
+
+    // Récupère la liste de tous les enclos
     private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
+
     // -----------------------------------------------------------------------------------------------------------------
-    // EVENEMENT :
+    // REQUÊTES RELATIVES AUX EVENEMENTS
+    // -----------------------------------------------------------------------------------------------------------------
+
     private static final String SEL_EVENEMENTS_PAR_TYPE = "SELECT * FROM Evenement WHERE type LIKE ?;";
 
     // Liste de tous les événements qui n'ont pas de personne attribué
@@ -350,14 +393,19 @@ public class DBInteraction {
                     "FROM Intervenant_Evenement);";
 
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
+
     // Insertion d'un événement dans la DB
     private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
+
     // Assigner un événement à un personne
     private static final String ASSIGNER_EVENEMENT_PERSONNE = "INSERT INTO Personne_Evenement VALUES (null , ? , ? );";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_ANIMAL = "INSERT INTO Animal_Evenement VALUES (null , ? , ? );";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INTERVENANT = "INSERT INTO Intervenant_Evenement VALUES (null, ? , ? );";
+
     // Assigner un événement à un animal
     private static final String ASSIGNER_EVENEMENT_INFRASTRUCTURE = "INSERT INTO Infrastructure_Evenement VALUES (null , ? , ? );";
 
@@ -374,7 +422,6 @@ public class DBInteraction {
     private static final String SEL_ANIMALS_FROM_EVENT_ID = "SELECT * FROM Animal INNER JOIN Animal_Evenement ON Animal.id = Animal_Evenement.animal WHERE Animal_Evenement.evenement = ?;";
     private static final String ADD_ANIMAL_TO_EVENT = "INSERT INTO Animal_Evenement VALUES(null,?,?);";
     private static final String DEL_ANIMAL_FROM_EVENT = "DELETE FROM Animal_Evenement WHERE animal = ? AND evenement = ?;";
-    private static final String SEL_EVENT_ANIMAL_FROM_ANIMAL_AND_EVENT = "SELECT * FROM Animal_Evenement WHERE Animal_Evenement.animal = ? AND Animal_Evenement.evenement = ?";
     private static final String SEL_PERSONNE_CONCERNED_IN_EVENT = "SELECT *\n" +
             "FROM Personne\n" +
             "  INNER JOIN Personne_Evenement\n" +
@@ -414,9 +461,6 @@ public class DBInteraction {
     private static final String INSERT_INFRA_EVENT = "INSERT INTO Infrastructure_Evenement VALUES(null,?,?);";
     private static final String DELETE_INFRA_EVENT = "DELETE FROM Infrastructure_Evenement WHERE infrastructure = ? AND evenement = ?;";
 
-    // En cours
-    private static final String SEL_PERSONNE_CONCERNED_BY_EVENT = "SELECT * FROM Personne_Evenement WHERE evenement = ?";
-
     private static final String SEL_RESPONSABLES = "SELECT idPersonne, noAVS, prenom, nom, Adresse.id, Adresse.adresse, Ville.villeId, Ville.ville, Ville.codePostal, Pays.paysId, Pays.pays, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat\n" +
             "FROM Personne\n" +
             "  INNER JOIN Adresse\n" +
@@ -437,8 +481,11 @@ public class DBInteraction {
             "UPDATE Stock " +
                     "SET quantite = quantite + ? " +
                     "WHERE id = ?;";
+
     // -----------------------------------------------------------------------------------------------------------------
-    // STOCK :
+    // REQUÊTES RELATIVES AU STOCK ET AUX COMMANDES
+    // -----------------------------------------------------------------------------------------------------------------
+
     private static final String INS_COMMANDE = "INSERT INTO Commande (id, dateHeure, statut) VALUES(null, NOW(), 'CREEE');";
     private static final String INS_CONTENU_COMMANDE = "INSERT INTO Commande_Contenu (id, idCommande, quantite, refArticle) VALUES(null, ?, ?, ?);";
     private static final String SEL_STOCK_BY_REF = "SELECT * FROM Stock WHERE id = ?;";
@@ -449,13 +496,8 @@ public class DBInteraction {
     // Récupérer toutes les commandes qui ont été faites (id, date et statut)
     private static final String SEL_ALL_COMMANDE = "SELECT * FROM Commande";
     private static final String SEL_ORDERS_BY_STATUS = "SELECT * FROM Commande WHERE Statut LIKE ?";
-
     private static final String SEL_ORDER = "SELECT * FROM Commande WHERE id = ?";
-
     private static final String UPDATE_ORDER = "UPDATE Commande SET statut = ? WHERE id = ?;";
-
-    // Récupérer l'ID et la date de toute les commandes faites entre deux dates Date1 et Date2
-    // private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` BETWEEN ? AND ? ;";
 
     // Récupérer le contenu d'une commande en fonction de son ID
     private static final String SEL_CONTENU_COMMANDE_PAR_ID = "SELECT * FROM Commande_Contenu WHERE idCommande = ? ;";
@@ -471,22 +513,22 @@ public class DBInteraction {
     private static final String SEL_COMMANDE_BETWEEN_TWO_DATES = "SELECT * FROM Commande WHERE `dateHeure` >= ? AND `dateHeure` <= ? ORDER BY dateHeure;";
     private static final String SEL_ORDERS_BY_STATE_AND_DATE = "SELECT * FROM Commande WHERE `statut` LIKE ? AND `dateHeure` >= ? AND `dateHeure` <= ? ORDER BY dateHeure;";
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // PARAMETRE DE LA CLASSE :
-
+    /**
+     * Membres
+     */
     private DBConnection db;
     private PreparedStatement stmt;
 
-    // -----------------------------------------------------------------------------------------------------------------
-    // CONSTRUCTEUR :
+    /**
+     * Constructeur par défaut
+     *
+     * @throws ExceptionDataBase
+     */
     public DBInteraction() throws ExceptionDataBase {
         this.db = new DBConnection();
         this.db.init();
         this.stmt = null;
     }
-    // -----------------------------------------------------------------------------------------------------------------
-    // -----------------------------------------------------------------------------------------------------------------
-    // Partie pour la gestion des INTERVENANT dans la DB
 
     /**
      * Insere un intervenant dans la DB
@@ -522,7 +564,6 @@ public class DBInteraction {
      * Selectionne tous les intervenant de la DB
      *
      * @return ArrayList<Intervenant>
-     *
      */
     public ArrayList<Intervenant> selIntervenant () throws SQLException, ExceptionDataBase {
         ArrayList<Personne> listEmployes;
@@ -532,6 +573,14 @@ public class DBInteraction {
         return this.createTabIntervenant(rs);
     }
 
+    /**
+     * Récupère tous les intervenants impliqués dans un événement donné
+     *
+     * @param eventID ID de l'événement
+     * @return un ArrayList<Intervenant>
+     * @throws SQLException
+     * @throws ExceptionDataBase
+     */
     public ArrayList<Intervenant> selAllIntervenantsParEvenementId(int eventID) throws SQLException, ExceptionDataBase {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_INTERVENANT_CONCERNED_IN_EVENT);
@@ -541,42 +590,37 @@ public class DBInteraction {
         return this.createTabIntervenant(rs);
     }
 
-
     /**
      * Permet de "supprimer" un intervenant de la DB
      * En faite, son statut passe simplement à 1
      *
-     * @param id(int)
-     *
+     * @param id(int) ID de l'intervenant concerné
      */
     public void delIntervenant (int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
         this.stmt.setInt(1, id);
         this.stmt.executeUpdate();
-
     }
 
     /**
      * Permet de "supprimer" un intervenant de la DB
-     * En faite, son statut passe simplement à 1
+     * En fait, son statut passe simplement à 1
      *
      * @param intervenant(Intervenant)
-     *
      */
     public void delIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
         this.stmt.setInt(1, intervenant.getId());
         this.stmt.executeUpdate();
-
     }
 
     /**
      * Permet de modifier un intervenant dans la DB
      *
      * @param intervenant(Intervenant)
-     *
      */
     public void updateIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+
         this.stmt = DBConnection.con.prepareStatement(UPDATE_INTERVENANT);
         this.stmt.setString(1, intervenant.getEntreprise());
         this.stmt.setString(2, intervenant.getPrenom());
@@ -587,7 +631,6 @@ public class DBInteraction {
         this.stmt.setInt(7, intervenant.getStatut());
         this.stmt.setInt(8, intervenant.getId());
         this.stmt.executeUpdate();
-
     }
 
     /**
