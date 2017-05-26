@@ -90,6 +90,14 @@ public class Intervenant {
         this.statut = statut;
     }
 
+    public Intervenant() {
+
+    }
+
+    public Intervenant(int intervenantID) {
+        this.id = intervenantID;
+    }
+
     public int getId() {
         return id;
     }

@@ -10,16 +10,19 @@ import java.sql.SQLException;
  */
 public class TestQuery {
     public static void main(String arg[]){
+
+        DBInteraction query = null;
         try {
-            DBInteraction query = new DBInteraction();
+            query = new DBInteraction();
             try {
-                query.insAnimalEvent(1,2);
+                int newAnimalEventID = query.insAnimalEvent(1, 2);
+                System.out.println(newAnimalEventID);
+
             } catch (SQLException e) {
                 System.out.println("Echec d enregistrement en bd");
             }
         } catch (ExceptionDataBase exceptionDataBase) {
             System.out.println("Echec de connexion en bd");
         }
-
     }
 }
