@@ -650,6 +650,7 @@ public class AnimalTab extends GenericWindow {
         WideComboBox jcAnimalType = new WideComboBox(alTypes);
         jcAnimalType.setMaximumSize(new Dimension(200, 30));
         jcAnimalType.setPreferredSize(defaultFormSize);
+        jcAnimalType.setSelectedIndex(animalType);
         jcAnimalType.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
