@@ -655,6 +655,7 @@ public class AnimalTab extends GenericWindow {
             @Override
             public void actionPerformed(ActionEvent e) {
                 animalType = jcAnimalType.getSelectedIndex();
+                System.out.println(animalType);
                 setView();
             }
         });
@@ -673,7 +674,7 @@ public class AnimalTab extends GenericWindow {
         }
 
 
-        if((mode == 2 && animalType == 2) || selectedAnimal instanceof Felin){
+        if((mode == 2 && animalType == 2) || (mode != 2 && selectedAnimal instanceof Felin)){
             JLabel jlPoids = new JLabel("Poids :");
             setLabelConfig(jlPoids);
             gbcAnimalForm.gridx = 0;
@@ -696,7 +697,7 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if((mode == 2 && animalType == 1) || selectedAnimal instanceof Oiseau){
+        else if((mode == 2 && animalType == 1) || (mode != 2 && selectedAnimal instanceof Oiseau)){
             JLabel jlBague = new JLabel("Bague :");
             setLabelConfig(jlBague);
             gbcAnimalForm.gridx = 0;
@@ -741,7 +742,7 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if((mode == 2 && animalType == 3) || selectedAnimal instanceof Reptile){
+        else if((mode == 2 && animalType == 3) || (mode != 2 && selectedAnimal instanceof Reptile)){
             JLabel jlTemperature = new JLabel("Température :");
             setLabelConfig(jlTemperature);
             gbcAnimalForm.gridx = 0;
@@ -762,7 +763,7 @@ public class AnimalTab extends GenericWindow {
 
             y++;
         }
-        else if((mode == 2 && animalType == 0) || selectedAnimal instanceof Primate){
+        else if((mode == 2 && animalType == 0) || (mode != 2 && selectedAnimal instanceof Primate)){
             JLabel jlTemperature = new JLabel("Température :");
             setLabelConfig(jlTemperature);
             gbcAnimalForm.gridx = 0;
