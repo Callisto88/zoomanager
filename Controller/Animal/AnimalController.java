@@ -257,10 +257,10 @@ public class AnimalController {
     }
 
 
-    public ArrayList<Evenement> getTasks(int id){
+    public ArrayList<Animal_Evenement> getTasks(int id){
         DBInteraction query = null;
 
-        ArrayList<Evenement> events = new ArrayList<>();
+        ArrayList<Animal_Evenement> events = new ArrayList<>();
 
         try {
             query = new DBInteraction();
@@ -269,19 +269,17 @@ public class AnimalController {
             new ErrorController(exceptionDataBase.getMessage());
         }
 
-        /*
+
         try {
-            events = query.getAnimalTasks(id);
+            events = query.selEventsHavingAnimal();
         } catch (ExceptionDataBase e) {
-            success = false;
             e.printStackTrace();
             //System.out.println(e.getMsg());
         } catch (SQLException e) {
-            success = false;
             e.printStackTrace();
             //System.out.println(e.getMessage());
         }
-        */
+
 
         query = null;
 

@@ -803,13 +803,19 @@ public class AnimalTab extends GenericWindow {
 
         //JTable pour les événements
         if(mode != 2) {
-            ArrayList<Evenement> events = atAnimalController.getTasks(selectedAnimal.getId());
+            ArrayList<Animal_Evenement> animalEvents = atAnimalController.getTasks(selectedAnimal.getId());
+            ArrayList<Evenement> events = new ArrayList<>();
+            for(Animal_Evenement animalEvent : animalEvents){
+                if(selectedAnimal.getId() == animalEvent.getAnimal().getId()) {
+                    events.add(animalEvent.getEvenement());
+                }
+            }
             EventsTable etStaff = new EventsTable(events);
             gbcAnimalForm.gridx = 0;
             gbcAnimalForm.gridy = y;
             gbcAnimalForm.gridwidth = 2;
-            etStaff.setPreferredSize(new Dimension(361, 260));
-            etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(355, 230));
+            etStaff.setPreferredSize(new Dimension(370, 260));
+            etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(360, 230));
             jpDetAnimal.add(etStaff, gbcAnimalForm);
 
             y++;
