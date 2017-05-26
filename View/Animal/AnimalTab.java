@@ -680,7 +680,10 @@ public class AnimalTab extends GenericWindow {
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlPoids, gbcAnimalForm);
 
-            double poids = ((Felin) selectedAnimal).getPoids();
+            double poids = 0;
+            if(selectedAnimal instanceof Felin){
+                poids = ((Felin) selectedAnimal).getPoids();
+            }
 
             jtPoids.setText(String.valueOf(poids));
             jtPoids.setPreferredSize(defaultFormSize);
@@ -703,7 +706,10 @@ public class AnimalTab extends GenericWindow {
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlBague, gbcAnimalForm);
 
-            String bague = ((Oiseau) selectedAnimal).getBague();
+            String bague = "";
+            if(selectedAnimal instanceof Oiseau){
+                bague = ((Oiseau) selectedAnimal).getBague();
+            }
 
             jtBague.setText(bague);
             jtBague.setPreferredSize(defaultFormSize);
@@ -726,7 +732,10 @@ public class AnimalTab extends GenericWindow {
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlEnvergure, gbcAnimalForm);
 
-            double envergure = ((Oiseau) selectedAnimal).getEnvergure();
+            double envergure = 0;
+            if(selectedAnimal instanceof Oiseau) {
+                envergure = ((Oiseau) selectedAnimal).getEnvergure();
+            }
             jtEnvergure.setText(String.valueOf(envergure));
             jtEnvergure.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
@@ -748,7 +757,10 @@ public class AnimalTab extends GenericWindow {
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlTemperature, gbcAnimalForm);
 
-            double temperature = ((Reptile) selectedAnimal).getTemperature();
+            double temperature = 0;
+            if(selectedAnimal instanceof Reptile) {
+                temperature = ((Reptile) selectedAnimal).getTemperature();
+            }
             jtTemperature.setText(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
@@ -769,7 +781,10 @@ public class AnimalTab extends GenericWindow {
             gbcAnimalForm.gridy = y;
             jpDetAnimal.add(jlTemperature, gbcAnimalForm);
 
-            double temperature = ((Primate) selectedAnimal).getTemperature();
+            double temperature = 0;
+            if(selectedAnimal instanceof Primate){
+                temperature = ((Primate) selectedAnimal).getTemperature();
+            }
             jtTemperature.setText(String.valueOf(temperature));
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
