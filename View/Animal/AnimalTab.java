@@ -891,7 +891,7 @@ public class AnimalTab extends GenericWindow {
                         jtBague.setBackground(Color.RED);
                     }
                 }
-                else if((mode == 2 && (animalType == 0 || animalType == 3)) || (mode != 2 && selectedAnimal instanceof Reptile) || (mode != 2 || selectedAnimal instanceof Primate)){
+                else if((mode == 2 && (animalType == 0 || animalType == 3)) || (mode != 2 && selectedAnimal instanceof Reptile) || (mode != 2 && selectedAnimal instanceof Primate)){
                     temperature = jtTemperature.getText();
                     if(!Validate.isNumeric(temperature)){
                         formOk = false;
