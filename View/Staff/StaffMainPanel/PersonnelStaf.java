@@ -4,7 +4,6 @@ import Controller.Staff.StaffController;
 import Model.Evenement;
 import Model.Personne;
 import View.EventsTable;
-import View.GenericWindow;
 
 import javax.swing.*;
 import java.awt.*;

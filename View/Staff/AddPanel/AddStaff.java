@@ -2,6 +2,10 @@ package View.Staff.AddPanel;
 
 import Controller.Staff.AddStaffController;
 
+import Model.Pays;
+import Model.Personne;
+import View.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,9 +14,6 @@ import java.awt.event.WindowEvent;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import Model.Pays;
-import Model.Personne;
-import View.*;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;

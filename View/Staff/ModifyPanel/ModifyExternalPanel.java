@@ -1,7 +1,6 @@
 package View.Staff.ModifyPanel;
 
 import Controller.Staff.ModifyExternalController;
-import Model.Adresse;
 import Model.Intervenant;
 import Model.Pays;
 import View.GenericWindow;

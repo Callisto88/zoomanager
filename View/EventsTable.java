@@ -1,8 +1,6 @@
 package View;
 
-import Controller.Staff.AssignStaffTaskController;
 import Model.Evenement;
-import View.MyModelTable;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;

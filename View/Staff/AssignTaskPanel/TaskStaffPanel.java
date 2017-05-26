@@ -5,14 +5,11 @@ import Model.Evenement;
 import Model.Personne;
 import View.GenericWindow;
 import View.MyModelTable;
-import sun.rmi.transport.ObjectTable;
 
 import javax.swing.*;
-import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Vector;
 
 /**

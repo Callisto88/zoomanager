@@ -7,7 +7,6 @@ import View.MyModelTable;
 
 import javax.swing.*;
 import javax.swing.table.TableRowSorter;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
