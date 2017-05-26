@@ -762,6 +762,7 @@ public class AnimalTab extends GenericWindow {
                 temperature = ((Reptile) selectedAnimal).getTemperature();
             }
             jtTemperature.setText(String.valueOf(temperature));
+            jtTemperature.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
             if(mode == 2){
@@ -786,6 +787,7 @@ public class AnimalTab extends GenericWindow {
                 temperature = ((Primate) selectedAnimal).getTemperature();
             }
             jtTemperature.setText(String.valueOf(temperature));
+            jtTemperature.setPreferredSize(defaultFormSize);
             gbcAnimalForm.gridx = 1;
             gbcAnimalForm.gridy = y;
             if(mode == 2){
