@@ -414,7 +414,7 @@ public class DBInteraction {
     private static final String DEL_EVENT_BY_ID = "DELETE FROM Evenement WHERE id = ?;";
 
     private static final String DEL_EVENT_TYPE = "DELETE FROM Evenement_Type WHERE type LIKE ?;";
-    private static final String INS_EVENT_TYPE = "INSERT INTO Evenement_Type VALUES (?);";
+    private static final String INS_EVENT_TYPE = "INSERT INTO Evenement_Type VALUES (null, ?);";
     private static final String SEL_EVENT_TYPES = "SELECT DISTINCT(type) FROM Evenement_Type;";
     private static final String SEL_EVENT_TYPE_FROM_EVENT_ID = "SELECT type FROM Evenement WHERE id = ? ;";
     private static final String SEL_EVENT_TYPE_FROM_EVENT_NAME = "SELECT type FROM Evenement WHERE description LIKE ? ;";
