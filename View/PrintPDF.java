@@ -60,7 +60,7 @@ public class PrintPDF {
      * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
      */
     public PrintPDF(JTable jtOrderContent, JTable jtInfoOrder, JLabel title, String additional){
-        Document document = new Document(PageSize.A4);
+        Document document = new Document(PageSize.A4.rotate());
         // Permet de crée une popup permettant de choisir son chemin de destination
         final JFileChooser jfc = new JFileChooser();
         jfc.setCurrentDirectory(new java.io.File("."));
