@@ -302,7 +302,7 @@ public class DBInteraction {
     /**
      * Requêtes d'insertion
      */
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces, race) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
@@ -2104,6 +2104,7 @@ public class DBInteraction {
         this.stmt.setDate(5, a.getAnneeNaissance());
         this.stmt.setInt(6, a.getEnclos().getId());
         this.stmt.setInt(7, a.getOrigine().getPaysId());
+        this.stmt.setInt(8, a.getRace().getId());
         // this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
