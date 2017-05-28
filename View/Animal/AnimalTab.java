@@ -981,6 +981,7 @@ public class AnimalTab extends GenericWindow {
                     }
                     else if(mode == 2) {
                         atAnimalController.insAnimal(newAnimal);
+                        newAnimal.setId(atAnimalController.getAnimal(newAnimal.getNom(), newAnimal.getDateNaissance()));
                         dataTable.addRow(vNewAnimal);
                         animauxDB.add(newAnimal);
                         jtTable.updateUI();

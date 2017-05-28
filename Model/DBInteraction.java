@@ -252,6 +252,9 @@ public class DBInteraction {
     // Récupérer les informations d'un animal en fonction de son ID
     private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
 
+    // Sélectionne l'id d'un animal par son nom et date de naissance
+    private static final String SEL_ANIMAL_NOM = "SELECT id FROM Animal WHERE nom = ? AND dateNaissance = ?;";
+
     // Récupérer tous les ID des OISEAUX
     private static final String SELECT_ALL_ID_OISEAU = "SELECT id FROM Animal_Oiseau;";
 
@@ -302,7 +305,7 @@ public class DBInteraction {
     /**
      * Requêtes d'insertion
      */
-    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces) VALUES (?, ?, ?, ?, ?, ?, ?, null);";
+    private static final String INSERT_ANIMAL = "INSERT INTO Animal (id, nomCommun, nom, sexe, dateNaissance, enclos, origine, dateDeces, race) VALUES (?, ?, ?, ?, ?, ?, ?, null, ?);";
     private static final String INSERT_FELIN = "INSERT INTO Animal_Fauve (id, poids) VALUES (?, ?);";
     private static final String INSERT_OISEAU = "INSERT INTO Animal_Oiseau (id, envergure, bague) VALUES (?, ?, ?);";
     private static final String INSERT_REPTILE = "INSERT INTO Animal_Reptile (id, temperature) VALUES (?, ?);";
@@ -1877,6 +1880,23 @@ public class DBInteraction {
         return animalArrayList;
     }
 
+    /**
+     * Permet d'obtenir l'id d'un animal via son nom et sa date de naissance
+     *
+     * @return ArrayList<Animal>
+     */
+    public int selAnimal(String nom, java.sql.Date dateNaissance) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL_NOM);
+        this.stmt.setString(1, nom);
+        this.stmt.setDate(2, dateNaissance);
+
+        ResultSet rs = this.stmt.executeQuery();
+        if(rs.next()){
+            return rs.getInt("id");
+        }
+        return 0;
+    }
+
     private ArrayList<Animal> selFelins() throws SQLException, ExceptionDataBase {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_FAUVES);
@@ -2110,6 +2130,7 @@ public class DBInteraction {
         this.stmt.setDate(5, a.getAnneeNaissance());
         this.stmt.setInt(6, a.getEnclos().getId());
         this.stmt.setInt(7, a.getOrigine().getPaysId());
+        this.stmt.setInt(8, a.getRace().getId());
         // this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
@@ -2117,8 +2138,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.getGeneratedKeys();
         if (rs.next()) {    // On récupère l'ID de l'animal inséré
             rs.beforeFirst();   // On remet le curseur au début
-            int newAnimalID = rs.getInt(1);
-            a.setId(newAnimalID);
+            a.setId(rs.getInt(1));
         }
 
         if (a instanceof Felin) {

@@ -10,6 +10,7 @@ import java.awt.*;
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
 
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;
@@ -49,6 +50,32 @@ public class AnimalController {
         query = null;
 
         return animauxDB;
+    }
+
+    public int getAnimal(String name, Date dateNaissance){
+        DBInteraction query = null;
+        int animalID = 0;
+
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+            new ErrorController(exceptionDataBase.getMsg());
+        }
+
+        try {
+            animalID = query.selAnimal(name, dateNaissance);
+        } catch (ExceptionDataBase e) {
+            e.printStackTrace();
+            new ErrorController(e.getMsg());
+        } catch (SQLException e) {
+            e.printStackTrace();
+            new ErrorController(e.getMessage());
+        }
+
+        query = null;
+
+        return animalID;
     }
 
     public ArrayList<Enclos> getAllEnclos() {
