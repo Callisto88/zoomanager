@@ -172,7 +172,7 @@ public class DBInteraction {
 
     private static final String SEL_INTERVENANT_CONCERNED_IN_EVENT = "SELECT *\n" +
             "FROM Intervenant\n" +
-            "  INNER JOIN Personne_Evenement\n" +
+            "  INNER JOIN Intervenant_Evenement\n" +
             "    ON Personne_Evenement.personne = Intervenant.id\n" +
             "  INNER JOIN Adresse\n" +
             "    ON Intervenant.adresse = Adresse.id\n" +
@@ -180,7 +180,7 @@ public class DBInteraction {
             "    ON Adresse.villeId = Ville.villeId\n" +
             "  INNER JOIN Pays\n" +
             "    ON Ville.paysId = Pays.paysId\n" +
-            "WHERE Personne_Evenement.evenement = ?;";
+            "WHERE Intervenant_Evenement.evenement = ?;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // REQUÈTES RELATIVES AUX ANIMAUX ( + SOUS-CLASSES TELLES QUE REPTILES, FAUVES, ETC... )
