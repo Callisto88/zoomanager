@@ -252,6 +252,9 @@ public class DBInteraction {
     // Récupérer les informations d'un animal en fonction de son ID
     private static final String SEL_ANIMAL_ID = "SELECT * FROM Animal WHERE id = ? ;";
 
+    // Sélectionne l'id d'un animal par son nom et date de naissance
+    private static final String SEL_ANIMAL_NOM = "SELECT id FROM Animal WHERE nom = ? AND dateNaissance = ?;";
+
     // Récupérer tous les ID des OISEAUX
     private static final String SELECT_ALL_ID_OISEAU = "SELECT id FROM Animal_Oiseau;";
 
@@ -1869,6 +1872,21 @@ public class DBInteraction {
         animalArrayList.addAll(this.selReptiles());
 
         return animalArrayList;
+    }
+
+    /**
+     * Permet d'obtenir l'id d'un animal via son nom et sa date de naissance
+     *
+     * @return ArrayList<Animal>
+     */
+    public int selAnimal(String nom, java.sql.Date dateNaissance) throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL_NOM);
+        this.stmt.setString(1, nom);
+        this.stmt.setDate(2, dateNaissance);
+
+        ResultSet rs = this.stmt.executeQuery();
+
+        return rs.getInt("id");
     }
 
     private ArrayList<Animal> selFelins() throws SQLException, ExceptionDataBase {
