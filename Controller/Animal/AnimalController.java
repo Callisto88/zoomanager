@@ -257,7 +257,7 @@ public class AnimalController {
     }
 
 
-    public ArrayList<Animal_Evenement> getTasks(int id){
+    public ArrayList<Animal_Evenement> getTasks(){
         DBInteraction query = null;
 
         ArrayList<Animal_Evenement> events = new ArrayList<>();

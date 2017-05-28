@@ -1,8 +1,7 @@
 package Model;
 
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 
 /**
@@ -25,6 +24,7 @@ public class DBConnection {
     protected static Connection con;
     // Adresse Cyril
     private static String url = "jdbc:mysql://nas.lozann.ch:3306/zoomanager";
+    //private static String url = "jdbc:sqlite:zoomanager.db";
     // Adresse André
     //private static String url = "jdbc:mysql://evodede.synology.me:3306/zoomanager";
     // Adresse local
@@ -54,7 +54,8 @@ public class DBConnection {
      */
     private boolean connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            //Class.forName("org.sqlite.JDBC");
+            Class.forName("com.mysql.jdbc");
             con = DriverManager.getConnection(url, user, pass);
         } catch (Exception e) {
             return false;
@@ -68,7 +69,7 @@ public class DBConnection {
      *
      * @return boolean
      */
-    protected boolean close () {
+    protected boolean close() {
         try {
             con.close();
         } catch (Exception e) {

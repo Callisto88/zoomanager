@@ -4,24 +4,20 @@ import java.sql.*;
 import java.util.*;
 
 /**
- *
  * Cette classes a pour but de créer une connexion avec la base de données
  * L'attribut permettant de se connecter à la base de données est :     DBConnection db
- *
+ * <p>
  * Elle contient également toute les requêtes disponibles pour interagir avec la base de données
- *
+ * <p>
  * La création d'un objet DBInteraction ne requiert aucun paramètre
- *
+ * <p>
  * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
  *
  * @author D.Hamel
  * @author C.Balboni
- *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    05.05.2017 (Finalisation v1.0)
- *
+ * @date 28.03.2017 (Création)
+ * @date 05.05.2017 (Finalisation v1.0)
  */
 
 public class DBInteraction {
@@ -395,7 +391,7 @@ public class DBInteraction {
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
 
     // Insertion d'un événement dans la DB
-    private static final String INSERT_EVENEMENT  = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
+    private static final String INSERT_EVENEMENT = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
 
     // Assigner un événement à un personne
     private static final String ASSIGNER_EVENEMENT_PERSONNE = "INSERT INTO Personne_Evenement VALUES (null , ? , ? );";
@@ -528,13 +524,313 @@ public class DBInteraction {
         this.db = new DBConnection();
         this.db.init();
         this.stmt = null;
+
+        /*
+        try {
+            Statement statement = DBConnection.con.createStatement();
+            statement.execute("CREATE TABLE IF NOT EXISTS Adresse (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tadresse varchar(250) NOT NULL,\n" +
+                    "\tvilleId integer NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n");
+            statement.execute(
+                    "CREATE TABLE IF NOT EXISTS Animal (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnomCommun varchar(250) NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tsexe varchar(30),\n" +
+                    "\tdateNaissance varchar(50),\n" +
+                    "\tenclos integer,\n" +
+                    "\torigine integer,\n" +
+                    "\tdateDeces varchar(50),\n" +
+                    "\trace integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n");
+            statement.execute(
+                    "CREATE TABLE IF NOT EXISTS Animal_Evenement (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tanimal integer,\n" +
+                    "\tevenement integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Animal_Fauve (\n" +
+                    "\tid integer,\n" +
+                    "\tpoids decimal(8,3)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Animal_Oiseau (\n" +
+                    "\tid integer,\n" +
+                    "\tenvergure decimal(6,2),\n" +
+                    "\tbague varchar(10)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Animal_Primate (\n" +
+                    "\tid integer,\n" +
+                    "\ttemperature decimal(6,2)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Animal_Race (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnom varchar(250),\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Animal_Reptile (\n" +
+                    "\tid integer,\n" +
+                    "\ttemperature decimal(6,2)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Commande (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tstatut varchar(250) NOT NULL,\n" +
+                    "\tdateHeure varchar(50),\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Commande_Contenu (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tidCommande integer NOT NULL,\n" +
+                    "\trefArticle integer,\n" +
+                    "\tquantite decimal(6,2),\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Enclos (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tsecteur integer NOT NULL,\n" +
+                    "\tsurface decimal(6,2) NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Evenement (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tdescription varchar(250) NOT NULL,\n" +
+                    "\tdate varchar(50) NOT NULL,\n" +
+                    "\ttype integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Evenement_Type (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\ttype varchar(250) NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Infrastructure (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\ttype integer NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Infrastructure_Evenement (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tinfrastructure integer,\n" +
+                    "\tevenement integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Infrastructure_Type (\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tPRIMARY KEY (nom)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Intervenant (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tentreprise varchar(250) NOT NULL,\n" +
+                    "\tprenom varchar(250) NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tadresse integer NOT NULL,\n" +
+                    "\temail varchar(250),\n" +
+                    "\ttelephone varchar(20) NOT NULL,\n" +
+                    "\tstatut integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Intervenant_Evenement (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tintervenant integer,\n" +
+                    "\tevenement integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Parc (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tdimension decimal(6,2) NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Pays (\n" +
+                    "\tpaysId integer NOT NULL,\n" +
+                    "\tpays varchar(250) NOT NULL,\n" +
+                    "\tPRIMARY KEY (paysId)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Personne (\n" +
+                    "\tidPersonne integer NOT NULL,\n" +
+                    "\tnoAVS varchar(16) NOT NULL,\n" +
+                    "\tprenom varchar(250) NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tadresse integer,\n" +
+                    "\temail varchar(250),\n" +
+                    "\ttelephone varchar(20),\n" +
+                    "\tdateNaissance varchar(25) NOT NULL,\n" +
+                    "\tresponsable integer,\n" +
+                    "\tstatut varchar(250) NOT NULL,\n" +
+                    "\tdateDebut varchar(25) NOT NULL,\n" +
+                    "\ttypeContrat varchar(250) NOT NULL,\n" +
+                    "\tPRIMARY KEY (idPersonne)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Personne_Evenement (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tpersonne integer,\n" +
+                    "\tevenement integer,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Salle (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnbPlace integer NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Secteur (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tnom varchar(250) NOT NULL,\n" +
+                    "\tresponsable integer NOT NULL,\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Stock (\n" +
+                    "\tid integer NOT NULL,\n" +
+                    "\tdescription text NOT NULL,\n" +
+                    "\tquantite decimal(6,2),\n" +
+                    "\tunite varchar(50),\n" +
+                    "\tquantiteMin decimal(6,2),\n" +
+                    "\tPRIMARY KEY (id)\n" +
+                    ");\n" +
+                    "CREATE TABLE IF NOT EXISTS Ville (\n" +
+                    "\tvilleId integer NOT NULL,\n" +
+                    "\tcodePostal integer NOT NULL,\n" +
+                    "\tville varchar(250) NOT NULL,\n" +
+                    "\tpaysId integer NOT NULL,\n" +
+                    "\tPRIMARY KEY (villeId)\n" +
+                    ");\n" +
+                    "ALTER TABLE Adresse\n" +
+                    "\tADD FOREIGN KEY (villeId) \n" +
+                    "\tREFERENCES Ville (villeId);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal\n" +
+                    "\tADD FOREIGN KEY (origine) \n" +
+                    "\tREFERENCES Pays (paysId);\n" +
+                    "\n" +
+                    "ALTER TABLE Animal\n" +
+                    "\tADD FOREIGN KEY (race) \n" +
+                    "\tREFERENCES Animal_Race (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Animal\n" +
+                    "\tADD FOREIGN KEY (enclos) \n" +
+                    "\tREFERENCES Enclos (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Evenement\n" +
+                    "\tADD FOREIGN KEY (evenement) \n" +
+                    "\tREFERENCES Evenement (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Evenement\n" +
+                    "\tADD FOREIGN KEY (animal) \n" +
+                    "\tREFERENCES Animal (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Fauve\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Animal (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Oiseau\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Animal (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Primate\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Animal (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Animal_Reptile\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Animal (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Commande_Contenu\n" +
+                    "\tADD FOREIGN KEY (idCommande) \n" +
+                    "\tREFERENCES Commande (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Commande_Contenu\n" +
+                    "\tADD FOREIGN KEY (refArticle) \n" +
+                    "\tREFERENCES Stock (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Enclos\n" +
+                    "\tADD FOREIGN KEY (secteur) \n" +
+                    "\tREFERENCES Secteur (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Evenement\n" +
+                    "\tADD FOREIGN KEY (type) \n" +
+                    "\tREFERENCES Evenement_Type (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Infrastructure_Evenement\n" +
+                    "\tADD FOREIGN KEY (evenement) \n" +
+                    "\tREFERENCES Evenement (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Infrastructure_Evenement\n" +
+                    "\tADD FOREIGN KEY (infrastructure) \n" +
+                    "\tREFERENCES Infrastructure (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Intervenant\n" +
+                    "\tADD FOREIGN KEY (adresse) \n" +
+                    "\tREFERENCES Adresse (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Intervenant_Evenement\n" +
+                    "\tADD FOREIGN KEY (evenement) \n" +
+                    "\tREFERENCES Evenement (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Intervenant_Evenement\n" +
+                    "\tADD FOREIGN KEY (intervenant) \n" +
+                    "\tREFERENCES Intervenant (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Parc\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Infrastructure (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Personne\n" +
+                    "\tADD FOREIGN KEY (adresse) \n" +
+                    "\tREFERENCES Adresse (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Personne_Evenement\n" +
+                    "\tADD FOREIGN KEY (evenement) \n" +
+                    "\tREFERENCES Evenement (id);\n" +
+                    "\n" +
+                    "ALTER TABLE Personne_Evenement\n" +
+                    "\tADD FOREIGN KEY (personne) \n" +
+                    "\tREFERENCES Personne (idPersonne);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Salle\n" +
+                    "\tADD FOREIGN KEY (id) \n" +
+                    "\tREFERENCES Infrastructure (id);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Secteur\n" +
+                    "\tADD FOREIGN KEY (responsable) \n" +
+                    "\tREFERENCES Personne (idPersonne);\n" +
+                    "\n" +
+                    "\n" +
+                    "ALTER TABLE Ville\n" +
+                    "\tADD FOREIGN KEY (paysId) \n" +
+                    "\tREFERENCES Pays (paysId);\n");
+
+        }
+        catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
+        */
     }
 
     /**
      * Insere un intervenant dans la DB
      *
      * @param intervenant(Intervenant)
-     *
      */
     public int insertIntervenant(Intervenant intervenant) throws SQLException, ExceptionDataBase {
 
@@ -565,7 +861,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Intervenant>
      */
-    public ArrayList<Intervenant> selIntervenant () throws SQLException, ExceptionDataBase {
+    public ArrayList<Intervenant> selIntervenant() throws SQLException, ExceptionDataBase {
         ArrayList<Personne> listEmployes;
         this.stmt = DBConnection.con.prepareStatement(SELECT_INTERVENANT);
         ResultSet rs = this.stmt.executeQuery();
@@ -596,7 +892,7 @@ public class DBInteraction {
      *
      * @param id(int) ID de l'intervenant concerné
      */
-    public void delIntervenant (int id) throws SQLException, ExceptionDataBase {
+    public void delIntervenant(int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
         this.stmt.setInt(1, id);
         this.stmt.executeUpdate();
@@ -608,7 +904,7 @@ public class DBInteraction {
      *
      * @param intervenant(Intervenant)
      */
-    public void delIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+    public void delIntervenant(Intervenant intervenant) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(DELETE_INTERVENANT);
         this.stmt.setInt(1, intervenant.getId());
         this.stmt.executeUpdate();
@@ -619,7 +915,7 @@ public class DBInteraction {
      *
      * @param intervenant(Intervenant)
      */
-    public void updateIntervenant (Intervenant intervenant) throws SQLException, ExceptionDataBase {
+    public void updateIntervenant(Intervenant intervenant) throws SQLException, ExceptionDataBase {
 
         this.stmt = DBConnection.con.prepareStatement(UPDATE_INTERVENANT);
         this.stmt.setString(1, intervenant.getEntreprise());
@@ -637,10 +933,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList d'intervenant à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Intervenant>
      */
-    private ArrayList<Intervenant> createTabIntervenant (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Intervenant> createTabIntervenant(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Intervenant> data = new ArrayList<Intervenant>();
         if (!rs.next()) {
             throw new ExceptionDataBase(10);
@@ -768,8 +1063,8 @@ public class DBInteraction {
      * Permet d'insérer une nouvelle adresse complète (Adresse, Ville , Pays)
      *
      * @param adresse String
-     * @param ville String
-     * @param pays Pays
+     * @param ville   String
+     * @param pays    Pays
      */
     public int insAddress(Adresse adresse, Ville ville, Pays pays) throws SQLException, ExceptionDataBase {
         // Pays
@@ -942,10 +1237,9 @@ public class DBInteraction {
      * Permet de récupérer l'id d'un Pays
      *
      * @param pays String
-     *
      * @return int
      */
-    public int getPaysID (String pays) throws SQLException {
+    public int getPaysID(String pays) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_PAYS_ID);
         this.stmt.setString(1, pays);
         ResultSet rs = this.stmt.executeQuery();
@@ -976,10 +1270,9 @@ public class DBInteraction {
      * Permet de récupérer le nom d'une ville en fonction d'un code postal passé en paramètre
      *
      * @param cp String
-     *
      * @return String
      */
-    public String getVilleParCP (int cp) throws SQLException {
+    public String getVilleParCP(int cp) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_VILLE_PAR_CP);
         this.stmt.setInt(1, cp);
         ResultSet rs = this.stmt.executeQuery();
@@ -992,7 +1285,6 @@ public class DBInteraction {
      * Permet de récupérer le nom d'une ville en fonction de son code postal
      *
      * @param cp String
-     *
      * @return int
      */
     public int getVilleIDParCP(int cp) throws SQLException {
@@ -1016,7 +1308,6 @@ public class DBInteraction {
      * Retourne 0 si non présent
      *
      * @param cp Int
-     *
      * @return int
      */
     public boolean cpIsInDB(int cp) throws SQLException {
@@ -1033,7 +1324,6 @@ public class DBInteraction {
      * Retourne 0 si non présent
      *
      * @param pays String
-     *
      * @return int
      */
     public boolean countryIsInDB(Pays pays) throws SQLException {
@@ -1052,7 +1342,6 @@ public class DBInteraction {
      * Permet de savoir si une adresse existe déjà dans une ville
      *
      * @param adresse Adresse
-     *
      * @return boolean
      */
     public boolean addressIsInDB(Adresse adresse) throws SQLException {
@@ -1076,12 +1365,12 @@ public class DBInteraction {
 
     /**
      * Permet de modifier les informations d'un employé
-     *
+     * <p>
      * // Expected : noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat, personneID
      *
      * @return Personne
      */
-    public void updatePersonne (Personne personne) throws SQLException {
+    public void updatePersonne(Personne personne) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_PERSONNE);
 
         this.stmt.setString(1, personne.getNoAVS());
@@ -1163,8 +1452,7 @@ public class DBInteraction {
     /**
      * Retourne tous les détails d'une personne en fonction de son ID
      *
-     * @param idPersonne         valeur en int
-     *
+     * @param idPersonne valeur en int
      * @return Personne
      */
     public Personne selEmployeDetails(int idPersonne) throws ExceptionDataBase, SQLException {
@@ -1172,7 +1460,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_DETAILS);
         this.stmt.setInt(1, idPersonne);
         ResultSet rs = this.stmt.executeQuery();
-        ArrayList<Personne>  pers = creerTableauPersonne(rs);
+        ArrayList<Personne> pers = creerTableauPersonne(rs);
 
         return pers.get(0);
     }
@@ -1191,12 +1479,11 @@ public class DBInteraction {
     /**
      * Permet d'obtenir tous les employés de la base de données en fonction du nom et du prenom
      *
-     * @param nom               Nom de recherche
-     * @param prenom            Prenom de recherche
-     *
+     * @param nom    Nom de recherche
+     * @param prenom Prenom de recherche
      * @return ArrayList<Personne>
      */
-    public ArrayList<Personne> selEmployeeParPrenomNom (String nom, String prenom) throws ExceptionDataBase, SQLException {
+    public ArrayList<Personne> selEmployeeParPrenomNom(String nom, String prenom) throws ExceptionDataBase, SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_PAR_PRENOM_NOM);
         this.stmt.setString(1, nom);
         this.stmt.setString(2, prenom);
@@ -1207,11 +1494,10 @@ public class DBInteraction {
     /**
      * Permet d'obtenir tous les employés de la base de données en fonction du nom
      *
-     * @param nom               Nom de recherche
-     *
+     * @param nom Nom de recherche
      * @return ArrayList<Personne>
      */
-    public ArrayList<Personne> selEmployeeParNom (String nom) throws ExceptionDataBase, SQLException {
+    public ArrayList<Personne> selEmployeeParNom(String nom) throws ExceptionDataBase, SQLException {
         this.stmt = DBConnection.con.prepareStatement(SEL_EMPLOYE_PAR_NOM);
         this.stmt.setString(1, nom);
         ResultSet rs = this.stmt.executeQuery();
@@ -1223,13 +1509,13 @@ public class DBInteraction {
      *
      * @return int
      */
-    public int nombrePersonne () throws ExceptionDataBase, SQLException {
+    public int nombrePersonne() throws ExceptionDataBase, SQLException {
         int data = 0;
         this.db.init();
         this.stmt = DBConnection.con.prepareStatement(NOMBRE_PERSONNE);
         ResultSet rs = this.stmt.executeQuery();
         while (rs.next()) {
-            data =  rs.getInt("nbPersonne");
+            data = rs.getInt("nbPersonne");
         }
         return data;
     }
@@ -1266,7 +1552,7 @@ public class DBInteraction {
      * @param REQUETE qui est une chaine de caractère contenant la requete
      * @return ArrayList<Personne>
      */
-    private ArrayList<Personne> recupererPersonne (final String REQUETE) throws ExceptionDataBase, SQLException {
+    private ArrayList<Personne> recupererPersonne(final String REQUETE) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
         this.stmt = DBConnection.con.prepareStatement(REQUETE);
         ResultSet rs = this.stmt.executeQuery();
@@ -1278,10 +1564,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList de personne à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Personne>
      */
-    private ArrayList<Personne> creerTableauPersonne (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Personne> creerTableauPersonne(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Personne> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(11);
@@ -1318,9 +1603,8 @@ public class DBInteraction {
     /**
      * Permet d'obtenir tous les nom des races d'animaux disponibles
      *
-     * @date 27.04.2017 Modification du type de retour : ArrayList<String> vers ArrayList<Race>
-     *
      * @return ArrayList<Race>
+     * @date 27.04.2017 Modification du type de retour : ArrayList<String> vers ArrayList<Race>
      */
     public ArrayList<Race> getAllRaceAnimal() throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_ANIMAL_RACE);
@@ -1328,14 +1612,14 @@ public class DBInteraction {
 
         return createTabAnimalRace(rs);
     }
+
     /**
      * Permet de récupérer toutes les informations d'un ANIMAL en fonction de son ID
      *
      * @param id int
-     *
      * @return Object
      */
-    public Object getAnimal (int id) throws SQLException, ExceptionDataBase {
+    public Object getAnimal(int id) throws SQLException, ExceptionDataBase {
         Object data = new Object();
         if (isFelin(id)) {
             ArrayList<Felin> dataF = selAllFelinByID(id);
@@ -1352,14 +1636,14 @@ public class DBInteraction {
         }
         return data;
     }
+
     /**
      * Permet de récupérer toutes les informations d'un PRIMATE
      *
      * @param id int
-     *
      * @return ArrayList<Primate>
      */
-    private ArrayList<Primate> selAllPrimateByID (int id) throws SQLException, ExceptionDataBase {
+    private ArrayList<Primate> selAllPrimateByID(int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_PRIMATE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
@@ -1371,10 +1655,9 @@ public class DBInteraction {
      * Permet de récupérer toutes les informations d'un REPTILE
      *
      * @param id int
-     *
      * @return ArrayList<Reptile>
      */
-    private ArrayList<Reptile> selAllReptileByID (int id) throws SQLException, ExceptionDataBase {
+    private ArrayList<Reptile> selAllReptileByID(int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_REPTILE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
@@ -1387,10 +1670,9 @@ public class DBInteraction {
      * Permet de récupérer toutes les informations d'un FAUVE
      *
      * @param id int
-     *
      * @return ArrayList<Felin>
      */
-    private ArrayList<Felin> selAllFelinByID (int id) throws SQLException, ExceptionDataBase {
+    private ArrayList<Felin> selAllFelinByID(int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_FAUVE_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
@@ -1403,10 +1685,9 @@ public class DBInteraction {
      * Permet de récupérer toutes les informations d'un OISEAU
      *
      * @param id int
-     *
      * @return ArrayList<Oiseau>
      */
-    private ArrayList<Oiseau> selAllOiseauByID (int id) throws SQLException, ExceptionDataBase {
+    private ArrayList<Oiseau> selAllOiseauByID(int id) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_INFO_OISEAU_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
@@ -1419,10 +1700,9 @@ public class DBInteraction {
      * Permet de savoir si un Animal est de type FELIN
      *
      * @param id int
-     *
      * @return boolean
      */
-    private boolean isFelin (int id) throws SQLException {
+    private boolean isFelin(int id) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_FAUVE);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1437,10 +1717,9 @@ public class DBInteraction {
      * Permet de savoir si un Animal est de type OISEAU
      *
      * @param id int
-     *
      * @return boolean
      */
-    private boolean isOiseau (int id) throws SQLException {
+    private boolean isOiseau(int id) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_OISEAU);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1455,10 +1734,9 @@ public class DBInteraction {
      * Permet de savoir si un Animal est de type REPTILE
      *
      * @param id int
-     *
      * @return boolean
      */
-    private boolean isReptile (int id) throws SQLException {
+    private boolean isReptile(int id) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_REPTILE);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1473,10 +1751,9 @@ public class DBInteraction {
      * Permet de savoir si un Animal est de type PRIMATE
      *
      * @param id int
-     *
      * @return boolean
      */
-    private boolean isPrimate (int id) throws SQLException {
+    private boolean isPrimate(int id) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(SELECT_ALL_ID_PRIMATE);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -1492,7 +1769,7 @@ public class DBInteraction {
      *
      * @param animal Animal
      */
-    public void updateAnimal (Animal animal) throws SQLException, ExceptionDataBase {
+    public void updateAnimal(Animal animal) throws SQLException, ExceptionDataBase {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
@@ -1510,17 +1787,13 @@ public class DBInteraction {
         // Definition du type de l'animal
         if (animal instanceof Oiseau) {
             updateAnimalOiseau((Oiseau) animal);
-        }
-        else if (animal instanceof Reptile) {
+        } else if (animal instanceof Reptile) {
             updateAnimalReptile((Reptile) animal);
-        }
-        else if (animal instanceof Felin) {
+        } else if (animal instanceof Felin) {
             updateAnimalFauve((Felin) animal);
-        }
-        else if (animal instanceof Primate) {
+        } else if (animal instanceof Primate) {
             updateAnimalPrimate((Primate) animal);
-        }
-        else {
+        } else {
             throw new ExceptionDataBase(2);
         }
     }
@@ -1530,7 +1803,7 @@ public class DBInteraction {
      *
      * @param animal Felin
      */
-    private void updateAnimalFauve (Felin animal) throws SQLException {
+    private void updateAnimalFauve(Felin animal) throws SQLException {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
@@ -1544,7 +1817,7 @@ public class DBInteraction {
      *
      * @param animal Reptile
      */
-    private void updateAnimalReptile (Reptile animal) throws SQLException {
+    private void updateAnimalReptile(Reptile animal) throws SQLException {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
@@ -1558,7 +1831,7 @@ public class DBInteraction {
      *
      * @param animal Primate
      */
-    private void updateAnimalPrimate (Primate animal) throws SQLException {
+    private void updateAnimalPrimate(Primate animal) throws SQLException {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
@@ -1572,7 +1845,7 @@ public class DBInteraction {
      *
      * @param animal Oiseau
      */
-    private void updateAnimalOiseau (Oiseau animal) throws SQLException {
+    private void updateAnimalOiseau(Oiseau animal) throws SQLException {
         int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
@@ -1642,7 +1915,7 @@ public class DBInteraction {
         return (ArrayList<Animal>) animalsArrayList;
     }
 
-    private ArrayList<Primate> createTabPrimate (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Primate> createTabPrimate(ResultSet rs) throws ExceptionDataBase, SQLException {
 
         ArrayList<Primate> data = new ArrayList<>();
         if (!rs.next()) {
@@ -1681,10 +1954,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList d'Animal à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Animal>
      */
-    private ArrayList<Animal> creerTableauAnimal (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Animal> creerTableauAnimal(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Animal> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(12);
@@ -1717,10 +1989,10 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
-                        rs.getInt("secteur"),
-                        rs.getDouble("surface")
+                                rs.getInt("id"),
+                                rs.getString("nom"),
+                                rs.getInt("secteur"),
+                                rs.getDouble("surface")
                         )
                 );
             }
@@ -1911,10 +2183,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList de FAUVE à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Felin>
      */
-    private ArrayList<Felin> createTabFelin (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Felin> createTabFelin(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Felin> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(14);
@@ -1941,14 +2212,14 @@ public class DBInteraction {
             return data;
         }
     }
+
     /**
      * Permet de créer une ArrayList de OISEAU à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Oiseau>
      */
-    private ArrayList<Oiseau> createTabOiseau (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Oiseau> createTabOiseau(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Oiseau> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(15);
@@ -1973,14 +2244,14 @@ public class DBInteraction {
             return data;
         }
     }
+
     /**
      * Permet de créer une ArrayList de REPTILE à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Reptile>
      */
-    private ArrayList<Reptile> createTabReptile (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Reptile> createTabReptile(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Reptile> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(16);
@@ -2008,11 +2279,9 @@ public class DBInteraction {
     /**
      * Permet de créer un tableau contenant le nom de toutes les races d'animax à partir de Resultset passé en paramètre
      *
-     * @date 27.04.2017 Modification du type de retour de ArrayList<String> vers ArrayList<Race>
-     *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Race>
+     * @date 27.04.2017 Modification du type de retour de ArrayList<String> vers ArrayList<Race>
      */
     private ArrayList<Race> createTabAnimalRace(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Race> data = new ArrayList<>();
@@ -2206,7 +2475,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.executeQuery();
 
         if (!rs.next()) {
-            throw new ExceptionDataBase( 27, eventID);
+            throw new ExceptionDataBase(27, eventID);
         } else {
             // Previous check has forwarded the pointer, just put it back at the start
             rs.beforeFirst();
@@ -2220,8 +2489,7 @@ public class DBInteraction {
     /**
      * Permet de selectionner un évenement en fonction de son ID
      *
-     * @param type         valeur en int
-     *
+     * @param type valeur en int
      * @return String
      */
     public String selEventTypeFromEventName(String type) throws ExceptionDataBase, SQLException {
@@ -2236,7 +2504,7 @@ public class DBInteraction {
             // Previous check has forwarded the pointer, just put it back at the start
             rs.beforeFirst();
             while (rs.next()) {
-                res =  rs.getString("type");
+                res = rs.getString("type");
             }
         }
         return res;
@@ -2255,7 +2523,6 @@ public class DBInteraction {
      * Permet d'insérer un événement dans la DB à partir d'un objet Evenement
      *
      * @param evenement(Evenement)
-     *
      * @return void
      */
     public int insertEvenement(Evenement evenement) throws SQLException {
@@ -2282,10 +2549,9 @@ public class DBInteraction {
      * @param description(String)
      * @param date(java.sql.Date)
      * @param type(int)
-     *
      * @return void
      */
-    public void insertEvenement (String description, java.sql.Date date, int type) throws SQLException {
+    public void insertEvenement(String description, java.sql.Date date, int type) throws SQLException {
         // le type est une référence sur la table "TypeEvenement"
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT);
@@ -2324,10 +2590,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param employe(Personne)
-     *
      * @return void
      */
-    public void assignEvenementEmploye (Evenement evenement, Personne employe) throws SQLException {
+    public void assignEvenementEmploye(Evenement evenement, Personne employe) throws SQLException {
         int personneID = employe.getIdPersonne();
         int eventID = evenement.getId();
 
@@ -2345,10 +2610,9 @@ public class DBInteraction {
      *
      * @param evenements(ArrayList<Evenement>)
      * @param employe(Personne)
-     *
      * @return void
      */
-    public void assignEvenementEmploye (ArrayList<Evenement> evenements, Personne employe) throws SQLException {
+    public void assignEvenementEmploye(ArrayList<Evenement> evenements, Personne employe) throws SQLException {
         if (evenements.size() > 0) {
             int numAVS_employe = employe.getIdPersonne();
 
@@ -2370,10 +2634,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param tabEmploye(ArrayList<Personne>)
-     *
      * @return void
      */
-    public void assignEvenementEmploye (Evenement evenement, ArrayList<Personne> tabEmploye) throws SQLException {
+    public void assignEvenementEmploye(Evenement evenement, ArrayList<Personne> tabEmploye) throws SQLException {
         if (tabEmploye.size() > 0) {
             int id_evenement = evenement.getId();
 
@@ -2393,10 +2656,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param animal(Animal)
-     *
      * @return void
      */
-    public void assignEvenementAnimal (Evenement evenement, Animal animal) throws SQLException {
+    public void assignEvenementAnimal(Evenement evenement, Animal animal) throws SQLException {
         int id_animal = animal.getId();
         int id_evenement = evenement.getId();
 
@@ -2414,10 +2676,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param tabAnimal(ArrayList<Animal>)
-     *
      * @return void
      */
-    public void assignEvenementAnimal (Evenement evenement, ArrayList<Animal> tabAnimal) throws SQLException {
+    public void assignEvenementAnimal(Evenement evenement, ArrayList<Animal> tabAnimal) throws SQLException {
         if (tabAnimal.size() > 0) {
             int id_evenement = evenement.getId();
 
@@ -2437,7 +2698,6 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param intervenant(Intervenant)
-     *
      * @return void
      */
     public int assignEvenementIntervenant(Evenement evenement, Intervenant intervenant) throws SQLException {
@@ -2463,10 +2723,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param tabIntervenant(ArrayList<Intervenant>)
-     *
      * @return void
      */
-    public void assignEvenementIntervenant (Evenement evenement, ArrayList<Intervenant> tabIntervenant) throws SQLException {
+    public void assignEvenementIntervenant(Evenement evenement, ArrayList<Intervenant> tabIntervenant) throws SQLException {
         if (tabIntervenant.size() > 0) {
             int id_evenement = evenement.getId();
 
@@ -2498,10 +2757,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param infrastructure(Infrastructure)
-     *
      * @return void
      */
-    public void assignEvenementInfrastructure (Evenement evenement, Infrastructure infrastructure) throws SQLException {
+    public void assignEvenementInfrastructure(Evenement evenement, Infrastructure infrastructure) throws SQLException {
         int id_infrastructure = infrastructure.getId();
         int id_evenement = evenement.getId();
 
@@ -2518,10 +2776,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param tabInfrastructure(ArrayList<Infrastructure>)
-     *
      * @return void
      */
-    public void assignEvenementInfrastructure (Evenement evenement, ArrayList<Infrastructure> tabInfrastructure) throws SQLException {
+    public void assignEvenementInfrastructure(Evenement evenement, ArrayList<Infrastructure> tabInfrastructure) throws SQLException {
         if (tabInfrastructure.size() > 0) {
             int id_evenement = evenement.getId();
 
@@ -2570,10 +2827,9 @@ public class DBInteraction {
      *
      * @param evenement(Evenement)
      * @param intervenant(Intervenant)
-     *
      * @return void
      */
-    public void assignEvenementEmploye (Evenement evenement, Intervenant intervenant) throws SQLException {
+    public void assignEvenementEmploye(Evenement evenement, Intervenant intervenant) throws SQLException {
         int id_intervenant = intervenant.getId();
         int id_evenement = evenement.getId();
 
@@ -2587,15 +2843,13 @@ public class DBInteraction {
     }
 
 
-
     /**
      * Permet de créer une ArrayList d'evenement à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Evenement>
      */
-    private ArrayList<Evenement> creerTableauEvenement (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Evenement> creerTableauEvenement(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Evenement> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase(19);
@@ -2616,10 +2870,9 @@ public class DBInteraction {
      * Permet de récupérer les événements assignés à un intervenant externe par son ID
      *
      * @param id_intervenant(int)
-     *
      * @return ArrayList<Evenement>
      */
-    public ArrayList<Evenement> getEvenementAssignToIntervenantByID (int id_intervenant) throws SQLException, ExceptionDataBase {
+    public ArrayList<Evenement> getEvenementAssignToIntervenantByID(int id_intervenant) throws SQLException, ExceptionDataBase {
         // Faire la requête
         this.stmt = DBConnection.con.prepareStatement(SEL_ASSIGN_EVENEMENT_INTERVENANT);
         this.stmt.setInt(1, id_intervenant);
@@ -2644,10 +2897,9 @@ public class DBInteraction {
      * Permet de récupérer les événements assignés à personne interne par son ID
      *
      * @param idPersonne(int)
-     *
      * @return ArrayList<Evenement>
      */
-    public ArrayList<Evenement> getEvenementAssignToPersonByID (int idPersonne) throws SQLException, ExceptionDataBase {
+    public ArrayList<Evenement> getEvenementAssignToPersonByID(int idPersonne) throws SQLException, ExceptionDataBase {
         // Faire la requête
         this.stmt = DBConnection.con.prepareStatement(SEL_ASSIGN_EVENEMENT_PERSON);
         this.stmt.setInt(1, idPersonne);
@@ -2670,10 +2922,9 @@ public class DBInteraction {
      * Permet de créer un tableau d'EVENEMENT à partir d'un tableau d'événement_id
      *
      * @param idEvenement(ArrayList<Integer>)
-     *
      * @return ArrayList<Evenement>
      */
-    private ArrayList<Evenement> createTabEvenemnt (ArrayList<Integer> idEvenement) throws SQLException {
+    private ArrayList<Evenement> createTabEvenemnt(ArrayList<Integer> idEvenement) throws SQLException {
         ArrayList<Evenement> dataEvenement = new ArrayList<Evenement>();
         int id_evenement;
         this.stmt = DBConnection.con.prepareStatement(SEL_EVENT_BY_ID);
@@ -2699,10 +2950,10 @@ public class DBInteraction {
     /**
      * Permet d'ajouter de la quantite à une ligne dans le stock
      *
-     * @param id int
+     * @param id       int
      * @param quantity double
      */
-    public void addQuantity (int id, double quantity) throws SQLException {
+    public void addQuantity(int id, double quantity) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ADD_QUANTITE_OF_DESCRIPTION);
         this.stmt.setInt(2, id);
         this.stmt.setDouble(1, quantity);
@@ -2713,10 +2964,10 @@ public class DBInteraction {
     /**
      * Permet de supprimer de la quantite à une ligne dans le stock
      *
-     * @param id int
+     * @param id       int
      * @param quantity double
      */
-    public void delQuantity (int id, double quantity) throws SQLException {
+    public void delQuantity(int id, double quantity) throws SQLException {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_DELETE_QUANTITE_OF_DESCRIPTION);
         this.stmt.setInt(2, id);
         this.stmt.setDouble(1, quantity);
@@ -2729,7 +2980,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Stock>
      */
-    public ArrayList<Stock> selAllStock () throws SQLException, ExceptionDataBase {
+    public ArrayList<Stock> selAllStock() throws SQLException, ExceptionDataBase {
         ArrayList<Stock> data = new ArrayList<Stock>();
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_STOCK);
 
@@ -2744,7 +2995,7 @@ public class DBInteraction {
      *
      * @return ArrayList<Commande>
      */
-    public ArrayList<Commande> selAllCommande () throws SQLException, ExceptionDataBase {
+    public ArrayList<Commande> selAllCommande() throws SQLException, ExceptionDataBase {
         ArrayList<Commande> data = new ArrayList<Commande>();
         this.stmt = db.con.prepareStatement(SEL_ALL_COMMANDE);
 
@@ -2765,12 +3016,11 @@ public class DBInteraction {
     /**
      * Permet de récupérer les commandes qui ont été faites entre deux dates passées en paramètre
      *
-     * @param   dateDebut(java.sql.Date)
-     * @param   dateFin(java.sql.Date)
-     *
+     * @param dateDebut(java.sql.Date)
+     * @param dateFin(java.sql.Date)
      * @return ArrayList<Commande>
      */
-    public ArrayList<Commande> selAllCommandeParDate (java.sql.Date dateDebut, java.sql.Date dateFin)
+    public ArrayList<Commande> selAllCommandeParDate(java.sql.Date dateDebut, java.sql.Date dateFin)
             throws SQLException, ExceptionDataBase {
         ArrayList<Commande> data = new ArrayList<Commande>();
         this.stmt = DBConnection.con.prepareStatement(SEL_COMMANDE_BETWEEN_TWO_DATES);
@@ -2895,11 +3145,10 @@ public class DBInteraction {
     /**
      * Permet de récupérer le contenu d'une commande en fonction de son id passé en paramètre
      *
-     * @param   id_commande(int)
-     *
+     * @param id_commande(int)
      * @return ArrayList<Commande>
      */
-    public ArrayList<Contenu_Commande> selAllContenuCommandeParID (int id_commande) throws SQLException, ExceptionDataBase {
+    public ArrayList<Contenu_Commande> selAllContenuCommandeParID(int id_commande) throws SQLException, ExceptionDataBase {
         this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
         this.stmt.setInt(1, id_commande);
         ResultSet rs = this.stmt.executeQuery();
@@ -2944,10 +3193,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList de Stock à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Stock>
      */
-    private ArrayList<Stock> createTabStock (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Stock> createTabStock(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Stock> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Le stock est vide.");
@@ -2967,10 +3215,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList de Commande à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Commande>
      */
-    private ArrayList<Commande> createTabCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Commande> createTabCommande(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Commande> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("La table Commande est vide.");
@@ -2994,10 +3241,9 @@ public class DBInteraction {
      * Permet de créer une ArrayList de Contenu_Commande à partir de Resultset passé en paramètre
      *
      * @param rs(ResultSet)
-     *
      * @return ArrayList<Contenu_Commande>
      */
-    private ArrayList<Contenu_Commande> createTabContenuCommande (ResultSet rs) throws ExceptionDataBase, SQLException {
+    private ArrayList<Contenu_Commande> createTabContenuCommande(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Contenu_Commande> data = new ArrayList<>();
         if (!rs.next()) {
             throw new ExceptionDataBase("Aucun produit n'est contenu dans la commande avec cet ID");

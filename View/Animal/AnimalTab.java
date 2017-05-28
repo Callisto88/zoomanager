@@ -47,6 +47,7 @@ public class AnimalTab extends GenericWindow {
     protected ArrayList<Animal> animauxDB;
     protected ArrayList<Race> racesDB;
     protected ArrayList<Pays> originesDB;
+    protected ArrayList<Animal_Evenement> animalEvents;
 
     protected JTable jtTable;
 
@@ -65,7 +66,7 @@ public class AnimalTab extends GenericWindow {
         enclosDB = atAnimalController.getAllEnclos();
         racesDB = atAnimalController.getAllRaces();
         originesDB = atAnimalController.getAllOrigines();
-
+        animalEvents = atAnimalController.getTasks();
 
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB, racesDB);
 
@@ -803,7 +804,6 @@ public class AnimalTab extends GenericWindow {
 
         //JTable pour les événements
         if(mode != 2) {
-            ArrayList<Animal_Evenement> animalEvents = atAnimalController.getTasks(selectedAnimal.getId());
             ArrayList<Evenement> events = new ArrayList<>();
             for(Animal_Evenement animalEvent : animalEvents){
                 if(selectedAnimal.getId() == animalEvent.getAnimal().getId()) {
