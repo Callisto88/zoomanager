@@ -55,7 +55,7 @@ public class DBConnection {
     private boolean connect() {
         try {
             //Class.forName("org.sqlite.JDBC");
-            Class.forName("com.mysql.jdbc");
+            Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection(url, user, pass);
         } catch (Exception e) {
             return false;
