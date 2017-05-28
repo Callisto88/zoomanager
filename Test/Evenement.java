@@ -1,8 +1,9 @@
 package Test;
 
-import Model.*;
+import Model.DBInteraction;
+import Model.ExceptionDataBase;
+import Model.Intervenant;
 
-import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -46,10 +47,10 @@ public class Evenement {
 
                 case 5:
                     System.out.println("Pour l'exemple, l'objet Evenement suivant sera crée : ");
-                    Model.Evenement testEvent = new Model.Evenement(
+                    Model.Evenement testEvent = new Model.Evenement(104,
                             "Evenement de test",
                             new Timestamp(29177829),
-                            "Spectacle");
+                            "Animation");
                     testEvent.toString();
                     insEvent(testEvent);
                     break;

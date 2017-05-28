@@ -1,7 +1,7 @@
 package Model;
 
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
 
 /**
  * Cette classes a pour but de créer une connexion avec la base de données
@@ -391,7 +391,13 @@ public class DBInteraction {
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
 
     // Insertion d'un événement dans la DB
-    private static final String INSERT_EVENEMENT = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
+    // private static final String INSERT_EVENEMENT = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
+    private static final String INSERT_EVENEMENT = "INSERT INTO Evenement(id, description, date, type)\n" +
+            "VALUES (?, ?, ?, ?)\n" +
+            "ON DUPLICATE KEY UPDATE " +
+            "`description`=VALUES(`description`), " +
+            "`date`=VALUES(`date`), " +
+            "`type`=VALUES(`type`);";
 
     // Assigner un événement à un personne
     private static final String ASSIGNER_EVENEMENT_PERSONNE = "INSERT INTO Personne_Evenement VALUES (null , ? , ? );";
@@ -2021,7 +2027,7 @@ public class DBInteraction {
     public boolean delAnimal(Animal a) throws ExceptionDataBase, SQLException {
 
         int numericId = a.getId();
-        if (numericId != (int) numericId || !animalExists(numericId)) {
+        if (numericId != numericId || !animalExists(numericId)) {
             throw new ExceptionDataBase(20, numericId);
         }
 
@@ -2367,7 +2373,7 @@ public class DBInteraction {
 
         int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
 
-        return (rowCount == 0) ? false : true;
+        return rowCount != 0;
     }
 
     public ArrayList<Animal> selAnimalsByEventID(int eventID) throws SQLException, ExceptionDataBase {
@@ -2403,7 +2409,7 @@ public class DBInteraction {
         this.stmt.setString(1, eventType);
         int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
 
-        return (rowCount == 0) ? false : true;
+        return rowCount != 0;
     }
 
     public boolean delEventByID(int eventID) throws SQLException, ExceptionDataBase {
@@ -2412,7 +2418,7 @@ public class DBInteraction {
         this.stmt.setInt(1, eventID);
         int rowCount = this.stmt.executeUpdate();   // Retourne le nombre de lignes affectées
 
-        return (rowCount == 0) ? false : true;
+        return rowCount != 0;
     }
 
     public ArrayList<String> selEventTypes() throws SQLException, ExceptionDataBase {
@@ -2529,9 +2535,16 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(INSERT_EVENEMENT, Statement.RETURN_GENERATED_KEYS);
 
-        this.stmt.setString(1, evenement.getDescription());
-        this.stmt.setTimestamp(2, evenement.getDate());
-        this.stmt.setString(3, evenement.getType());
+        // If the ID is set, we go for an update
+        if (evenement.getId() > 0) {
+            this.stmt.setInt(1, evenement.getId());
+        } else {    // Otherwise we go for a new row
+            this.stmt.setNull(1, Types.NULL);
+        }
+
+        this.stmt.setString(2, evenement.getDescription());
+        this.stmt.setTimestamp(3, evenement.getDate());
+        this.stmt.setString(4, evenement.getType());
 
         this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
@@ -2745,11 +2758,7 @@ public class DBInteraction {
         this.stmt.setInt(1, eventID);
         this.stmt.setInt(2, intervenantID);
         int affectedRows = this.stmt.executeUpdate();
-        if (affectedRows == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return affectedRows == 1;
     }
 
     /**
@@ -2815,11 +2824,7 @@ public class DBInteraction {
         this.stmt.setInt(1, infraID);
         this.stmt.setInt(2, eventID);
         int rowCount = this.stmt.executeUpdate();
-        if (rowCount == 1) {
-            return true;
-        } else {
-            return false;
-        }
+        return rowCount == 1;
     }
 
     /**
@@ -2997,7 +3002,7 @@ public class DBInteraction {
      */
     public ArrayList<Commande> selAllCommande() throws SQLException, ExceptionDataBase {
         ArrayList<Commande> data = new ArrayList<Commande>();
-        this.stmt = db.con.prepareStatement(SEL_ALL_COMMANDE);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ALL_COMMANDE);
 
         ResultSet rs = this.stmt.executeQuery();
 
@@ -3149,7 +3154,7 @@ public class DBInteraction {
      * @return ArrayList<Commande>
      */
     public ArrayList<Contenu_Commande> selAllContenuCommandeParID(int id_commande) throws SQLException, ExceptionDataBase {
-        this.stmt = db.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
+        this.stmt = DBConnection.con.prepareStatement(SEL_CONTENU_COMMANDE_PAR_ID);
         this.stmt.setInt(1, id_commande);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -3158,7 +3163,7 @@ public class DBInteraction {
 
     public String selCommandeEnCours(int idRefArticle) throws SQLException, ExceptionDataBase {
 
-        this.stmt = db.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ARTICLE_COMMANDE_EN_COURS);
         this.stmt.setInt(1, idRefArticle);
         ResultSet rs = this.stmt.executeQuery();
         ResultSetMetaData md = rs.getMetaData();
