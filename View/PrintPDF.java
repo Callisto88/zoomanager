@@ -3,8 +3,6 @@ package View;
 import Controller.Error.ErrorController;
 import com.itextpdf.text.*;
 import com.itextpdf.text.Font;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.Rectangle;
 import com.itextpdf.text.pdf.*;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.printing.PDFPageable;
@@ -12,15 +10,22 @@ import org.apache.pdfbox.printing.PDFPageable;
 import javax.print.PrintService;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.text.Style;
-import java.awt.*;
 import java.awt.print.PrinterJob;
 import java.io.File;
 import java.io.FileOutputStream;
 
 /**
- * Created by Andre on 17.05.2017.
- * Classe permettant de crée un PDF en demandant au client le chemin et le nom pour enregistrer
+ *
+ * Cette classe permet de créer un pdf et d'imprimer
+ *
+ *
+ * @author A.Jacquemond
+ * @author M.Silva
+ *
+ * @version 1.0
+ *
+ * @date    29.04.2017
+ *
  */
 public class PrintPDF {
     Font fontTitle = new Font(Font.FontFamily.HELVETICA, 30, Font.BOLD, BaseColor.BLACK);
@@ -37,10 +42,23 @@ public class PrintPDF {
         this(jtTable, new JLabel(title), additional);
     }
 
+    /**
+     * Construteur
+     * @param jtTable table à imprimer
+     * @param title est un JLabel avec le titre, il sera inclus dans le PDF
+     * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
+     */
     public PrintPDF(JTable jtTable, JLabel title, String additional){
         this(jtTable, new JTable(), title, additional);
     }
 
+    /**
+     * Constructeur
+     * @param jtOrderContent JTable à imprimer
+     * @param jtInfoOrder JTable à imprimer
+     * @param title est un JLabel avec le titre, il sera inclus dans le PDF
+     * @param additional String additionnel pouvant être inclus dans le PDF si le champ est rempli
+     */
     public PrintPDF(JTable jtOrderContent, JTable jtInfoOrder, JLabel title, String additional){
         Document document = new Document(PageSize.A4);
         // Permet de crée une popup permettant de choisir son chemin de destination

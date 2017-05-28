@@ -47,6 +47,12 @@ public class OrderContent extends GenericWindow{
     private JTable jtTableOrderContent;
     private TableRowSorter<MyModelTable> trsSorter;
 
+    /**
+     * Constructeur
+     * @param occOrderContentController est la référence du contrôleur de cette interface
+     * @param vOrderContent est un Vector<Object> mais qui en réalité contient l'objet de type Commande double-cliquer
+     *                      par l'utilisateur.
+     */
     public OrderContent(OrderContentController occOrderContentController, Vector<Vector<Object>> vOrderContent){
         super("Contenu Commande");
         this.vOrderContent = vOrderContent;
@@ -107,13 +113,13 @@ public class OrderContent extends GenericWindow{
         jtOrderInfo.setPreferredScrollableViewportSize(d);
 
         //Instanciation d'un panel JScroll, puis l'affecte à la taille qu'on préfère.
-        JScrollPane jspOrderContent = new JScrollPane(jtOrderInfo);
-        jspOrderContent.setPreferredSize(new Dimension(200, 58));
+        JScrollPane jspOrderInfo = new JScrollPane(jtOrderInfo);
+        jspOrderInfo.setPreferredSize(new Dimension(200, 58));
 
         //Ajout du panel JScroll au panel qui contient la JTable puis ajout de ce dernier
         //dans le panel principal.
         JPanel jpOrderInfo = new JPanel();
-        jpOrderInfo.add(jspOrderContent);
+        jpOrderInfo.add(jspOrderInfo);
 
         //Ajout du JPanel jpOrderInfo dans le panel principal
         gbcMainPanel.gridx = 0;
@@ -168,12 +174,12 @@ public class OrderContent extends GenericWindow{
         jtTableOrderContent.setPreferredScrollableViewportSize(dOrderContent);
 
         //Instanciation d'un panel JScroll, puis l'affecte à la taille qu'on préfère.
-        JScrollPane jspAdd = new JScrollPane(jtTableOrderContent);
-        jspAdd.setPreferredSize(new Dimension(700, 500));
+        JScrollPane jspOrderContent = new JScrollPane(jtTableOrderContent);
+        jspOrderContent.setPreferredSize(new Dimension(700, 500));
 
         //Ajout du panel JScroll au panel qui contient la JTable puis ajout de ce dernier
         //dans le panel principal.
-        jpTableOrderContent.add(jspAdd);
+        jpTableOrderContent.add(jspOrderContent);
         jpMainPanel.add(jpTableOrderContent, gbcMainPanel);
         /***********************************************************************/
         //Instanciation du bouton imprimer. Puis du panel et on ajoute le bouton dans le panel

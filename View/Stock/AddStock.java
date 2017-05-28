@@ -44,6 +44,12 @@ public class AddStock extends GenericWindow{
     private TableRowSorter<MyModelTable> trsSorter;
     private Vector<Vector<Object>> vAdd;
 
+    /**
+     * Constructeur
+     * @param ascAddStockController est la référence du contrôleur de cette interface
+     * @param vAdd est un Vector<Vector<Object>> mais qui en réalité contient des objets de type Stock
+     *             Cela représente tous les aliments du stock et ses attributs (nom, quantité, unité,...)
+     */
     public AddStock(AddStockController ascAddStockController, Vector<Vector<Object>> vAdd){
         super("Ajout de Stock");
 

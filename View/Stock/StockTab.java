@@ -52,6 +52,7 @@ public class StockTab extends GenericWindow {
     private final Statut [] ORDER_STATUS = {Statut.TOUS, Statut.CREEE, Statut.EN_COURS, Statut.TERMINEE, Statut.ANNULEE, Statut.REMBOURSEE};
     //Le numéro de la colonne (Commande) de la JTable qui permet de rentrer les quantités voulues pour créer une commande
     private final int COLUMN_QUANTITY = 5;
+    private ArrayList<Stock> alStock;
     private ArrayList<Commande> alCommandeHistory;
     private MyModelTable mmtStock;
     private MyModelTable mmtCommandeHistory;
@@ -62,6 +63,10 @@ public class StockTab extends GenericWindow {
     private TableRowSorter<MyModelTable> trsSorter;
     private StockTabController stcStockTabController;
 
+    /**
+     * Constructeur
+     * @param stcStockTabController est la référence du contrôleur de cette interface
+     */
     public StockTab(StockTabController stcStockTabController){
         super("Stock");
 
@@ -80,9 +85,9 @@ public class StockTab extends GenericWindow {
         //le JPanel principal de gauche.
         JPanel jpLeftTitle = new JPanel();
         //Instanciation du titre de gauche
-        JLabel jlStock = new JLabel("Liste d'aliment en stock");
-        setTitleConfig(jlStock);
-        jpLeftTitle.add(jlStock);
+        JLabel jlStockTitle = new JLabel("Liste d'aliment en stock");
+        setTitleConfig(jlStockTitle);
+        jpLeftTitle.add(jlStockTitle);
         //Ajout du JPanel jpLeftTitle dans le panel principal de gauche.
         gbcLeft.fill = GridBagConstraints.CENTER;
         gbcLeft.gridx = 0;
@@ -157,7 +162,7 @@ public class StockTab extends GenericWindow {
 
         //ArrayList<Stock> contenant tous les aliments, quantités et autres
         //attributs qui se trouvent actuellement en stock
-        ArrayList<Stock> alStock = stcStockTabController.getAllStock();
+        alStock = stcStockTabController.getAllStock();
         Vector<Vector<Object>> vStock = new Vector<>();
 
         //Parcours de tous les objets de l'ArrayList et utilisation de la méthode
@@ -239,11 +244,11 @@ public class StockTab extends GenericWindow {
         SqlDateModel sdmModelStartDate = new SqlDateModel();
         SqlDateModel sdmModelEndDate = new SqlDateModel();
         //Instanciation du JDatePanelImpl avec le modèle et les propriétés instanciées ci-dessus.
-        JDatePanelImpl jdpliStartDatePanel = new JDatePanelImpl(sdmModelStartDate, pStartProperties);
-        jdpliStartDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePanelImpl jdpiStartDatePanel = new JDatePanelImpl(sdmModelStartDate, pStartProperties);
+        jdpiStartDatePanel.setPreferredSize(new Dimension(200, 200));
         //Instanciation d'un JDatePickerImpl, c'est la fenêtre avec un calendrier afin de pouvoir
         //choisir une date
-        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpliStartDatePanel, new DateLabelFormatter());
+        JDatePickerImpl jdpriStartDatePicker = new JDatePickerImpl(jdpiStartDatePanel, new DateLabelFormatter());
 
         //Instanciation de l'objet Properties et configuration de certains
         //attributs
@@ -252,52 +257,52 @@ public class StockTab extends GenericWindow {
         pEndProperties.put("text.month", "Mois");
         pEndProperties.put("text.year", "Année");
         //Instanciation du JDatePanelImpl avec le modèle et les propriétés instanciées ci-dessus.
-        JDatePanelImpl jdpliEndDatePanel = new JDatePanelImpl(sdmModelEndDate, pEndProperties);
-        jdpliEndDatePanel.setPreferredSize(new Dimension(200, 200));
+        JDatePanelImpl jdpiEndDatePanel = new JDatePanelImpl(sdmModelEndDate, pEndProperties);
+        jdpiEndDatePanel.setPreferredSize(new Dimension(200, 200));
         //Instanciation d'un JDatePickerImpl, c'est la fenêtre avec un calendrier afin de pouvoir
         //choisir une date
-        JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpliEndDatePanel, new DateLabelFormatter());
+        JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpiEndDatePanel, new DateLabelFormatter());
 
         JLabel jlStartDate = new JLabel("De: ");
         JLabel jlEndDate = new JLabel("A: ");
 
         //Instanciation d'un GridBagLayout et d'un GridBagConstraints pour le panel jpHistoryOrder
         //qui contient le bouton de Rechercher, les JDatePickerImpl et la JComboBox,
-        GridBagLayout gblOrderBoutton = new GridBagLayout();
-        jpHistoryOrder.setLayout(gblOrderBoutton);
-        GridBagConstraints gbcOrderBouton = new GridBagConstraints();
+        GridBagLayout gblOrderButton = new GridBagLayout();
+        jpHistoryOrder.setLayout(gblOrderButton);
+        GridBagConstraints gbcOrderButton = new GridBagConstraints();
 
-        gbcOrderBouton.insets = new Insets(15, 10, 15, 10);
+        gbcOrderButton.insets = new Insets(15, 10, 15, 10);
         //Ajout et placement du bouton jbSearch dans le panel jpHistoryOrder.
-        gbcOrderBouton.gridx = 0;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jbSearch, gbcOrderBouton);
+        gbcOrderButton.gridx = 0;
+        gbcOrderButton.gridy = 0;
+        jpHistoryOrder.add(jbSearch, gbcOrderButton);
 
         //Ajout et placement du JLabel "De" dans le panel jpHistoryOrder.
-        gbcOrderBouton.gridx = 1;
-        gbcOrderBouton.gridy = 0;
+        gbcOrderButton.gridx = 1;
+        gbcOrderButton.gridy = 0;
         jpHistoryOrder.add(jlStartDate);
 
         //Ajout et placement du composant JDatePickerImpl dans le panel jpHistoryOrder.
-        gbcOrderBouton.gridx = 2;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderBouton);
+        gbcOrderButton.gridx = 2;
+        gbcOrderButton.gridy = 0;
+        jpHistoryOrder.add(jdpriStartDatePicker, gbcOrderButton);
 
         //Ajout et placement du JLabel "A" dans le panel jpHistoryOrder.
-        gbcOrderBouton.gridx = 3;
-        gbcOrderBouton.gridy = 0;
+        gbcOrderButton.gridx = 3;
+        gbcOrderButton.gridy = 0;
         jpHistoryOrder.add(jlEndDate);
 
         //Ajout et placement du composant JDatePickerImpl dans le panel jpHistoryOrder.
-        gbcOrderBouton.gridx = 4;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderBouton);
+        gbcOrderButton.gridx = 4;
+        gbcOrderButton.gridy = 0;
+        jpHistoryOrder.add(jdpriEndDatePicker, gbcOrderButton);
 
         //Ajout et placement du JComboBox des différents statuts des commandes dans le panel jpHistoryOrder.
         JComboBox jcbOrderStatus = new JComboBox(ORDER_STATUS);
-        gbcOrderBouton.gridx = 5;
-        gbcOrderBouton.gridy = 0;
-        jpHistoryOrder.add(jcbOrderStatus, gbcOrderBouton);
+        gbcOrderButton.gridx = 5;
+        gbcOrderButton.gridy = 0;
+        jpHistoryOrder.add(jcbOrderStatus, gbcOrderButton);
         /***********************************************************************************/
         //Instanciation du JPanel qui contient la JTable et ajout de celui-ci dans
         //le JPanel principal de droite.

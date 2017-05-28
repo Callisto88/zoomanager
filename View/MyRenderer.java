@@ -1,45 +1,64 @@
 package View;
 
-import Model.Statut;
-
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import java.awt.*;
-import java.math.RoundingMode;
-import java.text.NumberFormat;
-import java.util.Vector;
 
 /**
- * Created by Miguel on 15/05/2017.
+ *
+ * Cette classe permet de colorier la cellule spécifique de la JTable.
+ *
+ *
+ * @author M.Silva
+ *
+ * @version 1.0
+ *
+ * @date    29.04.2017
+ *
  */
 public class MyRenderer extends DefaultTableCellRenderer {
-    MyModelTable mmtTest;
+    MyModelTable mmtModelTable;
     private int column;
-    private Component cTest;
+    private Component cColor;
 
-    public MyRenderer(MyModelTable mmtTest, int column) {
-        this.mmtTest = mmtTest;
+    /**
+     * Constructeur
+     * @param mmtModelTable est le modèle de la JTable à laquelle on veut changer la couleur d'une cellule
+     * @param column est l'index de la colonne
+     */
+    public MyRenderer(MyModelTable mmtModelTable, int column) {
+        this.mmtModelTable = mmtModelTable;
         this.column = column;
         this.setHorizontalAlignment(SwingConstants.RIGHT);
 
-
     }
 
+    /**
+     * Méthode qui permet de voir la couleur d'une cellule du modèle de la JTable, puis de colorié
+     * la cellule de la même couleur. C'est ce qui permet de colorier les cellules de la JTable
+     * @param table est la JTable en question
+     * @param value
+     * @param isSelected
+     * @param hasFocus
+     * @param row est l'index de la ligne
+     * @param col est l'index de la colonne
+     * @return le composant utilisé pour colorier la cellule
+     */
     @Override
     public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int col) {
 
-        //Cells are by default rendered as a JLabel.
-        cTest = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
+        cColor = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, col);
 
-
-        if (mmtTest.getCellStatus(row, col) == CellStatus.RED) {
-            cTest.setBackground(Color.RED);
+        //Vérifie le CellStatus de la cellule qui dans ce cas signifie la couleur.
+        //et affecte la couleur en arrière plan à la variable cColor
+        if (mmtModelTable.getCellStatus(row, col) == CellStatus.RED) {
+            cColor.setBackground(Color.RED);
         } else {
-            cTest.setBackground(Color.WHITE);
+            cColor.setBackground(Color.WHITE);
         }
 
-        //Return the JLabel which renders the cell.
-        return cTest;
+        //Renvoie le composant colorié
+        return cColor;
     }
 
 }

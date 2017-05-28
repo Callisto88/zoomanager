@@ -19,13 +19,13 @@ import java.util.Vector;
  */
 public class DeleteStock extends GenericWindow{
     //En-têtes pour la création de la JTable
-    private static String[] COLUMN_ADD_NAME = {"ID", "Description", "Quantité", "Unite"};
+    private final String[] COLUMN_ADD_NAME = {"ID", "Description", "Quantité", "Unite"};
     //Permet de rendre certaines cellules de la JTable éditable
-    private static boolean[] COLUMN_STOCK_EDITABLE = {false, false, true, false};
+    private final boolean[] COLUMN_STOCK_EDITABLE = {false, false, true, false};
     //Message d'erreur qui sera affiché dans un showMessageDialog
-    private static String S_ERROR_MESSAGE = "Une erreur s'est produite et la suppression des aliments dans la base de donnée n'a pas pu être effectuée";
+    private final String S_ERROR_MESSAGE = "Une erreur s'est produite et la suppression des aliments dans la base de donnée n'a pas pu être effectuée";
     //Message d'information qui sera affiché dans un showMessageDialog
-    private static String S_INFORMATION_MESSAGE = "La suppression s'est bien réalisée";
+    private final String S_INFORMATION_MESSAGE = "La suppression s'est bien réalisée";
     private final String S_QUESTION_CONFIRMATION = "Voulez-vous vraiment supprimer les aliments dans le stock?";
     private final String S_HIDE_LABEL = " ";
     private final int BLOCK_CELLS = 2;
@@ -34,6 +34,12 @@ public class DeleteStock extends GenericWindow{
     private TableRowSorter<MyModelTable> trsSorter;
     private Vector<Vector<Object>> vDelete;
 
+    /**
+     * Constructeur
+     * @param dscDeleteStockController est la référence du contrôleur de cette interface
+     * @param vDelete est un Vector<Vector<Object>> mais qui en réalité contient des objets de type Stock
+     *                Cela représente tous les aliments du stock et ses attributs (nom, quantité, unité,...)
+     */
     public DeleteStock(DeleteStockController dscDeleteStockController, Vector<Vector<Object>> vDelete) {
         super("Suppression de Stock");
 

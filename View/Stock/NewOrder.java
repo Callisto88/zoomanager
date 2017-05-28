@@ -37,10 +37,16 @@ public class NewOrder extends GenericWindow{
     private final String S_QUESTION_CONFIRMATION = "Voulez-vous vraiment créer une nouvelle commande?";
     private final String S_HIDE_LABEL = " ";
     private MyModelTable mmtNewOrderTable;
-    private JTable jtTableOrder;
+    private JTable jtTableNewOrder;
     private TableRowSorter<MyModelTable> trsSorter;
     private Vector<Vector<Object>> vOrder;
 
+    /**
+     * Constructeur
+     * @param nocNewOrderController est la référence du contrôleur de cette interface
+     * @param vOrder est un Vector<Vector<Object>> mais qui en réalité contient des objets de type Stock
+     *               Cela représente tous les aliments du stock et ses attributs (nom, quantité, unité,...)
+     */
     public NewOrder(NewOrderController nocNewOrderController, Vector<Vector<Object>> vOrder) {
         super("Nouvelle Commande");
 
@@ -61,35 +67,35 @@ public class NewOrder extends GenericWindow{
         /***********************************************************************/
         //Instanciation du JPanel qui contient la JTable et ajout de celui-ci dans
         //le JPanel principal
-        JPanel jpTableDelete = new JPanel();
+        JPanel jpTableNewOrder = new JPanel();
         //Ajout du JPanel jpTableAdd dans le panel principal
         gbcMainPanel.gridx = 0;
         gbcMainPanel.gridy = 1;
-        jpMainPanel.add(jpTableDelete, gbcMainPanel);
+        jpMainPanel.add(jpTableNewOrder, gbcMainPanel);
         //Instanciations d'un objet MyModelTable, d'un object JTable et d'un object
         //TableRowSorter. Le premier sera utilisé comme paramètre pour l'instanciation
         //des deux autres. La JTable permet d'afficher les différentes infos à l'écran
         //sous-forme de tableau et le TableRowSorter permet de cliquer sur les en-têtes
         //afin de mettre les trier dans l'ordre.
         mmtNewOrderTable = new MyModelTable(vOrder, COLUMN_ORDER_NAME);
-        jtTableOrder = new JTable(mmtNewOrderTable);
+        jtTableNewOrder = new JTable(mmtNewOrderTable);
         trsSorter = new TableRowSorter<>(mmtNewOrderTable);
-        jtTableOrder.setRowSorter(trsSorter);
+        jtTableNewOrder.setRowSorter(trsSorter);
 
         //L'objet Dimension d permet de connaitre la largeur de la JTable afin de pouvoir
         //affecter la bonne dimension au Viewport.
-        Dimension dTableOrder = jtTableOrder.getPreferredScrollableViewportSize();
-        dTableOrder.width = jtTableOrder.getPreferredSize().width;
-        jtTableOrder.setPreferredScrollableViewportSize(dTableOrder);
+        Dimension dTableOrder = jtTableNewOrder.getPreferredScrollableViewportSize();
+        dTableOrder.width = jtTableNewOrder.getPreferredSize().width;
+        jtTableNewOrder.setPreferredScrollableViewportSize(dTableOrder);
 
         //Instanciation d'un panel JScroll, puis l'affecte à la taille qu'on préfère.
-        JScrollPane jspNewOrder = new JScrollPane(jtTableOrder);
+        JScrollPane jspNewOrder = new JScrollPane(jtTableNewOrder);
         jspNewOrder.setPreferredSize(new Dimension(700, 700));
 
         //Ajout du panel JScroll au panel qui contient la JTable puis ajout de ce dernier
         //dans le panel principal.
-        jpTableDelete.add(jspNewOrder);
-        jpMainPanel.add(jpTableDelete, gbcMainPanel);
+        jpTableNewOrder.add(jspNewOrder);
+        jpMainPanel.add(jpTableNewOrder, gbcMainPanel);
         /***********************************************************************/
         //Instanciation du JPanel qui contient le JLabel qui demande confirmation
         //à l'utilisateur.
@@ -222,7 +228,7 @@ public class NewOrder extends GenericWindow{
 
     /**
      * Méthode qui retourne la référence de l'objet mmtNewOrderTable de type MyModelTable créée pour être le paramètre
-     * de la JTable jtTableOrder et l'objet TableRowSorter trsSorter lors de leurs instanciations respectives
+     * de la JTable jtTableNewOrder et l'objet TableRowSorter trsSorter lors de leurs instanciations respectives
      * @return une référence sur l'objet mmtNewOrderTable.
      */
     public MyModelTable getMmtNewOrderTable(){
@@ -239,21 +245,21 @@ public class NewOrder extends GenericWindow{
     }
 
     /**
-     * Méthode qui retourne la référence de l'objet jtTableOrder de type JTable qui sera utilisé pour être affiché
+     * Méthode qui retourne la référence de l'objet jtTableNewOrder de type JTable qui sera utilisé pour être affiché
      * dans cette interface
-     * @return une référence sur l'objet jtTableOrder
+     * @return une référence sur l'objet jtTableNewOrder
      */
-    public JTable getJtTableOrder(){
-        return jtTableOrder;
+    public JTable getJtTableNewOrder(){
+        return jtTableNewOrder;
     }
 
     /**
-     * Méthode qui permet d'affecter la référence de la JTable passée en paramètre à l'attribut privé jtTableOrder
+     * Méthode qui permet d'affecter la référence de la JTable passée en paramètre à l'attribut privé jtTableNewOrder
      * de l'objet NewOrder
-     * @param jtTableOrder
+     * @param jtTableNewOrder
      */
-    public void setJtTableOrder(JTable jtTableOrder){
-        this.jtTableOrder = jtTableOrder;
+    public void setJtTableNewOrder(JTable jtTableNewOrder){
+        this.jtTableNewOrder = jtTableNewOrder;
     }
 
     /**
