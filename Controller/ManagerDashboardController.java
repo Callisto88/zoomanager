@@ -2,6 +2,7 @@ package Controller;
 
 import Controller.Staff.StaffController;
 import Controller.Animal.*;
+import Controller.Stock.StockTabController;
 import View.ManagerDashboard.ManagerDashboard;
 import View.Show.ShowTab;
 import View.Stock.StockTab;
@@ -16,7 +17,7 @@ import java.awt.*;
 public class ManagerDashboardController {
     private StaffController persControl = null;
     // Ajout des autres controlleur
-    private StockTab stStock = null;
+    private StockTabController stStock = null;
     protected AnimalController acAnimal = null;
     protected ShowTab showControl = null;
     
@@ -57,7 +58,7 @@ public class ManagerDashboardController {
      * Permet d'instancier la fenêtre du stock
      */
     public void StockView() {
-        // stStock = new StockTab();
+        stStock = new StockTabController();
     }
 
     /**
