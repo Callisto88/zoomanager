@@ -42,6 +42,11 @@ public class Enclos {
         this.id = id;
     }
 
+    public Enclos(int id, String nom) {
+        this.id = id;
+        this.nom = nom;
+    }
+
     public int getId() {
         return id;
     }
