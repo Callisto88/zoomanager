@@ -173,7 +173,7 @@ public class DBInteraction {
     private static final String SEL_INTERVENANT_CONCERNED_IN_EVENT = "SELECT *\n" +
             "FROM Intervenant\n" +
             "  INNER JOIN Intervenant_Evenement\n" +
-            "    ON Personne_Evenement.personne = Intervenant.id\n" +
+            "    ON Intervenant_Evenement.intervenant = Intervenant.id\n" +
             "  INNER JOIN Adresse\n" +
             "    ON Intervenant.adresse = Adresse.id\n" +
             "  INNER JOIN Ville\n" +
