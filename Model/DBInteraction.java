@@ -1885,8 +1885,10 @@ public class DBInteraction {
         this.stmt.setDate(2, dateNaissance);
 
         ResultSet rs = this.stmt.executeQuery();
-
-        return rs.getInt("id");
+        if(rs.next()){
+            return rs.getInt("id");
+        }
+        return 0;
     }
 
     private ArrayList<Animal> selFelins() throws SQLException, ExceptionDataBase {
@@ -2130,8 +2132,7 @@ public class DBInteraction {
         ResultSet rs = this.stmt.getGeneratedKeys();
         if (rs.next()) {    // On récupère l'ID de l'animal inséré
             rs.beforeFirst();   // On remet le curseur au début
-            int newAnimalID = rs.getInt(1);
-            a.setId(newAnimalID);
+            a.setId(rs.getInt(1));
         }
 
         if (a instanceof Felin) {
