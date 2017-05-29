@@ -2123,6 +2123,7 @@ public class DBInteraction {
         this.stmt.setInt(1, o.getId());
         this.stmt.setDouble(2, o.getEnvergure());
         this.stmt.setString(3, o.getBague());
+        this.stmt.executeUpdate();
     }
 
     private void insPrimate(Primate o) throws SQLException {
@@ -2130,6 +2131,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(INSERT_PRIMATE);
         this.stmt.setInt(1, o.getId());
         this.stmt.setDouble(2, o.getTemperature());
+        this.stmt.executeUpdate();
     }
 
     public void insAnimal(Animal a) throws SQLException {
