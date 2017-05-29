@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo  on 09/05/2017.
+ * Created by doriane kaffo on 09/05/2017.
  */
 public class EventTypeController {
     DBInteraction query;
@@ -23,15 +23,23 @@ public class EventTypeController {
         if(evtType.equalsIgnoreCase("")){
             System.out.println("On me peut ajouter un type d evenement vide");
         }
+
+
         try {
             query.insEventType(evtType);
-            System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
             return true;
-        } catch (SQLException e1) {
-            System.out.println("Insertion du type d evenement "+evtType+" a echoue");
+        } catch (SQLException e) {
+            e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
+//        try {
+//            System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
+//            return true;
+//        } catch (SQLException e) {
+//            System.out.println("Insertion du type d evenement "+evtType+" a echoue");
+//            e.printStackTrace();
+//        }
         return false;
     }
 

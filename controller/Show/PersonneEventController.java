@@ -1,15 +1,12 @@
 package Controller.Show;
 
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Infrastructure;
-import Model.Personne;
+import Model.*;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo  on 10/05/2017.
+ * Created by doriane kaffo on 10/05/2017.
  */
 public class PersonneEventController {
     DBInteraction query;
@@ -25,10 +22,19 @@ public class PersonneEventController {
         try {
             lstPer = query.selPeopleByEventID(id);
         } catch (SQLException e) {
-            System.out.println("Aucune personne trouvee pour cet evenement");
+            e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
-            System.out.println("Aucune personne trouvee pour cet evenement");
-        } finally {
+            System.out.println("Auncune personne ne correspond a cet evenement "+id);
+            //exceptionDataBase.printStackTrace();
+        }
+//        try {
+//            lstPer = query.selPeopleByEventID(id);
+//        } catch (SQLException e) {
+//            System.out.println("Aucune personne trouvee pour cet evenement");
+//        } catch (ExceptionDataBase exceptionDataBase) {
+//            System.out.println("Aucune personne trouvee pour cet evenement");
+//        }
+            finally {
             if(lstPer == null){
                 lstPer = new ArrayList<Personne>();
             }
@@ -50,12 +56,27 @@ public class PersonneEventController {
         }
         return lstPer;
     }
-    public boolean add(int idP, int idE) {
+    public boolean add(Personne P, Evenement E) {
             /*
             Fonction pas encore implementee
              */
         try {
-            query.insAnimalEvent(idP,idE);
+
+            boolean add_elt = true;
+            ArrayList<Personne> inter =  this.selAllByEventId(E.getId());
+            if(inter.size()>0){
+                for (Personne i : inter){
+                    if(i.getIdPersonne()==P.getIdPersonne()){
+                        add_elt = false;
+                        break;
+                    }
+                }
+            }
+
+            if(add_elt)
+                    query.assignEvenementEmploye(E,P);
+
+            query.assignEvenementEmploye(E,P);
             System.out.println("ENREGISTREMENT REUSSIT");
         } catch (SQLException e) {
             System.out.println("ECHEC D ENREGISTREMENT");
@@ -68,14 +89,14 @@ public class PersonneEventController {
             query.delPersonneEvenement(idP, idE);
             return  true;
         } catch (SQLException e) {
-            System.out.println("Echec de suppression d une nouvelle personne a l evenement");
+            e.printStackTrace();
         }
         return false;
     }
 
-    public void saveByEventId(Personne a, int id_event) {
+    public void saveByEventId(Personne a, Evenement evt) {
         if(a!=null) {
-            add(a.getIdPersonne(),id_event);
+            add(a,evt);
             System.out.println("On AJOUTE LA PERSONNE " + a.getNom());
         }else{
             System.out.println("On AJOUTE LA PERSONNE MAIS CETTE PERSONNE EST NULL");

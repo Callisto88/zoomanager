@@ -1,15 +1,11 @@
 package Controller.Show;
 
-import Model.Animal;
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
+import Model.*;
+import com.jidesoft.swing.AnimatorListener;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by doriane kaffo on 10/05/2017.
- */
 public class AnimalEventController {
     DBInteraction query;
     public AnimalEventController(){
@@ -22,17 +18,25 @@ public class AnimalEventController {
 
     public ArrayList<Animal> selAllByEventId(int id) {
         ArrayList<Animal> lstAn = null;
+        System.out.println("EVENEMENT "+id);
         try {
             lstAn = query.selAnimalsByEventID(id);
         } catch (SQLException e) {
-            System.out.println("Aucun animal trouve pour cet evenement");
+            e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
-            System.out.println("Aucun animal trouve pour cet evenement");
-        }finally {
+           // exceptionDataBase.printStackTrace();
+            System.out.println("PAS D ANIMAUX ENREGISTRES POUR CET EVENEMENT");
+        }
+        finally {
             if(lstAn == null){
                 lstAn = new ArrayList<Animal>();
             }
         }
+//         catch (SQLException e) {
+//            System.out.println("Aucun animal trouve pour cet evenement");
+//        } catch (ExceptionDataBase exceptionDataBase) {
+//            System.out.println("Aucun animal trouve pour cet evenement");
+//        }
         return lstAn;
     }
 
@@ -52,22 +56,36 @@ public class AnimalEventController {
         return lstAn;
     }
 
-    public boolean add(int idA, int idE) {
+    public boolean add(Animal A, Evenement E) {
+
         try {
-            query.insAnimalEvent(idA, idE);
+            boolean add_elt = true;
+            ArrayList<Animal> inter =  this.selAllByEventId(E.getId());
+            if(inter.size()>0){
+                for (Animal i : inter){
+                    if(i.getId()==A.getId()){
+                        add_elt = false;
+                        break;
+                    }
+                }
+            }
+
+            if(add_elt)
+                query.assignEvenementAnimal(E,A);
             return  true;
         } catch (SQLException e) {
-            System.out.println("Echec d ajout d un nouvel annimal a l evenement");
+            System.out.println("Echec d ajout d un nouvel annimal "+A.getNom()+" a l evenement "+E.getId());
+            e.printStackTrace();
         }
+
         return false;
     }
     public boolean del(int idA, int idE) {
         try {
             query.delAnimalEvent(idA, idE);
-            System.out.println("Echec de suppression "+idA);
-            return  true;
+            return true;
         } catch (SQLException e) {
-            System.out.println("Echec de suppression d un nouvel annimal a l evenement");
+            e.printStackTrace();
         }
         return false;
     }
@@ -91,7 +109,14 @@ public class AnimalEventController {
 
     public void saveByEventId(Animal a, int id_event) {
         if(a!=null) {
-            add(a.getId(),id_event);
+            try {
+                ArrayList<Evenement> evt = query.selEventByID(id_event);
+                add(a,evt.get(0));
+            } catch (ExceptionDataBase exceptionDataBase) {
+                exceptionDataBase.printStackTrace();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             System.out.println("On ENREGISTRE L ANNIMAL " + a.getNom()+" "+a.getId()+" "+" EVENEMENT "+id_event);
         }else{
             System.out.println("On ENREGISTRE L ANNIMAL MAIS CETTE PERSONNE EST NULL  EVENEMENT "+id_event);

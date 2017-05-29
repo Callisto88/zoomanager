@@ -12,12 +12,11 @@ public class ShowTab extends JPanel {
         JFrame tab = new JFrame();
 //        tab.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         View v = new View();
-        Dimension dim = new Dimension(640,600);
-        tab.setLocation(295,20);
-        tab.setResizable(false);
+        Dimension dim = new Dimension(1100,600);
+        tab.setLocation(150,25);
         tab.add(v);
+//         tab.setResizable(false);
         tab.setSize(dim);
         tab.setVisible(true);
-        v.setVisible(true);
     }
 }

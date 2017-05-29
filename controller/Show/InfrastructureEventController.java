@@ -8,7 +8,7 @@ import Model.Intervenant;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo  on 10/05/2017.
+ * Created by doriane kaffoon 10/05/2017.
  */
 public class InfrastructureEventController {
     DBInteraction query;

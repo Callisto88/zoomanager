@@ -7,6 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 
 
@@ -53,6 +54,8 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
     private ArrayList<Intervenant> lstIntervenants,lstIntervenant;
     private ArrayList<Infrastructure> lstInfras,lstInfra;
     private int ID_EVENT = 0;
+    private TypeEvenement TYPE_EVENT = null;
+
     public DialogNewAnimationPlaning() {
         initComponents();
         eventTypeCtrl = new EventTypeController();
@@ -65,16 +68,15 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
     public Animal getAnimalByName(String name){
         Animal b = null;
         for (Animal a: lstAnimals){
-            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name))
+            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name) && a.getId()>0)
                 b = a;
         }
         return b;
     }
-
     private Intervenant getIntervenantByName(String name) {
         Intervenant b = null;
         for (Intervenant a: lstIntervenants){
-            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name))
+            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name) && a.getId()>0)
                 b = a;
         }
         return b;
@@ -82,21 +84,29 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
     private Infrastructure getInfrastructureByName(String name) {
         Infrastructure b = null;
         for (Infrastructure a: lstInfras){
-            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name))
+            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name) && a.getId()>0)
                 b = a;
         }
         return b;
     }
-
     private Personne getPersonneByName(String name) {
         Personne b = null;
         for (Personne a: lstPersonnes){
-            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name))
+            if(!a.getNom().equalsIgnoreCase("none") && a.getNom().equalsIgnoreCase(name) && a.getIdPersonne()>0)
                 b = a;
         }
         return b;
     }
-    public void initValues(Evenement evt){
+    public void initV(Evenement evt,TypeEvenement type){
+        lstPersonnes=new ArrayList<Personne>();
+        lstPersonne=new ArrayList<Personne>();
+        lstAnimal = new ArrayList<Animal>();
+        lstAnimals = new ArrayList<Animal>();
+        lstIntervenants = new ArrayList<Intervenant>();
+        lstIntervenant = new ArrayList<Intervenant>();
+        lstInfras = new ArrayList<Infrastructure>();
+        lstInfra = new ArrayList<Infrastructure>();
+        TYPE_EVENT = type;
         if(evt!=null)
             ID_EVENT = evt.getId();
         String[] animaux = {},animauxAll = {"Vide"},
@@ -181,10 +191,10 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
              */
             lstIntervenant = intervenantEventCtrl.selAllByEventId(evt.getId());
             if(lstIntervenant.size()>0)
-                intervenantAll = new String[lstIntervenant.size()];
+                intervenant = new String[lstIntervenant.size()];
             i = 0;
             for (Intervenant a : lstIntervenant){
-                intervenantAll[i++] = a.getNom();
+                intervenant[i++] = a.getNom();
             }
 
 
@@ -192,11 +202,11 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             CONFIGURATION DES INFRASTRUCTURES
              */
             lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
-            if(lstIntervenant.size()>0)
-                infraAll = new String[lstInfra.size()];
+            if(lstInfra.size()>0)
+                infra = new String[lstInfra.size()];
             i = 0;
             for (Infrastructure a : lstInfra){
-                infraAll[i++] = a.getNom();
+                infra[i++] = a.getNom();
             }
 
         }
@@ -218,9 +228,197 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             this.infraAdd.setText(this.infraAdd.getText()+","+s);
         }
     }
+    public void initInfrastructure(Evenement evt,TypeEvenement type){
+        lstAnimal = new ArrayList<Animal>();
+        lstAnimals = new ArrayList<Animal>();
+        TYPE_EVENT = type;
+        if(evt!=null)
+            ID_EVENT = evt.getId();
+        String[] infra ={} , infraAll = {"Vide"};
+
+        int i =0;
+
+            /*
+            CONFIGURATION DES INFRASTRUCTURES
+             */
+        lstInfras = infrastructureEventController.selAll();
+        if(lstInfras.size()>0)
+            infraAll = new String[lstInfras.size()];
+        i = 0;
+        for (Infrastructure a : lstInfras){
+            infraAll[i++] = a.getNom();
+        }
+
+        if(evt!=null) {
+            /*
+            CONFIGURATION DES INFRASTRUCTURES
+             */
+            lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
+            if(lstInfra.size()>0)
+                infra = new String[lstInfra.size()];
+            i = 0;
+            for (Infrastructure a : lstInfra){
+                infra[i++] = a.getNom();
+            }
+
+        }
+        selectInfra.setModel(new javax.swing.DefaultComboBoxModel(infraAll));
+        for (String s : infra){
+            this.infraAdd.setText(this.infraAdd.getText()+","+s);
+        }
+    }
+    public void initAnimaux(Evenement evt,TypeEvenement type){
+        lstAnimal = new ArrayList<Animal>();
+        lstAnimals = new ArrayList<Animal>();
+        TYPE_EVENT = type;
+        if(evt!=null)
+            ID_EVENT = evt.getId();
+        String[] animaux = {},animauxAll = {"Vide"};
+
+        int i =0;
+        /*
+            CONFIGURATION DES ANIMAUX
+        */
+        lstAnimals = this.animalEventCtrl.selAll();
+        if(lstAnimals.size()>0)
+            animauxAll = new String[lstAnimals.size()];
+        i = 0;
+        for (Animal a : lstAnimals){
+            animauxAll[i++] = a.getNom();
+        }
+
+        if(evt!=null) {
+            /*
+            CONFIGURATION DES ANIMAUX
+             */
+            lstAnimal = animalEventCtrl.selAllByEventId(evt.getId());
+            if(lstAnimal.size()>0)
+                animaux = new String[lstAnimal.size()];
+            i = 0;
+            for (Animal a : lstAnimal){
+                animaux[i++] = a.getNom();
+            }
+
+        }
+
+        animal.setModel(new javax.swing.DefaultComboBoxModel(animauxAll));
+        for (String s : animaux) {
+            this.animaux.setText(this.animaux.getText() + "," + s);
+        }
+    }
+    public void initPersonne(Evenement evt,TypeEvenement type){
+        lstPersonnes=new ArrayList<Personne>();
+        lstPersonne=new ArrayList<Personne>();
+        TYPE_EVENT = type;
+        if(evt!=null)
+            ID_EVENT = evt.getId();
+        String[] personnes = {},personnesAll = {"Vide"};
+
+            /*
+            CONFIGURATION DES PERSONNES
+             */
+        lstPersonnes = personneEventCtrl.selAll();
+        if(lstPersonnes.size()>0)
+            personnesAll = new String[lstPersonnes.size()];
+        int i = 0;
+        for (Personne a : lstPersonnes){
+            personnesAll[i++] = a.getNom();
+        }
+        if(evt!=null) {
+            /*
+            CONFIGURATION DES PERSONNES
+             */
+            lstPersonne = personneEventCtrl.selAllByEventId(evt.getId());
+            if(lstPersonne.size()>0)
+                personnes = new String[lstPersonne.size()];
+            i = 0;
+            for (Personne a : lstPersonne){
+                personnes[i++] = a.getNom();
+            }
+        }
+
+        selectPersonne.setModel(new javax.swing.DefaultComboBoxModel(personnesAll));
+        for (String s : personnes){
+            this.personnesField.setText(this.personnesField.getText()+","+s);
+        }
+    }
+    public void initIntervenant(Evenement evt,TypeEvenement type){
+        lstIntervenants = new ArrayList<Intervenant>();
+        lstIntervenant = new ArrayList<Intervenant>();
+        TYPE_EVENT = type;
+        if(evt!=null)
+            ID_EVENT = evt.getId();
+        String[] intervenant = {},intervenantAll = {"Vide"};
+
+        int i =0;
+
+            /*
+            CONFIGURATION DES INTERVENANTS
+             */
+        lstIntervenants  = intervenantEventCtrl.selAll();
+        if(lstIntervenants.size()>0)
+            intervenantAll = new String[lstIntervenants.size()];
+        i = 0;
+        for (Intervenant a : lstIntervenants){
+            intervenantAll[i++] = a.getNom();
+        }
+
+
+        if(evt!=null) {
+
+            /*
+            CONFIGURATION DES INTERVENANTS
+             */
+            lstIntervenant = intervenantEventCtrl.selAllByEventId(evt.getId());
+            if(lstIntervenant.size()>0)
+                intervenant = new String[lstIntervenant.size()];
+            i = 0;
+            for (Intervenant a : lstIntervenant){
+                intervenant[i++] = a.getNom();
+            }
+
+        }
+
+        selectIntervenant.setModel(new javax.swing.DefaultComboBoxModel(intervenantAll));
+        for (String s : intervenant){
+            this.IntervenantField.setText(this.IntervenantField.getText()+","+s);
+        }
+    }
+    public void initValues(Evenement evt,TypeEvenement type){
+        if(evt!=null) {
+            this.description.setText(evt.getDescription());
+            this.oldDate.setText(evt.getDate().toString());
+            this.addButton.setText("Modifier");
+        }
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initIntervenant(evt,type);
+            }
+        })).start();
+
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initInfrastructure(evt,type);
+            }
+        })).start();
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initPersonne(evt,type);
+            }
+        })).start();
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initAnimaux(evt,type);
+            }
+        })).start();
+    }
 
     @SuppressWarnings("unchecked")
-    // <editor-fold defaultstate="collapsed" desc="Generated Code">
+    // <editor-fold defaultstate="collapsed" desc="Code component">
     private void initComponents() {
 
         jTextField1 = new javax.swing.JTextField();
@@ -572,6 +770,20 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
         JOptionPane bg = new JOptionPane();
         bg.showMessageDialog(this, "Enregistrer les données de votre evenement", "Enregistrement",
                 JOptionPane.QUESTION_MESSAGE);
+        int y = this.datePanel.datePicker.getModel().getYear();
+        int m = this.datePanel.datePicker.getModel().getMonth();
+        int d = this.datePanel.datePicker.getModel().getDay();
+        String text = y+"-"+(m+1)+"-"+d+" 12:00:00";
+//        text = "yyyy-mm-"+D+" 12:00:00";
+        System.out.println(text +"|" +"2011-10-02 18:48:05.123456");
+        Timestamp ts = Timestamp.valueOf(text);//"2011-10-02 18:48:05.123456");
+        Evenement evnt = new Evenement(ID_EVENT,this.description.getText(),ts,TYPE_EVENT.getType());
+        int f = eventCtrl.save(evnt);
+        if(f>0){
+            ID_EVENT = f;
+        }
+        System.out.println("OLD ID "+evnt.getId()+" AND NEW ONE "+ID_EVENT);
+        evnt.setId(ID_EVENT);
         (new Thread(
                 new Runnable() {
                     @Override
@@ -599,7 +811,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                                 }
                                 if(save){
                                     if(!a.equalsIgnoreCase("none")) {
-                                        personneEventCtrl.saveByEventId(getPersonneByName(a), ID_EVENT);
+                                        personneEventCtrl.saveByEventId(getPersonneByName(a), evnt);
                                     }
                                 }
                             }
@@ -622,23 +834,12 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                             }
                         }
 
-
-
-
-
-                        ArrayList<Intervenant> inter = intervenantEventCtrl.selAllByEventId(ID_EVENT);
-                        //System.out.println("EMPLOYE");
-                        for (String a : IntervenantField.getText().split(",")){
-                            if(!a.trim().equalsIgnoreCase("")){
-                                //System.out.println("EMPLOYE - "+a);
-                            }
-                        }
-
                         ArrayList<Intervenant> interv = new ArrayList<Intervenant>();
-                        //System.out.println("PERSONNES");
+                        //System.out.println("intervAUX");
+                        ArrayList<Intervenant> tmpinter = lstIntervenant;
                         for (String a : IntervenantField.getText().split(",")){
                             if(!a.trim().equalsIgnoreCase("")){
-                                //System.out.println("NEW INFRASTUCTURE - "+a);
+                                //System.out.println("NEW intervAUX - "+a);
                                 for(Intervenant b : lstIntervenant){
                                     if(b.getNom().trim().equalsIgnoreCase(a.trim())){
                                         interv.add(b);
@@ -650,30 +851,32 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                         for (String a : IntervenantField.getText().split(",")){
                             if(!a.trim().equalsIgnoreCase("")){
                                 boolean save = true;
-                                for(Intervenant b : inter){
+                                for(Intervenant b : interv){
                                     if(b.getNom().trim().equalsIgnoreCase(a.trim())){
                                         save = false;
                                     }
                                 }
                                 if(save){
-                                    if(!a.equalsIgnoreCase("none")) {
-                                        intervenantEventCtrl.saveByEventId(getIntervenantByName(a), ID_EVENT);
-                                    }
+                                    if(!a.equalsIgnoreCase("none"))
+                                        intervenantEventCtrl.add(getIntervenantByName(a),evnt);
                                 }
                             }
                         }
                         for (Intervenant a : lstIntervenant){
                             boolean del = true;
-                            for(Intervenant b : inter){
+                            for(Intervenant b : interv){
                                 if(b.getNom().trim().equalsIgnoreCase(a.getNom().trim())){
                                     del = false;
                                 }
                             }
                             if(del){
-//                                System.out.println("intervenant "+a.getNom());
                                 intervenantEventCtrl.delByEventId(a,ID_EVENT);
                             }
                         }
+
+
+
+
                     }
                 }
         )).start();
@@ -705,7 +908,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                                 }
                                 if(save){
                                     if(!a.equalsIgnoreCase("none"))
-                                        animalEventCtrl.saveByEventId(getAnimalByName(a),ID_EVENT);
+                                        animalEventCtrl.add(getAnimalByName(a),evnt);
                                 }
                             }
                         }

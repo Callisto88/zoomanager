@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author doriane kaffo
+ * @author edoriane kaffo
  */
 public class Test {
     View v = new View();
@@ -20,10 +20,10 @@ public class Test {
         JFrame tab = new JFrame();
         tab.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         View v = new View();
-        Dimension dim = new Dimension(640,600);
-        tab.setLocation(295,20);
+        Dimension dim = new Dimension(1100,600);
+        tab.setLocation(150,25);
         tab.add(v);
-         tab.setResizable(false);
+//         tab.setResizable(false);
         tab.setSize(dim);
         tab.setVisible(true);
     }

@@ -9,24 +9,13 @@ package View.Show;
 import Controller.Show.*;
 import Model.*;
 
+import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import static java.util.Collections.list;
-import java.util.List;
-import javax.swing.JButton;
-import javax.swing.JDialog;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.table.TableModel;
 
 /**
  *
@@ -37,19 +26,41 @@ public class View extends javax.swing.JPanel {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton addAnimation;
     private javax.swing.JComboBox choiceAnimation;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JLabel jLabel1;
-    private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JLabel dateEvenement;
+    private javax.swing.JLabel designationEvenement;
     private javax.swing.JButton imprimer;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JComboBox jComboBox1;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JTable jTable1;
+    private javax.swing.JTextArea jTextArea1;
+    private javax.swing.JButton modifierEvent;
+    private javax.swing.JLabel nombreEvenement;
+    private javax.swing.JPanel panelEvenement;
+    private javax.swing.JComboBox selectAnimaux;
+    private javax.swing.JComboBox selectIntervenant;
+    private javax.swing.JComboBox selectPersonne;
+    private javax.swing.JButton supprimerEvenement;
     // End of variables declaration//GEN-END:variables
     private int io = 0;
     private String TypeLast = "";
     private DBInteraction query = null;
     private EventTypeController eventTypeCtrl = null;
     private EventController eventCtrl = null;
+    private IntervenantEventController intervenantCtrl = null;
     private AnimalEventController animalEventCtrl = null;
     private PersonneEventController personneEventCtrl = null;
+    int col=0,row=0;
     /**
      * Creates new form view
      */
@@ -57,6 +68,7 @@ public class View extends javax.swing.JPanel {
         initComponents();
         eventTypeCtrl = new EventTypeController();
         eventCtrl = new EventController();
+        intervenantCtrl = new IntervenantEventController();
         animalEventCtrl = new AnimalEventController();
        personneEventCtrl = new PersonneEventController();
         try {
@@ -64,7 +76,12 @@ public class View extends javax.swing.JPanel {
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
-        initValue();
+        (new Thread(new Runnable() {
+            @Override
+            public void run() {
+                initValue();
+            }
+        })).start();
     }
 
     /**
@@ -82,15 +99,30 @@ public class View extends javax.swing.JPanel {
         jTable1 = new javax.swing.JTable();
         jButton1 = new javax.swing.JButton();
         imprimer = new javax.swing.JButton();
-        imprimer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                (new ImpressionController()).imprimer();
-            }
-        });
+        panelEvenement = new javax.swing.JPanel();
+        modifierEvent = new javax.swing.JButton();
+        supprimerEvenement = new javax.swing.JButton();
+        jLabel2 = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
+        dateEvenement = new javax.swing.JLabel();
+        designationEvenement = new javax.swing.JLabel();
+        jSeparator1 = new javax.swing.JSeparator();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        jTextArea1 = new javax.swing.JTextArea();
+        jLabel5 = new javax.swing.JLabel();
+        selectIntervenant = new javax.swing.JComboBox();
+        jLabel6 = new javax.swing.JLabel();
+        selectPersonne = new javax.swing.JComboBox();
+        jLabel7 = new javax.swing.JLabel();
+        selectAnimaux = new javax.swing.JComboBox();
+        jLabel8 = new javax.swing.JLabel();
+        jComboBox1 = new javax.swing.JComboBox();
+        nombreEvenement = new javax.swing.JLabel();
+
         jLabel1.setText("Choix de l'animation :");
 
-        choiceAnimation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        choiceAnimation.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chargement..." }));
         choiceAnimation.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 choiceAnimationActionPerformed(evt);
@@ -106,6 +138,33 @@ public class View extends javax.swing.JPanel {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
+                        {null, null, null},
                         {null, null, null},
                         {null, null, null}
                 },
@@ -144,46 +203,198 @@ public class View extends javax.swing.JPanel {
 
         imprimer.setText("Imprimer");
 
+        modifierEvent.setText("Modifier");
+        modifierEvent.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifierEventActionPerformed(evt);
+            }
+        });
+
+        supprimerEvenement.setBackground(new java.awt.Color(240, 4, 4));
+        supprimerEvenement.setText("Supprimer");
+        supprimerEvenement.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                supprimerEvenementActionPerformed(evt);
+            }
+        });
+
+        jLabel2.setText("Type Evenement :");
+
+        jLabel3.setFont(new java.awt.Font("Teacher Sez", 0, 18)); // NOI18N
+        jLabel3.setForeground(new java.awt.Color(102, 102, 102));
+        jLabel3.setText("Non Specifiee");
+
+        jLabel4.setText("Date de programmation : ");
+
+        dateEvenement.setText("0000/00/00");
+
+        designationEvenement.setText("Description:");
+
+        jTextArea1.setBackground(new java.awt.Color(247, 243, 243));
+        jTextArea1.setColumns(20);
+        jTextArea1.setForeground(new java.awt.Color(102, 102, 102));
+        jTextArea1.setRows(5);
+        jTextArea1.setText("...");
+        jScrollPane2.setViewportView(jTextArea1);
+
+        jLabel5.setText("Intervenants / Entreprises");
+
+        selectIntervenant.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chargement..." }));
+
+        jLabel6.setText("Personnes / Employes");
+
+        selectPersonne.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chargement..." }));
+
+        jLabel7.setText("Animaux");
+
+        selectAnimaux.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chargement..." }));
+
+        jLabel8.setText("Infrastructures");
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Chargement..." }));
+
+        javax.swing.GroupLayout panelEvenementLayout = new javax.swing.GroupLayout(panelEvenement);
+        panelEvenement.setLayout(panelEvenementLayout);
+        panelEvenementLayout.setHorizontalGroup(
+                panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                .addGap(19, 19, 19)
+                                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addComponent(jLabel2)
+                                                                .addGap(18, 18, 18)
+                                                                .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addGap(4, 4, 4)
+                                                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                                                        .addComponent(selectIntervenant, 0, 269, Short.MAX_VALUE)
+                                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                                .addComponent(jLabel4)
+                                                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                                                .addComponent(dateEvenement))
+                                                                        .addComponent(selectAnimaux, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                                        .addComponent(selectPersonne, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                                                .addGap(0, 0, Short.MAX_VALUE))))
+                                        .addComponent(jScrollPane2)
+                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addContainerGap()
+                                                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 282, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addGap(70, 70, 70)
+                                                                .addComponent(jLabel5))
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addGap(77, 77, 77)
+                                                                .addComponent(jLabel6))
+                                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                                .addGap(107, 107, 107)
+                                                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                                                        .addComponent(jLabel7)
+                                                                        .addComponent(designationEvenement)
+                                                                        .addComponent(jLabel8))))
+                                                .addGap(0, 15, Short.MAX_VALUE))
+                                        .addGroup(panelEvenementLayout.createSequentialGroup()
+                                                .addComponent(modifierEvent)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addComponent(supprimerEvenement)))
+                                .addContainerGap())
+        );
+        panelEvenementLayout.setVerticalGroup(
+                panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEvenementLayout.createSequentialGroup()
+                                .addContainerGap()
+                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel2)
+                                        .addComponent(jLabel3))
+                                .addGap(3, 3, 3)
+                                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(5, 5, 5)
+                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel4)
+                                        .addComponent(dateEvenement))
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel5)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(selectIntervenant, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel6)
+                                .addGap(11, 11, 11)
+                                .addComponent(selectPersonne, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jLabel7)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(selectAnimaux, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(18, 18, 18)
+                                .addComponent(jLabel8)
+                                .addGap(4, 4, 4)
+                                .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(designationEvenement)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(34, 34, 34)
+                                .addGroup(panelEvenementLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(modifierEvent)
+                                        .addComponent(supprimerEvenement))
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        nombreEvenement.setText("0/0");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGap(22, 22, 22)
-                                .addComponent(jLabel1)
-                                .addGap(18, 18, 18)
-                                .addComponent(choiceAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(imprimer, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(18, 18, 18)
-                                .addComponent(addAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(33, 33, 33))
                         .addGroup(layout.createSequentialGroup()
+                                .addContainerGap()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
                                         .addGroup(layout.createSequentialGroup()
-                                                .addContainerGap()
-                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 587, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                                .addComponent(jLabel1)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(choiceAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(30, 30, 30)
+                                                .addComponent(imprimer, javax.swing.GroupLayout.PREFERRED_SIZE, 118, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(18, 18, 18)
+                                                .addComponent(addAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                .addGap(0, 0, Short.MAX_VALUE))
                                         .addGroup(layout.createSequentialGroup()
-                                                .addGap(220, 220, 220)
-                                                .addComponent(jButton1)))
-                                .addContainerGap(20, Short.MAX_VALUE))
+                                                .addComponent(nombreEvenement)
+                                                .addGap(172, 172, 172)
+                                                .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                                .addGap(199, 199, 199)))
+                                .addGap(18, 18, 18)
+                                .addComponent(panelEvenement, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap())
         );
         layout.setVerticalGroup(
                 layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                         .addGroup(layout.createSequentialGroup()
-                                .addGap(16, 16, 16)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                        .addComponent(jLabel1)
-                                        .addComponent(choiceAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(addAnimation)
-                                        .addComponent(imprimer))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 403, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(jButton1)
-                                .addContainerGap(13, Short.MAX_VALUE))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addGroup(layout.createSequentialGroup()
+                                                .addGap(20, 20, 20)
+                                                .addComponent(panelEvenement, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                                                .addGap(16, 16, 16)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(jLabel1)
+                                                        .addComponent(choiceAnimation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                                        .addComponent(addAnimation)
+                                                        .addComponent(imprimer))
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 455, Short.MAX_VALUE)
+                                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                                        .addComponent(nombreEvenement)
+                                                        .addComponent(jButton1))
+                                                .addGap(4, 4, 4)))
+                                .addContainerGap())
         );
-    }
+    }// </editor-fold>
 
     /*
         Add a new event
@@ -229,6 +440,20 @@ public class View extends javax.swing.JPanel {
         pan.getjToggleButton1().addActionListener(n);
         pan.getjToggleButton2().addActionListener(n2);
     }
+    /**
+     * MODIFIER L ELEMENT
+     * @param evt
+     */
+    private void modifierEventActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
+    /**
+     * SUPPRIMER L ELEMENT
+     * @param evt
+     */
+    private void supprimerEvenementActionPerformed(java.awt.event.ActionEvent evt) {
+        // TODO add your handling code here:
+    }
     /*
     ADD EVENT
      */
@@ -243,7 +468,7 @@ public class View extends javax.swing.JPanel {
         dg.setTitle("Planifier une animation");
         dg.setSize(new Dimension(900,650));
         final DialogNewAnimationPlaning pan = new DialogNewAnimationPlaning();
-        pan.initValues(null);
+        pan.initValues(null,new TypeEvenement(TypeLast));
         dg.setLocation(140, 80);
         dg.getContentPane().add(pan);
         dg.setVisible(true);
@@ -283,7 +508,7 @@ public class View extends javax.swing.JPanel {
         jTable1.removeFocusListener(null);
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
                 new Object [][] {
-                        {null, null, null}
+                        {"Chargement...", "Chargement...", "Chargement..."}
                 },
                 new String [] {
                         "Planning", "Personnel", "Animaux"
@@ -305,7 +530,8 @@ public class View extends javax.swing.JPanel {
             }
         });
         jScrollPane1.setViewportView(jTable1);
-
+        this.modifierEvent.setVisible(false);
+        this.supprimerEvenement.setVisible(false);
         ArrayList<String> listType = null;
         listType = eventTypeCtrl.selAll();
         String[] listeAnim = new String[listType.size()+1];
@@ -330,6 +556,8 @@ public class View extends javax.swing.JPanel {
                         }
                     }
         }
+        this.jLabel3.setText(TypeLast);
+        this.nombreEvenement.setText(list.size()+" Evenements");
         final Object[][] content1 = new Object[list.size()][];
         //System.out.print(list.size()+"   --   ");
         for(int i=0;i<list.size();i++){
@@ -337,17 +565,28 @@ public class View extends javax.swing.JPanel {
             ArrayList<Animal> lstAn = animalEventCtrl.selAllByEventId(list.get(i).getId());
 
             String anim = "";
-            if(lstAn.size()==0)
+            if(lstAn.size()==0) {
+                System.out.println("ANIMAUX NONE "+list.get(i).getId());
                 anim = "none";
+            }
+            int indent = 0, N = lstAn.size();
             for (Animal a:lstAn){
-                anim+=a.getNom()+",";
+                indent++;
+                anim+=a.getNom()+" ("+a.getNomCommun()+") ";
+                if(indent<N)
+                    anim +=",";
             }
             String pers = "";
             ArrayList<Personne> lstPr =  personneEventCtrl.selAllByEventId(list.get(i).getId());
             if(lstPr.size()==0)
-                anim = "none";
+                pers = "none";
+            indent = 0;
+            N = lstPr.size();
             for (Personne a:lstPr){
-                pers+=a.getNom()+",";
+                indent++;
+                pers+=a.getPrenom()+"  "+a.getNom()+" ";
+                if(indent<N)
+                    pers +=",";
             }
             content1[i]=(new Object[]{list.get(i).getDate(),pers,anim});
         }
@@ -360,18 +599,17 @@ public class View extends javax.swing.JPanel {
         ));
 
         ArrayList<Evenement> finalList = list;
-        MouseAdapter MS1 = new MouseAdapter() {
+
+        ActionListener MS1 = new ActionListener() {
             @Override
-            public void mousePressed(MouseEvent e) {
-                int col = jTable1.columnAtPoint(e.getPoint());
-                final int row = jTable1.rowAtPoint(e.getPoint());
+            public void actionPerformed(ActionEvent e) {
                 String name = jTable1.getColumnName(col);
                // System.out.println("Column index selected " + row + " " + col + " " + name);
                 final JDialog dg = new JDialog();
                 dg.setTitle("Modifier une plannification");
                 dg.setSize(new Dimension(900,650));
                 final DialogNewAnimationPlaning pan = new DialogNewAnimationPlaning();
-                pan.initValues(finalList.get(row));
+                pan.initValues(finalList.get(row),new TypeEvenement(TypeLast));
                 dg.setLocation(140, 80);
                 dg.getContentPane().add(pan);
                 dg.setVisible(true);
@@ -391,6 +629,50 @@ public class View extends javax.swing.JPanel {
                 pan.getCancelButton().addActionListener(n2);
             }
         };
-        jTable1.addMouseListener(MS1);
+        MouseAdapter MS2 = new MouseAdapter() {
+            @Override
+            public void mousePressed(MouseEvent e) {
+                col = jTable1.columnAtPoint(e.getPoint());
+                row = jTable1.rowAtPoint(e.getPoint());
+                String name = jTable1.getColumnName(col);
+                Evenement evtn = finalList.get(row);
+                System.out.println(jTable1.getValueAt(row,1));
+                selectAnimaux.setModel(new javax.swing.DefaultComboBoxModel(jTable1.getValueAt(row,2).toString().split(",")));
+                selectPersonne.setModel(new javax.swing.DefaultComboBoxModel(jTable1.getValueAt(row,1).toString().split(",")));
+                jLabel3.setText(evtn.getType());
+                dateEvenement.setText(evtn.getDate().toString());
+                jTextArea1.setText(evtn.getDescription());
+                modifierEvent.setVisible(true);
+                supprimerEvenement.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        boolean supp = eventCtrl.delById(evtn.getId());
+                        if(supp){
+                            JOptionPane bg = new JOptionPane();
+                            bg.showMessageDialog(null, "L evenement a ete supprime", "Supprimer evenement",
+                                    JOptionPane.INFORMATION_MESSAGE);
+                        }else {
+
+                            JOptionPane bg = new JOptionPane();
+                            bg.showMessageDialog(null, "La suppression a echoué, verifier que les relations sont toutes supprimees", "Supprimer evenement",
+                                    JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                });
+                modifierEvent.addActionListener(MS1);
+                supprimerEvenement.setVisible(true);
+                (new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ArrayList<Intervenant> interv = intervenantCtrl.selAllByEventId(evtn.getId());
+                        String intE = "";
+                        for(Intervenant intTmp : interv)
+                            intE+=intTmp.getPrenom()+" "+intTmp.getNom()+" - Entreprise : "+intTmp.getEntreprise()+",";
+                        selectIntervenant.setModel(new javax.swing.DefaultComboBoxModel(intE.split(",")));
+                    }
+                })).start();
+            }
+        };
+        jTable1.addMouseListener(MS2);
     }
 }

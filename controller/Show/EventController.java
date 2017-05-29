@@ -7,9 +7,7 @@ import Model.ExceptionDataBase;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
-/**
- * Created by doriane kaffo  on 09/05/2017.
- */
+
 public class EventController {
     DBInteraction query;
     public EventController(){
@@ -19,18 +17,17 @@ public class EventController {
             exceptionDataBase.printStackTrace();
         }
     }
-    public boolean save(Evenement evt){
+    public int save(Evenement evt){
         if(evt==null){
             System.out.println("On me peut ajouter   d evenement vide");
         }
         try {
-            query.insertEvenement(evt);
             System.out.println("Insertion d un nouvel d evenement reussit "+evt);
-            return true;
+            return query.insertEvenement(evt);
         } catch (SQLException e1) {
             System.out.println("Insertion   d evenement "+evt+" a echoue");
         }
-        return false;
+        return 0;
     }
     public ArrayList<Evenement> selAllByEventType(String typeLast) {
         ArrayList<Evenement> list = null;
@@ -52,11 +49,12 @@ public class EventController {
     public boolean delById(int id) {
         try {
             query.delEventByID(id);
+            System.out.print("destruction de l evenement a reussi sql "+id);
             return true;
         } catch (SQLException e) {
-            System.out.print("Pas d evenements pour ce type");
+            System.out.print("SQL - Il faut dabord deassigner l'evenement aux intervenants, animaux, personne et infrastructures"+id);
         } catch (ExceptionDataBase exceptionDataBase) {
-            System.out.print("Pas d evenements pour ce type");
+            System.out.print("BD - Il faut dabord deassigner l'evenement aux intervenants, animaux, personne et infrastructures"+id);
         }
         return false;
     }

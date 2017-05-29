@@ -61,7 +61,7 @@ public class SlideJPanel extends javax.swing.JPanel {
         try {
             img = ImageIO.read(new File(c+".jpg"));
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("l imagane est innexistante "+c+".jpg");
         }
         this.repaint();
     }
