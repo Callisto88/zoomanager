@@ -305,6 +305,7 @@ public class StaffView extends GenericWindow {
 
         sorterStaff = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterStaff);
+
     }
 
     /**
@@ -318,6 +319,7 @@ public class StaffView extends GenericWindow {
                 tableauExternal.add(alExternal.get(i).toVector());
             }
         }
+        System.out.println("taille tableau externe " + tableauExternal.size());
         mmtListing = new MyModelTable(tableauExternal, sColumnExternal);
         jtTable.updateUI();
         jtTable.setModel(mmtListing);
@@ -328,6 +330,7 @@ public class StaffView extends GenericWindow {
 
         sorterExternal = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterExternal);
+
     }
 
     /**
@@ -366,6 +369,9 @@ public class StaffView extends GenericWindow {
      * @param external Intervenant qui a été rajouter à la BDD
      */
     public void addExternalTab(Intervenant external){
+        if(alExternal == null){
+            alExternal = new ArrayList<>();
+        }
         System.out.println(alExternal.size());
         mmtListing.addRow(external.toVector());
         alExternal.add(external);
