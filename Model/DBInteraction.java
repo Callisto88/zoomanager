@@ -2630,9 +2630,8 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(DEL_PERSONNE_IN_EVENT);
         this.stmt.setInt(1, eventID);
         this.stmt.setInt(2, personneID);
-        ResultSet rs = this.stmt.executeQuery();
-
-        return rs.next();
+        int rowCount = this.stmt.executeUpdate();
+        return rowCount == 1;
     }
 
     /**

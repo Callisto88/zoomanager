@@ -122,6 +122,16 @@ public class Evenement {
                     selAllEvents();
                     break;
 
+                case 15:
+                    System.out.println("Entrer l'ID de l'événement concerné : ");
+                    Scanner input115 = new Scanner(System.in);
+                    int eventID15 = Integer.parseInt(input115.next());
+                    System.out.println("Entrer l'ID de la personne concernée : ");
+                    Scanner s15 = new Scanner(System.in);
+                    int pID = Integer.parseInt(s15.next());
+                    delPersonneEvenement(pID, eventID15);
+                    break;
+
                 case 0:
                     break;
             }
@@ -152,6 +162,7 @@ public class Evenement {
         System.out.println("12 - Retirer un intervenant d'un événement");
         System.out.println("13 - Afficher tous les événements d'un type donné");
         System.out.println("14 - Afficher tous les événements");
+        System.out.println("15 - Retirer une personne d'un événement");
         System.out.println("0 - Quitter le programme");
 
         selection = input.nextInt();
@@ -441,6 +452,23 @@ public class Evenement {
             e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
+        }
+    }
+
+    public static void delPersonneEvenement(int pID, int eID) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            boolean success = query.delPersonneEvenement(pID, eID);
+            System.out.println(success);
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 }
