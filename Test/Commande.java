@@ -2,14 +2,23 @@ package Test;
 
 import Model.*;
 
-import javax.jws.WebParam;
-import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * <p>Classe de test pour toutes les requêtes relatives aux commandes et au stock</p>
+ * <p>A noter que cette classe de test a été conçue pour tester les requêtes en ligne de commande et ainsi gagner du temps
+ * par rapport à des tests sur l'interface graphique qui nécessite le remplissage de formulaire complets</p>
+ */
 public class Commande {
 
+    /**
+     * <p>Méthode principale, utilise un simple menu avec sélection numérique pour tester les requêtes séparément</p>
+     *
+     * @param arg
+     * @throws SQLException
+     */
     public static void main(String arg[]) throws SQLException {
 
         int userChoice;
@@ -63,7 +72,12 @@ public class Commande {
         } while (userChoice != 7);
     }
 
-    public static int menu() {
+    /**
+     * Menu de sélection pour les différents tests
+     *
+     * @return
+     */
+    private static int menu() {
 
         int selection;
         Scanner input = new Scanner(System.in);
@@ -84,7 +98,19 @@ public class Commande {
         return selection;
     }
 
-    public static void creerNouvelleCommande() {
+    /**
+     * <p>Toutes les méthodes ci-dessous sont des simples exemples d'utilisation des différentes requêtes.
+     * Chaque méthode, instancie une connexion à la base de donnée, effectue une requête en particulier
+     * et en affiche le résultat s'il y en a un</p>
+     * <p>Cette classe de test visaient deux objectifs précis</p>
+     * <ul>
+     * <li>Le premier, relativement évident ; tester le bon fonctionnement des requêtes</li>
+     * <li>Le deuxième : fournir un exemple d'utilisation des méthodes mises à dispotition par la partie
+     * Model de l'application (ref. Model/DBInteraction.java)</li>
+     * </ul>
+     */
+
+    private static void creerNouvelleCommande() {
 
         /**
          * Création d'une commande avec son contenu en paramètres
@@ -121,7 +147,7 @@ public class Commande {
         }
     }
 
-    public static void afficherCommande(int orderID) {
+    private static void afficherCommande(int orderID) {
 
         DBInteraction query = null;
         try {
@@ -147,7 +173,7 @@ public class Commande {
         }
     }
 
-    public static void updateStatutCommande(Model.Commande c) {
+    private static void updateStatutCommande(Model.Commande c) {
 
         DBInteraction query = null;
         try {
@@ -170,7 +196,7 @@ public class Commande {
         }
     }
 
-    public static void afficherContenuCommande(int orderID) {
+    private static void afficherContenuCommande(int orderID) {
 
         DBInteraction query = null;
         try {
@@ -205,7 +231,7 @@ public class Commande {
     /**
      * Liste des commande ayant un statut en particulier
      */
-    public static void afficherCommandeParStatut(Statut statut) {
+    private static void afficherCommandeParStatut(Statut statut) {
 
         DBInteraction query = null;
         try {
@@ -236,7 +262,7 @@ public class Commande {
     /**
      * Liste des commandes passé entre le 1er juin 2001 et le 16 décembre 2009 et ayant le statut ANNULEE
      */
-    public static void afficherCommandeParStatutEtDate(Statut statut, java.sql.Date startDate, java.sql.Date endDate) {
+    private static void afficherCommandeParStatutEtDate(Statut statut, java.sql.Date startDate, java.sql.Date endDate) {
 
         DBInteraction query = null;
         try {
@@ -266,7 +292,7 @@ public class Commande {
     /**
      * Affichage des commandes passée entre le 1er juin 2016 et le 16 juillet 2016
      */
-    public static void afficherCommandeParDate(java.sql.Date startDate, java.sql.Date endDate) {
+    private static void afficherCommandeParDate(java.sql.Date startDate, java.sql.Date endDate) {
 
         DBInteraction query = null;
         try {

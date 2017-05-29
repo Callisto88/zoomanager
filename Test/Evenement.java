@@ -1,18 +1,34 @@
 package Test;
 
-import Model.*;
+import Model.DBInteraction;
+import Model.ExceptionDataBase;
+import Model.Intervenant;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * <p>Classe de test pour toutes les requêtes relatives aux événements :</p>
+ * <ul>
+ * <li>Animal_Evenement</li>
+ * <li>Personne_Evenement</li>
+ * <li>Intervenant_Evenement</li>
+ * <li>Intervenant_Evenement</li>
+ * <li>Infrastructure_Evenement</li>
+ * </ul>
+ * <p>A noter que cette classe de test a été conçue pour tester les requêtes en ligne de commande et ainsi gagner du temps
+ * par rapport à des tests sur l'interface graphique qui nécessite le remplissage de formulaire complets</p>
+ */
 public class Evenement {
 
+    /**
+     * <p>Méthode principale, utilise un simple menu avec sélection numérique pour tester les requêtes séparément</p>
+     * @param arg
+     * @throws SQLException
+     */
     public static void main(String arg[]) throws SQLException {
-
-        ArrayList<Infrastructure> data = new ArrayList<>();
-        data.add(new Parc());
 
         int userChoice;
 
@@ -139,7 +155,11 @@ public class Evenement {
         } while (userChoice != 0);
     }
 
-    public static int menu() {
+    /**
+     * Menu de sélection pour les différents tests
+     * @return
+     */
+    private static int menu() {
 
         int selection;
         Scanner input = new Scanner(System.in);
@@ -169,7 +189,21 @@ public class Evenement {
         return selection;
     }
 
-    public static void selAllIntervenantsParEvenementId(int eventID) {
+
+    /**
+     * <p>Toutes les méthodes ci-dessous sont des simples exemples d'utilisation des différentes requêtes.
+     * Chaque méthode, instancie une connexion à la base de donnée, effectue une requête en particulier
+     * et en affiche le résultat s'il y en a un</p>
+     * <p>Cette classe de test visaient deux objectifs précis</p>
+     * <ul>
+     *     <li>Le premier, relativement évident ; tester le bon fonctionnement des requêtes</li>
+     *     <li>Le deuxième : fournir un exemple d'utilisation des méthodes mises à dispotition par la partie
+     *     Model de l'application (ref. Model/DBInteraction.java)</li>
+     * </ul>
+     */
+
+
+    private static void selAllIntervenantsParEvenementId(int eventID) {
 
         DBInteraction query = null;
         try {
@@ -191,7 +225,7 @@ public class Evenement {
         }
     }
 
-    public static void selEventTypes() {
+    private static void selEventTypes() {
 
         DBInteraction query = null;
         try {
@@ -213,7 +247,7 @@ public class Evenement {
         }
     }
 
-    public static void insEventType(String eventType) {
+    private static void insEventType(String eventType) {
 
         DBInteraction query = null;
         try {
@@ -231,7 +265,7 @@ public class Evenement {
         }
     }
 
-    public static void delEventType(String eventType) {
+    private static void delEventType(String eventType) {
 
         DBInteraction query = null;
         try {
@@ -249,7 +283,7 @@ public class Evenement {
         }
     }
 
-    public static void insEvent(Model.Evenement newEvent) {
+    private static void insEvent(Model.Evenement newEvent) {
 
         DBInteraction query = null;
         try {
@@ -270,7 +304,7 @@ public class Evenement {
         }
     }
 
-    public static void delEvent(int eventID) {
+    private static void delEvent(int eventID) {
 
         DBInteraction query = null;
         try {
@@ -289,7 +323,7 @@ public class Evenement {
         }
     }
 
-    public static void selAnimalsByEventID(int eventID) {
+    private static void selAnimalsByEventID(int eventID) {
 
         DBInteraction query = null;
         try {
@@ -310,7 +344,7 @@ public class Evenement {
         }
     }
 
-    public static void selPeopleByEventID(int eventID) {
+    private static void selPeopleByEventID(int eventID) {
 
         DBInteraction query = null;
         try {
@@ -331,7 +365,7 @@ public class Evenement {
         }
     }
 
-    public static void selEventsHavingAnimal() {
+    private static void selEventsHavingAnimal() {
 
         DBInteraction query = null;
         try {
@@ -352,7 +386,7 @@ public class Evenement {
         }
     }
 
-    public static void delAnimalFromEvent(int animalID, int eventID) {
+    private static void delAnimalFromEvent(int animalID, int eventID) {
 
         DBInteraction query = null;
         try {
@@ -370,7 +404,7 @@ public class Evenement {
     }
 
 
-    public static void assignEvenementIntervenant(int eventID, int intervenantID) {
+    private static void assignEvenementIntervenant(int eventID, int intervenantID) {
 
         DBInteraction query = null;
         try {
@@ -394,7 +428,7 @@ public class Evenement {
     }
 
 
-    public static void delIntervenantEvenement(int intervenantID, int eventID) {
+    private static void delIntervenantEvenement(int intervenantID, int eventID) {
 
         DBInteraction query = null;
         try {
@@ -413,7 +447,7 @@ public class Evenement {
         }
     }
 
-    public static void selEventsByEventType(String eventType) {
+    private static void selEventsByEventType(String eventType) {
 
         DBInteraction query = null;
         try {
@@ -434,7 +468,7 @@ public class Evenement {
         }
     }
 
-    public static void selAllEvents() {
+    private static void selAllEvents() {
 
         DBInteraction query = null;
         try {
@@ -455,7 +489,7 @@ public class Evenement {
         }
     }
 
-    public static void delPersonneEvenement(int pID, int eID) {
+    private static void delPersonneEvenement(int pID, int eID) {
 
         DBInteraction query = null;
         try {

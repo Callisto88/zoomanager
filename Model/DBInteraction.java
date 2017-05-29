@@ -4,14 +4,12 @@ import java.sql.*;
 import java.util.ArrayList;
 
 /**
- * Cette classes a pour but de créer une connexion avec la base de données
- * L'attribut permettant de se connecter à la base de données est :     DBConnection db
- * <p>
- * Elle contient également toute les requêtes disponibles pour interagir avec la base de données
- * <p>
- * La création d'un objet DBInteraction ne requiert aucun paramètre
- * <p>
- * L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes
+ * <p>Cette classes a pour but de créer une connexion avec la base de données
+ * L'attribut permettant de se connecter à la base de données est :     DBConnection db</p>
+ *
+ * <p>Elle contient également toute les requêtes disponibles pour interagir avec la base de données</p>
+ * <p>La création d'un objet DBInteraction ne requiert aucun paramètre</p>
+ * <p>L'attribut privé "PreparedStatement stmt" est l'objet qui contiendra les requêtes</p>
  *
  * @author D.Hamel
  * @author C.Balboni
@@ -2612,18 +2610,6 @@ public class DBInteraction {
 
         this.stmt.executeUpdate();
     }
-
-    /*public ArrayList<Intervenant> selPeopleConcernedByEventID(int eventID) throws SQLException {
-
-        ArrayList<Intervenant> result;
-        this.stmt = DBConnection.con.prepareStatement(SEL_PERSONNE_CONCERNED_BY_EVENT);
-        this.stmt.setInt(1, eventID);
-        ResultSet rs = this.stmt.executeQuery();
-
-        while (rs.next()) {
-            result.add(new Intervenant())
-        }
-    }*/
 
     public boolean delPersonneEvenement(int personneID, int eventID) throws SQLException {
 

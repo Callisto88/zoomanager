@@ -6,8 +6,20 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+/**
+ * <p>Classe de test pour certaines requêtes relatives aux animaux. Notamment la gestion des classes mère - fille
+ * avec les instances de sous-classes ( Animal _> Reptile, Animal _> Primate, etc... )</p>
+ * <p>
+ * <p>A noter que cette classe de test a été conçue pour tester les requêtes en ligne de commande et ainsi gagner du temps
+ * par rapport à des tests sur l'interface graphique qui nécessite le remplissage de formulaire complets</p>
+ */
 public class Animal {
 
+    /**
+     * <p>Méthode principale, utilise un simple menu avec sélection numérique pour tester les requêtes séparément</p>
+     * @param arg
+     * @throws SQLException
+     */
     public static void main(String arg[]) throws SQLException {
 
         int userChoice;
@@ -36,7 +48,12 @@ public class Animal {
         } while (userChoice != 7);
     }
 
-    public static int menu() {
+    /**
+     * Menu de sélection pour les différents tests
+     *
+     * @return
+     */
+    private static int menu() {
 
         int selection;
         Scanner input = new Scanner(System.in);
@@ -53,7 +70,21 @@ public class Animal {
         return selection;
     }
 
-    public static void selAnimaux() {
+
+    /**
+     * <p>Toutes les méthodes ci-dessous sont des simples exemples d'utilisation des différentes requêtes.
+     * Chaque méthode, instancie une connexion à la base de donnée, effectue une requête en particulier
+     * et en affiche le résultat s'il y en a un</p>
+     * <p>Cette classe de test visaient deux objectifs précis</p>
+     * <ul>
+     * <li>Le premier, relativement évident ; tester le bon fonctionnement des requêtes</li>
+     * <li>Le deuxième : fournir un exemple d'utilisation des méthodes mises à dispotition par la partie
+     * Model de l'application (ref. Model/DBInteraction.java)</li>
+     * </ul>
+     */
+
+
+    private static void selAnimaux() {
 
         DBInteraction query = null;
         try {
@@ -91,7 +122,7 @@ public class Animal {
         }
     }
 
-    public static void udpateAnimal(Model.Animal a) {
+    private static void udpateAnimal(Model.Animal a) {
 
         DBInteraction query = null;
         try {

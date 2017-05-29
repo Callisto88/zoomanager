@@ -1,10 +1,15 @@
 package Test;
 
-import Model.*;
+import Model.DBInteraction;
+import Model.ExceptionDataBase;
+import Model.Pays;
+import Model.Ville;
 
 import java.sql.SQLException;
-import java.util.ArrayList;
 
+/**
+ * Simple classe de test qui a été utilisé comme "sandbox" ainsi que pour le debug de certaines méthodes
+ */
 public class Adresse {
 
     public static void main(String arg[]) throws SQLException {
@@ -27,6 +32,5 @@ public class Adresse {
         System.out.println("Testing adresse.toString : " + a.toString());
         System.out.println("Testing ville.toString : " + v.toString());
         System.out.println("Testing pays.toString : " + p.toString());
-
     }
 }
