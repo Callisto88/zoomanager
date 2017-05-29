@@ -90,11 +90,11 @@ public class MyModelTable extends AbstractTableModel{
      */
     @Override
     public Class<?> getColumnClass(int columnIndex) {
-        if(vData.elementAt(0).elementAt(columnIndex).getClass() != null) {
+        if(vData.size() > 0) {
             return vData.elementAt(0).elementAt(columnIndex).getClass();
         }
         else{
-            return super.getColumnClass(columnIndex);
+            return String.class;
         }
     }
 
