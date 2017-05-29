@@ -1,6 +1,7 @@
 package Controller.Stock;
 
 import Controller.Error.ErrorController;
+import Controller.Information.InformationController;
 import Controller.Validate.Validate;
 import Model.*;
 import View.Stock.StockTab;
@@ -79,7 +80,11 @@ public class StockTabController {
             data = dbiQuery.selAllCommande();
 
         } catch (ExceptionDataBase e) {
-            new ErrorController(e.getMessage());
+            if(e.getMsg().equals("La table Commande est vide.")){
+                new InformationController(e.getMsg());
+            }else{
+                new ErrorController(e.getMsg());
+            }
         } catch (SQLException e) {
             new ErrorController(e.getMessage());
         } catch (Exception e){

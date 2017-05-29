@@ -10,6 +10,7 @@ import Model.Statut;
 import Model.Stock;
 
 import View.*;
+import View.Information.InformationPanel;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.SqlDateModel;
@@ -576,7 +577,7 @@ public class StockTab extends GenericWindow {
                         for(int i = rowCount - 1; i >= 0; --i){
                             mmtCommandeHistory.removeRow(i);
                         }
-                        new InformationController(e.getMsg());
+                        new InformationController("Aucune commande avec ses spécificités n'a été trouvée.");
                     }else{
                         new ErrorController(e.getMsg());
                     }

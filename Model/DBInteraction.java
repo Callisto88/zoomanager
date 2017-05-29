@@ -3063,9 +3063,6 @@ public class DBInteraction {
             java.sql.Date startDate,
             java.sql.Date endDate) throws SQLException, ExceptionDataBase {
 
-        System.out.println(startDate);
-        System.out.println(endDate);
-
         this.stmt = DBConnection.con.prepareStatement(SEL_ORDERS_BY_STATE_AND_DATE);
         this.stmt.setString(1, String.valueOf(statut));
         this.stmt.setDate(2, startDate);
