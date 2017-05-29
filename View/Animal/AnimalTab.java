@@ -916,42 +916,44 @@ public class AnimalTab extends GenericWindow {
                     dayD = sdmModel2.getYear();
                 }
 
+                Date dateNaissance = sdmModel1.getValue();
+
                 if(formOk){
                     Animal newAnimal;
                     Enclos newEnclos = new Enclos(enclos, String.valueOf(jcEnclos.getSelectedItem()));
                     Race newRace = new Race(race, String.valueOf(jcRaces.getSelectedItem()));
                     if(selectedAnimal.getDateDeces() != null) {
                         if((mode == 2 && animalType == 2) || (mode != 2 && selectedAnimal instanceof Felin)){
-                            newAnimal = new Felin(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dPoids);
+                            newAnimal = new Felin(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, sdmModel2.getValue(), dPoids);
                         }
                         else if((mode == 2 && animalType == 0) || (mode != 2 && selectedAnimal instanceof Primate)){
-                            newAnimal = new Primate(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dTemperature);
+                            newAnimal = new Primate(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, sdmModel2.getValue(), dTemperature);
                         }
                         else if((mode == 2 && animalType == 1) || (mode != 2 && selectedAnimal instanceof Oiseau)){
-                            newAnimal = new Oiseau(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dEnvergure, bague);
+                            newAnimal = new Oiseau(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, sdmModel2.getValue(), dEnvergure, bague);
                         }
                         else if((mode == 2 && animalType == 3) || (mode != 2 && selectedAnimal instanceof Reptile)){
-                            newAnimal = new Reptile(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dTemperature);
+                            newAnimal = new Reptile(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, sdmModel2.getValue(), dTemperature);
                         }
                         else{
-                            newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, new Date(yearD, monthD, dayD));
+                            newAnimal = new Animal(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, sdmModel2.getValue());
                         }
                     }
                     else{
                         if((mode == 2 && animalType == 2) || (mode != 2 && selectedAnimal instanceof Felin)){
-                            newAnimal = new Felin(nomCommun, nom, sexe, new java.sql.Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dPoids);
+                            newAnimal = new Felin(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, null, dPoids);
                         }
                         else if((mode == 2 && animalType == 0) || (mode != 2 && selectedAnimal instanceof Primate)){
-                            newAnimal = new Primate(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dTemperature);
+                            newAnimal = new Primate(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, null, dTemperature);
                         }
                         else if((mode == 2 && animalType == 1) || (mode != 2 && selectedAnimal instanceof Oiseau)){
-                            newAnimal = new Oiseau(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dEnvergure, bague);
+                            newAnimal = new Oiseau(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, null, dEnvergure, bague);
                         }
                         else if((mode == 2 && animalType == 3) || (mode != 2 && selectedAnimal instanceof Reptile)){
-                            newAnimal = new Reptile(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dTemperature);
+                            newAnimal = new Reptile(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace, null, dTemperature);
                         }
                         else {
-                            newAnimal = new Animal(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace);
+                            newAnimal = new Animal(nomCommun, nom, sexe, dateNaissance, newEnclos, new Pays(origine), newRace);
                         }
                     }
 
