@@ -164,8 +164,6 @@ public class PrintPDF {
             }
         } catch (Exception exception) {
             exception.printStackTrace();
-            // TODO : à voir si on crée bien cette fenêtre d'erreur...
-            new ErrorController(exception.toString());
         }
     }
 
