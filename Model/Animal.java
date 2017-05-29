@@ -9,10 +9,6 @@ import java.util.Vector;
  * @author C.Balboni
  * @author D.Hamel
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- * @date    17.04.2017 (Modifié - Type de "race" passe de "String" à "int"
  */
 public class Animal {
 

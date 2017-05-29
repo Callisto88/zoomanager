@@ -3,21 +3,12 @@ package Model;
 import java.util.Vector;
 
 /**
+ * Cette classe contient la représentation objet de la table Stock de la base de données
  *
- * Cette classe contient la conception de la table Stock de la base de données
- *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * @author D.Hamel
  * @author C.Balboni
+ * @author D.Hamel
  *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- * @date    17.04.2017 (Changement a la mise à jour de la DB - nouveau parametre "id")
- *
- *
  */
 public class Stock {
 
@@ -25,27 +16,30 @@ public class Stock {
      * Membres privés
      */
     private int id;
-
-    private String nom;
-
     private String description;
     private double quantite;
-    //private double ordered;
     private double quantiteMin;
     private String unite;
     private double commande;
-
-
 
     /**
      * Constructeur par défaut
      */
     public Stock() {}
 
+    /**
+     * Constructeur simple à partir de l'identifiant
+     *
+     * @param id un entier correspondant à l'ID de l'élément Stock
+     */
     public Stock(int id) {
         this.id = id;
     }
 
+    /**
+     * Constructeur complet à partir d'un objet Stock passé en paramètre
+     * @param sStock un objet de type Stock
+     */
     public Stock(Stock sStock){
         this.id = sStock.id;
         this.description = sStock.description;
@@ -57,12 +51,13 @@ public class Stock {
     }
 
     /**
-     * Constructeur avec tous les membres
-     * @param id
-     * @param description
-     * @param quantite
-     * @param quantiteMin
-     * @param unite
+     * Constructeur complet, à partir des attributs séparément
+     *
+     * @param id un entier, identifiant de l'élément Stock
+     * @param description une String décrivant l'élément du stock
+     * @param quantite un double indiquant la quantité en Stock
+     * @param quantiteMin un double indiquant la quantité minimum pouvant être commandé à la fois
+     * @param unite une String décrivant l'unité de l'élément (pièce, kg, g, etc...)
      */
     public Stock(int id, String description, double quantite, String unite, double quantiteMin) {
         this.id = id;
@@ -80,11 +75,12 @@ public class Stock {
     }
 
     /**
-     * Constructeur avec tous les membres sauf l'ID. AUTO_INCREMENT
-     * @param description
-     * @param quantite
-     * @param quantiteMin
-     * @param unite
+     * Constructeur avec tous les membres sauf l'ID
+     *
+     * @param description une String décrivant l'élément du stock
+     * @param quantite un double indiquant la quantité en Stock
+     * @param quantiteMin un double indiquant la quantité minimum pouvant être commandé à la fois
+     * @param unite une String décrivant l'unité de l'élément (pièce, kg, g, etc...)
      */
     public Stock(String description, double quantite, double quantiteMin, String unite) {
         this.description = description;
@@ -235,5 +231,4 @@ public class Stock {
     public void addToStock(double quantity){
         this.quantite += quantity;
     }
-
 }

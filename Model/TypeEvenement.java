@@ -1,20 +1,11 @@
 package Model;
-import java.sql.SQLException;
 
 /**
+ * Cette classe contient la représentation de la table Evenement_Type de la base de données
  *
- * Cette classe contient la conception de la table TypeEvenement de la base de données
- *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * @author D.Hamel
  * @author C.Balboni
- *
+ * @author D.Hamel
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- *
  */
 public class TypeEvenement {
 
@@ -23,13 +14,26 @@ public class TypeEvenement {
      */
     private String type;
 
+    /**
+     * Constructeur par défaut
+     */
+    public TypeEvenement() {
+    }
 
+    /**
+     * Constructeur simple à partir du nom du type d'événement
+     *
+     * @param type une String représentant le type d'événement
+     */
     public TypeEvenement(String type) {
         this.type = type;
     }
 
     /**
-     *
+     * Getters & Setters
+     */
+
+    /**
      * @return une String comportant le nom du type d'événement
      */
     public String getType() {

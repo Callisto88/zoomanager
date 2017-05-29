@@ -12,11 +12,6 @@ import java.sql.Date;
  * @author C.Balboni
  *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- * @date    17.04.2017 (Modifié)
- *
  */
 public class Felin extends Animal {
     /**
