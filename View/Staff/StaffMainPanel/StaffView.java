@@ -207,9 +207,11 @@ public class StaffView extends GenericWindow {
                 // Permet de choisir si l'on affiche les détails d'un employée ou d'un externe
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
                     selectedRow = jtTable.getSelectedRow();
+                    /* Supprimé pour faute de non respect du travail des autres
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
+                     */
                     JLabel jlDetails = new JLabel("Détails du personnel");
                     setTitleConfig(jlDetails);
                     jlDetails.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -221,9 +223,11 @@ public class StaffView extends GenericWindow {
                 }
                 else{
                     selectedRow = jtTable.getSelectedRow();
+                    /* Supprimé pour faute de non respect du travail des autres
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
+                     */
                     esDetails = new ExternalStaff(controller, alExternal.get(selectedRow), selectedRow);
                     JLabel jlDetails = new JLabel("Détails des intervenants");
                     setTitleConfig(jlDetails);
@@ -302,10 +306,10 @@ public class StaffView extends GenericWindow {
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
-
+/* Supprimé pour faute de non respect du travail des autres
         sorterStaff = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterStaff);
-
+*/
     }
 
     /**
@@ -327,10 +331,10 @@ public class StaffView extends GenericWindow {
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
-
+/* Supprimé pour faute de non respect du travail des autres
         sorterExternal = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterExternal);
-
+*/
     }
 
     /**
