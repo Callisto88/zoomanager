@@ -13,7 +13,7 @@ package Model;
  *
  * @version 1.0
  */
-public class Enclos {
+public class Enclos extends Infrastructure {
 
     private int id;
     private String nom;
