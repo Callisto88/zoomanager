@@ -2,22 +2,14 @@ package Model;
 
 /**
  *
- * Cette classe contient la conception de la table Ville de la base de données
+ * <p>Cette classe contient la conception de la table Ville de la base de données</p>
  *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * paysId    références la classe "Pays"
- *
- * @author D.Hamel
- *
+ * @author C. Balboni
+ * @author D. Hamel
  * @version 1.0
- *
- * @date    22.04.2017 (Création)
- * @date    22.04.2017 (Finalisation v1.0)
- * @date    28.04.2017 (Référence à un objet Pays plutôt qu'à son id)
- *
  */
 public class Ville {
+
     /**
      * Membres privés
      */
@@ -25,16 +17,26 @@ public class Ville {
     private int cp;
     private String ville;
     private Pays pays;
+
     /**
      * Constructeur par défaut
      */
     public Ville() {
     }
+
     /**
      * Constructeur à partir du nom de la ville
      */
     public Ville(String villeName) {
+    }
 
+    /**
+     * Constructeur à partir de l'ID de la ville
+     *
+     * @param villeId
+     */
+    public Ville(int villeId) {
+        this.id = villeId;
     }
 
     /**
@@ -64,20 +66,34 @@ public class Ville {
         this.pays = pays;
     }
 
+    /**
+     * Constructeur alternatif
+     *
+     * @param villeId
+     * @param codePostal
+     */
     public Ville(int villeId, int codePostal) {
         this.id = villeId;
         this.cp = codePostal;
     }
 
+    /**
+     * Constructeur altnerativ
+     *
+     * @param villeId
+     * @param codePostal
+     * @param ville
+     */
     public Ville(int villeId, int codePostal, String ville) {
         this.id = villeId;
         this.cp = codePostal;
         this.ville = ville;
     }
 
-    public Ville(int villeId) {
-        this.id = villeId;
-    }
+
+    /**
+     * Getters & Setters
+     */
 
     public int getId() {
         return id;

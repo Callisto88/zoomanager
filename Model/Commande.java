@@ -4,19 +4,43 @@ import java.awt.*;
 import java.sql.Date;
 import java.util.Vector;
 
+/**
+ * <p>Classe représentant l'entité Commande de la base de données</p>
+ *
+ * @author C.Balboni
+ * @author D.Hamel
+ * @version 1.0
+ */
 public class Commande extends Component {
+
+    /**
+     * Membres privés
+     */
     private int id;
     private java.sql.Date date;
     private Statut statut;
 
+    /**
+     * Constructeur simple à partir de l'ID
+     *
+     * @param id un entier correspondant à l'ID de la commande
+     */
+    public Commande(int id) {
+        this.id = id;
+    }
+
+    /**
+     * Constructeur avec tous les attributs
+     *
+     * @param id     un entier correspondant à l'ID de la commande
+     * @param date   une date au format java.sql.Date
+     * @param statut un type énuméré Statut
+     * @see Statut
+     */
     public Commande(int id, Date date, Statut statut) {
         this.id = id;
         this.date = date;
         this.statut = statut;
-    }
-
-    public Commande(int id) {
-        this.id = id;
     }
 
     public Commande(int id, Date orderDate, String statut) {

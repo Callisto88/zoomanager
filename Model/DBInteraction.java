@@ -14,8 +14,6 @@ import java.util.ArrayList;
  * @author D.Hamel
  * @author C.Balboni
  * @version 1.0
- * @date 28.03.2017 (Création)
- * @date 05.05.2017 (Finalisation v1.0)
  */
 
 public class DBInteraction {
@@ -1455,7 +1453,7 @@ public class DBInteraction {
 
         this.stmt = DBConnection.con.prepareStatement(DEL_PERSONNE);
         this.stmt.setInt(1, id);
-        this.stmt.execute();
+        this.stmt.executeUpdate();
     }
 
 
@@ -2108,7 +2106,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(INSERT_FELIN);
         this.stmt.setInt(1, f.getId());
         this.stmt.setDouble(2, f.getPoids());
-        this.stmt.execute();
+        this.stmt.executeUpdate();
     }
 
     private void insReptile(Reptile r) throws SQLException {
@@ -2116,7 +2114,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(INSERT_REPTILE);
         this.stmt.setInt(1, r.getId());
         this.stmt.setDouble(2, r.getTemperature());
-        this.stmt.execute();
+        this.stmt.executeUpdate();
     }
 
     private void insOiseau(Oiseau o) throws SQLException {
@@ -2150,7 +2148,7 @@ public class DBInteraction {
         // this.stmt.setDate(8, a.getDateDeces());
 
         // En premier lieu, on enregistre l'animal dans la DB
-        this.stmt.execute();
+        this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
         if (rs.next()) {    // On récupère l'ID de l'animal inséré
             a.setId(rs.getInt(1));
@@ -3119,7 +3117,7 @@ public class DBInteraction {
         this.stmt.setInt(1, c.getOrderID());
         this.stmt.setDouble(2, c.getQuantite());
         this.stmt.setInt(3, c.getRefArticle());
-        this.stmt.execute();
+        this.stmt.executeUpdate();
     }
 
     public Commande selCommande(int orderID) throws SQLException, ExceptionDataBase {
@@ -3140,7 +3138,7 @@ public class DBInteraction {
                     rs.getString("statut"));
             return order;
         } else {
-            throw new ExceptionDataBase("No such order in database");
+            throw new ExceptionDataBase(36);
         }
     }
 
@@ -3149,7 +3147,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ORDER);
         this.stmt.setString(1, String.valueOf(commande.getStatut()));
         this.stmt.setInt(2, commande.getId());
-        this.stmt.execute();
+        this.stmt.executeUpdate();
     }
 
     public Stock selArticleByRef(int refArticle) throws SQLException, ExceptionDataBase {
@@ -3165,7 +3163,7 @@ public class DBInteraction {
             s.setQuantite(rs.getDouble("quantite"));
             s.setUnite(rs.getString("unite"));
         } else {
-            throw new ExceptionDataBase("Aucun article ne correspondant à l'ID : " + refArticle);
+            throw new ExceptionDataBase(37 + refArticle);
         }
 
         return s;
@@ -3194,7 +3192,7 @@ public class DBInteraction {
         String result = "";
 
         if (!rs.next()) {
-            throw new ExceptionDataBase("Aucune commande en cours pour cette article");
+            throw new ExceptionDataBase(37);
         } else {
             rs.beforeFirst();
             rs.next();
