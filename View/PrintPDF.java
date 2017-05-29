@@ -87,6 +87,9 @@ public class PrintPDF {
                 output = jfc.getSelectedFile().toString();
             }
         }
+        else{
+            output = null;
+        }
 
         try {
             PdfWriter.getInstance(document, new FileOutputStream(output));
@@ -152,11 +155,13 @@ public class PrintPDF {
 
         // permet de lancer une impression du PDF après avoir sélectionné l'imprimante
         try{
-            PrinterJob job = PrinterJob.getPrinterJob();
-            job.setPrintService(choosePrinter());
-            PDDocument doc = PDDocument.load(new File(output));
-            job.setPageable(new PDFPageable(doc));
-            job.print();
+            if(output != null) {
+                PrinterJob job = PrinterJob.getPrinterJob();
+                job.setPrintService(choosePrinter());
+                PDDocument doc = PDDocument.load(new File(output));
+                job.setPageable(new PDFPageable(doc));
+                job.print();
+            }
         } catch (Exception exception) {
             exception.printStackTrace();
             // TODO : à voir si on crée bien cette fenêtre d'erreur...
