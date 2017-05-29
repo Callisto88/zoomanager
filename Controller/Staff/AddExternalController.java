@@ -171,7 +171,7 @@ public class AddExternalController {
         if (bLastName && bFirstName && bCompagny && bEmail && bNPA && bChange && bCountry && bAddAddress && bPhone) {
             dbConnection();
 
-            int statut = 1; // Pour dire qu'il est actif ou non
+            int statut = 0; // Pour dire qu'il est actif
             Intervenant external = new Intervenant(compagny, lastName, firstName, adresse, email, phone, statut);
             insertExternal(external);
 

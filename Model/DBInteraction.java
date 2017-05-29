@@ -140,7 +140,8 @@ public class DBInteraction {
             "  INNER JOIN Ville\n" +
             "    ON Adresse.villeId = Ville.villeId\n" +
             "  INNER JOIN Pays\n" +
-            "    ON Ville.paysId = Pays.paysId;";
+            "    ON Ville.paysId = Pays.paysId" +
+            " WHERE statut = 0;";
 
     private static final String SEL_INTERVENANTS_BY_EVENT_ID = "SELECT *\n" +
             "FROM Infrastructure_Evenement\n" +
@@ -1547,11 +1548,15 @@ public class DBInteraction {
     public void insertPersonne(Personne personne) throws SQLException {
 
         // Expected : idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
+
+        Adresse a = new Adresse();
+        a = personne.getAdresse();
+
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setString(1, personne.getNoAVS());
         this.stmt.setString(2, personne.getPrenom());
         this.stmt.setString(3, personne.getNom());
-        this.stmt.setInt(4, personne.getAdresse().getId());
+        this.stmt.setInt(4, a.getId());
         this.stmt.setString(5, personne.getEmail());
         this.stmt.setString(6, personne.getTelephone());
         this.stmt.setDate(7, personne.getDateNaissance());

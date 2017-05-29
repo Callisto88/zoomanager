@@ -8,7 +8,7 @@ public enum TypeStatut {
     STAGIAIRE,
     EMPLOYE,
     APPRENTI,
-    PROFESSIONNALISATION,
+    RESPONSABLE,
     MANDATAIRE,
     TEMPORAIRE,
 }

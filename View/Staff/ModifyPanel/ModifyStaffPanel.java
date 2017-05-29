@@ -375,11 +375,13 @@ public class ModifyStaffPanel extends GenericWindow {
             jcbSupervisor = new JComboBox();
             jcbSupervisor.addItem("");
             int index = 0;
-            for(int i = 0; i < alpSupervisor.size(); ++i){
-                jcbSupervisor.addItem(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
-                if(personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(
-                                        alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())){
-                    index = i + 1;
+            if(alpSupervisor != null) {
+                for (int i = 0; i < alpSupervisor.size(); ++i) {
+                    jcbSupervisor.addItem(alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom());
+                    if (personne.getResponsable() != 0 && mscController.getSupervisor(personne.getResponsable()).equals(
+                            alpSupervisor.get(i).getPrenom() + " " + alpSupervisor.get(i).getNom())) {
+                        index = i + 1;
+                    }
                 }
             }
             jcbSupervisor.setSelectedIndex(index);
