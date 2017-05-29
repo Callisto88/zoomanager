@@ -72,7 +72,7 @@ public class AnimalTab extends GenericWindow {
 
         animauxDB = atAnimalController.getAllAnimal();
         if(animauxDB.size() <= 0){
-            animauxDB.add(new Animal(1, "Exemple", "Exemple", "Exemple", new Date(0), new Enclos(1, "Exemple"), new Pays(1, "Exemple"), new Race(1, "Exemple"), new Date(0)));
+            animauxDB.add(new Animal(1, "Exemple", "Exemple", "Exemple", new Date(0), new Enclos(1, "Exemple"), new Pays(1, "Exemple"), new Race(1, "Exemple"), null));
         }
         enclosDB = atAnimalController.getAllEnclos();
         if(enclosDB.size() <= 0){
