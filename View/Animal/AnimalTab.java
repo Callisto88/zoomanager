@@ -918,8 +918,8 @@ public class AnimalTab extends GenericWindow {
 
                 if(formOk){
                     Animal newAnimal;
-                    Enclos newEnclos = new Enclos(enclos, selectedAnimal.getEnclos().getNom());
-                    Race newRace = new Race(race, selectedAnimal.getRace().getNom());
+                    Enclos newEnclos = new Enclos(enclos, String.valueOf(jcEnclos.getSelectedItem()));
+                    Race newRace = new Race(race, String.valueOf(jcRaces.getSelectedItem()));
                     if(selectedAnimal.getDateDeces() != null) {
                         if((mode == 2 && animalType == 2) || (mode != 2 && selectedAnimal instanceof Felin)){
                             newAnimal = new Felin(nomCommun, nom, sexe, new Date(year, month, day), newEnclos, new Pays(origine), newRace, null, dPoids);
