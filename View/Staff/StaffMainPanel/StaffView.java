@@ -295,6 +295,7 @@ public class StaffView extends GenericWindow {
             }
         }
         mmtListing = new MyModelTable(tableauStaff, columnName);
+        jtTable.updateUI();
         jtTable.setModel(mmtListing);
         //jtTable = new JTable(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
@@ -318,6 +319,7 @@ public class StaffView extends GenericWindow {
             }
         }
         mmtListing = new MyModelTable(tableauExternal, sColumnExternal);
+        jtTable.updateUI();
         jtTable.setModel(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
@@ -364,6 +366,7 @@ public class StaffView extends GenericWindow {
      * @param external Intervenant qui a été rajouter à la BDD
      */
     public void addExternalTab(Intervenant external){
+        System.out.println(alExternal.size());
         mmtListing.addRow(external.toVector());
         alExternal.add(external);
         jtTable.clearSelection();
@@ -397,7 +400,6 @@ public class StaffView extends GenericWindow {
      * @param line numéro de ligne à supprimé
      */
     public void eraseExternalRow(int line){
-
         mmtListing.removeRow(line);
         alExternal.remove(line);
         jtTable.clearSelection();
