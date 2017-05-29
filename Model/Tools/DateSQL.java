@@ -30,9 +30,14 @@ public class DateSQL {
 
     static public short calculateAge(Date dateNaissance) {
         short age;
-        LocalDate naissance = dateNaissance.toLocalDate();
-        LocalDate now = LocalDate.now(ZoneId.systemDefault());
-        age = (short) ChronoUnit.YEARS.between(naissance, now);
+        if(dateNaissance != null) {
+            LocalDate naissance = dateNaissance.toLocalDate();
+            LocalDate now = LocalDate.now(ZoneId.systemDefault());
+            age = (short) ChronoUnit.YEARS.between(naissance, now);
+        }
+        else{
+            age = 0;
+        }
 
         return age;
     }

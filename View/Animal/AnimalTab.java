@@ -71,10 +71,25 @@ public class AnimalTab extends GenericWindow {
         this.atAnimalController = atAnimalController;
 
         animauxDB = atAnimalController.getAllAnimal();
+        if(animauxDB.size() <= 0){
+            animauxDB.add(new Animal(1, "Exemple", "Exemple", "Exemple", new Date(0), new Enclos(1, "Exemple"), new Pays(1, "Exemple"), new Race(1, "Exemple"), new Date(0)));
+        }
         enclosDB = atAnimalController.getAllEnclos();
+        if(enclosDB.size() <= 0){
+            enclosDB.add(new Enclos(1, "Exemple"));
+        }
         racesDB = atAnimalController.getAllRaces();
+        if(racesDB.size() <= 0){
+            racesDB.add(new Race(1, "Exemple"));
+        }
         originesDB = atAnimalController.getAllOrigines();
+        if(originesDB.size() <= 0){
+            originesDB.add(new Pays(1, "Exemple"));
+        }
         animalEvents = atAnimalController.getTasks();
+        if(animalEvents.size() <= 0){
+            animalEvents.add(new Animal_Evenement(new Animal(), new Evenement("Exemple", "Exemple") ));
+        }
 
         Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB);
 
@@ -92,7 +107,9 @@ public class AnimalTab extends GenericWindow {
         d.width = jtTable.getPreferredSize().width;
         jtTable.setPreferredScrollableViewportSize(d);
 
-        TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
+        if(vAnimal.size() > 0) {
+            TableFilterHeader filterHeader = new TableFilterHeader(jtTable, AutoChoices.ENABLED);
+        }
 
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft = new GridBagConstraints();
@@ -363,8 +380,13 @@ public class AnimalTab extends GenericWindow {
         jpDetAnimal.removeAll();
 
         int y = 0;
-
-        Animal selectedAnimal = animauxDB.get(selectedRow);
+        Animal selectedAnimal;
+        if(animauxDB.size() > 0) {
+            selectedAnimal = animauxDB.get(selectedRow);
+        }
+        else{
+            selectedAnimal = new Animal();
+        }
 
         GridBagLayout gblAnimalForm = new GridBagLayout();
         jpDetAnimal.setLayout(gblAnimalForm);
@@ -818,13 +840,13 @@ public class AnimalTab extends GenericWindow {
                     events.add(animalEvent.getEvenement());
                 }
             }
-            EventsTable etStaff = new EventsTable(events);
+            EventsTable etEvents = new EventsTable(events);
             gbcAnimalForm.gridx = 0;
             gbcAnimalForm.gridy = y;
             gbcAnimalForm.gridwidth = 2;
-            etStaff.setPreferredSize(new Dimension(370, 260));
-            etStaff.getJTable().setPreferredScrollableViewportSize(new Dimension(360, 230));
-            jpDetAnimal.add(etStaff, gbcAnimalForm);
+            etEvents.setPreferredSize(new Dimension(370, 260));
+            etEvents.getJTable().setPreferredScrollableViewportSize(new Dimension(360, 230));
+            jpDetAnimal.add(etEvents, gbcAnimalForm);
 
             y++;
         }

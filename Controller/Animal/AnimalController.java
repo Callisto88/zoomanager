@@ -50,7 +50,9 @@ public class AnimalController {
             animauxDB = query.selAnimaux();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            new ErrorController(e.getMsg());
+            if(e.getNum_Error() != 12 && e.getNum_Error() != 14 && e.getNum_Error() != 15 && e.getNum_Error() != 16 && e.getNum_Error() != 17) {
+                new ErrorController(e.getMsg());
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             new ErrorController(e.getMessage());
@@ -302,10 +304,8 @@ public class AnimalController {
             events = query.selEventsHavingAnimal();
         } catch (ExceptionDataBase e) {
             e.printStackTrace();
-            //System.out.println(e.getMsg());
         } catch (SQLException e) {
             e.printStackTrace();
-            //System.out.println(e.getMessage());
         }
 
 

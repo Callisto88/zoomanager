@@ -107,6 +107,7 @@ public class ExceptionDataBase extends Exception {
             "Aucune événement n'est assigné à cet personne. ID : ";
     // HashMap qui contient tous les messages d'erreurs
     private static final HashMap<Integer, String> MSG_ERROR = new HashMap<Integer, String>();
+    private int num_Error;
 
     /**
      * Initialisation des messages d'erreurs dans le HashMap
@@ -152,6 +153,7 @@ public class ExceptionDataBase extends Exception {
      */
     public ExceptionDataBase(int index) {
         super((MSG_ERROR.get(index)));
+        this.num_Error = index;
     }
 
     /**
@@ -161,6 +163,7 @@ public class ExceptionDataBase extends Exception {
      */
     public ExceptionDataBase(int index, int infoObjet) {
         super((MSG_ERROR.get(index) + infoObjet));
+        this.num_Error = index;
     }
 
     /**
@@ -170,6 +173,7 @@ public class ExceptionDataBase extends Exception {
      */
     public ExceptionDataBase(int index, String infoObjet) {
         super((MSG_ERROR.get(index) + infoObjet));
+        this.num_Error = index;
     }
 
     /**
@@ -187,6 +191,15 @@ public class ExceptionDataBase extends Exception {
      */
     public String getMsg () {
         return super.getMessage();
+    }
+
+    /**
+     * Getter qui permet de récuprer le numero du message d'erreur
+     *
+     * @return int
+     */
+    public int getNum_Error() {
+        return num_Error;
     }
 
 }
