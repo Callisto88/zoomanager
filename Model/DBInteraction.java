@@ -403,7 +403,6 @@ public class DBInteraction {
     private static final String INSERT_TYPE_EVENEMET = " INSERT INTO TypeEvenement VALUES (?) ";
 
     // Insertion d'un événement dans la DB
-    // private static final String INSERT_EVENEMENT = "INSERT INTO Evenement VALUES (null, ?, ?, ?);";
     private static final String INSERT_EVENEMENT = "INSERT INTO Evenement(id, description, date, type)\n" +
             "VALUES (?, ?, ?, ?)\n" +
             "ON DUPLICATE KEY UPDATE " +
@@ -542,307 +541,6 @@ public class DBInteraction {
         this.db = new DBConnection();
         this.db.init();
         this.stmt = null;
-
-        /*
-        try {
-            Statement statement = DBConnection.con.createStatement();
-            statement.execute("CREATE TABLE IF NOT EXISTS Adresse (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tadresse varchar(250) NOT NULL,\n" +
-                    "\tvilleId integer NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n");
-            statement.execute(
-                    "CREATE TABLE IF NOT EXISTS Animal (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnomCommun varchar(250) NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tsexe varchar(30),\n" +
-                    "\tdateNaissance varchar(50),\n" +
-                    "\tenclos integer,\n" +
-                    "\torigine integer,\n" +
-                    "\tdateDeces varchar(50),\n" +
-                    "\trace integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n");
-            statement.execute(
-                    "CREATE TABLE IF NOT EXISTS Animal_Evenement (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tanimal integer,\n" +
-                    "\tevenement integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Animal_Fauve (\n" +
-                    "\tid integer,\n" +
-                    "\tpoids decimal(8,3)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Animal_Oiseau (\n" +
-                    "\tid integer,\n" +
-                    "\tenvergure decimal(6,2),\n" +
-                    "\tbague varchar(10)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Animal_Primate (\n" +
-                    "\tid integer,\n" +
-                    "\ttemperature decimal(6,2)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Animal_Race (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnom varchar(250),\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Animal_Reptile (\n" +
-                    "\tid integer,\n" +
-                    "\ttemperature decimal(6,2)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Commande (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tstatut varchar(250) NOT NULL,\n" +
-                    "\tdateHeure varchar(50),\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Commande_Contenu (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tidCommande integer NOT NULL,\n" +
-                    "\trefArticle integer,\n" +
-                    "\tquantite decimal(6,2),\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Enclos (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tsecteur integer NOT NULL,\n" +
-                    "\tsurface decimal(6,2) NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Evenement (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tdescription varchar(250) NOT NULL,\n" +
-                    "\tdate varchar(50) NOT NULL,\n" +
-                    "\ttype integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Evenement_Type (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\ttype varchar(250) NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Infrastructure (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\ttype integer NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Infrastructure_Evenement (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tinfrastructure integer,\n" +
-                    "\tevenement integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Infrastructure_Type (\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tPRIMARY KEY (nom)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Intervenant (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tentreprise varchar(250) NOT NULL,\n" +
-                    "\tprenom varchar(250) NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tadresse integer NOT NULL,\n" +
-                    "\temail varchar(250),\n" +
-                    "\ttelephone varchar(20) NOT NULL,\n" +
-                    "\tstatut integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Intervenant_Evenement (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tintervenant integer,\n" +
-                    "\tevenement integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Parc (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tdimension decimal(6,2) NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Pays (\n" +
-                    "\tpaysId integer NOT NULL,\n" +
-                    "\tpays varchar(250) NOT NULL,\n" +
-                    "\tPRIMARY KEY (paysId)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Personne (\n" +
-                    "\tidPersonne integer NOT NULL,\n" +
-                    "\tnoAVS varchar(16) NOT NULL,\n" +
-                    "\tprenom varchar(250) NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tadresse integer,\n" +
-                    "\temail varchar(250),\n" +
-                    "\ttelephone varchar(20),\n" +
-                    "\tdateNaissance varchar(25) NOT NULL,\n" +
-                    "\tresponsable integer,\n" +
-                    "\tstatut varchar(250) NOT NULL,\n" +
-                    "\tdateDebut varchar(25) NOT NULL,\n" +
-                    "\ttypeContrat varchar(250) NOT NULL,\n" +
-                    "\tPRIMARY KEY (idPersonne)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Personne_Evenement (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tpersonne integer,\n" +
-                    "\tevenement integer,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Salle (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnbPlace integer NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Secteur (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tnom varchar(250) NOT NULL,\n" +
-                    "\tresponsable integer NOT NULL,\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Stock (\n" +
-                    "\tid integer NOT NULL,\n" +
-                    "\tdescription text NOT NULL,\n" +
-                    "\tquantite decimal(6,2),\n" +
-                    "\tunite varchar(50),\n" +
-                    "\tquantiteMin decimal(6,2),\n" +
-                    "\tPRIMARY KEY (id)\n" +
-                    ");\n" +
-                    "CREATE TABLE IF NOT EXISTS Ville (\n" +
-                    "\tvilleId integer NOT NULL,\n" +
-                    "\tcodePostal integer NOT NULL,\n" +
-                    "\tville varchar(250) NOT NULL,\n" +
-                    "\tpaysId integer NOT NULL,\n" +
-                    "\tPRIMARY KEY (villeId)\n" +
-                    ");\n" +
-                    "ALTER TABLE Adresse\n" +
-                    "\tADD FOREIGN KEY (villeId) \n" +
-                    "\tREFERENCES Ville (villeId);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal\n" +
-                    "\tADD FOREIGN KEY (origine) \n" +
-                    "\tREFERENCES Pays (paysId);\n" +
-                    "\n" +
-                    "ALTER TABLE Animal\n" +
-                    "\tADD FOREIGN KEY (race) \n" +
-                    "\tREFERENCES Animal_Race (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Animal\n" +
-                    "\tADD FOREIGN KEY (enclos) \n" +
-                    "\tREFERENCES Enclos (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Evenement\n" +
-                    "\tADD FOREIGN KEY (evenement) \n" +
-                    "\tREFERENCES Evenement (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Evenement\n" +
-                    "\tADD FOREIGN KEY (animal) \n" +
-                    "\tREFERENCES Animal (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Fauve\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Animal (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Oiseau\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Animal (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Primate\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Animal (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Animal_Reptile\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Animal (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Commande_Contenu\n" +
-                    "\tADD FOREIGN KEY (idCommande) \n" +
-                    "\tREFERENCES Commande (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Commande_Contenu\n" +
-                    "\tADD FOREIGN KEY (refArticle) \n" +
-                    "\tREFERENCES Stock (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Enclos\n" +
-                    "\tADD FOREIGN KEY (secteur) \n" +
-                    "\tREFERENCES Secteur (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Evenement\n" +
-                    "\tADD FOREIGN KEY (type) \n" +
-                    "\tREFERENCES Evenement_Type (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Infrastructure_Evenement\n" +
-                    "\tADD FOREIGN KEY (evenement) \n" +
-                    "\tREFERENCES Evenement (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Infrastructure_Evenement\n" +
-                    "\tADD FOREIGN KEY (infrastructure) \n" +
-                    "\tREFERENCES Infrastructure (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Intervenant\n" +
-                    "\tADD FOREIGN KEY (adresse) \n" +
-                    "\tREFERENCES Adresse (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Intervenant_Evenement\n" +
-                    "\tADD FOREIGN KEY (evenement) \n" +
-                    "\tREFERENCES Evenement (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Intervenant_Evenement\n" +
-                    "\tADD FOREIGN KEY (intervenant) \n" +
-                    "\tREFERENCES Intervenant (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Parc\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Infrastructure (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Personne\n" +
-                    "\tADD FOREIGN KEY (adresse) \n" +
-                    "\tREFERENCES Adresse (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Personne_Evenement\n" +
-                    "\tADD FOREIGN KEY (evenement) \n" +
-                    "\tREFERENCES Evenement (id);\n" +
-                    "\n" +
-                    "ALTER TABLE Personne_Evenement\n" +
-                    "\tADD FOREIGN KEY (personne) \n" +
-                    "\tREFERENCES Personne (idPersonne);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Salle\n" +
-                    "\tADD FOREIGN KEY (id) \n" +
-                    "\tREFERENCES Infrastructure (id);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Secteur\n" +
-                    "\tADD FOREIGN KEY (responsable) \n" +
-                    "\tREFERENCES Personne (idPersonne);\n" +
-                    "\n" +
-                    "\n" +
-                    "ALTER TABLE Ville\n" +
-                    "\tADD FOREIGN KEY (paysId) \n" +
-                    "\tREFERENCES Pays (paysId);\n");
-
-        }
-        catch(SQLException e){
-            System.out.println(e.getMessage());
-        }
-        */
     }
 
     /**
@@ -866,8 +564,7 @@ public class DBInteraction {
         this.stmt.executeUpdate();
         ResultSet rs = this.stmt.getGeneratedKeys();
 
-        if (rs.next()) {        // On récupère l'ID de la nouvelle adresse
-            // rs.beforeFirst();   // On remet le curseur au début
+        if (rs.next()) {            // On récupère l'ID de la nouvelle adresse
             return rs.getInt(1);
         } else {
             return 0;
@@ -981,9 +678,16 @@ public class DBInteraction {
     }
 
     // -----------------------------------------------------------------------------------------------------------------
+    // Gestion des adresse, ville et pays
     // -----------------------------------------------------------------------------------------------------------------
-    // Partie pour la gestion des ADRESSES dans la DB
 
+    /**
+     * Permet de récupérer une adresse à partir de son identifiant
+     *
+     * @param addressID un entier correspondant à l'ID de l'adresse
+     * @return un objet de type Adresse
+     * @throws SQLException
+     */
     private Adresse selAdresseFromID(int addressID) throws SQLException {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_ADRESSE_FROM_ID);
@@ -1004,6 +708,13 @@ public class DBInteraction {
         return a;
     }
 
+    /**
+     * Permet de récupérer une ville d'après son identifiant
+     *
+     * @param villeID un entier correspondant à l'ID de la ville
+     * @return un objet de type Ville
+     * @throws SQLException
+     */
     private Ville selVilleFromID(int villeID) throws SQLException {
 
         if (villeID == 0) {
@@ -1034,6 +745,13 @@ public class DBInteraction {
         return v;
     }
 
+    /**
+     * Récupère un pays à partir de son ID
+     *
+     * @param countryID un entier correspondant à l'ID du pays
+     * @return un objet de type Pays
+     * @throws SQLException
+     */
     private Pays selCountryFromID(int countryID) throws SQLException {
 
         if (countryID == 0) {
@@ -1056,6 +774,14 @@ public class DBInteraction {
         return p;
     }
 
+    /**
+     * Génére un ArrayList de Pays à partir d'un ResultSet issu de MySQL
+     *
+     * @param rs ResultSet
+     * @return ArrayList<Pays>, liste des pays contenus dans le resultSet
+     * @throws ExceptionDataBase
+     * @throws SQLException
+     */
     private ArrayList<Pays> creerTableauPays(ResultSet rs) throws ExceptionDataBase, SQLException {
         ArrayList<Pays> data = new ArrayList<>();
         if (!rs.next()) {
@@ -1069,6 +795,13 @@ public class DBInteraction {
         return data;
     }
 
+    /**
+     * Retourne la liste de tous les pays stockés dans la base de données
+     *
+     * @return ArrayList<Pays> une liste de tous les pays de la base de données
+     * @throws SQLException
+     * @throws ExceptionDataBase
+     */
     public ArrayList<Pays> selCountries() throws SQLException, ExceptionDataBase {
 
         this.stmt = DBConnection.con.prepareStatement(SEL_ALL_PAYS);
