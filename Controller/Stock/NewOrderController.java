@@ -24,7 +24,7 @@ import java.util.Vector;
  *
  * @version 1.0
  *
- * @date    05.05.2017
+ * @date    15.04.2017
  *
  */
 public class NewOrderController {
@@ -34,8 +34,8 @@ public class NewOrderController {
     private MyModelTable mmtOrderHistory;
 
     //Numéros des colonnes pour les recherches dans la table
-    final int COLUMN_IDREF = 0;
-    final int COLUMN_QUANTITY = 2;
+    private final int COLUMN_IDREF = 0;
+    private final int COLUMN_QUANTITY = 2;
 
     /**
      * Constructeur

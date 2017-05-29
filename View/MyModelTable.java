@@ -16,7 +16,7 @@ import java.util.Vector;
  *
  * @version 1.0
  *
- * @date    17.04.2017
+ * @date    15.04.2017
  *
  */
 
@@ -34,8 +34,9 @@ public class MyModelTable extends AbstractTableModel{
      *                    en-têtes
      */
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames){
-        super();
-
+        //super();
+        this(vData, columnNames, new boolean[columnNames.length]);
+/*
         this.vData = vData;
         this.columnNames = columnNames;
         this.columnEditable = new boolean[columnNames.length]; // false par défaut
@@ -45,6 +46,8 @@ public class MyModelTable extends AbstractTableModel{
                 csTab[i][j] = CellStatus.EMPTY;
             }
         }
+        */
+
     }
 
     /**
@@ -58,7 +61,6 @@ public class MyModelTable extends AbstractTableModel{
      *
      */
     public MyModelTable(Vector<Vector<Object>> vData, String[] columnNames, boolean[] columnEditable){
-        super();
 
         this.vData = vData;
         this.columnNames = columnNames;

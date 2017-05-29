@@ -25,7 +25,7 @@ import java.util.Vector;
  *
  * @version 1.0
  *
- * @date    17.04.2017
+ * @date    05.05.2017
  *
  */
 public class OrderContent extends GenericWindow{
@@ -56,6 +56,7 @@ public class OrderContent extends GenericWindow{
     public OrderContent(OrderContentController occOrderContentController, Vector<Vector<Object>> vOrderContent){
         super("Contenu Commande");
         this.vOrderContent = vOrderContent;
+        gbcMainPanel.insets = new Insets(15, 0, 15, 0);
         /***********************************************************************/
         //Instanciation et ajout du titre dans un JPanel, puis ajout du JPanel
         //du titre dans le JPanel principal en indiquant sa place dans

@@ -22,8 +22,8 @@ import javax.swing.JFormattedTextField.AbstractFormatter;
  */
 public class DateLabelFormatter extends AbstractFormatter {
 
-    private String datePattern = "yyyy-MM-dd";
-    private SimpleDateFormat dateFormatter = new SimpleDateFormat(datePattern);
+    private String sDatePattern = "yyyy-MM-dd";
+    private SimpleDateFormat sdfDateFormatter = new SimpleDateFormat(sDatePattern);
 
     /**
      * Méthode qui permet de convertir une String en Object (date)
@@ -33,7 +33,7 @@ public class DateLabelFormatter extends AbstractFormatter {
      */
     @Override
     public Object stringToValue(String text) throws ParseException {
-        return dateFormatter.parseObject(text);
+        return sdfDateFormatter.parseObject(text);
     }
 
     /**
@@ -46,7 +46,7 @@ public class DateLabelFormatter extends AbstractFormatter {
     public String valueToString(Object value) throws ParseException {
         if (value != null) {
             Calendar cal = (Calendar) value;
-            return dateFormatter.format(cal.getTime());
+            return sdfDateFormatter.format(cal.getTime());
         }
 
         return "";

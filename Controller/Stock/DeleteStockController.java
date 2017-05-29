@@ -26,7 +26,7 @@ import java.util.Vector;
  *
  * @version 1.0
  *
- * @date    17.04.2017
+ * @date    15.04.2017
  *
  */
 public class DeleteStockController {

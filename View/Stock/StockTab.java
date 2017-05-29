@@ -36,7 +36,7 @@ import java.util.Vector;
  *
  * @version 1.0
  *
- * @date    17.04.2017
+ * @date    15.04.2017
  *
  */
 
@@ -262,7 +262,6 @@ public class StockTab extends GenericWindow {
         //Instanciation d'un JDatePickerImpl, c'est la fenêtre avec un calendrier afin de pouvoir
         //choisir une date
         JDatePickerImpl jdpriEndDatePicker = new JDatePickerImpl(jdpiEndDatePanel, new DateLabelFormatter());
-
         JLabel jlStartDate = new JLabel("De: ");
         JLabel jlEndDate = new JLabel("A: ");
 

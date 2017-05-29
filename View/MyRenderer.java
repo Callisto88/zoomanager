@@ -13,11 +13,11 @@ import java.awt.*;
  *
  * @version 1.0
  *
- * @date    29.04.2017
+ * @date    20.04.2017
  *
  */
 public class MyRenderer extends DefaultTableCellRenderer {
-    MyModelTable mmtModelTable;
+    private MyModelTable mmtModelTable;
     private int column;
     private Component cColor;
 

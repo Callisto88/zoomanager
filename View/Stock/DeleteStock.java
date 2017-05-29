@@ -15,7 +15,15 @@ import java.awt.event.WindowEvent;
 import java.util.Vector;
 
 /**
- * Created by Miguel on 04/05/2017.
+ *
+ * Cette classe est la classe de l'interface de suppression d'aliment en stock.
+ *
+ * @author M.Silva
+ *
+ * @version 1.0
+ *
+ * @date    04.05.2017
+ *
  */
 public class DeleteStock extends GenericWindow{
     //En-têtes pour la création de la JTable

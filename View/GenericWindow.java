@@ -15,14 +15,14 @@ import java.awt.*;
  *
  * @version 1.0
  *
- * @date    08.04.2017
+ * @date    07.04.2017
  *
  */
 
 abstract public class GenericWindow extends JPanel {
     //Nom des différentes fontes
     private final String FONT_TITLE_PRINT = "Fonte Titre Impression";
-    private final String BUTTON_FONT_NAME = "Fonte Bouton";
+    private final String FONT_BUTTON_NAME = "Fonte Bouton";
     private final String FONT_TITLE = "Fonte Titre";
     private final String FONT_WINDOW_TITLE = "Fonte Titre Fenêtre";
     private final String FONT_TABLE = "Fonte Table";
@@ -48,7 +48,7 @@ abstract public class GenericWindow extends JPanel {
     private JFrame jfFrame;
     //Les différentes fontes
     private Font fTitlePrintFont = new Font(FONT_TITLE_PRINT, Font.PLAIN, TITLE_PRINT_FONT_SIZE);
-    private Font fButtonFont = new Font(BUTTON_FONT_NAME, Font.PLAIN, BUTTON_FONT_SIZE);
+    private Font fButtonFont = new Font(FONT_BUTTON_NAME, Font.PLAIN, BUTTON_FONT_SIZE);
     private Font fTitleFont = new Font(FONT_TITLE, Font.PLAIN, TITLE_FONT_SIZE);
     private Font fWindowTitleFont = new Font(FONT_WINDOW_TITLE, Font.PLAIN, WINDOW_TITLE_FONT_SIZE);
     private Font fTableFont = new Font(FONT_TABLE, Font.PLAIN, TABLE_FONT_SIZE);
@@ -92,25 +92,6 @@ abstract public class GenericWindow extends JPanel {
         jlErrorMessage.setForeground(Color.RED);
     }
 
-    /*
-    private int MIN_WIDTH;
-    private int MIN_HEIGHT;
-    protected JPanel jpMainPanel;
-    protected GridBagConstraints gbcMainPanel = new GridBagConstraints();
-    private Dimension dim;
-    private String windowTitle;
-    protected JLabel jlErrorMessage = new JLabel();
-    private JFrame jfFrame;
-    private Font fTitlePrintFont = new Font(FONT_TITLE_PRINT, Font.PLAIN, TITLE_PRINT_FONT_SIZE);
-    private Font fButtonFont = new Font(BUTTON_FONT_NAME, Font.PLAIN, BUTTON_FONT_SIZE);
-    private Font fTitleFont = new Font(FONT_TITLE, Font.PLAIN, TITLE_FONT_SIZE);
-    private Font fWindowTitleFont = new Font(FONT_WINDOW_TITLE, Font.PLAIN, WINDOW_TITLE_FONT_SIZE);
-    private Font fTableFont = new Font(FONT_TABLE, Font.PLAIN, TABLE_FONT_SIZE);
-    private Font fErrorMessageFont = new Font(FONT_ERROR_MESSAGE, Font.PLAIN, ERROR_MESSAGE_FONT_SIZE);
-    private Font fCheckboxFont = new Font(FONT_CHECKBOX_NAME, Font.PLAIN, CHECKBOX_FONT_SIZE);
-    static protected Dimension defaultFormSize = new Dimension(140, 30);
-     */
-
     /**
      * Méthode qui configure la JFrame et qui la rend visible.
      * @param jfFrame est la JFrame en question
@@ -119,14 +100,14 @@ abstract public class GenericWindow extends JPanel {
     protected void configFrame(JFrame jfFrame, GenericWindow gw){
         jfFrame.add(jpMainPanel,BorderLayout.NORTH);
         jfFrame.setContentPane(jpMainPanel);
-        //jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        jfFrame.setExtendedState(JFrame.MAXIMIZED_BOTH);
         jfFrame.setMinimumSize(new Dimension(MIN_WIDTH, MIN_HEIGHT));
         jfFrame.setDefaultCloseOperation(WindowConstants.HIDE_ON_CLOSE);
         //jfFrame.getContentPane().add(gw);
         jfFrame.pack();
         jfFrame.setVisible(true);
 
-        jfFrame.setLocation((dim.width - jfFrame.getContentPane().getWidth())/2, (dim.height - jfFrame.getContentPane().getHeight())/2);
+        //jfFrame.setLocation((dim.width - jfFrame.getContentPane().getWidth())/2, (dim.height - jfFrame.getContentPane().getHeight())/2);
     }
 
     // -----------------------------------------------------------------------------------------------------------------
