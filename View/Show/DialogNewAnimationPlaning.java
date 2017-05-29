@@ -768,7 +768,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
     }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt){
         JOptionPane bg = new JOptionPane();
-        JOptionPane.showMessageDialog(this, "Enregistrer les données de votre evenement", "Enregistrement",
+        bg.showMessageDialog(this, "Enregistrer les données de votre evenement", "Enregistrement",
                 JOptionPane.QUESTION_MESSAGE);
         int y = this.datePanel.datePicker.getModel().getYear();
         int m = this.datePanel.datePicker.getModel().getMonth();
@@ -957,15 +957,17 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                                 }
                             }
                         }
-                        for (Infrastructure a : lstInfra){
-                            boolean del = true;
-                            for(Infrastructure b : infra){
-                                if(b.getNom().trim().equalsIgnoreCase(a.getNom().trim())){
-                                    del = false;
+                        if(lstInfra.size()>0) {
+                            for (Infrastructure a : lstInfra) {
+                                boolean del = true;
+                                for (Infrastructure b : infra) {
+                                    if (b.getNom().trim().equalsIgnoreCase(a.getNom().trim())) {
+                                        del = false;
+                                    }
                                 }
-                            }
-                            if(del){
-                                infrastructureEventController.delByEventId(a,ID_EVENT);
+                                if (del) {
+                                    infrastructureEventController.delByEventId(a, ID_EVENT);
+                                }
                             }
                         }
                     }

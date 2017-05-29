@@ -10,7 +10,7 @@ import javax.swing.JFrame;
 
 /**
  *
- * @author edoriane kaffo
+ * @author doriane kaffo
  */
 public class Test {
     View v = new View();

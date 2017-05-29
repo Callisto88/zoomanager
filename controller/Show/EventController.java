@@ -22,12 +22,43 @@ public class EventController {
             System.out.println("On me peut ajouter   d evenement vide");
         }
         try {
-            System.out.println("Insertion d un nouvel d evenement reussit "+evt);
             return query.insertEvenement(evt);
-        } catch (SQLException e1) {
-            System.out.println("Insertion   d evenement "+evt+" a echoue");
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return 0;
+    }
+    public ArrayList<Evenement> selFakeData(){
+        ArrayList<Evenement> list = null, retour = new ArrayList<Evenement>();
+
+        try {
+            list = query.selAllEvents();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        finally {
+            if (list == null){
+                System.out.print("La liste d evenement de ce type est vide");
+                list = new ArrayList<Evenement>();
+            }
+        }
+        ArrayList<String> types = (new EventTypeController()).selAll();
+        int n= types.size();
+        System.out.println("IL  A "+n+" TYPES D EVENEMENTS");
+        if(n<1)
+            return new ArrayList<Evenement>();
+        for (Evenement v : list){
+            if(v.getType().length()<2 && !v.getType().trim().equalsIgnoreCase("")){
+                System.out.println(v.getType()+" "+v.getType().length());
+                int i = Integer.parseInt(v.getType());
+                v.setType(types.get(i%n));
+                retour.add(v);
+            }
+        }
+        return retour;
     }
     public ArrayList<Evenement> selAllByEventType(String typeLast) {
         ArrayList<Evenement> list = null;

@@ -33,13 +33,6 @@ public class EventTypeController {
         } catch (ExceptionDataBase exceptionDataBase) {
             exceptionDataBase.printStackTrace();
         }
-//        try {
-//            System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
-//            return true;
-//        } catch (SQLException e) {
-//            System.out.println("Insertion du type d evenement "+evtType+" a echoue");
-//            e.printStackTrace();
-//        }
         return false;
     }
 

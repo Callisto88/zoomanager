@@ -61,7 +61,7 @@ public class IntervenantEventController {
                     }
                 }
             } catch (ExceptionDataBase exceptionDataBase) {
-                exceptionDataBase.printStackTrace();
+                System.out.println("Aucun intervenant trouve");
             }
             if(add_elt)
                 query.assignEvenementIntervenant(E,I);

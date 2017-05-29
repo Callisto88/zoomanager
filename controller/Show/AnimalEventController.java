@@ -32,11 +32,6 @@ public class AnimalEventController {
                 lstAn = new ArrayList<Animal>();
             }
         }
-//         catch (SQLException e) {
-//            System.out.println("Aucun animal trouve pour cet evenement");
-//        } catch (ExceptionDataBase exceptionDataBase) {
-//            System.out.println("Aucun animal trouve pour cet evenement");
-//        }
         return lstAn;
     }
 

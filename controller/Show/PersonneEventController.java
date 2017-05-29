@@ -27,13 +27,6 @@ public class PersonneEventController {
             System.out.println("Auncune personne ne correspond a cet evenement "+id);
             //exceptionDataBase.printStackTrace();
         }
-//        try {
-//            lstPer = query.selPeopleByEventID(id);
-//        } catch (SQLException e) {
-//            System.out.println("Aucune personne trouvee pour cet evenement");
-//        } catch (ExceptionDataBase exceptionDataBase) {
-//            System.out.println("Aucune personne trouvee pour cet evenement");
-//        }
             finally {
             if(lstPer == null){
                 lstPer = new ArrayList<Personne>();

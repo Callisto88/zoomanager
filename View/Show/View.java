@@ -71,17 +71,45 @@ public class View extends javax.swing.JPanel {
         intervenantCtrl = new IntervenantEventController();
         animalEventCtrl = new AnimalEventController();
        personneEventCtrl = new PersonneEventController();
-        try {
-            query = new DBInteraction();
-        } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
-        }
+//       ArrayList<Evenement> listeError = eventCtrl.selFakeData();
+//       if(listeError.size()>0){
+//           final JDialog dg = new JDialog();
+//           dg.setTitle("Configuration des Evenements");
+//           dg.setSize(new Dimension(400,200));
+//           final LoadingPanel pan = new LoadingPanel();
+//           dg.setLocation(350, 100);
+//           dg.getContentPane().add(pan);
+//           dg.setVisible(true);
+//           int i=0;
+//           int n = listeError.size();
+//           try {
+//               Thread.sleep(1000);
+//           } catch (InterruptedException e) {
+//               e.printStackTrace();
+//           }
+//           for (Evenement ev : listeError){
+//               eventCtrl.save(ev);
+//               i++;
+//               int evo = (i*100)/n;
+//               pan.getLevel().setText(evo+"%");
+//           }
+//           try {
+//               Thread.sleep(1000);
+//           } catch (InterruptedException e) {
+//               e.printStackTrace();
+//           }dg.setVisible(false);
+//       }
+
         (new Thread(new Runnable() {
             @Override
             public void run() {
                 initValue();
             }
         })).start();
+
+        imprimer.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {(new ImpressionController()).imprimer();}});
     }
 
     /**
@@ -202,7 +230,6 @@ public class View extends javax.swing.JPanel {
         });
 
         imprimer.setText("Imprimer");
-
         modifierEvent.setText("Modifier");
         modifierEvent.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -460,7 +487,7 @@ public class View extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         if(TypeLast.length()<2){
             JOptionPane bg = new JOptionPane();
-            JOptionPane.showMessageDialog(this, "Il faut choisir un type d evenement", "Erreur",
+            bg.showMessageDialog(this, "Il faut choisir un type d evenement", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -649,12 +676,12 @@ public class View extends javax.swing.JPanel {
                         boolean supp = eventCtrl.delById(evtn.getId());
                         if(supp){
                             JOptionPane bg = new JOptionPane();
-                            JOptionPane.showMessageDialog(null, "L evenement a ete supprime", "Supprimer evenement",
+                            bg.showMessageDialog(null, "L evenement a ete supprime", "Supprimer evenement",
                                     JOptionPane.INFORMATION_MESSAGE);
                         }else {
 
                             JOptionPane bg = new JOptionPane();
-                            JOptionPane.showMessageDialog(null, "La suppression a echoué, verifier que les relations sont toutes supprimees", "Supprimer evenement",
+                            bg.showMessageDialog(null, "La suppression a echoué, verifier que les relations sont toutes supprimees", "Supprimer evenement",
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }

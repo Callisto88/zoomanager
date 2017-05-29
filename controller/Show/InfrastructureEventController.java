@@ -8,7 +8,7 @@ import Model.Intervenant;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffoon 10/05/2017.
+ * Created by doriane kaffo on 10/05/2017.
  */
 public class InfrastructureEventController {
     DBInteraction query;
@@ -21,32 +21,10 @@ public class InfrastructureEventController {
     }
     public ArrayList<Infrastructure> selAllByEventId(int id) {
         ArrayList<Infrastructure> lstPer = new ArrayList<Infrastructure>();
-//        try {
-//            lstPer = query.selIntervenantByEventID(id);
-//        } catch (SQLException e) {
-//            System.out.println("Aucune Intervenant trouvee pour cet evenement");
-//        } catch (ExceptionDataBase exceptionDataBase) {
-//            System.out.println("Aucune Intervenant trouvee pour cet evenement");
-//        } finally {
-//            if(lstPer == null){
-//                lstPer = new ArrayList<Intervenant>();
-//            }
-//        }
         return lstPer;
     }
     public ArrayList<Infrastructure> selAll() {
         ArrayList<Infrastructure> lstPer = new ArrayList<Infrastructure>();
-//        try {
-//            lstPer = query.selAllEmployes();
-//        } catch (SQLException e) {
-//            System.out.println("Aucun animal trouve pour cet evenement");
-//        } catch (ExceptionDataBase exceptionDataBase) {
-//            System.out.println("Aucun animal trouve pour cet evenement");
-//        }finally {
-//            if(lstPer == null){
-//                lstPer = new ArrayList<Intervenant>();
-//            }
-//        }
         return lstPer;
     }
     public boolean add(int idP, int idE) {
@@ -58,12 +36,6 @@ public class InfrastructureEventController {
 
     }
     public boolean del(int idP, int idE) {
-//        try {
-//            query.delIntervenantEvenement(idP, idE);
-//            return  true;
-//        } catch (SQLException e) {
-//            System.out.println("Echec de suppression d une nouvelle Intervenant a l evenement");
-//        }
         return false;
     }
 
