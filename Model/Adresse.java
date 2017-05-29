@@ -1,7 +1,14 @@
 package Model;
 
 /**
- * Created by lapin on 28.04.17.
+ * <p>Cette classes a pour but de représenter un objet Adresse avec tous ses attributs</p>
+ *
+ * @author C.Balboni
+ * @author D.Hamel
+ * @version 1.0
+ * @date 28.03.2017 (Création)
+ * @date 05.05.2017 (Finalisation v1.0)
+ * @date 29.05.2017 (Nettoyage complet du code source)
  */
 public class Adresse {
 
@@ -17,6 +24,11 @@ public class Adresse {
      */
     public Adresse() {}
 
+    /**
+     * Constructeur via ID de l'adresse
+     *
+     * @param id
+     */
     public Adresse(int id) {
         this.id = id;
     }

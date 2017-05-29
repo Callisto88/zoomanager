@@ -4,22 +4,15 @@ import java.sql.Date;
 import java.util.Vector;
 
 /**
- * Cette classes contient la conception de la table Personne de la base de données
+ * <p>Cette classes a pour but de représenter un objet Animal avec tous ses attributs</p>
  *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * enclos   références la classe "Enclos"
- * race     références la classe "race"
- *
- * @author D.Hamel
  * @author C.Balboni
- *
+ * @author D.Hamel
  * @version 1.0
  *
  * @date    28.03.2017 (Création)
  * @date    28.03.2017 (Finalisation v1.0)
  * @date    17.04.2017 (Modifié - Type de "race" passe de "String" à "int"
- *
  */
 public class Animal {
 
@@ -41,14 +34,28 @@ public class Animal {
      */
     public Animal() {
     }
+
     /**
-     * Constructeur à partir de l'id de l'animal, permet de récupérer tous les attributs connus en base de données
+     * Constructeur à partir de l'id de l'animal
      * @param id
      */
     public Animal(int id) {
         this.id = id;
     }
 
+    /**
+     * Constructeur avec tous les attributs
+     *
+     * @param id
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     * @param dateDeces
+     */
     public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, int enclos,
                   int origine, int race, java.sql.Date dateDeces) {
         this.id = id;
@@ -62,8 +69,17 @@ public class Animal {
         this.dateDeces = dateDeces;
     }
 
-    /*
-    super(id, nomCommun, nom, sexe, anneeNaissance, e, p, r, dateDeces);
+    /**
+     * Similaire au constructeur précédent, il utilise néanmoins les classes objets pour enclos, origine et race
+     * @param id
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     * @param dateDeces
      */
     public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Enclos enclos,
                   Pays origine, Race race, java.sql.Date dateDeces) {
@@ -99,6 +115,16 @@ public class Animal {
         this.dateDeces = dateDeces;
     }
 
+    /**
+     * Constructeur alternatif avec moins d'attributs
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param enclos
+     * @param origine
+     * @param race
+     */
     public Animal(String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance,
                   Enclos enclos, Pays origine, Race race) {
         this.nom = nom;
@@ -110,6 +136,14 @@ public class Animal {
         this.race = race;
     }
 
+    /**
+     * Constructeur alternatif avec moins d'attributs
+     * @param id
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     */
     public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance) {
         this.id = id;
         this.nomCommun = nomCommun;
@@ -118,6 +152,15 @@ public class Animal {
         this.dateNaissance = anneeNaissance;
     }
 
+    /**
+     * Constructeur alternatif avec moins d'attributs
+     * @param id
+     * @param nomCommun
+     * @param nom
+     * @param sexe
+     * @param anneeNaissance
+     * @param race
+     */
     public Animal(int id, String nomCommun, String nom, String sexe, java.sql.Date anneeNaissance, Race race) {
         this.id = id;
         this.nomCommun = nomCommun;
@@ -126,6 +169,10 @@ public class Animal {
         this.dateNaissance = anneeNaissance;
         this.race = race;
     }
+
+    /**
+     * Getters & Setters
+     */
 
     public String getNomCommun() {
         return nomCommun;
@@ -152,9 +199,7 @@ public class Animal {
     }
 
     public String getNom() {
-        return nom;
-
-    }
+        return nom; }
 
     public void setNom(String nom) {
         this.nom = nom;
