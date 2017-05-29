@@ -39,9 +39,7 @@ public class AddStaffController {
      * Méthode permettant de checker qu'une personne est OK avant de l'insérer
      * @param lastName Nom de la personne
      * @param firstName Prénom de la personne
-     * @param day Jour de naissance de la personne
-     * @param month Mois de naissance de la personne
-     * @param year Année de naissance de la personne
+     * @param dateNaissance date de naissance de l'employé
      * @param avs Numéro AVS de la personne
      * @param email EMail de la personne
      * @param address Adresse de la personne
@@ -52,7 +50,7 @@ public class AddStaffController {
      * @param status Statut de la personne
      * @param contract Contrat de la personne
      */
-    public void checkPersonne(String lastName, String firstName, int day, int month, int year, boolean dateOK, String avs,
+    public void checkPersonne(String lastName, String firstName, Date dateNaissance, Date dateDebut, String avs,
                               String email, String address, String npa, String city, String country, String phone,
                               int supervisor, String status, String contract) {
 
@@ -65,10 +63,6 @@ public class AddStaffController {
         boolean bFirstName = Validate.isAlphabetic(firstName) && !firstName.equals("prénom");
         if(!bFirstName){
             add.setFirstNameError("Champ prénom contenant des caractères innaproprié");
-        }
-        // Permet de checker la date de naissance
-        if(!dateOK){
-            add.setBirthdayError("Champs date inaproprié");
         }
         // Permet de checker le numéro AVS
         boolean bAVS = Validate.isAVS(avs);
@@ -174,13 +168,13 @@ public class AddStaffController {
                 add.setPhoneError("Champ télephone non conforme");
             }
         }
-        if (bLastName && bFirstName && dateOK && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
+        if (bLastName && bFirstName && bAVS && bEmail && bNPA && bChange && bCity && bCountry && bAddAddress && bPhone) {
             dbConnection();
 
 // Expected : Personne(null, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat)
 
-            Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, new Date(year, month, day),
-                                    supervisor, status, new Date(year, month, day), contract);
+            Personne personne = new Personne(avs, firstName, lastName, adresse, email, phone, dateNaissance,
+                                    supervisor, status, dateDebut, contract);
             insertPersonne(personne);
         }
     }
@@ -191,7 +185,7 @@ public class AddStaffController {
      */
     private void insertPersonne (Personne personne){
         dbConnection();
-        //personne.toString();
+        System.out.println(personne.getDateNaissance());
         try{
             querry.insertPersonne(personne);
         } catch (SQLException exceptionsql){
