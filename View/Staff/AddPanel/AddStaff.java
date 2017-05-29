@@ -222,8 +222,10 @@ public class AddStaff extends GenericWindow {
         jpSupervisor.add(jlSupervisor);
         jcbSupervisor = new JComboBox();
         jcbSupervisor.addItem("");
-        for(int i = 0; i < supervisor.size(); ++i){
-            jcbSupervisor.addItem(supervisor.get(i).getPrenom() + " " + supervisor.get(i).getNom());
+        if(supervisor != null) {
+            for (int i = 0; i < supervisor.size(); ++i) {
+                jcbSupervisor.addItem(supervisor.get(i).getPrenom() + " " + supervisor.get(i).getNom());
+            }
         }
         jcbSupervisor.setPreferredSize(dInput);
         jpSupervisor.add(jcbSupervisor);

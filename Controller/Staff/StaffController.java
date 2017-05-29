@@ -117,7 +117,7 @@ public class StaffController {
      * @return ArrayList contenant les différents statuts
      */
     private ArrayList<String> getStatus(){
-        dbConnection();
+        /*dbConnection();
         ArrayList<String> als = null;
         try{
             als = querry.getAllStatuts();
@@ -128,6 +128,16 @@ public class StaffController {
             exceptionsql.printStackTrace();
             new ErrorController("Erreur récup statut " + exceptionsql.toString());
         }
+        return als;
+        */
+        ArrayList<String> als = new ArrayList<>();
+        als.add(TypeStatut.APPRENTI.toString());
+        als.add(TypeStatut.EMPLOYE.toString());
+        als.add(TypeStatut.MANDATAIRE.toString());
+        als.add(TypeStatut.PROFESSIONNALISATION.toString());
+        als.add(TypeStatut.STAGIAIRE.toString());
+        als.add(TypeStatut.TEMPORAIRE.toString());
+
         return als;
     }
 
@@ -150,7 +160,7 @@ public class StaffController {
 
         return als;
         */
-        ArrayList<String> als = null;
+        ArrayList<String> als = new ArrayList<>();
         als.add(TypeContrat.APPRENTISSAGE.toString());
         als.add(TypeContrat.CONTRAT_UNIQUE.toString());
         als.add(TypeContrat.DUREE_DETERMINEE.toString());
