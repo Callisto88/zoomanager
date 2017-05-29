@@ -115,8 +115,8 @@ public class DBInteraction {
 
     // 12 Paramètres Dans l'ordre ci-dessous :
     // noAVS / nom / prenom / adresse / email / téléphone / dateNaissance /
-    // idResponsable / statut / dateDebut	TypeContrat /
-    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW(), ?); ";
+    // idResponsable / statut / dateDebut / TypeContrat /
+    private static final String INSERT_EMPLOYE = "INSERT INTO Personne(idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat) VALUES (null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?); ";
 
     // Recupère tous les paramètre d'une personne
     // 12 Paramètres
@@ -365,10 +365,22 @@ public class DBInteraction {
      * Enclos
      */
     // Récupère toutes les informations concernant un enclos
-    private static final String SEL_ENCLOS = "SELECT * FROM Enclos WHERE id = ?;";
+    private static final String SEL_ENCLO_BY_ID = "SELECT * FROM Enclos WHERE id = ?;";
 
     // Récupère la liste de tous les enclos
-    private static final String SEL_ENCLOS_ALL = "SELECT * FROM Enclos";
+    private static final String SEL_ENCLOS = "SELECT *\n" +
+            "FROM Enclos\n" +
+            "  INNER JOIN Infrastructure\n" +
+            "    ON Enclos.id = Infrastructure.id\n" +
+            "  INNER JOIN Infrastructure_Type\n" +
+            "    ON Infrastructure.type = Infrastructure_Type.id;";
+
+    private static final String SEL_PARCS = "SELECT *\n" +
+            "FROM Parc\n" +
+            "  INNER JOIN Infrastructure\n" +
+            "    ON Parc.id = Infrastructure.id\n" +
+            "  INNER JOIN Infrastructure_Type\n" +
+            "    ON Infrastructure.type = Infrastructure_Type.id;";
 
     // -----------------------------------------------------------------------------------------------------------------
     // REQUÊTES RELATIVES AUX EVENEMENTS
@@ -1536,8 +1548,6 @@ public class DBInteraction {
      */
     public void insertPersonne(Personne personne) throws SQLException {
 
-        Personne.afficherPersonne(personne);
-
         // Expected : idPersonne, noAVS, prenom, nom, adresse, email, telephone, dateNaissance, responsable, statut, dateDebut, typeContrat
         this.stmt = DBConnection.con.prepareStatement(INSERT_EMPLOYE);
         this.stmt.setString(1, personne.getNoAVS());
@@ -2156,7 +2166,7 @@ public class DBInteraction {
      */
     public Enclos selEnclos(int id) throws SQLException, ExceptionDataBase {
 
-        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLOS);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLO_BY_ID);
         this.stmt.setInt(1, id);
         ResultSet rs = this.stmt.executeQuery();
 
@@ -2182,7 +2192,7 @@ public class DBInteraction {
 
     public ArrayList<Enclos> selEnclos() throws SQLException, ExceptionDataBase {
 
-        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLOS_ALL);
+        this.stmt = DBConnection.con.prepareStatement(SEL_ENCLOS);
         ResultSet rs = this.stmt.executeQuery();
 
         ArrayList<Enclos> data = new ArrayList<>();
@@ -2193,8 +2203,8 @@ public class DBInteraction {
             rs.beforeFirst();
             while (rs.next()) {
                 data.add(new Enclos(
-                        rs.getInt("id"),
-                        rs.getString("nom"),
+                        rs.getInt("Enclos.id"),
+                        rs.getString("Enclos.nom"),
                         rs.getInt("secteur"),
                         rs.getDouble("surface"))
                 );
@@ -2327,6 +2337,11 @@ public class DBInteraction {
     // -----------------------------------------------------------------------------------------------------------------
     // -----------------------------------------------------------------------------------------------------------------
     // Partie pour la gestion EVENEMENT dans la DB
+
+    /*public ArrayList<Infrastructure> selInfrastructures() throws SQLException, ExceptionDataBase {
+        this.stmt = DBConnection.con.prepareStatement();
+        ResultSet rs = this.stmt.executeQuery();
+    }*/
 
     public ArrayList<Evenement> selAllEvents() throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SEL_EVENTS);

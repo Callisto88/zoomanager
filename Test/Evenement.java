@@ -1,8 +1,6 @@
 package Test;
 
-import Model.DBInteraction;
-import Model.ExceptionDataBase;
-import Model.Intervenant;
+import Model.*;
 
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -12,6 +10,9 @@ import java.util.Scanner;
 public class Evenement {
 
     public static void main(String arg[]) throws SQLException {
+
+        ArrayList<Infrastructure> data = new ArrayList<>();
+        data.add(new Parc());
 
         int userChoice;
 
