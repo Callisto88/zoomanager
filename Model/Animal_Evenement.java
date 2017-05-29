@@ -2,11 +2,7 @@ package Model;
 
 /**
  *
- * Cette classes contient la conception de la table Animal_Evenement de la base de données
- *
- * Contient l'id des personne qui on participé à un événement (décrit par son id également)
- *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
+ * <p>Cette classes contient la représentation objet de la table Animal_Evenement de la base de données</p>
  *
  * animal       références la classe "Animal"
  * evenement    références la classe "Evenement"
@@ -15,10 +11,6 @@ package Model;
  * @author C.Balboni
  *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- *
  */
 public class Animal_Evenement {
 

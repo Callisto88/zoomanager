@@ -2,22 +2,17 @@ package Model;
 
 /**
  *
- * Cette classe contient la conception de la table Secteur de la base de données
+ * <p>Cette classe contient la représentation objet de la table Secteur de la base de données</p>
  *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
+ * <em>L'attribut <strong>responsable</strong> références la classe "Personne"</em>
  *
- * responsable     références la classe "Personne"
- *
- * @author D.Hamel
  * @author C.Balboni
+ * @author D.Hamel
  *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- *
  */
 public class Secteur {
+
     /**
      * Membres privés
      */
@@ -25,12 +20,11 @@ public class Secteur {
     private String nom;
     private Personne responsable;
 
-
     /**
      * Constructeur avec tous les parametres
-     * @param id
-     * @param nom
-     * @param responsable
+     * @param id un entier représentant l'ID du secteur
+     * @param nom une String indiquant le nom du secteur
+     * @param responsable un objet de type Personne représentant le responsable du secteur
      */
     public Secteur(int id, String nom, Personne responsable) {
         this.id = id;
@@ -38,6 +32,11 @@ public class Secteur {
         this.responsable = responsable;
     }
 
+    /**
+     * Constructeur simple à partir de l'ID du secteur
+     *
+     * @param id
+     */
     public Secteur(int id) {
         this.id = id;
     }
@@ -65,7 +64,6 @@ public class Secteur {
     public String getNom() {
         return nom;
     }
-
 
     /**
      * Setter nom

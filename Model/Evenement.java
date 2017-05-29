@@ -1,7 +1,6 @@
 package Model;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.Vector;
 
@@ -17,10 +16,6 @@ import java.util.Vector;
  * @author C.Balboni
  *
  * @version 1.0
- *
- * @date    28.03.2017 (Création)
- * @date    28.03.2017 (Finalisation v1.0)
- *
  */
 public class Evenement {
 
