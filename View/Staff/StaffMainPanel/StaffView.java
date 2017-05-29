@@ -207,11 +207,10 @@ public class StaffView extends GenericWindow {
                 // Permet de choisir si l'on affiche les détails d'un employée ou d'un externe
                 if(jbSwitchexernalInternalStaff.getText().equals("Afficher les externes")) {
                     selectedRow = jtTable.getSelectedRow();
-                    /* Supprimé pour faute de non respect du travail des autres
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                     */
+
                     JLabel jlDetails = new JLabel("Détails du personnel");
                     setTitleConfig(jlDetails);
                     jlDetails.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -223,11 +222,10 @@ public class StaffView extends GenericWindow {
                 }
                 else{
                     selectedRow = jtTable.getSelectedRow();
-                    /* Supprimé pour faute de non respect du travail des autres
                     if (jtTable.getRowSorter() != null) {
                         selectedRow = jtTable.getRowSorter().convertRowIndexToModel(selectedRow);
                     }
-                     */
+
                     esDetails = new ExternalStaff(controller, alExternal.get(selectedRow), selectedRow);
                     JLabel jlDetails = new JLabel("Détails des intervenants");
                     setTitleConfig(jlDetails);
@@ -292,6 +290,7 @@ public class StaffView extends GenericWindow {
      */
     public void createEmployeeTab(){
         tableauStaff = new Vector<>();
+        alPersonnes = null;
         alPersonnes = controller.getPersonnel();
         if(alPersonnes != null) {
             for (int i = 0; i < alPersonnes.size(); ++i) {
@@ -299,17 +298,15 @@ public class StaffView extends GenericWindow {
             }
         }
         mmtListing = new MyModelTable(tableauStaff, columnName);
-        jtTable.updateUI();
         jtTable.setModel(mmtListing);
-        //jtTable = new JTable(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
-/* Supprimé pour faute de non respect du travail des autres
+
         sorterStaff = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterStaff);
-*/
+
     }
 
     /**
@@ -317,24 +314,23 @@ public class StaffView extends GenericWindow {
      */
     public void createExternalTab(){
         tableauExternal = new Vector<>();
+        alExternal = null;
         alExternal = controller.getExternal();
         if(alExternal != null) {
             for (int i = 0; i < alExternal.size(); ++i) {
                 tableauExternal.add(alExternal.get(i).toVector());
             }
         }
-        System.out.println("taille tableau externe " + tableauExternal.size());
         mmtListing = new MyModelTable(tableauExternal, sColumnExternal);
-        jtTable.updateUI();
         jtTable.setModel(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
-/* Supprimé pour faute de non respect du travail des autres
+
         sorterExternal = new TableRowSorter<>(mmtListing);
         jtTable.setRowSorter(sorterExternal);
-*/
+
     }
 
     /**
