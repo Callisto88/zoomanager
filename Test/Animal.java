@@ -21,6 +21,14 @@ public class Animal {
                     selAnimaux();
                     break;
 
+                case 2:
+                    Model.Animal a = new Model.Felin(12, "Panther", "Albert", "Mâle",
+                            new java.sql.Date(2015, 04, 12), new Enclos(1), new Pays(37),
+                            new Race(17), new java.sql.Date(0), Double.parseDouble("14.78"));
+
+                    udpateAnimal(a);
+                    break;
+
                 case 7:
                     break;
             }
@@ -38,6 +46,7 @@ public class Animal {
         System.out.println("Sélectionner une action : ");
         System.out.println("-------------------------\n");
         System.out.println("1 - Sélectionner tous les animaux");
+        System.out.println("2 - Mettre à jour un animal");
         System.out.println("7 - Quit");
 
         selection = input.nextInt();
@@ -74,6 +83,25 @@ public class Animal {
 
                 a.toString();
             }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+    }
+
+    public static void udpateAnimal(Model.Animal a) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            query.updateAnimal(a);
 
         } catch (SQLException e) {
             e.printStackTrace();

@@ -72,6 +72,13 @@ public class Felin extends Animal {
     public void setPoids(double poids) {
         this.poids = poids;
     }
+
+    @Override
+    public String toString() {
+        return "Felin{" +
+                "poids=" + poids +
+                '}';
+    }
 }
 
 

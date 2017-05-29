@@ -1789,7 +1789,6 @@ public class DBInteraction {
      * @param animal Animal
      */
     public void updateAnimal(Animal animal) throws SQLException, ExceptionDataBase {
-        int id_animal = animal.getId();
 
         // Modification dans la table ANIMAL
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL);
@@ -1828,6 +1827,7 @@ public class DBInteraction {
         // Modification dans la table ANIMAL
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_FAUVE);
         this.stmt.setDouble(1, animal.getPoids());
+        this.stmt.setInt(2, id_animal);
         this.stmt.executeUpdate();
     }
 
@@ -1842,6 +1842,7 @@ public class DBInteraction {
         // Modification dans la table ANIMAL
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_REPTILE);
         this.stmt.setDouble(1, animal.getTemperature());
+        this.stmt.setInt(2, id_animal);
         this.stmt.executeUpdate();
     }
 
@@ -1856,6 +1857,7 @@ public class DBInteraction {
         // Modification dans la table ANIMAL
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_PRIMATE);
         this.stmt.setDouble(1, animal.getTemperature());
+        this.stmt.setInt(2, id_animal);
         this.stmt.executeUpdate();
     }
 
@@ -1871,6 +1873,7 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(UPDATE_ANIMAL_OISEAU);
         this.stmt.setDouble(1, animal.getEnvergure());
         this.stmt.setString(2, animal.getBague());
+        this.stmt.setInt(3, id_animal);
         this.stmt.executeUpdate();
     }
 
