@@ -76,7 +76,7 @@ public class AnimalTab extends GenericWindow {
         originesDB = atAnimalController.getAllOrigines();
         animalEvents = atAnimalController.getTasks();
 
-        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB, enclosDB, racesDB);
+        Vector<Vector<Object>> vAnimal = atAnimalController.animauxToVector(animauxDB);
 
         dataTable = new MyModelTable(vAnimal, columnName);
         jtTable = new JTable(dataTable);

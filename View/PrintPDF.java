@@ -157,7 +157,6 @@ public class PrintPDF {
             PDDocument doc = PDDocument.load(new File(output));
             job.setPageable(new PDFPageable(doc));
             job.print();
-
         } catch (Exception exception) {
             exception.printStackTrace();
             // TODO : à voir si on crée bien cette fenêtre d'erreur...
