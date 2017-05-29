@@ -49,7 +49,6 @@ public class StaffController {
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            new ErrorController(exceptionDB.toString() + "\nPersonne n'est encore présent dans la base de données");
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
@@ -68,7 +67,6 @@ public class StaffController {
             aliExternal = querry.selIntervenant();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-           //new ErrorController(exceptionDB.toString());
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
@@ -106,7 +104,6 @@ public class StaffController {
             alp = querry.selResponsables();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-           new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             new ErrorController(sqlException.toString());
@@ -139,7 +136,7 @@ public class StaffController {
      * @return ArrayList contenant les différents contrats
      */
     private ArrayList<String> getContract(){
-        dbConnection();
+        /*dbConnection();
         ArrayList<String> als = null;
         try{
             als = querry.selAllContractType();
@@ -150,6 +147,17 @@ public class StaffController {
             exceptionsql.printStackTrace();
             new ErrorController("Erreur récup contrat " + exceptionsql.toString());
         }
+
+        return als;
+        */
+        ArrayList<String> als = null;
+        als.add(TypeContrat.APPRENTISSAGE.toString());
+        als.add(TypeContrat.CONTRAT_UNIQUE.toString());
+        als.add(TypeContrat.DUREE_DETERMINEE.toString());
+        als.add(TypeContrat.DUREE_INDETERMINEE.toString());
+        als.add(TypeContrat.PROFESSIONNALISATION.toString());
+        als.add(TypeContrat.STAGE.toString());
+        als.add(TypeContrat.TEMPORAIRE.toString());
         return als;
     }
 
@@ -165,7 +173,6 @@ public class StaffController {
             events = querry.getEvenementAssignToPersonByID(IDStaff);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            //new ErrorController(exceptionDB.toString());
             return null;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
@@ -208,7 +215,6 @@ public class StaffController {
             events = querry.getEvenementAssignToIntervenantByID(IDExternal);
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            //new ErrorController(exceptionDB.toString());
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
             new ErrorController(sqlException.toString());
