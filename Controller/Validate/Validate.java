@@ -66,11 +66,8 @@ public class Validate {
      */
     public static boolean isNumeric(String s) {
 
-        if (s.matches("[-+]?[0-9]*\\.?[0-9]+")) { // You can use the `\\d` instead of `0-9` too!
-            return true;
-        } else {
-            return false;
-        }
+        // You can use the `\\d` instead of `0-9` too!
+        return s.matches("[-+]?[0-9]*\\.?[0-9]+");
     }
 
     /**
@@ -181,10 +178,7 @@ public class Validate {
 
 
                 // check si la partie domaine contient bien un point
-                if (!domain.contains(".")) {
-                    return false;
-                }
-                return true;
+                return domain.contains(".");
             }
         }
         return false;
@@ -199,10 +193,7 @@ public class Validate {
      */
     public static boolean isPhoneNumber(String s) {
         if(Validate.isNotEmpty(s)) {
-            if (s.length() > 13 || s.charAt(0) != '0' || s.charAt(1) != '0')
-                return false;
-
-            return true;
+            return !(s.length() > 13 || s.charAt(0) != '0' || s.charAt(1) != '0');
         }
         return false;
     }

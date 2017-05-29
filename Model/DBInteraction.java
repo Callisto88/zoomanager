@@ -1883,7 +1883,7 @@ public class DBInteraction {
     /**
      * Permet d'obtenir l'id d'un animal via son nom et sa date de naissance
      *
-     * @return ArrayList<Animal>
+     * @return int
      */
     public int selAnimal(String nom, java.sql.Date dateNaissance) throws SQLException, ExceptionDataBase {
         this.stmt = DBConnection.con.prepareStatement(SEL_ANIMAL_NOM);
@@ -1891,7 +1891,7 @@ public class DBInteraction {
         this.stmt.setDate(2, dateNaissance);
 
         ResultSet rs = this.stmt.executeQuery();
-        if(rs.next()){
+        if (rs.next()) {
             return rs.getInt("id");
         }
         return 0;
@@ -2137,7 +2137,6 @@ public class DBInteraction {
         this.stmt.execute();
         ResultSet rs = this.stmt.getGeneratedKeys();
         if (rs.next()) {    // On récupère l'ID de l'animal inséré
-            rs.beforeFirst();   // On remet le curseur au début
             a.setId(rs.getInt(1));
         }
 

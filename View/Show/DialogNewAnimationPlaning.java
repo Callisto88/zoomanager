@@ -768,7 +768,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
     }
     private void addButtonActionPerformed(java.awt.event.ActionEvent evt){
         JOptionPane bg = new JOptionPane();
-        bg.showMessageDialog(this, "Enregistrer les données de votre evenement", "Enregistrement",
+        JOptionPane.showMessageDialog(this, "Enregistrer les données de votre evenement", "Enregistrement",
                 JOptionPane.QUESTION_MESSAGE);
         int y = this.datePanel.datePicker.getModel().getYear();
         int m = this.datePanel.datePicker.getModel().getMonth();

@@ -460,7 +460,7 @@ public class View extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         if(TypeLast.length()<2){
             JOptionPane bg = new JOptionPane();
-            bg.showMessageDialog(this, "Il faut choisir un type d evenement", "Erreur",
+            JOptionPane.showMessageDialog(this, "Il faut choisir un type d evenement", "Erreur",
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
@@ -649,12 +649,12 @@ public class View extends javax.swing.JPanel {
                         boolean supp = eventCtrl.delById(evtn.getId());
                         if(supp){
                             JOptionPane bg = new JOptionPane();
-                            bg.showMessageDialog(null, "L evenement a ete supprime", "Supprimer evenement",
+                            JOptionPane.showMessageDialog(null, "L evenement a ete supprime", "Supprimer evenement",
                                     JOptionPane.INFORMATION_MESSAGE);
                         }else {
 
                             JOptionPane bg = new JOptionPane();
-                            bg.showMessageDialog(null, "La suppression a echoué, verifier que les relations sont toutes supprimees", "Supprimer evenement",
+                            JOptionPane.showMessageDialog(null, "La suppression a echoué, verifier que les relations sont toutes supprimees", "Supprimer evenement",
                                     JOptionPane.ERROR_MESSAGE);
                         }
                     }
