@@ -11,6 +11,9 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Properties;
 
@@ -31,9 +34,7 @@ public class AddStaff extends GenericWindow {
     private String sLastName;
     private String sFirstName;
     private boolean dateOK = false;
-    private int iDay;
-    private int iMonth;
-    private int iYear;
+    private Date dateNaissance = null;
     private String sAVS;
     private String sEMail;
     private String sAddress;
@@ -113,10 +114,17 @@ public class AddStaff extends GenericWindow {
         jlBirthday.setPreferredSize(dLabel);
         jpBirthday.add(jlBirthday);
         Properties pStartProperties = new Properties();
+
         pStartProperties.put("text.today", "Aujourd'hui");
         pStartProperties.put("text.month", "Mois");
         pStartProperties.put("text.year", "Année");
         SqlDateModel sdmModel1 = new SqlDateModel();
+        LocalDate localDate = LocalDate.now();
+        int year  = localDate.getYear();
+        int month = localDate.getMonthValue() - 1;
+        int day   = localDate.getDayOfMonth();
+        sdmModel1.setDate(year, month, day);
+        sdmModel1.setSelected(true);
         JDatePanelImpl jdpiBirthday = new JDatePanelImpl(sdmModel1, pStartProperties);
         jdpiBirthday.setPreferredSize(new Dimension(200, 200));
         jdpickiBirthday = new JDatePickerImpl(jdpiBirthday, new DateLabelFormatter());
@@ -274,9 +282,8 @@ public class AddStaff extends GenericWindow {
                 disableError();
                 sLastName = jtfLastName.getText();
                 sFirstName = jtfFirstName.getText();
-                iDay = jdpickiBirthday.getJDateInstantPanel().getModel().getDay();
-                iMonth = jdpickiBirthday.getJDateInstantPanel().getModel().getMonth();
-                iYear = jdpickiBirthday.getJDateInstantPanel().getModel().getYear();
+                dateNaissance = sdmModel1.getValue();
+
                 sAVS = jtfAVS.getText();
                 sEMail = jtfEmail.getText();
                 sAddress = jtfAddress.getText();
@@ -292,9 +299,10 @@ public class AddStaff extends GenericWindow {
                 }
                 sStatus = jcbStatus.getSelectedItem().toString();
                 sContract = jcbContract.getSelectedItem().toString();
-
+                LocalDate local = LocalDate.now();
+                Date dateDebut = java.sql.Date.valueOf(local);
                 // Permet de fermer la fenêtre si tout s'est bien passé
-                controller.checkPersonne(sLastName, sFirstName, iDay, iMonth, iYear, dateOK, sAVS, sEMail, sAddress, sNPA,
+                controller.checkPersonne(sLastName, sFirstName, dateNaissance, dateDebut, sAVS, sEMail, sAddress, sNPA,
                                             sCity, sCountry, sPhone, iSupervisor, sStatus, sContract);
             }
         });
