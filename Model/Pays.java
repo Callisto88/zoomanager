@@ -1,18 +1,12 @@
 package Model;
 
 /**
+ * <p>Cette classe contient la représentation de la table Pays de la base de données</p>
  *
- * Cette classe contient la conception de la table Pays de la base de données
- *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * @author D.Hamel
+ * @author C. Balboni
+ * @author D. Hamel
  *
  * @version 1.0
- *
- * @date    22.04.2017 (Création)
- * @date    22.04.2017 (Finalisation v1.0)
- *
  */
 public class Pays {
     /**

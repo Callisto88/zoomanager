@@ -2,25 +2,25 @@ package Model;
 
 /**
  *
- * Cette classes contient la conception de la table Intervenant_Evenement de la base de données
+ * <p>Cette classes contient la conception de la table Intervenant_Evenement de la base de données</p>
  *
- * Contient l'id des intervenant qui ont participé à un événement (décrit par son id également)
- *
- * Elle contient uniquement les Setters, Getters et Constructeurs.
- *
- * intervenant      références la classe "Intervenant"
- * evenement        références la classe "Evenement"
- *
- * @author D.Hamel
  * @author C.Balboni
+ * @author D.Hamel
  *
  * @version 1.0
  */
 public class Intervenant_Evenement {
 
+    /**
+     * Membres privés
+     */
     private int id;
-    private int intervenant; // REF Intervenant(id)
-    private int evenement; // REF Evenement(id)
+    private int intervenant;    // REF Intervenant(id)
+    private int evenement;      // REF Evenement(id)
+
+    /**
+     * Getters & Setters
+     */
 
     public int getId() {
         return id;

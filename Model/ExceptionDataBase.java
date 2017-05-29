@@ -105,9 +105,23 @@ public class ExceptionDataBase extends Exception {
     // 33.
     private static final String NO_EVENEMENT_ASSIGN_TO_PERSON_WITH_ID =
             "Aucune événement n'est assigné à cet personne. ID : ";
+    private static final String NO_PRODUIT =
+            "Aucune produit n'est en stock : ";
+    private static final String NO_ANIMAL_EVENEMENT =
+            "La requête n'a retourné aucun résultat, soit l'événement n'existe pas, " +
+                    "soit l'animal n'est impliqué dans aucun événement";
+
+    private static final String NO_SUCH_ITEM_IN_STOCK =
+            "Cet articl n'existe pas dans le stock : ";
+    private static final String NO_SUCH_ORDER_IN_DB =
+            "No such order in database";
+
+    private static final String NO_ORDER_FOR_THIS_ITEM =
+            "Aucune commande en cours pour cette article";
+
+
     // HashMap qui contient tous les messages d'erreurs
     private static final HashMap<Integer, String> MSG_ERROR = new HashMap<Integer, String>();
-    private int num_Error;
 
     /**
      * Initialisation des messages d'erreurs dans le HashMap
@@ -118,7 +132,6 @@ public class ExceptionDataBase extends Exception {
         MSG_ERROR.put(2, ANIMAL_PARAMETER_FALSE);
         MSG_ERROR.put(3, EVENEMENT_TYPE_FALSE);
         MSG_ERROR.put(4, NO_CODE_POSTAL_ENTRED);
-
 
         MSG_ERROR.put(10, NO_INTERVENANT_IN_DB);
         MSG_ERROR.put(11, NO_PERSONNE_IN_DB);
@@ -144,7 +157,13 @@ public class ExceptionDataBase extends Exception {
         MSG_ERROR.put(31, NO_PERSONNE_CONTRACT_IN_PERSONNE_TABLE);
         MSG_ERROR.put(32, NO_EVENEMENT_ASSIGN_TO_INTERVENANT_WITH_ID);
         MSG_ERROR.put(33, NO_EVENEMENT_ASSIGN_TO_PERSON_WITH_ID);
+        MSG_ERROR.put(34, NO_PRODUIT);
+        MSG_ERROR.put(35, NO_ANIMAL_EVENEMENT);
+        MSG_ERROR.put(36, NO_SUCH_ORDER_IN_DB);
+        MSG_ERROR.put(37, NO_ORDER_FOR_THIS_ITEM);
     }
+
+    private int num_Error;
 
     /**
      * Constructuer avec un int pour récupérer la valeur dans le HashMap
@@ -193,6 +212,7 @@ public class ExceptionDataBase extends Exception {
         return super.getMessage();
     }
 
+
     /**
      * Getter qui permet de récuprer le numero du message d'erreur
      *
@@ -202,4 +222,12 @@ public class ExceptionDataBase extends Exception {
         return num_Error;
     }
 
+    /**
+     * Setter pour numero erreur
+     *
+     * @param num_Error(int)
+     */
+    public void setNum_Error(int num_Error) {
+        this.num_Error = num_Error;
+    }
 }
