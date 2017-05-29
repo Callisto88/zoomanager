@@ -110,6 +110,17 @@ public class Evenement {
                     delIntervenantEvenement(intervenantID12, eventID12);
                     break;
 
+                case 13:
+                    System.out.println("Entrer le type d'événement : ");
+                    Scanner input113 = new Scanner(System.in);
+                    String eventType3 = String.valueOf(input113.next());
+                    selEventsByEventType(eventType3);
+                    break;
+
+                case 14:
+                    selAllEvents();
+                    break;
+
                 case 0:
                     break;
             }
@@ -138,6 +149,8 @@ public class Evenement {
         System.out.println("10 - Retirer un animal d'un événement");
         System.out.println("11 - Assigner un intervenant à un événement");
         System.out.println("12 - Retirer un intervenant d'un événement");
+        System.out.println("13 - Afficher tous les événements d'un type donné");
+        System.out.println("14 - Afficher tous les événements");
         System.out.println("0 - Quitter le programme");
 
         selection = input.nextInt();
@@ -385,6 +398,48 @@ public class Evenement {
             System.out.println(success);
         } catch (SQLException e) {
             e.printStackTrace();
+        }
+    }
+
+    public static void selEventsByEventType(String eventType) {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            ArrayList<Model.Evenement> results = query.selEventsByEventType(eventType);
+            for (Model.Evenement e : results) {
+                System.out.println(e.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+    }
+
+    public static void selAllEvents() {
+
+        DBInteraction query = null;
+        try {
+            query = new DBInteraction();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
+        }
+
+        try {
+            ArrayList<Model.Evenement> results = query.selAllEvents();
+            for (Model.Evenement e : results) {
+                System.out.println(e.toString());
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } catch (ExceptionDataBase exceptionDataBase) {
+            exceptionDataBase.printStackTrace();
         }
     }
 }

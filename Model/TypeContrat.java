@@ -1,0 +1,11 @@
+package Model;
+
+public enum TypeContrat {
+    STAGE,
+    DUREE_DETERMINEE,
+    DUREE_INDETERMINEE,
+    APPRENTISSAGE,
+    PROFESSIONNALISATION,
+    CONTRAT_UNIQUE,
+    TEMPORAIRE,
+}
