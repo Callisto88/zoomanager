@@ -117,24 +117,11 @@ public class StaffController {
      * @return ArrayList contenant les différents statuts
      */
     private ArrayList<String> getStatus(){
-        /*dbConnection();
-        ArrayList<String> als = null;
-        try{
-            als = querry.getAllStatuts();
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            new ErrorController("Erreur récup statut " + exceptionDB.toString());
-        } catch (SQLException exceptionsql){
-            exceptionsql.printStackTrace();
-            new ErrorController("Erreur récup statut " + exceptionsql.toString());
-        }
-        return als;
-        */
         ArrayList<String> als = new ArrayList<>();
         als.add(TypeStatut.APPRENTI.toString());
         als.add(TypeStatut.EMPLOYE.toString());
         als.add(TypeStatut.MANDATAIRE.toString());
-        als.add(TypeStatut.PROFESSIONNALISATION.toString());
+        als.add(TypeStatut.RESPONSABLE.toString());
         als.add(TypeStatut.STAGIAIRE.toString());
         als.add(TypeStatut.TEMPORAIRE.toString());
 
@@ -146,20 +133,6 @@ public class StaffController {
      * @return ArrayList contenant les différents contrats
      */
     private ArrayList<String> getContract(){
-        /*dbConnection();
-        ArrayList<String> als = null;
-        try{
-            als = querry.selAllContractType();
-        } catch (ExceptionDataBase exceptionDB){
-            exceptionDB.printStackTrace();
-            new ErrorController("Erreur récup contrat " + exceptionDB.toString());
-        } catch (SQLException exceptionsql){
-            exceptionsql.printStackTrace();
-            new ErrorController("Erreur récup contrat " + exceptionsql.toString());
-        }
-
-        return als;
-        */
         ArrayList<String> als = new ArrayList<>();
         als.add(TypeContrat.APPRENTISSAGE.toString());
         als.add(TypeContrat.CONTRAT_UNIQUE.toString());
@@ -186,7 +159,7 @@ public class StaffController {
             return null;
         } catch (SQLException sqlException){
             sqlException.printStackTrace();
-            new ErrorController(sqlException.toString());
+            //new ErrorController(sqlException.toString());
             return null;
         }
             return events;

@@ -32,7 +32,6 @@ public class AssignStaffTaskController {
         }
         catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            new ErrorController(exceptionDB.toString());
         }
         catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
