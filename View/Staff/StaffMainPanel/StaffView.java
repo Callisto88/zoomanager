@@ -40,12 +40,10 @@ public class StaffView extends GenericWindow {
      * Constructeur permettant d'instancier toutes les fenêtre composant la fenêtre principale
      *
      * @param persControl Controlleur de la fenêtre pour permettre de lui faire remonter les informations utiles.
-     * @param tab Arraylist de tous les employés dans la base de donnée
      */
-    public StaffView(StaffController persControl, ArrayList<Personne> tab) {
+    public StaffView(StaffController persControl) {
         super("Personnel");
         controller = persControl;
-        alPersonnes = tab;
         jtTable = new JTable();
         GridBagLayout gblLeft = new GridBagLayout();
         GridBagConstraints gbcLeft  = new GridBagConstraints();
@@ -321,7 +319,6 @@ public class StaffView extends GenericWindow {
         }
         mmtListing = new MyModelTable(tableauExternal, sColumnExternal);
         jtTable.setModel(mmtListing);
-        //jtTable = new JTable(mmtListing);
         jtTable.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
         jtTable.setColumnSelectionAllowed(false);
         jtTable.setCellSelectionEnabled(false);

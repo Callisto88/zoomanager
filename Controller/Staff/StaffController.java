@@ -23,7 +23,7 @@ public class StaffController {
      */
     public StaffController() {
 
-        svPersonnel = new StaffView(this, getPersonnel());
+        svPersonnel = new StaffView(this);
     }
 
     /**
@@ -49,7 +49,7 @@ public class StaffController {
             alpPersonnel = querry.selAllEmployes();
         } catch (ExceptionDataBase exceptionDB){
             exceptionDB.printStackTrace();
-            new ErrorController(exceptionDB.toString());
+            new ErrorController(exceptionDB.toString() + "\nPersonne n'est encore présent dans la base de données");
         } catch (SQLException exceptionsql){
             exceptionsql.printStackTrace();
             new ErrorController(exceptionsql.toString());
