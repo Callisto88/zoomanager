@@ -26,7 +26,15 @@ import static Model.Tools.DateSQL.calculateAge;
 
 
 /**
- * Created by Andre on 10.03.2017.
+ *
+ * Cette classe contient l'entiereté de la fenêtre de gestion des Animaux
+ *
+ * @author Y.Ansermoz
+ *
+ * @version 1.0
+ *
+ * @date    28.05.2017 (Finalisation v1.0)
+ *
  */
 public class AnimalTab extends GenericWindow {
     private String[] columnName = {"Nom", "Nom commun", "Race", "Sexe", "Age", "Enclos"};

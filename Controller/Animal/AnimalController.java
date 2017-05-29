@@ -18,7 +18,16 @@ import java.util.Vector;
 import static Model.Tools.DateSQL.calculateAge;
 
 /**
- * Created by Yannis on 23/04/2017.
+ *
+ * Cette classe contient les méthodes permettant l'accès à la base de données afin de récupérer les informations
+ * nécéssaires au bon fonctionnement de la fenêtre AnimalTab
+ *
+ * @author Y.Ansermoz
+ *
+ * @version 1.0
+ *
+ * @date    28.05.2017 (Finalisation v1.0)
+ *
  */
 public class AnimalController {
 
