@@ -902,7 +902,7 @@ public class AnimalTab extends GenericWindow {
                 }
                 if(!Validate.isDate(year, month, day)){
                     //jdpliStartDatePanel.setBackground(Color.RED);
-                    formOk = false;
+                    //formOk = false;
                 }
                 if((mode == 2 && animalType == 2) || (mode != 2 && selectedAnimal instanceof Felin)){
                     poids = jtPoids.getText();
