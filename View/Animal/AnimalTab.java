@@ -441,7 +441,7 @@ public class AnimalTab extends GenericWindow {
         //jcEnclos.setEditable(true);
         AutoCompletion acEnclos = new AutoCompletion(jcEnclos);
         //ac.setStrict(false);
-        jcEnclos.setSelectedIndex(selectedAnimal.getEnclos().getId() - 1);
+        jcEnclos.setSelectedItem(selectedAnimal.getEnclos().getNom());
         jcEnclos.setMaximumSize(new Dimension(maxLength + 5, 30));
         jcEnclos.setPreferredSize(defaultFormSize);
 
@@ -505,7 +505,7 @@ public class AnimalTab extends GenericWindow {
         //jcEnclos.setEditable(true);
         AutoCompletion acRaces = new AutoCompletion(jcRaces);
         //ac.setStrict(false);
-        jcRaces.setSelectedIndex(selectedAnimal.getRace().getId() - 1);
+        jcRaces.setSelectedItem(selectedAnimal.getRace().getNom());
         jcRaces.setMaximumSize(new Dimension(maxLength + 4, 30));
         jcRaces.setPreferredSize(defaultFormSize);
 
