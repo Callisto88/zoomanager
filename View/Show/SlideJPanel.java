@@ -5,15 +5,16 @@ import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 
+
 /**
  *
- * Cette classe contient
+ * Cette classe contient le template du JPanel qui permet fournir un slider show des images partout ou il est appelé
  *
  * @author doriane kaffo
- *
  * @version 1.0
  *
- * @date    14/05/2017.
+ * @date    14/03/2017.(Création)
+ * @date    39/05/2017 (Finalisation v1.0)
  *
  */
 public class SlideJPanel extends javax.swing.JPanel {

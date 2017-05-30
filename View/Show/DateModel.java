@@ -1,22 +1,27 @@
 package View.Show;
 
-import Controller.Show.*;
-import Controller.Show.Test;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.SqlDateModel;
-
 import View.DateLabelFormatter;
-import View.GenericWindow;
 import org.jdatepicker.impl.UtilDateModel;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Properties;
 
-
+/**
+ *
+ * Cette classe contient le template de l'objet datePicker, pour pouvoir l instancier plus facilement dans une interface
+ *
+ * @author doriane kaffo
+ *
+ * @version 1.0
+ *
+ * @date    15/05/2017.(Création)
+ * @date    29.05.2017 (Finalisation v1.0)
+ *
+ */
 public class DateModel extends  JPanel{
     JDatePickerImpl datePicker = null;
 

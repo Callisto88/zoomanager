@@ -1,17 +1,24 @@
 package View.Show;
 
 import javax.swing.*;
-
+/**
+ *
+ * Cette classe contient le template du JPanel qui permet de fournir un chargement en pourcentage pour les longs processus
+ *
+ * @author doriane kaffo
+ *
+ * @version 1.0
+ *
+ * @date    28/05/2017.(Création)
+ * @date    39/05/2017 (Finalisation v1.0)
+ *
+ */
 public class LoadingPanel extends javax.swing.JPanel {
 
-    /**
-     * Creates new form LoadingPanel
-     */
     public LoadingPanel() {
         initComponents();
     }
 
-    @SuppressWarnings("unchecked")
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
@@ -62,14 +69,14 @@ public class LoadingPanel extends javax.swing.JPanel {
                                 .addComponent(progPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addContainerGap(46, Short.MAX_VALUE))
         );
-    }// </editor-fold>
+    }
 
 
-    // Variables declaration - do not modify
+    // Variables declaration
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel level;
     private javax.swing.JPanel progPanel;
-    // End of variables declaration
+    // End of variables
 
     public JLabel getjLabel1() {
         return jLabel1;

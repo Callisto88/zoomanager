@@ -4,19 +4,26 @@ import javax.swing.*;
 import java.awt.*;
 
 /**
- * Created by Andre on 10.03.2017.
+ *
+ * Cette classe contient le template du JPanel qui permet de lancer l'interface du module Animation dans l'application
+ *
+ * @author doriane kaffo
+ * @author doriane Andre
+ * @version 1.0
+ *
+ * @date    10/03/2017.(Création)
+ * @date    39/05/2017 (Finalisation v1.0)
+ *
  */
 public class ShowTab extends JPanel {
 
     public ShowTab() {
         JFrame tab = new JFrame();
-//        tab.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         View v = new View();
-        Dimension dim = new Dimension(1100,600);
         tab.setLocation(150,25);
         tab.add(v);
-//         tab.setResizable(false);
-        tab.setSize(dim);
+        tab.setDefaultLookAndFeelDecorated(false);
+        tab.setExtendedState(tab.MAXIMIZED_BOTH);
         tab.setVisible(true);
     }
 }
