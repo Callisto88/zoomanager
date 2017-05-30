@@ -195,7 +195,7 @@ public class DBInteraction {
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
             "  LEFT JOIN Animal_Race\n" +
-            "    ON Animal_Race.id = Animal.id\n" +
+            "    ON Animal_Race.id = Animal.race\n" +
             "  LEFT JOIN Enclos\n" +
             "    ON Animal.enclos = Enclos.id\n" +
             "  LEFT JOIN Secteur\n" +
@@ -209,7 +209,7 @@ public class DBInteraction {
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
             "  LEFT JOIN Animal_Race\n" +
-            "    ON Animal_Race.id = Animal.id\n" +
+            "    ON Animal_Race.id = Animal.race\n" +
             "  LEFT JOIN Enclos\n" +
             "    ON Animal.enclos = Enclos.id\n" +
             "  LEFT JOIN Secteur\n" +
@@ -223,7 +223,7 @@ public class DBInteraction {
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
             "  LEFT JOIN Animal_Race\n" +
-            "    ON Animal_Race.id = Animal.id\n" +
+            "    ON Animal_Race.id = Animal.race\n" +
             "  LEFT JOIN Enclos\n" +
             "    ON Animal.enclos = Enclos.id\n" +
             "  LEFT JOIN Secteur\n" +
@@ -237,7 +237,7 @@ public class DBInteraction {
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
             "  LEFT JOIN Animal_Race\n" +
-            "    ON Animal_Race.id = Animal.id\n" +
+            "    ON Animal_Race.id = Animal.race\n" +
             "  LEFT JOIN Enclos\n" +
             "    ON Animal.enclos = Enclos.id\n" +
             "  LEFT JOIN Secteur\n" +
