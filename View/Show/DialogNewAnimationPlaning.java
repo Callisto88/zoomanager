@@ -167,7 +167,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             /*
             CONFIGURATION DES INFRASTRUCTURES
              */
-        lstInfras = infrastructureEventController.selAll();
+        // lstInfras = infrastructureEventController.selAll();
         if(lstInfras.size()>0)
             infraAll = new String[lstInfras.size()];
         i = 0;
@@ -216,7 +216,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             /*
             CONFIGURATION DES INFRASTRUCTURES
              */
-            lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
+            // lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
             if(lstInfra.size()>0)
                 infra = new String[lstInfra.size()];
             i = 0;
@@ -256,7 +256,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             /*
             CONFIGURATION DES INFRASTRUCTURES
              */
-        lstInfras = infrastructureEventController.selAll();
+        // lstInfras = infrastructureEventController.selAll();
         if(lstInfras.size()>0)
             infraAll = new String[lstInfras.size()];
         i = 0;
@@ -268,7 +268,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
             /*
             CONFIGURATION DES INFRASTRUCTURES
              */
-            lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
+            // lstInfra = infrastructureEventController.selAllByEventId(evt.getId());
             if(lstInfra.size()>0)
                 infra = new String[lstInfra.size()];
             i = 0;
@@ -1000,8 +1000,10 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                                     }
                                 }
                                 if(save){
-                                    if(!a.equalsIgnoreCase("none"))
-                                        infrastructureEventController.saveByEventId(getInfrastructureByName(a),ID_EVENT);
+                                    if(!a.equalsIgnoreCase("none")) {
+
+                                    }
+                                        // infrastructureEventController.saveByEventId(getInfrastructureByName(a),ID_EVENT);
                                 }
                             }
                         }
@@ -1014,7 +1016,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
                                     }
                                 }
                                 if (del) {
-                                    infrastructureEventController.delByEventId(a, ID_EVENT);
+                                    // infrastructureEventController.delByEventId(a, ID_EVENT);
                                 }
                             }
                         }
@@ -1070,7 +1072,7 @@ public class DialogNewAnimationPlaning extends javax.swing.JPanel {
            /*
             CONFIGURATION DES INFRASTRUCTURES
              */
-        lstInfras = infrastructureEventController.selAll();
+        // lstInfras = infrastructureEventController.selAll();
         String[] infraAll={};
         int k = 0;
         for (Enclos a : lstInfras)
