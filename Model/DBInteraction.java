@@ -190,7 +190,7 @@ public class DBInteraction {
     // Sélectionne la liste de tous les fauves
     private static final String SEL_FAUVES = "SELECT *\n" +
             "FROM Animal\n" +
-            "  LEFT JOIN Animal_Fauve\n" +
+            "  INNER JOIN Animal_Fauve\n" +
             "    ON Animal.id = Animal_Fauve.id\n" +
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
@@ -204,7 +204,7 @@ public class DBInteraction {
     // Sélectionne la liste de tous les oiseaux
     private static final String SEL_OISEAUX = "SELECT *\n" +
             "FROM Animal\n" +
-            "  LEFT JOIN Animal_Oiseau\n" +
+            "  INNER JOIN Animal_Oiseau\n" +
             "    ON Animal.id = Animal_Oiseau.id\n" +
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
@@ -218,7 +218,7 @@ public class DBInteraction {
     // Sélectionne la liste de tous les primates
     private static final String SEL_PRIMATES = "SELECT *\n" +
             "FROM Animal\n" +
-            "  LEFT JOIN Animal_Primate\n" +
+            "  INNER JOIN Animal_Primate\n" +
             "    ON Animal.id = Animal_Primate.id\n" +
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
@@ -232,7 +232,7 @@ public class DBInteraction {
     // Sélectionne la liste de tous les reptiles
     private static final String SEL_REPTILES = "SELECT *\n" +
             "FROM Animal\n" +
-            "  LEFT JOIN Animal_Reptile\n" +
+            "  INNER JOIN Animal_Reptile\n" +
             "    ON Animal.id = Animal_Reptile.id\n" +
             "  LEFT JOIN Pays\n" +
             "    ON Animal.origine = Pays.paysId\n" +
@@ -1624,10 +1624,23 @@ public class DBInteraction {
     public ArrayList<Animal> selAnimaux() throws SQLException, ExceptionDataBase {
 
         ArrayList<Animal> animalArrayList = new ArrayList<>();
-        animalArrayList.addAll(this.selFelins());
-        animalArrayList.addAll(this.selOiseaux());
-        animalArrayList.addAll(this.selPrimates());
-        animalArrayList.addAll(this.selReptiles());
+        ArrayList<Animal> animauxToAdd = this.selFelins();
+        if(animauxToAdd.size() > 0){
+            animalArrayList.addAll(animauxToAdd);
+        }
+        animauxToAdd = this.selOiseaux();
+        if(animauxToAdd.size() > 0){
+            animalArrayList.addAll(animauxToAdd);
+        }
+        animauxToAdd = this.selPrimates();
+        if(animauxToAdd.size() > 0){
+            animalArrayList.addAll(animauxToAdd);
+        }
+        animauxToAdd = this.selReptiles();
+        if(animauxToAdd.size() > 0){
+            animalArrayList.addAll(animauxToAdd);
+        }
+
 
         return animalArrayList;
     }
@@ -1654,7 +1667,13 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_FAUVES);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Felin> felinArrayList = createTabFelin(rs);
+        ArrayList<Felin> felinArrayList;
+        try {
+            felinArrayList = createTabFelin(rs);
+        }
+        catch(ExceptionDataBase e){
+            felinArrayList = new ArrayList<>();
+        }
         ArrayList<? extends Animal> animalsArrayList = felinArrayList;
 
         return (ArrayList<Animal>) animalsArrayList;
@@ -1665,7 +1684,13 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_OISEAUX);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Oiseau> oiseauArrayList = createTabOiseau(rs);
+        ArrayList<Oiseau> oiseauArrayList;
+        try {
+            oiseauArrayList = createTabOiseau(rs);
+        }
+        catch(ExceptionDataBase e){
+            oiseauArrayList = new ArrayList<>();
+        }
         ArrayList<? extends Animal> animalsArrayList = oiseauArrayList;
 
         return (ArrayList<Animal>) animalsArrayList;
@@ -1676,7 +1701,13 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_PRIMATES);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Primate> primateArrayList = createTabPrimate(rs);
+        ArrayList<Primate> primateArrayList;
+        try {
+            primateArrayList = createTabPrimate(rs);
+        }
+        catch(ExceptionDataBase e){
+            primateArrayList = new ArrayList<>();
+        }
         ArrayList<? extends Animal> animalsArrayList = primateArrayList;
 
         return (ArrayList<Animal>) animalsArrayList;
@@ -1687,7 +1718,13 @@ public class DBInteraction {
         this.stmt = DBConnection.con.prepareStatement(SEL_REPTILES);
         ResultSet rs = this.stmt.executeQuery();
 
-        ArrayList<Reptile> reptileArrayList = createTabReptile(rs);
+        ArrayList<Reptile> reptileArrayList;
+        try {
+            reptileArrayList = createTabReptile(rs);
+        }
+        catch (ExceptionDataBase e){
+            reptileArrayList = new ArrayList<>();
+        }
         ArrayList<? extends Animal> animalsArrayList = reptileArrayList;
 
         return (ArrayList<Animal>) animalsArrayList;
