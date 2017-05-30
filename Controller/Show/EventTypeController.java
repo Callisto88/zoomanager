@@ -2,16 +2,28 @@ package Controller.Show;
 
 import Model.DBInteraction;
 import Model.ExceptionDataBase;
-import Model.TypeEvenement;
-
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo on 09/05/2017.
+ *
+ * Cette classe contient le controlleur qui  gère interaction entre les évènements
+ * et les différents types d'événements puis reccupère les données au model pour les vues
+ *
+ * @author doriane kaffo
+ *
+ * @version 1.0
+ *
+ * @date    09/05/2017.(Création)
+ * @date    29/05/2017 (Finalisation v1.0)
+ *
  */
 public class EventTypeController {
     DBInteraction query;
+    /**
+     * Permet d'instancier le controlleur EventTypeController
+     **
+     */
     public EventTypeController(){
         try {
             query = new DBInteraction();
@@ -19,17 +31,35 @@ public class EventTypeController {
             exceptionDataBase.printStackTrace();
         }
     }
+    /**
+     * Permet de supprimer un type d'évènement
+     *
+     * @param type String
+     *
+     * @return boolean
+     */
     public  boolean del(String type){
+        if(query==null)return false;
         try {
             query.delEventType(type);
             return true;
         } catch (SQLException e) {
+            System.out.println("Le type d'évènement "+type+" n a pas pu etre supprimé SQL_ERROR");
             return false;
         } catch (ExceptionDataBase exceptionDataBase) {
+            System.out.println("Le type d'évènement "+type+" n a pas pu etre supprimé DB_ERROR");
             return false;
         }
     }
+    /**
+     * Permet d'ajouter un type d'évènement
+     *
+     * @param evtType String
+     *
+     * @return boolean
+     */
     public boolean save(String evtType){
+        if(query==null)return false;
         if(evtType.equalsIgnoreCase("")){
             System.out.println("On me peut ajouter un type d evenement vide");
         }
@@ -39,21 +69,20 @@ public class EventTypeController {
             query.insEventType(evtType);
             return true;
         } catch (SQLException e) {
-            //e.printStackTrace();
+            System.out.println("Le type d'évènement "+evtType+" n a pas pu etre qjouté SQL_ERROR");
         } catch (ExceptionDataBase exceptionDataBase) {
-            //exceptionDataBase.printStackTrace();
+            System.out.println("Le type d'évènement "+evtType+" n a pas pu etre qjouté DB_ERROR");
         }
-//        try {
-//            System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
-//            return true;
-//        } catch (SQLException e) {
-//            System.out.println("Insertion du type d evenement "+evtType+" a echoue");
-//            e.printStackTrace();
-//        }
         return false;
     }
-
+    /**
+     * Permet d'obtenir la liste complete des types d'évènements
+     *
+     *
+     * @return ArrayList<String>
+     */
     public ArrayList<String> selAll() {
+        if(query==null)return new ArrayList<String>();
         ArrayList<String> listType = null;
         try {
             listType = query.selEventTypes();
