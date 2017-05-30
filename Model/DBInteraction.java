@@ -312,6 +312,11 @@ public class DBInteraction {
      * Requêtes de suppression
      */
     private static final String DELETE_ANIMAL = "DELETE FROM Animal WHERE id = ?;";
+    // Supprimer un animal d'un événement
+    private static final String DELETE_ANIMAL_EVENEMENT =
+            "DELETE " +
+                    "FROM Animal_Evenement " +
+                    "WHERE Animal_Evenement.animal = ? ;";
     private static final String DELETE_FAUVE = "DELETE FROM Animal_Fauve WHERE id = ?;";
     private static final String DELETE_OISEAU = "DELETE FROM Animal_Oiseau WHERE id = ?;";
     private static final String DELETE_PRIMATE = "DELETE FROM Animal_Primate WHERE id = ?;";
@@ -1797,6 +1802,10 @@ public class DBInteraction {
         if (numericId != numericId || !animalExists(numericId)) {
             throw new ExceptionDataBase(20, numericId);
         }
+
+        this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL_EVENEMENT);
+        this.stmt.setInt(1, a.getId());
+        this.stmt.executeUpdate();
 
         this.stmt = DBConnection.con.prepareStatement(DELETE_ANIMAL);
         this.stmt.setInt(1, a.getId());
