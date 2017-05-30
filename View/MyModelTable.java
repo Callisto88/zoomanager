@@ -94,7 +94,7 @@ public class MyModelTable extends AbstractTableModel{
             return vData.elementAt(0).elementAt(columnIndex).getClass();
         }
         else{
-            return String.class;
+            return null;
         }
     }
 
