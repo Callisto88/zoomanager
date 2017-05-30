@@ -304,8 +304,10 @@ public class StaffView extends GenericWindow {
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
 
-        sorterStaff = new TableRowSorter<>(mmtListing);
-        jtTable.setRowSorter(sorterStaff);
+        if(tableauStaff.size() > 0) {
+            sorterStaff = new TableRowSorter<>(mmtListing);
+            jtTable.setRowSorter(sorterStaff);
+        }
 
     }
 
@@ -328,8 +330,11 @@ public class StaffView extends GenericWindow {
         jtTable.setCellSelectionEnabled(false);
         jtTable.setRowSelectionAllowed(true);
 
-        sorterExternal = new TableRowSorter<>(mmtListing);
-        jtTable.setRowSorter(sorterExternal);
+        if(tableauExternal.size() > 0) {
+            sorterExternal = new TableRowSorter<>(mmtListing);
+            jtTable.setRowSorter(sorterExternal);
+        }
+
 
     }
 
