@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo on 10/05/2017.
+ * Created by doriane kaffo  on 10/05/2017.
  */
 public class IntervenantEventController {
     DBInteraction query;

@@ -19,6 +19,16 @@ public class EventTypeController {
             exceptionDataBase.printStackTrace();
         }
     }
+    public  boolean del(String type){
+        try {
+            query.delEventType(type);
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } catch (ExceptionDataBase exceptionDataBase) {
+            return false;
+        }
+    }
     public boolean save(String evtType){
         if(evtType.equalsIgnoreCase("")){
             System.out.println("On me peut ajouter un type d evenement vide");
@@ -29,10 +39,17 @@ public class EventTypeController {
             query.insEventType(evtType);
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
+            //exceptionDataBase.printStackTrace();
         }
+//        try {
+//            System.out.println("Insertion d un nouveau type d evenement reussit "+evtType);
+//            return true;
+//        } catch (SQLException e) {
+//            System.out.println("Insertion du type d evenement "+evtType+" a echoue");
+//            e.printStackTrace();
+//        }
         return false;
     }
 

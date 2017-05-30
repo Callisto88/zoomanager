@@ -6,7 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 /**
- * Created by doriane kaffo on 10/05/2017.
+ * Created by doriane kaffo  on 10/05/2017.
  */
 public class PersonneEventController {
     DBInteraction query;
@@ -22,11 +22,18 @@ public class PersonneEventController {
         try {
             lstPer = query.selPeopleByEventID(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
             System.out.println("Auncune personne ne correspond a cet evenement "+id);
             //exceptionDataBase.printStackTrace();
         }
+//        try {
+//            lstPer = query.selPeopleByEventID(id);
+//        } catch (SQLException e) {
+//            System.out.println("Aucune personne trouvee pour cet evenement");
+//        } catch (ExceptionDataBase exceptionDataBase) {
+//            System.out.println("Aucune personne trouvee pour cet evenement");
+//        }
             finally {
             if(lstPer == null){
                 lstPer = new ArrayList<Personne>();
@@ -78,12 +85,11 @@ public class PersonneEventController {
 
     }
     public boolean del(int idP, int idE) {
+
         try {
             query.delPersonneEvenement(idP, idE);
-            return  true;
         } catch (SQLException e) {
-            e.printStackTrace();
-        }
+          }
         return false;
     }
 

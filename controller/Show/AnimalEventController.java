@@ -22,7 +22,7 @@ public class AnimalEventController {
         try {
             lstAn = query.selAnimalsByEventID(id);
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
            // exceptionDataBase.printStackTrace();
             System.out.println("PAS D ANIMAUX ENREGISTRES POUR CET EVENEMENT");
@@ -70,7 +70,7 @@ public class AnimalEventController {
             return  true;
         } catch (SQLException e) {
             System.out.println("Echec d ajout d un nouvel annimal "+A.getNom()+" a l evenement "+E.getId());
-            e.printStackTrace();
+           // e.printStackTrace();
         }
 
         return false;
@@ -80,7 +80,7 @@ public class AnimalEventController {
             query.delAnimalEvent(idA, idE);
             return true;
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
         return false;
     }
@@ -94,9 +94,9 @@ public class AnimalEventController {
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
+            //exceptionDataBase.printStackTrace();
         }
         return new Animal();
     }
@@ -108,9 +108,9 @@ public class AnimalEventController {
                 ArrayList<Evenement> evt = query.selEventByID(id_event);
                 add(a,evt.get(0));
             } catch (ExceptionDataBase exceptionDataBase) {
-                exceptionDataBase.printStackTrace();
+                //exceptionDataBase.printStackTrace();
             } catch (SQLException e) {
-                e.printStackTrace();
+                //e.printStackTrace();
             }
             System.out.println("On ENREGISTRE L ANNIMAL " + a.getNom()+" "+a.getId()+" "+" EVENEMENT "+id_event);
         }else{

@@ -24,8 +24,14 @@ public class EventController {
         try {
             return query.insertEvenement(evt);
         } catch (SQLException e) {
-            e.printStackTrace();
+          //  e.printStackTrace();
         }
+//        try {
+//            System.out.println("Insertion d un nouvel d evenement reussit "+evt);
+//
+//        } catch (SQLException e1) {
+//            System.out.println("Insertion   d evenement "+evt+" a echoue");
+//        }
         return 0;
     }
     public ArrayList<Evenement> selFakeData(){
@@ -34,9 +40,9 @@ public class EventController {
         try {
             list = query.selAllEvents();
         } catch (SQLException e) {
-            e.printStackTrace();
+           // e.printStackTrace();
         } catch (ExceptionDataBase exceptionDataBase) {
-            exceptionDataBase.printStackTrace();
+           // exceptionDataBase.printStackTrace();
         }
 
         finally {

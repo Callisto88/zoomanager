@@ -82,10 +82,10 @@ public class ImpressionController  implements Printable {
                 for (Intervenant a : lstIntervenant){
                     intervenantAll += a.getNom()+", ";
                 }
-                ArrayList<Infrastructure> lstInfra = infrastructureEventController.selAllByEventId(e.getId());
+                ArrayList<Enclos> lstInfra = infrastructureEventController.selAllByEventId(e.getId());
                 String infraAll = "";
                 i = 0;
-                for (Infrastructure a : lstInfra){
+                for (Enclos a : lstInfra){
                     infraAll += a.getNom()+", ";
                 }
                 graphics.drawString("> > Programmation du "+e.getDate().toString()+" \n", x + marge, y + marge + o +40);

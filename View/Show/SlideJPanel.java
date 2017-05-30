@@ -6,7 +6,15 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Created by doriane kaffo on 14/05/2017.
+ *
+ * Cette classe contient
+ *
+ * @author doriane kaffo
+ *
+ * @version 1.0
+ *
+ * @date    14/05/2017.
+ *
  */
 public class SlideJPanel extends javax.swing.JPanel {
     private Image img;
