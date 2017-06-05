@@ -26,6 +26,7 @@ public class ManagerDashboard extends JPanel {
         this.setLayout(new GridLayout(2, 2));
 
         JButton employee = new JButton("Employé");
+        employee.setFont(new Font("Arial", Font.PLAIN, 40));
         this.add(employee);
         // Permet de demander l'instanciation de la fenêtre des employée
         employee.addActionListener(new ActionListener() {
@@ -36,6 +37,7 @@ public class ManagerDashboard extends JPanel {
         });
 
         JButton stock = new JButton("Stock");
+        stock.setFont(new Font("Arial", Font.PLAIN, 40));
         this.add(stock);
         // Permet de demander l'instanciation de la fenêetre du stock
         stock.addActionListener(new ActionListener() {
@@ -46,6 +48,7 @@ public class ManagerDashboard extends JPanel {
         });
 
         JButton show = new JButton("Animation");
+        show.setFont(new Font("Arial", Font.PLAIN, 40));
         this.add(show);
         // Permet de demander l'instanciation de la fenêtre des spectacles
         show.addActionListener(new ActionListener() {
@@ -58,6 +61,7 @@ public class ManagerDashboard extends JPanel {
         });
 
         JButton animal = new JButton("Animal");
+        animal.setFont(new Font("Arial", Font.PLAIN, 40));
         this.add(animal);
         // Permet de demander l'instanciation de la fenêtre des annimaux.
         animal.addActionListener(new ActionListener() {
